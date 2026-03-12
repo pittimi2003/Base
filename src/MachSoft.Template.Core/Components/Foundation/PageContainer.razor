@@ -1,0 +1,22 @@
+<section class="ms-page-container">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <header class="ms-page-header">
+            <h2>@Title</h2>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p>@Description</p>
+            }
+        </header>
+    }
+
+    <div class="ms-page-body">
+        @ChildContent
+    </div>
+</section>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}

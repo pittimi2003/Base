@@ -1,0 +1,15 @@
+:root {
+  --ms-font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  --ms-color-bg: #f3f5f9;
+  --ms-color-surface: #ffffff;
+  --ms-color-brand: #1f4bb6;
+  --ms-color-brand-soft: #dbe6ff;
+  --ms-color-accent: #0f766e;
+  --ms-color-text: #1b2330;
+  --ms-color-text-soft: #5f6b7a;
+  --ms-border-color: #d8deea;
+  --ms-space-1: 0.5rem;
+  --ms-space-2: 1rem;
+  --ms-space-3: 1.5rem;
+  --ms-radius: 12px;
+}

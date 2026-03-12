@@ -1,0 +1,34 @@
+@inherits LayoutComponentBase
+@using MachSoft.Template.Core.Models
+
+<div class="ms-shell">
+    <aside class="ms-shell__nav">
+        <div class="ms-brand">MachSoft Template</div>
+        <SideNav Items="_items" />
+    </aside>
+
+    <div class="ms-shell__content">
+        <header class="ms-shell__header">
+            <div>
+                <h1 class="ms-title">@Title</h1>
+                <p class="ms-subtitle">Base corporativa reusable para soluciones Blazor.</p>
+            </div>
+        </header>
+
+        <main class="ms-shell__main">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    [Parameter] public string Title { get; set; } = "MachSoft Starter";
+
+    private readonly IReadOnlyList<NavItem> _items =
+    [
+        new("Inicio", "/", "🏠"),
+        new("Showcase", "/showcase", "🧩"),
+        new("Demo", "/demo", "📊"),
+        new("WASM Demo", "/wasm-demo", "🌐")
+    ];
+}

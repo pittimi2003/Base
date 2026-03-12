@@ -1,0 +1,18 @@
+@using MachSoft.Template.Core.Models
+
+<nav class="ms-nav">
+    @foreach (var item in Items)
+    {
+        <NavLink href="@item.Href" class="ms-nav__item" Match="NavLinkMatch.Prefix">
+            @if (!string.IsNullOrWhiteSpace(item.Icon))
+            {
+                <span class="ms-nav__icon">@item.Icon</span>
+            }
+            <span>@item.Text</span>
+        </NavLink>
+    }
+</nav>
+
+@code {
+    [Parameter, EditorRequired] public IReadOnlyList<NavItem> Items { get; set; } = [];
+}

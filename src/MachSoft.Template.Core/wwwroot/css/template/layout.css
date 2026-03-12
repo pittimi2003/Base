@@ -1,0 +1,21 @@
+.ms-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+.ms-shell__nav {
+  background: #0c1530;
+  color: #fff;
+  padding: var(--ms-space-3) var(--ms-space-2);
+}
+
+.ms-brand { font-size: 1.1rem; font-weight: 700; margin-bottom: var(--ms-space-3); }
+
+.ms-shell__header {
+  padding: var(--ms-space-2) var(--ms-space-3);
+  background: var(--ms-color-surface);
+  border-bottom: 1px solid var(--ms-border-color);
+}
+
+.ms-shell__main { padding: var(--ms-space-3); }
