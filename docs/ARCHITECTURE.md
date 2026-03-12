@@ -5,28 +5,31 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 
 ## Capas y responsabilidad
 - **Capa común (`MachSoft.Template.Core`)**
-  - Layout corporativo (`MainLayout`).
+  - Layout corporativo desacoplado (`MainLayout`, `AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
   - Componentes foundation (`PageContainer`, `BaseCard`, `AppMenuTile`, navegación base).
   - Páginas base (`Home`, `Showcase`).
   - Static web assets compartidos (`wwwroot/css/template/*`).
 - **Capa host Server (`MachSoft.Template.Starter`)**
   - Bootstrap de Blazor Server.
-  - Rutas de host + página demo de starter.
+  - Registro del root component + `AddAdditionalAssemblies(...)` para páginas enrutable del Core.
+  - Páginas específicas de host (ej. `/demo`).
 - **Capa host WASM (`MachSoft.Template.Starter.Wasm`)**
   - Bootstrap de Blazor WebAssembly.
-  - `index.html` de cliente, rutas de host y página demo WASM.
+  - `index.html` de cliente y páginas específicas de host (ej. `/wasm-demo`).
 - **Capa de ejemplo (`MachSoft.Template.SampleApp`)**
   - App de validación funcional consumiendo el Core.
 
 ## Decisiones de diseño
-1. **RCL como base compartida**: permite reutilizar componentes, layout y CSS en Server y WASM sin copias.
-2. **Hosts delgados**: cada starter contiene solo bootstrap/runtime y páginas mínimas específicas.
-3. **CSS por capas**: `tokens`, `base`, `layout`, `components`, `utilities` para crecimiento mantenible.
-4. **Navegación genérica**: sin acoplamiento a servicios ni negocio legacy.
+1. **RCL como base compartida**: componentes/layout/CSS únicos para Server y WASM.
+2. **Layout en subcomponentes**: `MainLayout` liviano que delega shell/header/nav/footer.
+3. **Foundation con variantes mínimas**: `BaseCard` (`default|elevated|outlined|muted`), `AppMenuTile` (`default|elevated|muted`) y `PageContainer` con modo `Compact`.
+4. **CSS por capas**: `tokens`, `base`, `layout`, `components`, `utilities` con escala y tokens comunes.
+5. **Hosts delgados**: Server/WASM solo resuelven runtime/bootstrap.
 
 ## Convenciones
 - Prefijo obligatorio `MachSoft.Template.*`.
 - Foundation en `src/MachSoft.Template.Core/Components/Foundation`.
+- Layout en `src/MachSoft.Template.Core/Layout`.
 - Estilos globales en `src/MachSoft.Template.Core/wwwroot/css/template`.
 - Hosts en `template/` (Server y WASM), muestra en `samples/`.
 

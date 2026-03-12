@@ -1,4 +1,4 @@
-<article class="ms-card">
+<article class="@CardClass">
     @if (!string.IsNullOrWhiteSpace(Title))
     {
         <header class="ms-card__header">
@@ -18,5 +18,10 @@
 @code {
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Badge { get; set; }
+    [Parameter] public string Variant { get; set; } = "default"; // default|elevated|outlined|muted
+    [Parameter] public bool Compact { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private string CardClass =>
+        $"ms-card ms-card--{Variant.ToLowerInvariant()}{(Compact ? " ms-card--compact" : string.Empty)}";
 }

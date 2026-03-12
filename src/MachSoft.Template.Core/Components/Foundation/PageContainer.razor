@@ -1,4 +1,4 @@
-<section class="ms-page-container">
+<section class="@ContainerClass">
     @if (!string.IsNullOrWhiteSpace(Title))
     {
         <header class="ms-page-header">
@@ -18,5 +18,8 @@
 @code {
     [Parameter] public string? Title { get; set; }
     [Parameter] public string? Description { get; set; }
+    [Parameter] public bool Compact { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private string ContainerClass => $"ms-page-container{(Compact ? " ms-page-container--compact" : string.Empty)}";
 }

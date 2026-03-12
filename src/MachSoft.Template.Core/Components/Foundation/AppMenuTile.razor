@@ -1,4 +1,4 @@
-<a href="@Href" class="ms-menu-tile">
+<a href="@Href" class="@TileClass">
     <div class="ms-menu-tile__icon">@Icon</div>
     <div>
         <h3>@Title</h3>
@@ -14,4 +14,7 @@
     [Parameter] public string Description { get; set; } = string.Empty;
     [Parameter] public string Href { get; set; } = "#";
     [Parameter] public string Icon { get; set; } = "📦";
+    [Parameter] public string Variant { get; set; } = "default"; // default|elevated|muted
+
+    private string TileClass => $"ms-menu-tile ms-menu-tile--{Variant.ToLowerInvariant()}";
 }

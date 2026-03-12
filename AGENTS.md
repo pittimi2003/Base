@@ -19,7 +19,7 @@ Estructura esperada:
 - `docs/` → arquitectura, guía de uso y migración.
 
 ### Responsabilidades por capa
-- **Core (común)**: layout base, componentes foundation, páginas base, CSS y tokens.
+- **Core (común)**: layout base desacoplado (MainLayout + AppShell/AppHeader/AppNavigation/AppFooter), componentes foundation, páginas base, CSS y tokens.
 - **Starter Server**: bootstrap server y páginas específicas de host server.
 - **Starter WASM**: bootstrap cliente WASM y páginas específicas de host WASM.
 - **Sample**: validar patrones de uso reales sin lógica de negocio legacy.
@@ -37,17 +37,17 @@ Reglas:
 5. Si un componente deja de ser reusable, moverlo a host específico.
 
 Componentes base actuales de referencia:
-- `PageContainer`
-- `BaseCard`
-- `AppMenuTile`
+- `PageContainer` (`Compact`)
+- `BaseCard` (`Variant`: `default|elevated|outlined|muted`, `Compact`)
+- `AppMenuTile` (`Variant`: `default|elevated|muted`)
 
 ---
 
 ## 4) Reglas de Layout
 Ubicación: `src/MachSoft.Template.Core/Layout`.
 
-- `MainLayout` es el contrato visual común.
-- Mantener separación clara entre navegación, cabecera y contenido.
+- `MainLayout` es el contrato visual común y debe permanecer liviano.
+- Delegar estructura visual en subcomponentes (`AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
 - No inyectar servicios de negocio en layout común.
 - Las variantes por host deben resolverse en el host, no rompiendo el layout base.
 
