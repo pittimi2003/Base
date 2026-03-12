@@ -6,7 +6,7 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 ## Capas y responsabilidad
 - **Capa común (`MachSoft.Template.Core`)**
   - Layout corporativo desacoplado (`MainLayout`, `AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
-  - Componentes foundation (`PageContainer`, `BaseCard`, `AppMenuTile`, navegación base).
+  - Foundation components (`PageContainer`, `BaseCard`, `AppMenuTile`) y base mínima de formularios (`FormSection`, `FieldGroup`, `SectionTitle`).
   - Páginas base (`Home`, `Showcase`).
   - Static web assets compartidos (`wwwroot/css/template/*`).
 - **Capa host Server (`MachSoft.Template.Starter`)**
@@ -19,21 +19,29 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 - **Capa de ejemplo (`MachSoft.Template.SampleApp`)**
   - App de validación funcional consumiendo el Core.
 
-## Decisiones de diseño
-1. **RCL como base compartida**: componentes/layout/CSS únicos para Server y WASM.
-2. **Layout en subcomponentes**: `MainLayout` liviano que delega shell/header/nav/footer.
-3. **Foundation con variantes mínimas**: `BaseCard` (`default|elevated|outlined|muted`), `AppMenuTile` (`default|elevated|muted`) y `PageContainer` con modo `Compact`.
-4. **CSS por capas**: `tokens`, `base`, `layout`, `components`, `utilities` con escala y tokens comunes.
-5. **Hosts delgados**: Server/WASM solo resuelven runtime/bootstrap.
+## Contratos de diseño
+1. **MainLayout liviano**: solo composición/orquestación.
+2. **Variantes tipadas**:
+   - `BaseCard` usa `SurfaceVariant`.
+   - `AppMenuTile` usa `TileVariant`.
+3. **Compact mode explícito**: `IsCompact` en `PageContainer` y `BaseCard`.
+4. **Token-first CSS**: spacing/radius/shadows/typography definidos por tokens.
 
-## Convenciones
-- Prefijo obligatorio `MachSoft.Template.*`.
-- Foundation en `src/MachSoft.Template.Core/Components/Foundation`.
-- Layout en `src/MachSoft.Template.Core/Layout`.
-- Estilos globales en `src/MachSoft.Template.Core/wwwroot/css/template`.
-- Hosts en `template/` (Server y WASM), muestra en `samples/`.
+## Governance Rules
+- **Qué entra en Core**:
+  - patrones visuales reutilizados por Server y WASM,
+  - componentes sin dependencia de dominio.
+- **Qué no entra en Core**:
+  - lógica de negocio,
+  - servicios de infraestructura host-specific,
+  - UI de un único flujo local.
+- **Aprobación de nuevos foundation components**:
+  1. uso repetido real en al menos dos contextos,
+  2. contrato mínimo y coherente,
+  3. ejemplo en `/showcase`,
+  4. guía/documentación actualizada.
 
 ## Separación Server vs WASM
-- **Común**: UI, layout y estilos (Core).
+- **Común**: UI, layout, contratos de componentes y estilos (Core).
 - **Server**: renderizado interactivo en servidor + `blazor.web.js`.
 - **WASM**: renderizado cliente + `blazor.webassembly.js` e `index.html` propio.

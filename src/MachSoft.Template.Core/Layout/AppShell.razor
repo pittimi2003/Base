@@ -1,7 +1,7 @@
 @using MachSoft.Template.Core.Models
 
 <div class="ms-shell">
-    <AppNavigation Brand="@Brand" Items="NavigationItems" />
+    <AppNavigation BrandTitle="@BrandTitle" NavigationItems="NavigationItems" />
 
     <div class="ms-shell__content">
         <AppHeader Title="@Title" Subtitle="@Subtitle" />
@@ -10,14 +10,15 @@
             @ChildContent
         </main>
 
-        <AppFooter />
+        <AppFooter FooterText="@FooterText" />
     </div>
 </div>
 
 @code {
-    [Parameter] public string Brand { get; set; } = "MachSoft Template";
+    [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
     [Parameter] public string Title { get; set; } = "MachSoft Starter";
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
+    [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 }

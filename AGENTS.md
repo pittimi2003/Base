@@ -19,7 +19,7 @@ Estructura esperada:
 - `docs/` → arquitectura, guía de uso y migración.
 
 ### Responsabilidades por capa
-- **Core (común)**: layout base desacoplado (MainLayout + AppShell/AppHeader/AppNavigation/AppFooter), componentes foundation, páginas base, CSS y tokens.
+- **Core (común)**: layout base desacoplado (MainLayout + AppShell/AppHeader/AppNavigation/AppFooter), foundation components, base mínima de formularios, páginas base, CSS y tokens.
 - **Starter Server**: bootstrap server y páginas específicas de host server.
 - **Starter WASM**: bootstrap cliente WASM y páginas específicas de host WASM.
 - **Sample**: validar patrones de uso reales sin lógica de negocio legacy.
@@ -36,14 +36,26 @@ Reglas:
 4. Priorizar composición (ChildContent) sobre especialización rígida.
 5. Si un componente deja de ser reusable, moverlo a host específico.
 
-Componentes base actuales de referencia:
-- `PageContainer` (`Compact`)
-- `BaseCard` (`Variant`: `default|elevated|outlined|muted`, `Compact`)
-- `AppMenuTile` (`Variant`: `default|elevated|muted`)
+Contratos de referencia:
+- `PageContainer` (`Title`, `Description`, `IsCompact`)
+- `BaseCard` (`Title`, `BadgeText`, `Variant: SurfaceVariant`, `IsCompact`)
+- `AppMenuTile` (`Title`, `Description`, `Href`, `Icon`, `Variant: TileVariant`)
 
 ---
 
-## 4) Reglas de Layout
+## 4) Base mínima de formularios
+Ubicación: `src/MachSoft.Template.Core/Components/Forms`.
+
+Componentes:
+- `FormSection`
+- `SectionTitle`
+- `FieldGroup`
+
+Regla: mantenerlos como **patrones visuales ligeros**. No convertir esta capa en framework de formularios.
+
+---
+
+## 5) Reglas de Layout
 Ubicación: `src/MachSoft.Template.Core/Layout`.
 
 - `MainLayout` es el contrato visual común y debe permanecer liviano.
@@ -53,7 +65,7 @@ Ubicación: `src/MachSoft.Template.Core/Layout`.
 
 ---
 
-## 5) Sistema de estilos y design tokens
+## 6) Sistema de estilos y design tokens
 Ubicación: `src/MachSoft.Template.Core/wwwroot/css/template/`
 
 Archivos y propósito:
@@ -71,7 +83,17 @@ Reglas CSS:
 
 ---
 
-## 6) Reglas de reutilización Server/WASM
+## 7) Reglas de composición
+- Combinación base por pantalla: `PageContainer` + `BaseCard`.
+- `IsCompact=true` solo para secciones densas o anidadas.
+- `SurfaceVariant.Outlined`: estructura neutral.
+- `SurfaceVariant.Elevated`: bloque prioritario.
+- `SurfaceVariant.Muted`: contenido secundario/contextual.
+- Promover a Foundation solo si el patrón se repite cross-host y no contiene dominio.
+
+---
+
+## 8) Reglas de reutilización Server/WASM
 - Toda UI compartida debe vivir en `MachSoft.Template.Core`.
 - Server/WASM solo contienen bootstrap, runtime y necesidades específicas de host.
 - Si algo se repite en ambos hosts, mover al Core.
@@ -79,31 +101,25 @@ Reglas CSS:
 
 ---
 
-## 7) Convenciones de nombres
+## 9) Convenciones de nombres
 - Prefijo obligatorio: `MachSoft.Template.*`.
 - Nombres claros por responsabilidad (`Core`, `Starter`, `Starter.Wasm`, `SampleApp`).
 - Evitar nombres legacy o ambiguos.
 
 ---
 
-## 8) Cómo agregar nuevos componentes
-1. Crear componente en `Core/Components/Foundation` o carpeta temática reusable.
-2. Añadir estilos en `components.css` y tokens si aplica.
-3. Exponer uso en `Pages/Showcase` o en `SampleApp`.
-4. Verificar compilación de solución completa.
-5. Actualizar documentación relevante en `docs/`.
+## 10) Governance Rules
+- Todo cambio reusable debe pasar por `/showcase` antes de adoptarse.
+- No incorporar nuevos components en Core sin:
+  1. uso repetido,
+  2. contrato claro,
+  3. ejemplo en showcase,
+  4. docs actualizadas.
+- Evitar duplicación: preferir extender Foundation antes que crear variantes locales paralelas.
 
 ---
 
-## 9) Reglas de dependencias
-- En `Core`: solo dependencias necesarias para componentes/layout compartidos.
-- Evitar dependencias pesadas o acopladas a host específico.
-- Cualquier librería exclusiva de host debe quedarse en el host.
-- Mantener versiones alineadas con .NET 8.
-
----
-
-## 10) Reglas de documentación
+## 11) Reglas de documentación
 Actualizar siempre cuando cambie arquitectura o flujo de uso:
 - `README.md`
 - `docs/ARCHITECTURE.md`
@@ -114,7 +130,7 @@ La documentación debe reflejar estado real del código (no intenciones futuras)
 
 ---
 
-## 11) Flujo de trabajo esperado para agentes
+## 12) Flujo de trabajo esperado para agentes
 1. Validar entorno (`dotnet --info`).
 2. Restaurar y compilar (`dotnet restore`, `dotnet build`).
 3. Hacer cambios mínimos y coherentes con la arquitectura.

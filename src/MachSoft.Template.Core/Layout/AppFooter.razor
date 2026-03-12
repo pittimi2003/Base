@@ -1,3 +1,7 @@
 <footer class="ms-shell__footer">
-    <small>MachSoft Template • Foundation UI for Server/WASM</small>
+    <small>@FooterText</small>
 </footer>
+
+@code {
+    [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
+}
