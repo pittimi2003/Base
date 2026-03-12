@@ -1,0 +1,27 @@
+<article class="@CardClass">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <header class="ms-card__header">
+            <h3>@Title</h3>
+            @if (!string.IsNullOrWhiteSpace(Badge))
+            {
+                <span class="ms-badge">@Badge</span>
+            }
+        </header>
+    }
+
+    <div class="ms-card__content">
+        @ChildContent
+    </div>
+</article>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Badge { get; set; }
+    [Parameter] public string Variant { get; set; } = "default"; // default|elevated|outlined|muted
+    [Parameter] public bool Compact { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private string CardClass =>
+        $"ms-card ms-card--{Variant.ToLowerInvariant()}{(Compact ? " ms-card--compact" : string.Empty)}";
+}

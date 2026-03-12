@@ -1,0 +1,57 @@
+@page "/showcase"
+
+<PageContainer Title="Foundation Showcase" Description="Catálogo visual mínimo del Design System inicial MachSoft.">
+    <div class="ms-grid ms-grid--2">
+        <BaseCard Title="Tipografía" Badge="base.css" Variant="outlined">
+            <div class="ms-stack-sm">
+                <p class="ms-title">Título principal</p>
+                <p class="ms-text-lg">Subtítulo jerárquico</p>
+                <p>Texto base reusable para contenido estándar.</p>
+                <p class="ms-text-sm">Texto auxiliar / metadata</p>
+            </div>
+        </BaseCard>
+
+        <BaseCard Title="Spacing Scale" Badge="tokens + utilities" Variant="outlined">
+            <div class="ms-stack-sm">
+                <div class="ms-surface">space-2</div>
+                <div class="ms-surface">space-3</div>
+                <div class="ms-surface">space-4</div>
+            </div>
+        </BaseCard>
+
+        <BaseCard Title="Card Variants" Badge="BaseCard" Variant="elevated">
+            <div class="ms-grid ms-grid--2">
+                <BaseCard Title="Default" Compact="true"><p class="ms-text-sm">Sin variante.</p></BaseCard>
+                <BaseCard Title="Elevated" Variant="elevated" Compact="true"><p class="ms-text-sm">Con sombra.</p></BaseCard>
+                <BaseCard Title="Outlined" Variant="outlined" Compact="true"><p class="ms-text-sm">Borde reforzado.</p></BaseCard>
+                <BaseCard Title="Muted" Variant="muted" Compact="true"><p class="ms-text-sm">Superficie suave.</p></BaseCard>
+            </div>
+        </BaseCard>
+
+        <BaseCard Title="Navigation Tiles" Badge="AppMenuTile" Variant="muted">
+            <div class="ms-grid ms-grid--2">
+                <AppMenuTile Title="Starter" Description="Host Server" Href="/demo" Icon="🚀" Variant="default" />
+                <AppMenuTile Title="WASM" Description="Host WebAssembly" Href="/wasm-demo" Icon="🌐" Variant="elevated" />
+                <AppMenuTile Title="Showcase" Description="Catálogo visual" Href="/showcase" Icon="🧩" Variant="muted" />
+            </div>
+        </BaseCard>
+
+        <BaseCard Title="Tokens de color" Badge="tokens.css" Variant="outlined">
+            <div class="ms-color-row">
+                <span class="ms-color-swatch ms-color-swatch--brand"></span>
+                <span class="ms-color-swatch ms-color-swatch--accent"></span>
+                <span class="ms-color-swatch ms-color-swatch--surface"></span>
+            </div>
+            <div class="ms-divider"></div>
+            <p class="ms-text-sm">Todos los componentes consumen tokens para evitar valores mágicos.</p>
+        </BaseCard>
+
+        <BaseCard Title="PageContainer" Badge="compact mode" Variant="outlined">
+            <PageContainer Compact="true" Title="Subsección" Description="Uso interno de composición con menor separación vertical.">
+                <BaseCard Compact="true" Title="Bloque interno" Variant="muted">
+                    <p class="ms-text-sm">Ejemplo de anidamiento limpio para pantallas complejas.</p>
+                </BaseCard>
+            </PageContainer>
+        </BaseCard>
+    </div>
+</PageContainer>

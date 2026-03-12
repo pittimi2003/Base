@@ -1,0 +1,19 @@
+@page "/demo"
+
+<PageContainer Title="Sample Demo" Description="Aplicación demostrativa para validar uso real del template.">
+    <div class="ms-grid ms-grid--2">
+        <BaseCard Title="KPIs" Badge="grid">
+            <ul>
+                <li>Orders Today: 128</li>
+                <li>Utilization: 87%</li>
+                <li>Alerts: 3</li>
+            </ul>
+        </BaseCard>
+        <BaseCard Title="Quick Actions" Badge="menu tiles">
+            <div class="ms-grid ms-grid--2">
+                <AppMenuTile Title="New Order" Description="Crear orden" Icon="➕" />
+                <AppMenuTile Title="Assign Team" Description="Asignación rápida" Icon="👥" />
+            </div>
+        </BaseCard>
+    </div>
+</PageContainer>
