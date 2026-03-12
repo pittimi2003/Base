@@ -1,0 +1,11 @@
+@using MachSoft.Template.Core.Models
+
+<aside class="ms-shell__nav">
+    <div class="ms-brand">@BrandTitle</div>
+    <SideNav Items="NavigationItems" />
+</aside>
+
+@code {
+    [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
+    [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
+}

@@ -1,0 +1,40 @@
+.ms-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+}
+
+.ms-shell__nav {
+  background: #0c1530;
+  color: #fff;
+  padding: var(--ms-space-5) var(--ms-space-4);
+}
+
+.ms-brand {
+  font-size: var(--ms-font-size-lg);
+  font-weight: 700;
+  margin-bottom: var(--ms-space-5);
+}
+
+.ms-shell__content {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.ms-shell__header {
+  padding: var(--ms-space-4) var(--ms-space-5);
+  background: var(--ms-color-surface);
+  border-bottom: 1px solid var(--ms-color-border);
+}
+
+.ms-shell__main {
+  padding: var(--ms-space-5);
+}
+
+.ms-shell__footer {
+  padding: var(--ms-space-3) var(--ms-space-5);
+  border-top: 1px solid var(--ms-color-border);
+  background: var(--ms-color-surface);
+  color: var(--ms-color-text-soft);
+}

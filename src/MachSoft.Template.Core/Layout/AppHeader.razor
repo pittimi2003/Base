@@ -1,0 +1,14 @@
+<header class="ms-shell__header">
+    <div>
+        <h1 class="ms-title">@Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Subtitle))
+        {
+            <p class="ms-subtitle">@Subtitle</p>
+        }
+    </div>
+</header>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
+}
