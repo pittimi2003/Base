@@ -55,13 +55,18 @@ Regla: mantenerlos como **patrones visuales ligeros**. No convertir esta capa en
 
 ---
 
-## 5) Reglas de Layout
+## 5) Reglas de Layout y navegación
 Ubicación: `src/MachSoft.Template.Core/Layout`.
 
 - `MainLayout` es el contrato visual común y debe permanecer liviano.
 - Delegar estructura visual en subcomponentes (`AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
+- `AppShell` gestiona estado de sidebar colapsable (`IsMenuOpen`) y overlay.
+- Cierre automático del menú cuando:
+  1. clic en overlay,
+  2. clic en contenido fuera del sidebar,
+  3. clic en opción de navegación,
+  4. clic nuevamente en hamburguesa.
 - No inyectar servicios de negocio en layout común.
-- Las variantes por host deben resolverse en el host, no rompiendo el layout base.
 
 ---
 
@@ -71,14 +76,14 @@ Ubicación: `src/MachSoft.Template.Core/wwwroot/css/template/`
 Archivos y propósito:
 - `tokens.css` → variables y design tokens.
 - `base.css` → tipografía, resets mínimos y defaults.
-- `layout.css` → shell/layout principal.
+- `layout.css` → shell/layout principal + sidebar responsive + overlay.
 - `components.css` → estilos de componentes.
 - `utilities.css` → utilidades de spacing/grid/helpers.
 
 Reglas CSS:
 1. Usar prefijo `ms-` en clases corporativas.
 2. Evitar estilos inline salvo casos justificados.
-3. Nuevos colores/espaciados primero como token.
+3. Nuevos colores/espaciados/z-index primero como token.
 4. No duplicar estilos entre Server y WASM.
 
 ---
@@ -136,8 +141,9 @@ La documentación debe reflejar estado real del código (no intenciones futuras)
 3. Hacer cambios mínimos y coherentes con la arquitectura.
 4. Verificar que Server y WASM sigan reutilizando Core.
 5. Ejecutar validaciones de arranque básicas cuando sea posible.
-6. Actualizar docs.
-7. Commit atómico con mensaje claro y PR con resumen técnico.
+6. Validar visualmente `/showcase` y navegación lateral al cambiar layout/styles.
+7. Actualizar docs.
+8. Commit atómico con mensaje claro y PR con resumen técnico.
 
 Comandos base sugeridos:
 - `dotnet restore MachSoft.Template.sln`

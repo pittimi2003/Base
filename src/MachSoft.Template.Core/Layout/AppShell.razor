@@ -1,17 +1,22 @@
 @using MachSoft.Template.Core.Models
 
-<div class="ms-shell">
-    <AppNavigation BrandTitle="@BrandTitle" NavigationItems="NavigationItems" />
+<div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)">
+    <AppNavigation BrandTitle="@BrandTitle"
+                   IsOpen="@IsMenuOpen"
+                   NavigationItems="NavigationItems"
+                   OnNavigationItemSelected="CloseMenu" />
 
     <div class="ms-shell__content">
-        <AppHeader Title="@Title" Subtitle="@Subtitle" />
+        <AppHeader Title="@Title" Subtitle="@Subtitle" IsMenuOpen="@IsMenuOpen" OnToggleMenu="ToggleMenu" />
 
-        <main class="ms-shell__main">
+        <main class="ms-shell__main" @onclick="CloseMenuOnContentClick">
             @ChildContent
         </main>
 
         <AppFooter FooterText="@FooterText" />
     </div>
+
+    <button type="button" class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)" @onclick="CloseMenu" aria-label="Close navigation"></button>
 </div>
 
 @code {
@@ -21,4 +26,18 @@
     [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private bool IsMenuOpen { get; set; }
+
+    private void ToggleMenu() => IsMenuOpen = !IsMenuOpen;
+
+    private void CloseMenu() => IsMenuOpen = false;
+
+    private void CloseMenuOnContentClick()
+    {
+        if (IsMenuOpen)
+        {
+            CloseMenu();
+        }
+    }
 }

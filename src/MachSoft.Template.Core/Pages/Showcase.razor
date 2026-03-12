@@ -1,71 +1,94 @@
 @page "/showcase"
 
 <PageContainer Title="Foundation Showcase" Description="Gate visual mínimo del Design System inicial MachSoft.">
-    <div class="ms-grid ms-grid--2">
-        <BaseCard Title="Tipografía" BadgeText="base.css" Variant="SurfaceVariant.Outlined">
-            <div class="ms-stack-sm">
-                <p class="ms-title">Título principal</p>
-                <p class="ms-text-lg">Subtítulo jerárquico</p>
-                <p>Texto base reusable para contenido estándar.</p>
-                <p class="ms-text-sm">Texto auxiliar / metadata</p>
-            </div>
-        </BaseCard>
-
-        <BaseCard Title="Spacing Scale" BadgeText="tokens + utilities" Variant="SurfaceVariant.Outlined">
-            <div class="ms-stack-sm">
-                <div class="ms-surface">space-2</div>
-                <div class="ms-surface">space-3</div>
-                <div class="ms-surface">space-4</div>
-            </div>
-        </BaseCard>
-
-        <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
-            <div class="ms-grid ms-grid--2">
-                <BaseCard Title="Default" IsCompact="true"><p class="ms-text-sm">Sin variante.</p></BaseCard>
-                <BaseCard Title="Elevated" Variant="SurfaceVariant.Elevated" IsCompact="true"><p class="ms-text-sm">Con sombra.</p></BaseCard>
-                <BaseCard Title="Outlined" Variant="SurfaceVariant.Outlined" IsCompact="true"><p class="ms-text-sm">Borde reforzado.</p></BaseCard>
-                <BaseCard Title="Muted" Variant="SurfaceVariant.Muted" IsCompact="true"><p class="ms-text-sm">Superficie suave.</p></BaseCard>
-            </div>
-        </BaseCard>
-
-        <BaseCard Title="Navigation Tiles" BadgeText="AppMenuTile" Variant="SurfaceVariant.Muted">
-            <div class="ms-grid ms-grid--2">
-                <AppMenuTile Title="Starter" Description="Host Server" Href="/demo" Icon="🚀" Variant="TileVariant.Default" />
-                <AppMenuTile Title="WASM" Description="Host WebAssembly" Href="/wasm-demo" Icon="🌐" Variant="TileVariant.Elevated" />
-                <AppMenuTile Title="Showcase" Description="Catálogo visual" Href="/showcase" Icon="🧩" Variant="TileVariant.Muted" />
-            </div>
-        </BaseCard>
-
-        <BaseCard Title="Form Foundation" BadgeText="FormSection + FieldGroup" Variant="SurfaceVariant.Outlined">
-            <FormSection Title="Create Warehouse" Description="Patrón mínimo para formularios corporativos.">
-                <FieldGroup Label="Warehouse name" FieldId="warehouse-name" Hint="Usar nombre corto y descriptivo.">
-                    <input id="warehouse-name" type="text" placeholder="North Hub" />
-                </FieldGroup>
-
-                <FieldGroup Label="Region" FieldId="warehouse-region">
-                    <select id="warehouse-region">
-                        <option>EMEA</option>
-                        <option>LATAM</option>
-                        <option>NA</option>
-                    </select>
-                </FieldGroup>
-            </FormSection>
-        </BaseCard>
-
-        <BaseCard Title="Composición recomendada" BadgeText="PageContainer + BaseCard + FormSection" Variant="SurfaceVariant.Outlined">
-            <PageContainer IsCompact="true" Title="Subsección" Description="Combinación correcta para pantalla con contenido y formulario.">
-                <div class="ms-grid ms-grid--2">
-                    <BaseCard IsCompact="true" Title="Resumen" Variant="SurfaceVariant.Muted">
-                        <p class="ms-text-sm">Bloque informativo en modo compacto.</p>
-                    </BaseCard>
-
-                    <FormSection Title="Quick update" Description="Edición rápida sin romper jerarquía visual.">
-                        <FieldGroup Label="Status" FieldId="status-field">
-                            <input id="status-field" type="text" value="Active" />
-                        </FieldGroup>
-                    </FormSection>
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Core Visual System</h2>
+        <div class="ms-grid ms-grid--3 ms-showcase-grid-tight">
+            <BaseCard Title="Tipografía" BadgeText="base.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <div class="ms-stack-sm">
+                    <p class="ms-title">Título principal</p>
+                    <p class="ms-text-lg">Subtítulo jerárquico</p>
+                    <p>Texto base reusable para contenido estándar.</p>
+                    <p class="ms-text-sm">Texto auxiliar / metadata</p>
                 </div>
-            </PageContainer>
-        </BaseCard>
-    </div>
+            </BaseCard>
+
+            <BaseCard Title="Spacing Scale" BadgeText="tokens + utilities" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <div class="ms-stack-sm">
+                    <div class="ms-surface">space-2</div>
+                    <div class="ms-surface">space-3</div>
+                    <div class="ms-surface">space-4</div>
+                </div>
+            </BaseCard>
+
+            <BaseCard Title="Tokens de color" BadgeText="tokens.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <div class="ms-color-row">
+                    <span class="ms-color-swatch ms-color-swatch--brand"></span>
+                    <span class="ms-color-swatch ms-color-swatch--accent"></span>
+                    <span class="ms-color-swatch ms-color-swatch--surface"></span>
+                </div>
+                <div class="ms-divider"></div>
+                <p class="ms-text-sm">Componentes base sin valores mágicos.</p>
+            </BaseCard>
+        </div>
+    </section>
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Foundation Components</h2>
+        <div class="ms-grid ms-grid--2">
+            <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
+                <div class="ms-grid ms-grid--2">
+                    <BaseCard Title="Default" IsCompact="true"><p class="ms-text-sm">Sin variante.</p></BaseCard>
+                    <BaseCard Title="Elevated" Variant="SurfaceVariant.Elevated" IsCompact="true"><p class="ms-text-sm">Con sombra.</p></BaseCard>
+                    <BaseCard Title="Outlined" Variant="SurfaceVariant.Outlined" IsCompact="true"><p class="ms-text-sm">Borde reforzado.</p></BaseCard>
+                    <BaseCard Title="Muted" Variant="SurfaceVariant.Muted" IsCompact="true"><p class="ms-text-sm">Superficie suave.</p></BaseCard>
+                </div>
+            </BaseCard>
+
+            <BaseCard Title="Navigation Tiles" BadgeText="AppMenuTile" Variant="SurfaceVariant.Muted">
+                <div class="ms-grid ms-grid--2">
+                    <AppMenuTile Title="Starter" Description="Host Server" Href="/demo" Icon="🚀" Variant="TileVariant.Default" />
+                    <AppMenuTile Title="WASM" Description="Host WebAssembly" Href="/wasm-demo" Icon="🌐" Variant="TileVariant.Elevated" />
+                    <AppMenuTile Title="Showcase" Description="Catálogo visual" Href="/showcase" Icon="🧩" Variant="TileVariant.Muted" />
+                </div>
+            </BaseCard>
+        </div>
+    </section>
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Composición y Formularios</h2>
+        <div class="ms-grid ms-grid--2">
+            <BaseCard Title="Form Foundation" BadgeText="FormSection + FieldGroup" Variant="SurfaceVariant.Outlined">
+                <FormSection Title="Create Warehouse" Description="Patrón mínimo para formularios corporativos.">
+                    <FieldGroup Label="Warehouse name" FieldId="warehouse-name" Hint="Usar nombre corto y descriptivo.">
+                        <input id="warehouse-name" type="text" placeholder="North Hub" />
+                    </FieldGroup>
+
+                    <FieldGroup Label="Region" FieldId="warehouse-region">
+                        <select id="warehouse-region">
+                            <option>EMEA</option>
+                            <option>LATAM</option>
+                            <option>NA</option>
+                        </select>
+                    </FieldGroup>
+                </FormSection>
+            </BaseCard>
+
+            <BaseCard Title="Composición recomendada" BadgeText="PageContainer + BaseCard + FormSection" Variant="SurfaceVariant.Outlined">
+                <PageContainer IsCompact="true" Title="Subsección" Description="Combinación correcta para pantalla con contenido y formulario.">
+                    <div class="ms-grid ms-grid--2">
+                        <BaseCard IsCompact="true" Title="Resumen" Variant="SurfaceVariant.Muted">
+                            <p class="ms-text-sm">Bloque informativo en modo compacto.</p>
+                        </BaseCard>
+
+                        <FormSection Title="Quick update" Description="Edición rápida sin romper jerarquía visual.">
+                            <FieldGroup Label="Status" FieldId="status-field">
+                                <input id="status-field" type="text" value="Active" />
+                            </FieldGroup>
+                        </FormSection>
+                    </div>
+                </PageContainer>
+            </BaseCard>
+        </div>
+    </section>
 </PageContainer>

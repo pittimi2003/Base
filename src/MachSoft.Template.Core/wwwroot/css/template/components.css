@@ -96,3 +96,17 @@
   color: var(--ms-color-text-soft);
   font-size: var(--ms-font-size-sm);
 }
+
+.ms-showcase-group {
+  display: grid;
+  gap: var(--ms-space-3);
+}
+
+.ms-showcase-group__title {
+  font-size: var(--ms-font-size-lg);
+  margin: 0;
+}
+
+.ms-showcase-grid-tight .ms-card {
+  min-height: 0;
+}

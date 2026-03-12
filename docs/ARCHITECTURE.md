@@ -11,7 +11,7 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
   - Static web assets compartidos (`wwwroot/css/template/*`).
 - **Capa host Server (`MachSoft.Template.Starter`)**
   - Bootstrap de Blazor Server.
-  - Registro del root component + `AddAdditionalAssemblies(...)` para páginas enrutable del Core.
+  - Registro del root component + `AddAdditionalAssemblies(...)` para páginas enrutables del Core.
   - Páginas específicas de host (ej. `/demo`).
 - **Capa host WASM (`MachSoft.Template.Starter.Wasm`)**
   - Bootstrap de Blazor WebAssembly.
@@ -25,7 +25,15 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
    - `BaseCard` usa `SurfaceVariant`.
    - `AppMenuTile` usa `TileVariant`.
 3. **Compact mode explícito**: `IsCompact` en `PageContainer` y `BaseCard`.
-4. **Token-first CSS**: spacing/radius/shadows/typography definidos por tokens.
+4. **Token-first CSS**: spacing/radius/shadows/typography/z-index definidos por tokens.
+5. **Sidebar responsive**: visible en desktop y colapsable en tablet/mobile con overlay gestionado en Blazor.
+
+## Patrón de navegación lateral
+- Estado de menú centralizado en `AppShell`.
+- `AppHeader` dispara toggle de hamburguesa.
+- `AppNavigation` renderiza panel lateral con prioridad visual (`z-index` mayor).
+- Overlay gris cubre contenido cuando el menú está abierto y permite cierre por clic.
+- `SideNav` notifica selección de ítem para cierre automático del menú.
 
 ## Governance Rules
 - **Qué entra en Core**:

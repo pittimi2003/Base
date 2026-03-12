@@ -11,6 +11,12 @@
   --ms-color-text-soft: #5f6b7a;
   --ms-color-border: #d8deea;
 
+  --ms-overlay: rgba(23, 30, 43, 0.42);
+
+  --ms-z-overlay: 40;
+  --ms-z-sidebar: 50;
+  --ms-z-header: 30;
+
   --ms-space-1: 0.25rem;
   --ms-space-2: 0.5rem;
   --ms-space-3: 0.75rem;

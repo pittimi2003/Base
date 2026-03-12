@@ -26,11 +26,6 @@
 - `SectionTitle`: título + descripción de sección.
 - `FieldGroup`: etiqueta, control y hint.
 
-Uso recomendado:
-1. `FormSection` dentro de `BaseCard`.
-2. `FieldGroup` por campo.
-3. Inputs nativos/controles locales dentro de `FieldGroup`.
-
 ## Reglas de composición
 - `PageContainer + BaseCard` es la combinación por defecto para páginas de negocio.
 - Usar `IsCompact=true` solo en subsecciones densas o anidadas.
@@ -40,8 +35,20 @@ Uso recomendado:
 - Promover a Foundation solo si el patrón se repite en Server y WASM y no contiene lógica de dominio.
 - Mantener local al host/app si es específico del flujo de negocio.
 
+## Navegación lateral colapsable
+- `AppShell` controla estado de menú (`IsMenuOpen`) sin JavaScript.
+- `AppHeader` expone botón hamburguesa para abrir/cerrar navegación.
+- `AppNavigation` muestra sidebar flotante en tablet/mobile.
+- Overlay gris (`.ms-shell__overlay`) aparece con el menú y permite cierre por clic.
+
+### Reglas de cierre automático del menú
+1. Clic en overlay.
+2. Clic fuera del sidebar (área de contenido principal).
+3. Selección de opción en el menú (`SideNav` notifica `OnItemSelected`).
+4. Clic nuevamente en hamburguesa.
+
 ## Governance Rules
-- Todo cambio visual reusable pasa por `/showcase` antes de adopción.
+- Todo cambio reusable pasa por `/showcase` antes de adopción.
 - No aceptar componentes foundation sin:
   - API clara y mínima,
   - uso en showcase,
