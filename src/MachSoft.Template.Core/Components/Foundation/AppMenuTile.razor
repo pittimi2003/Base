@@ -1,0 +1,17 @@
+<a href="@Href" class="ms-menu-tile">
+    <div class="ms-menu-tile__icon">@Icon</div>
+    <div>
+        <h3>@Title</h3>
+        @if (!string.IsNullOrWhiteSpace(Description))
+        {
+            <p>@Description</p>
+        }
+    </div>
+</a>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Description { get; set; } = string.Empty;
+    [Parameter] public string Href { get; set; } = "#";
+    [Parameter] public string Icon { get; set; } = "📦";
+}

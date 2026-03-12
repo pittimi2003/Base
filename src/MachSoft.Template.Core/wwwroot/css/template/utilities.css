@@ -1,0 +1,10 @@
+.ms-grid { display:grid; gap: var(--ms-space-2); }
+.ms-grid--2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.ms-grid--3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.ms-stack-sm { display: grid; gap: .5rem; }
+.ms-surface { background: var(--ms-color-brand-soft); color: var(--ms-color-brand); border-radius: 8px; padding: .75rem; }
+.ms-color-row { display:flex; gap:.5rem; }
+.ms-color-swatch { width:38px; height:38px; border-radius: 50%; border:1px solid var(--ms-border-color); display:inline-block; }
+.ms-color-swatch--brand { background: var(--ms-color-brand); }
+.ms-color-swatch--accent { background: var(--ms-color-accent); }
+.ms-color-swatch--surface { background: var(--ms-color-surface); }

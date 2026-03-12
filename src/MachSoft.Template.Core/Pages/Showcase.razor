@@ -1,0 +1,32 @@
+@page "/showcase"
+
+<PageContainer Title="Foundation Showcase" Description="Galería simple para validar estilos, spacing y componentes base.">
+    <div class="ms-grid ms-grid--2">
+        <BaseCard Title="Tipografía" Badge="tokens.css">
+            <p class="ms-text-lg">Título de ejemplo</p>
+            <p>Texto base con estilos centralizados y jerarquía consistente.</p>
+        </BaseCard>
+
+        <BaseCard Title="Spacing" Badge="utilities.css">
+            <div class="ms-stack-sm">
+                <div class="ms-surface">Padding SM</div>
+                <div class="ms-surface">Padding base</div>
+            </div>
+        </BaseCard>
+
+        <BaseCard Title="Colores" Badge="base.css">
+            <div class="ms-color-row">
+                <span class="ms-color-swatch ms-color-swatch--brand"></span>
+                <span class="ms-color-swatch ms-color-swatch--accent"></span>
+                <span class="ms-color-swatch ms-color-swatch--surface"></span>
+            </div>
+        </BaseCard>
+
+        <BaseCard Title="Navegación" Badge="AppMenuTile">
+            <div class="ms-grid ms-grid--2">
+                <AppMenuTile Title="Starter" Description="Punto inicial corporativo" Href="/" Icon="🏁" />
+                <AppMenuTile Title="Sample" Description="Uso en contexto demo" Href="/demo" Icon="🧪" />
+            </div>
+        </BaseCard>
+    </div>
+</PageContainer>
