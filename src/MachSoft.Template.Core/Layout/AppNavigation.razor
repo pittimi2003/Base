@@ -1,7 +1,8 @@
 @using MachSoft.Template.Core.Models
 
-<aside class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)">
+<aside id="ms-app-navigation" class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)">
     <div class="ms-brand">@BrandTitle</div>
+    <div class="ms-shell__nav-divider"></div>
     <SideNav Items="NavigationItems" OnItemSelected="OnNavigationItemSelected" />
 </aside>
 
@@ -9,5 +10,5 @@
     [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
     [Parameter] public bool IsOpen { get; set; }
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
-    [Parameter] public EventCallback OnNavigationItemSelected { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnNavigationItemSelected { get; set; }
 }

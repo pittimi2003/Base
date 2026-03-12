@@ -36,6 +36,7 @@
 - Mantener local al host/app si es específico del flujo de negocio.
 
 ## Navegación lateral colapsable
+- Visibilidad del botón hamburguesa: visible en mobile/tablet y disponible también en desktop como control opcional de colapso manual.
 - `AppShell` controla estado de menú (`IsMenuOpen`) sin JavaScript.
 - `AppHeader` expone botón hamburguesa para abrir/cerrar navegación.
 - `AppNavigation` muestra sidebar flotante en tablet/mobile.

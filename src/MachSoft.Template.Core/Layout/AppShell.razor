@@ -4,7 +4,7 @@
     <AppNavigation BrandTitle="@BrandTitle"
                    IsOpen="@IsMenuOpen"
                    NavigationItems="NavigationItems"
-                   OnNavigationItemSelected="CloseMenu" />
+                   OnNavigationItemSelected="CloseMenuFromNavigation" />
 
     <div class="ms-shell__content">
         <AppHeader Title="@Title" Subtitle="@Subtitle" IsMenuOpen="@IsMenuOpen" OnToggleMenu="ToggleMenu" />
@@ -16,7 +16,10 @@
         <AppFooter FooterText="@FooterText" />
     </div>
 
-    <button type="button" class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)" @onclick="CloseMenu" aria-label="Close navigation"></button>
+    <button type="button"
+            class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
+            @onclick="CloseMenu"
+            aria-label="Close sidebar navigation"></button>
 </div>
 
 @code {
@@ -29,7 +32,17 @@
 
     private bool IsMenuOpen { get; set; }
 
-    private void ToggleMenu() => IsMenuOpen = !IsMenuOpen;
+    private Task ToggleMenu(MouseEventArgs _)
+    {
+        IsMenuOpen = !IsMenuOpen;
+        return Task.CompletedTask;
+    }
+
+    private Task CloseMenuFromNavigation(MouseEventArgs _)
+    {
+        IsMenuOpen = false;
+        return Task.CompletedTask;
+    }
 
     private void CloseMenu() => IsMenuOpen = false;
 

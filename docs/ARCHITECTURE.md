@@ -30,6 +30,7 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 
 ## Patrón de navegación lateral
 - Estado de menú centralizado en `AppShell`.
+- Botón hamburguesa visible en mobile/tablet y opcionalmente utilizable en desktop para colapsar sidebar.
 - `AppHeader` dispara toggle de hamburguesa.
 - `AppNavigation` renderiza panel lateral con prioridad visual (`z-index` mayor).
 - Overlay gris cubre contenido cuando el menú está abierto y permite cierre por clic.
