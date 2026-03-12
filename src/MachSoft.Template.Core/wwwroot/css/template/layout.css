@@ -1,0 +1,137 @@
+.ms-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  position: relative;
+}
+
+.ms-shell__nav {
+  background: #0c1530;
+  color: #fff;
+  padding: var(--ms-space-5) var(--ms-space-4);
+  box-shadow: var(--ms-shadow-sm);
+}
+
+.ms-brand {
+  font-size: var(--ms-font-size-lg);
+  font-weight: 700;
+  margin-bottom: var(--ms-space-5);
+}
+
+.ms-shell__content {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+}
+
+.ms-shell__header {
+  position: sticky;
+  top: 0;
+  z-index: var(--ms-z-header);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: var(--ms-space-3);
+  padding: var(--ms-space-3) var(--ms-space-5);
+  background: var(--ms-color-surface);
+  border-bottom: 1px solid var(--ms-color-border);
+  box-shadow: var(--ms-shadow-sm);
+}
+
+.ms-shell__header-copy {
+  display: grid;
+  gap: var(--ms-space-1);
+}
+
+.ms-header-menu-btn {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid var(--ms-color-border);
+  border-radius: var(--ms-radius-sm);
+  background: var(--ms-color-surface);
+  color: var(--ms-color-text);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.ms-header-menu-btn__icon,
+.ms-header-menu-btn__icon::before,
+.ms-header-menu-btn__icon::after {
+  width: 1rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 4px;
+  content: "";
+  display: block;
+}
+
+.ms-header-menu-btn__icon {
+  position: relative;
+}
+
+.ms-header-menu-btn__icon::before { position: absolute; top: -0.32rem; }
+.ms-header-menu-btn__icon::after { position: absolute; top: 0.32rem; }
+
+.ms-shell__main {
+  padding: var(--ms-space-5);
+}
+
+.ms-shell__footer {
+  padding: var(--ms-space-3) var(--ms-space-5);
+  border-top: 1px solid var(--ms-color-border);
+  background: var(--ms-color-surface);
+  color: var(--ms-color-text-soft);
+}
+
+.ms-shell__overlay {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: var(--ms-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 160ms ease;
+  z-index: var(--ms-z-overlay);
+}
+
+.ms-shell__overlay.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+@media (min-width: 1025px) {
+  .ms-header-menu-btn { display: none; }
+  .ms-shell__overlay { display: none; }
+}
+
+@media (max-width: 1024px) {
+  .ms-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-shell__nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: min(320px, 86vw);
+    height: 100vh;
+    z-index: var(--ms-z-sidebar);
+    transform: translateX(-100%);
+    transition: transform 180ms ease;
+  }
+
+  .ms-shell--menu-open .ms-shell__nav,
+  .ms-shell__nav.is-open {
+    transform: translateX(0);
+  }
+
+  .ms-shell__main {
+    padding: var(--ms-space-4);
+  }
+
+  .ms-shell__header,
+  .ms-shell__footer {
+    padding-inline: var(--ms-space-4);
+  }
+}
