@@ -1,0 +1,31 @@
+html, body {
+  margin: 0;
+  font-family: var(--ms-font-family);
+  font-size: var(--ms-font-size-md);
+  background: var(--ms-color-bg);
+  color: var(--ms-color-text);
+}
+
+a { color: inherit; }
+
+h1, h2, h3, p { margin: 0; }
+
+.ms-title {
+  font-size: var(--ms-font-size-xl);
+  margin-bottom: var(--ms-space-1);
+}
+
+.ms-subtitle {
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-md);
+}
+
+.ms-text-lg {
+  font-size: var(--ms-font-size-lg);
+  font-weight: 600;
+}
+
+.ms-text-sm {
+  font-size: var(--ms-font-size-sm);
+  color: var(--ms-color-text-soft);
+}
