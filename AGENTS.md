@@ -150,6 +150,8 @@ La documentación debe reflejar estado real del código (no intenciones futuras)
 5. Ejecutar validaciones de arranque básicas cuando sea posible.
 6. Validar visualmente `/showcase` y navegación lateral al cambiar layout/styles.
 7. Ejecutar cobertura E2E mínima del shell (`tests/e2e`) cuando haya cambios en layout/navigation.
+   - Revisar/actualizar `tests/e2e/README.md` si cambian scripts o prerrequisitos.
+   - Mantener separación por comportamiento (`shell-mobile-tablet.spec.ts` y `shell-desktop.spec.ts`).
 8. Actualizar docs.
 9. Commit atómico con mensaje claro y PR con resumen técnico.
 

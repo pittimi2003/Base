@@ -63,11 +63,31 @@
 - Ejecución:
   1. `cd tests/e2e`
   2. `npm install`
-  3. `npx playwright install --with-deps chromium`
+  3. `npm run install:browsers`
   4. `npm test`
+- Scripts DX disponibles:
+  - `npm run test:mobile`
+  - `npm run test:desktop`
+  - `npm run test:headed`
+  - `npm run test:ui`
+  - `npm run test:ci`
 - Cobertura mínima:
   - Mobile/Tablet: visibilidad de hamburguesa, apertura menú, overlay visible, cierre por overlay/item/hamburguesa/Escape.
-  - Desktop: sidebar visible por defecto, overlay oculto, hamburguesa oculta y navegación funcional entre rutas base (`/`, `/showcase`).
+  - Desktop: sidebar visible por defecto, overlay oculto, hamburguesa oculta y navegación funcional entre rutas base (`/`, `/showcase`, `/demo`).
+
+### Prerrequisitos y restricciones de red
+- Node.js 18+.
+- La descarga de browsers depende de CDN de Playwright (o mirror corporativo).
+- Si hay restricciones de red, usar `PLAYWRIGHT_DOWNLOAD_HOST` y/o `PLAYWRIGHT_BROWSERS_PATH`.
+- Ver detalle operativo en `tests/e2e/README.md`.
+
+### Recomendación CI mínima
+1. `cd tests/e2e`
+2. `npm ci`
+3. `npm run install:browsers`
+4. `npm run test:ci`
+
+Cache recomendada: `~/.cache/ms-playwright` (o el path configurado en `PLAYWRIGHT_BROWSERS_PATH`).
 
 ## Governance Rules
 - Todo cambio reusable pasa por `/showcase` antes de adopción.

@@ -47,8 +47,12 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 
 ## Cobertura E2E mínima del shell
 - Suite Playwright ubicada en `tests/e2e`.
+- Estructura de specs separada por comportamiento para claridad de mantenimiento y reporte:
+  - `tests/shell-mobile-tablet.spec.ts`
+  - `tests/shell-desktop.spec.ts`
 - Escenarios obligatorios en mobile/tablet: abrir menú, overlay visible, cierre por overlay, cierre por item, cierre por hamburguesa y por `Escape`.
-- Escenarios obligatorios en desktop: sidebar visible, overlay oculto, hamburguesa no visible y navegación entre `/` y `/showcase`.
+- Escenarios obligatorios en desktop: sidebar visible, overlay oculto, hamburguesa no visible y navegación entre `/`, `/showcase` y `/demo`.
+- Guía operativa E2E (prerrequisitos, scripts, restricciones de red/CDN y recomendaciones de CI) en `tests/e2e/README.md`.
 
 ## Governance Rules
 - **Qué entra en Core**:
