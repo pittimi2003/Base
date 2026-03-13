@@ -1,7 +1,7 @@
 .ms-shell {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 260px minmax(0, 1fr);
+  grid-template-columns: var(--ms-sidebar-width) minmax(0, 1fr);
   position: relative;
 }
 
@@ -108,29 +108,24 @@
   border: 0;
   background: var(--ms-overlay);
   opacity: 0;
+  visibility: hidden;
   pointer-events: none;
-  transition: opacity 160ms ease;
+  transition: opacity 180ms ease;
   z-index: var(--ms-z-overlay);
 }
 
-/* Desktop: nav visible by default, hamburger can collapse it manually */
+/* Desktop: sidebar always visible, no floating overlay pattern. */
 @media (min-width: 1025px) {
-  .ms-shell--menu-open {
-    grid-template-columns: 0 minmax(0, 1fr);
+  .ms-header-menu-btn {
+    display: none;
   }
 
-  .ms-shell--menu-open .ms-shell__nav {
-    transform: translateX(-100%);
-    opacity: 0;
-    pointer-events: none;
-  }
-
-  .ms-shell__nav {
-    transition: transform 180ms ease, opacity 180ms ease;
+  .ms-shell__overlay {
+    display: none;
   }
 }
 
-/* Tablet / Mobile: nav hidden by default and toggled with overlay */
+/* Tablet / Mobile: sidebar hidden by default and opened as floating panel with overlay. */
 @media (max-width: 1024px) {
   .ms-shell {
     grid-template-columns: 1fr;
@@ -140,10 +135,11 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: min(320px, 86vw);
+    width: var(--ms-sidebar-width-mobile);
     height: 100vh;
     transform: translateX(-100%);
     transition: transform 180ms ease;
+    box-shadow: var(--ms-shadow-md);
   }
 
   .ms-shell--menu-open .ms-shell__nav,
@@ -153,6 +149,7 @@
 
   .ms-shell__overlay.is-open {
     opacity: 1;
+    visibility: visible;
     pointer-events: auto;
   }
 

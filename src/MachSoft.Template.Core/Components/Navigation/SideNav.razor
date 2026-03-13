@@ -15,7 +15,7 @@
 
 @code {
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> Items { get; set; } = [];
-    [Parameter] public EventCallback<MouseEventArgs> OnItemSelected { get; set; }
+    [Parameter] public EventCallback OnItemSelected { get; set; }
 
-    private Task HandleItemSelected(MouseEventArgs args) => OnItemSelected.InvokeAsync(args);
+    private Task HandleItemSelected() => OnItemSelected.InvokeAsync();
 }

@@ -36,17 +36,20 @@
 - Mantener local al host/app si es específico del flujo de negocio.
 
 ## Navegación lateral colapsable
-- Visibilidad del botón hamburguesa: visible en mobile/tablet y disponible también en desktop como control opcional de colapso manual.
+- Patrón adoptado: **Opción A**.
+  - Desktop: sidebar visible por defecto y sin overlay.
+  - Tablet/mobile: sidebar flotante + overlay.
 - `AppShell` controla estado de menú (`IsMenuOpen`) sin JavaScript.
-- `AppHeader` expone botón hamburguesa para abrir/cerrar navegación.
+- `AppHeader` expone botón hamburguesa para abrir/cerrar navegación (solo visible en tablet/mobile).
 - `AppNavigation` muestra sidebar flotante en tablet/mobile.
-- Overlay gris (`.ms-shell__overlay`) aparece con el menú y permite cierre por clic.
+- Overlay gris (`.ms-shell__overlay`) aparece únicamente con menú abierto en tablet/mobile y cubre toda la pantalla.
 
 ### Reglas de cierre automático del menú
 1. Clic en overlay.
 2. Clic fuera del sidebar (área de contenido principal).
 3. Selección de opción en el menú (`SideNav` notifica `OnItemSelected`).
 4. Clic nuevamente en hamburguesa.
+5. Tecla `Escape`.
 
 ## Governance Rules
 - Todo cambio reusable pasa por `/showcase` antes de adopción.

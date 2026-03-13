@@ -1,6 +1,7 @@
 @using MachSoft.Template.Core.Models
 
-<div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)">
+<div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
+     @onkeydown:window="HandleWindowKeyDown">
     <AppNavigation BrandTitle="@BrandTitle"
                    IsOpen="@IsMenuOpen"
                    NavigationItems="NavigationItems"
@@ -32,13 +33,13 @@
 
     private bool IsMenuOpen { get; set; }
 
-    private Task ToggleMenu(MouseEventArgs _)
+    private Task ToggleMenu()
     {
         IsMenuOpen = !IsMenuOpen;
         return Task.CompletedTask;
     }
 
-    private Task CloseMenuFromNavigation(MouseEventArgs _)
+    private Task CloseMenuFromNavigation()
     {
         IsMenuOpen = false;
         return Task.CompletedTask;
@@ -52,5 +53,15 @@
         {
             CloseMenu();
         }
+    }
+
+    private Task HandleWindowKeyDown(KeyboardEventArgs args)
+    {
+        if (IsMenuOpen && args.Key is "Escape")
+        {
+            CloseMenu();
+        }
+
+        return Task.CompletedTask;
     }
 }

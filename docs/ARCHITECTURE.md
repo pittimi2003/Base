@@ -26,15 +26,17 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
    - `AppMenuTile` usa `TileVariant`.
 3. **Compact mode explícito**: `IsCompact` en `PageContainer` y `BaseCard`.
 4. **Token-first CSS**: spacing/radius/shadows/typography/z-index definidos por tokens.
-5. **Sidebar responsive**: visible en desktop y colapsable en tablet/mobile con overlay gestionado en Blazor.
+5. **Sidebar responsive (patrón único)**: visible fijo en desktop y panel flotante en tablet/mobile con overlay gestionado en Blazor.
 
 ## Patrón de navegación lateral
-- Estado de menú centralizado en `AppShell`.
-- Botón hamburguesa visible en mobile/tablet y opcionalmente utilizable en desktop para colapsar sidebar.
-- `AppHeader` dispara toggle de hamburguesa.
-- `AppNavigation` renderiza panel lateral con prioridad visual (`z-index` mayor).
-- Overlay gris cubre contenido cuando el menú está abierto y permite cierre por clic.
+- **Desktop (>=1025px)**: sidebar visible por defecto y sin overlay.
+- **Tablet/Mobile (<=1024px)**: sidebar oculto por defecto y abierto como panel flotante.
+- Estado de menú centralizado en `AppShell` (`IsMenuOpen`).
+- `AppHeader` dispara toggle de hamburguesa (visible solo en tablet/mobile).
+- `AppNavigation` renderiza panel lateral con prioridad visual (`z-index` mayor que overlay y contenido).
+- Overlay gris semitransparente cubre toda la pantalla (`position: fixed; inset: 0`) cuando el menú está abierto en tablet/mobile.
 - `SideNav` notifica selección de ítem para cierre automático del menú.
+- Cierre por `Escape` soportado desde `AppShell`.
 
 ## Governance Rules
 - **Qué entra en Core**:

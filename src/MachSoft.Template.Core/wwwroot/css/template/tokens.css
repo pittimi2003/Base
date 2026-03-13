@@ -11,11 +11,14 @@
   --ms-color-text-soft: #5f6b7a;
   --ms-color-border: #d8deea;
 
-  --ms-overlay: rgba(23, 30, 43, 0.42);
+  --ms-overlay: rgba(18, 24, 38, 0.56);
 
+  --ms-sidebar-width: 260px;
+  --ms-sidebar-width-mobile: min(320px, 86vw);
+
+  --ms-z-header: 30;
   --ms-z-overlay: 40;
   --ms-z-sidebar: 50;
-  --ms-z-header: 30;
 
   --ms-space-1: 0.25rem;
   --ms-space-2: 0.5rem;

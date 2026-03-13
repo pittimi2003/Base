@@ -61,12 +61,14 @@ Ubicación: `src/MachSoft.Template.Core/Layout`.
 - `MainLayout` es el contrato visual común y debe permanecer liviano.
 - Delegar estructura visual en subcomponentes (`AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
 - `AppShell` gestiona estado de sidebar colapsable (`IsMenuOpen`) y overlay.
-- Botón hamburguesa visible en mobile/tablet y utilizable en desktop como colapso opcional.
+- Patrón oficial de shell: **desktop con sidebar fijo y sin overlay**; **mobile/tablet con sidebar flotante + overlay**.
+- Botón hamburguesa visible solo en mobile/tablet.
 - Cierre automático del menú cuando:
   1. clic en overlay,
   2. clic en contenido fuera del sidebar,
   3. clic en opción de navegación,
-  4. clic nuevamente en hamburguesa.
+  4. clic nuevamente en hamburguesa,
+  5. tecla Escape.
 - No inyectar servicios de negocio en layout común.
 
 ---

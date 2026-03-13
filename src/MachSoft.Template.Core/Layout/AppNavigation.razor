@@ -10,5 +10,5 @@
     [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
     [Parameter] public bool IsOpen { get; set; }
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
-    [Parameter] public EventCallback<MouseEventArgs> OnNavigationItemSelected { get; set; }
+    [Parameter] public EventCallback OnNavigationItemSelected { get; set; }
 }

@@ -25,7 +25,7 @@
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
     [Parameter] public bool IsMenuOpen { get; set; }
-    [Parameter] public EventCallback<MouseEventArgs> OnToggleMenu { get; set; }
+    [Parameter] public EventCallback OnToggleMenu { get; set; }
 
-    private Task HandleToggleClick(MouseEventArgs args) => OnToggleMenu.InvokeAsync(args);
+    private Task HandleToggleClick() => OnToggleMenu.InvokeAsync();
 }
