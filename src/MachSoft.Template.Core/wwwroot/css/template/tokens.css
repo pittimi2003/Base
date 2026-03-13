@@ -1,43 +1,85 @@
+@import url("./design-system/tokens.primitives.css");
+@import url("./design-system/tokens.semantic.css");
+@import url("./design-system/typography.css");
+@import url("./design-system/motion.css");
+@import url("./design-system/themes/light.css");
+@import url("./design-system/themes/dark.css");
+
 :root {
-  --ms-font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  /* Backward compatibility aliases for current template classes/components */
+  --ms-font-family: var(--mx-font-family-sans);
 
-  --ms-color-bg: #f3f5f9;
-  --ms-color-surface: #ffffff;
-  --ms-color-surface-muted: #f6f8fc;
-  --ms-color-brand: #1f4bb6;
-  --ms-color-brand-soft: #dbe6ff;
-  --ms-color-accent: #0f766e;
-  --ms-color-text: #1b2330;
-  --ms-color-text-soft: #5f6b7a;
-  --ms-color-border: #d8deea;
+  --ms-color-bg: var(--mx-color-bg-canvas);
+  --ms-color-surface: var(--mx-color-bg-surface);
+  --ms-color-surface-muted: var(--mx-color-bg-surface-muted);
+  --ms-color-brand: var(--mx-color-brand-primary);
+  --ms-color-brand-soft: var(--mx-color-brand-soft);
+  --ms-color-accent: var(--mx-color-accent-primary);
+  --ms-color-text: var(--mx-color-text-primary);
+  --ms-color-text-soft: var(--mx-color-text-secondary);
+  --ms-color-text-inverse: var(--mx-color-text-inverse);
+  --ms-color-border: var(--mx-color-border-default);
 
-  --ms-overlay: rgba(18, 24, 38, 0.56);
+  --ms-color-nav-surface: var(--mx-color-nav-surface);
+  --ms-color-nav-surface-strong: var(--mx-color-nav-surface-strong);
+  --ms-color-nav-text: var(--mx-color-nav-text);
+  --ms-color-nav-text-muted: var(--mx-color-nav-text-muted);
+  --ms-color-nav-active: var(--mx-color-nav-active);
 
-  --ms-sidebar-width: 260px;
-  --ms-sidebar-width-mobile: min(320px, 86vw);
+  --ms-overlay: var(--mx-color-overlay);
 
-  --ms-z-header: 30;
-  --ms-z-overlay: 40;
-  --ms-z-sidebar: 50;
+  --ms-sidebar-width: var(--mx-layout-sidebar-width);
+  --ms-sidebar-width-mobile: var(--mx-layout-sidebar-width-mobile);
 
-  --ms-space-1: 0.25rem;
-  --ms-space-2: 0.5rem;
-  --ms-space-3: 0.75rem;
-  --ms-space-4: 1rem;
-  --ms-space-5: 1.5rem;
-  --ms-space-6: 2rem;
-  --ms-space-7: 2.5rem;
+  --ms-z-base: var(--mx-z-base);
+  --ms-z-sticky: var(--mx-z-sticky);
+  --ms-z-header: var(--mx-z-sticky);
+  --ms-z-overlay: var(--mx-z-overlay);
+  --ms-z-sidebar: var(--mx-z-drawer);
+  --ms-z-dialog: var(--mx-z-dialog);
+  --ms-z-toast: var(--mx-z-toast);
+  --ms-z-tooltip: var(--mx-z-tooltip);
 
-  --ms-radius-sm: 8px;
-  --ms-radius-md: 12px;
-  --ms-radius-lg: 16px;
+  --ms-space-1: var(--mx-space-1);
+  --ms-space-2: var(--mx-space-2);
+  --ms-space-3: var(--mx-space-3);
+  --ms-space-4: var(--mx-space-4);
+  --ms-space-5: var(--mx-space-5);
+  --ms-space-6: var(--mx-space-6);
+  --ms-space-7: var(--mx-space-7);
+  --ms-space-8: var(--mx-space-8);
+  --ms-space-9: var(--mx-space-9);
 
-  --ms-shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.08);
-  --ms-shadow-md: 0 8px 24px rgba(16, 24, 40, 0.08);
-  --ms-shadow-lg: 0 14px 34px rgba(16, 24, 40, 0.1);
+  --ms-space-xs: var(--mx-space-semantic-xs);
+  --ms-space-sm: var(--mx-space-semantic-sm);
+  --ms-space-md: var(--mx-space-semantic-md);
+  --ms-space-lg: var(--mx-space-semantic-lg);
+  --ms-space-xl: var(--mx-space-semantic-xl);
 
-  --ms-font-size-sm: 0.875rem;
-  --ms-font-size-md: 1rem;
-  --ms-font-size-lg: 1.125rem;
-  --ms-font-size-xl: 1.35rem;
+  --ms-radius-sm: var(--mx-radius-sm);
+  --ms-radius-md: var(--mx-radius-md);
+  --ms-radius-lg: var(--mx-radius-lg);
+
+  --ms-border-width-1: var(--mx-border-width-1);
+  --ms-border-width-2: var(--mx-border-width-2);
+
+  --ms-shadow-sm: var(--mx-shadow-1);
+  --ms-shadow-md: var(--mx-shadow-2);
+  --ms-shadow-lg: var(--mx-shadow-3);
+
+  --ms-focus-ring-width: var(--mx-focus-ring-width);
+  --ms-focus-ring-offset: var(--mx-focus-ring-offset);
+  --ms-focus-ring-color: var(--mx-focus-ring-color);
+  --ms-focus-ring-shadow: var(--mx-focus-ring-shadow);
+
+  --ms-motion-fast: var(--mx-motion-duration-fast);
+  --ms-motion-base: var(--mx-motion-duration-base);
+  --ms-motion-slow: var(--mx-motion-duration-slow);
+  --ms-motion-ease: var(--mx-motion-ease-standard);
+  --ms-motion-emphasis: var(--mx-motion-ease-emphasis);
+
+  --ms-font-size-sm: var(--mx-font-size-caption);
+  --ms-font-size-md: var(--mx-font-size-body);
+  --ms-font-size-lg: var(--mx-font-size-subtitle);
+  --ms-font-size-xl: var(--mx-font-size-h2);
 }

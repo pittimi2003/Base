@@ -4,31 +4,59 @@
     <section class="ms-showcase-group">
         <h2 class="ms-showcase-group__title">Core Visual System</h2>
         <div class="ms-grid ms-grid--3 ms-showcase-grid-tight">
-            <BaseCard Title="Tipografía" BadgeText="base.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <BaseCard Title="Tipografía" BadgeText="typography.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
                 <div class="ms-stack-sm">
                     <p class="ms-title">Título principal</p>
                     <p class="ms-text-lg">Subtítulo jerárquico</p>
                     <p>Texto base reusable para contenido estándar.</p>
                     <p class="ms-text-sm">Texto auxiliar / metadata</p>
+                    <p class="ms-token-inline">display/h1/h2/body/caption/mono tokenizados</p>
                 </div>
             </BaseCard>
 
-            <BaseCard Title="Spacing Scale" BadgeText="tokens + utilities" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <BaseCard Title="Spacing Scale" BadgeText="primitives + semantic" Variant="SurfaceVariant.Outlined" IsCompact="true">
                 <div class="ms-stack-sm">
-                    <div class="ms-surface">space-2 · separación mínima</div>
-                    <div class="ms-surface">space-3 · separación intermedia</div>
-                    <div class="ms-surface">space-4/5 · separación de bloques</div>
+                    <div class="ms-surface">xs: var(--mx-space-semantic-xs)</div>
+                    <div class="ms-surface">sm: var(--mx-space-semantic-sm)</div>
+                    <div class="ms-surface">md/lg/xl: layout spacing</div>
                 </div>
             </BaseCard>
 
-            <BaseCard Title="Tokens de color" BadgeText="tokens.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <BaseCard Title="Paleta MachSoft" BadgeText="brand + accent + semantic" Variant="SurfaceVariant.Outlined" IsCompact="true">
                 <div class="ms-color-row">
-                    <span class="ms-color-swatch ms-color-swatch--brand"></span>
-                    <span class="ms-color-swatch ms-color-swatch--accent"></span>
-                    <span class="ms-color-swatch ms-color-swatch--surface"></span>
+                    <span class="ms-color-swatch ms-color-swatch--brand" title="Brand"></span>
+                    <span class="ms-color-swatch ms-color-swatch--accent" title="Accent"></span>
+                    <span class="ms-color-swatch ms-color-swatch--success" title="Success"></span>
+                    <span class="ms-color-swatch ms-color-swatch--warning" title="Warning"></span>
+                    <span class="ms-color-swatch ms-color-swatch--danger" title="Danger"></span>
+                    <span class="ms-color-swatch ms-color-swatch--surface" title="Surface"></span>
+                    <span class="ms-color-swatch ms-color-swatch--text" title="Text"></span>
                 </div>
                 <div class="ms-divider"></div>
-                <p class="ms-text-sm">Paleta centralizada para evitar estilos ad-hoc.</p>
+                <p class="ms-text-sm">Paleta enterprise sobria para dashboards y aplicaciones operativas.</p>
+            </BaseCard>
+
+            <BaseCard Title="Elevation + Border" BadgeText="shadow + stroke tokens" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <div class="ms-stack-sm">
+                    <BaseCard Title="shadow-1" IsCompact="true"><p class="ms-text-sm">Superficie base</p></BaseCard>
+                    <BaseCard Title="shadow-2" Variant="SurfaceVariant.Elevated" IsCompact="true"><p class="ms-text-sm">Bloque prioritario</p></BaseCard>
+                </div>
+            </BaseCard>
+
+            <BaseCard Title="Arquitectura de tokens" BadgeText="design-system/*" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <div class="ms-stack-sm">
+                    <p class="ms-text-sm"><strong>primitives</strong>: escalas base de color, spacing, radius, border, elevation.</p>
+                    <p class="ms-text-sm"><strong>semantic</strong>: intención UI (surface, text, border, brand, states, z-index).</p>
+                    <p class="ms-text-sm"><strong>themes</strong>: light/dark con overrides semánticos.</p>
+                </div>
+            </BaseCard>
+
+            <BaseCard Title="Theme / Color Mode" BadgeText="light + dark activo" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <div class="ms-stack-sm">
+                    <p class="ms-text-sm">Usa el botón 🌙/☀️ del header para alternar tema.</p>
+                    <p class="ms-text-sm">Persistencia por <span class="ms-token-inline">localStorage(mx-theme)</span>.</p>
+                    <p class="ms-text-sm">Se aplica al root vía <span class="ms-token-inline">data-mx-theme</span>.</p>
+                </div>
             </BaseCard>
         </div>
     </section>

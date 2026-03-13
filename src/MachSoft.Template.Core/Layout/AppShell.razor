@@ -1,4 +1,6 @@
+@using Microsoft.JSInterop
 @using MachSoft.Template.Core.Models
+@inject IJSRuntime JSRuntime
 
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
      data-ms-shell-interactive="@(_isInteractive ? "true" : "false")"
@@ -17,7 +19,9 @@
                    IsMenuOpen="@IsMenuOpen"
                    ToggleButtonId="@ToggleButtonId"
                    NavigationId="@NavigationId"
-                   OnToggleMenu="ToggleMenu" />
+                   CurrentTheme="@CurrentTheme"
+                   OnToggleMenu="ToggleMenu"
+                   OnToggleTheme="ToggleThemeAsync" />
 
         <main class="ms-shell__main" @onclick="CloseMenuOnContentClick">
             @ChildContent
@@ -47,12 +51,18 @@
 
     private bool _isInteractive;
     private bool IsMenuOpen { get; set; }
+    private ThemeMode CurrentTheme { get; set; } = ThemeMode.Light;
 
-    protected override void OnAfterRender(bool firstRender)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         if (firstRender)
         {
             _isInteractive = true;
+
+            var preferredTheme = await JSRuntime.InvokeAsync<string>("machsoftTheme.getPreferredTheme");
+            CurrentTheme = preferredTheme == "dark" ? ThemeMode.Dark : ThemeMode.Light;
+            await ApplyThemeAsync();
+
             StateHasChanged();
         }
     }
@@ -61,6 +71,18 @@
     {
         IsMenuOpen = !IsMenuOpen;
         return Task.CompletedTask;
+    }
+
+    private async Task ToggleThemeAsync()
+    {
+        CurrentTheme = CurrentTheme is ThemeMode.Dark ? ThemeMode.Light : ThemeMode.Dark;
+        await ApplyThemeAsync();
+    }
+
+    private ValueTask ApplyThemeAsync()
+    {
+        var theme = CurrentTheme is ThemeMode.Dark ? "dark" : "light";
+        return JSRuntime.InvokeVoidAsync("machsoftTheme.setTheme", theme);
     }
 
     private Task CloseMenuFromNavigation()

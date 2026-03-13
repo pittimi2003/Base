@@ -1,0 +1,4 @@
+:root {
+  --mx-focus-ring-color: color-mix(in oklab, var(--mx-color-brand-primary) 70%, var(--mx-color-text-inverse) 30%);
+  --mx-focus-ring-shadow: 0 0 0 var(--mx-focus-ring-width) color-mix(in oklab, var(--mx-focus-ring-color) 45%, transparent);
+}

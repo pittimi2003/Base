@@ -1,0 +1,39 @@
+[data-mx-theme="dark"] {
+  --mx-color-bg-canvas: #101825;
+  --mx-color-bg-surface: #172131;
+  --mx-color-bg-surface-muted: #1e2b40;
+
+  --mx-color-text-primary: #e8eefc;
+  --mx-color-text-secondary: #b5c3db;
+  --mx-color-text-inverse: #111928;
+
+  --mx-color-border-default: #2a3a53;
+  --mx-color-border-strong: #39506e;
+
+  --mx-color-brand-primary: #7ea5ff;
+  --mx-color-brand-strong: #aac4ff;
+  --mx-color-brand-soft: rgba(52, 102, 214, 0.32);
+  --mx-color-accent-primary: #4fc7b6;
+
+  --mx-color-state-success: #58c98f;
+  --mx-color-state-warning: #ecb059;
+  --mx-color-state-danger: #f18782;
+  --mx-color-state-info: #5abcf2;
+
+  --mx-color-data-1: #8eadff;
+  --mx-color-data-2: #63d6c7;
+  --mx-color-data-3: #c496ff;
+  --mx-color-data-4: #f5a660;
+  --mx-color-data-5: #74c9f2;
+  --mx-color-data-6: #9fc457;
+  --mx-color-data-7: #f08cb4;
+  --mx-color-data-8: #b89eff;
+
+  --mx-color-nav-surface: #0d1424;
+  --mx-color-nav-surface-strong: #0a101d;
+  --mx-color-nav-text: #dce7ff;
+  --mx-color-nav-text-muted: #a8bbdb;
+  --mx-color-nav-active: #274070;
+
+  --mx-color-overlay: rgba(0, 0, 0, 0.66);
+}
