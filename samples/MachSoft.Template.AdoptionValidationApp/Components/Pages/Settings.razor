@@ -1,15 +1,23 @@
 @page "/settings"
 
-<PageContainer Title="Configuración" Description="Configuraciones base del portal para equipos de operaciones.">
-    <FormSection>
-        <SectionTitle Title="Preferencias del workspace" Description="Formulario mínimo para validar primitives de formulario." />
+<PageContainer Title="Configuración" Description="Preferencias base del portal para equipos de operaciones.">
+    <BaseCard Title="Preferencias del workspace" BadgeText="base settings" Variant="SurfaceVariant.Outlined">
+        <FormSection Description="Formulario mínimo para validar primitives de formulario en un contexto real.">
+            <FieldGroup Label="Zona horaria" Hint="Usado para reportes y agenda de turnos.">
+                <select>
+                    <option>UTC-5 (Bogotá)</option>
+                    <option>UTC-3 (Buenos Aires)</option>
+                    <option>UTC+1 (Madrid)</option>
+                </select>
+            </FieldGroup>
 
-        <FieldGroup Label="Zona horaria" Hint="Usado para reportes y agenda de turnos.">
-            <select>
-                <option>UTC-5 (Bogotá)</option>
-                <option>UTC-3 (Buenos Aires)</option>
-                <option>UTC+1 (Madrid)</option>
-            </select>
-        </FieldGroup>
-    </FormSection>
+            <FieldGroup Label="Idioma" Hint="Impacta etiquetas y mensajes del dashboard.">
+                <select>
+                    <option>Español</option>
+                    <option>English</option>
+                    <option>Português</option>
+                </select>
+            </FieldGroup>
+        </FormSection>
+    </BaseCard>
 </PageContainer>

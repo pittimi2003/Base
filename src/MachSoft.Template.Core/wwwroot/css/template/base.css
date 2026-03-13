@@ -12,12 +12,14 @@ h1, h2, h3, p { margin: 0; }
 
 .ms-title {
   font-size: var(--ms-font-size-xl);
-  margin-bottom: var(--ms-space-1);
+  line-height: 1.25;
+  margin: 0;
 }
 
 .ms-subtitle {
   color: var(--ms-color-text-soft);
-  font-size: var(--ms-font-size-md);
+  font-size: var(--ms-font-size-sm);
+  line-height: 1.4;
 }
 
 .ms-text-lg {
