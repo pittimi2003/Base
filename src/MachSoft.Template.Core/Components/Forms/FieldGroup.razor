@@ -1,0 +1,17 @@
+<div class="ms-field-group">
+    <label class="ms-field-group__label" for="@FieldId">@Label</label>
+    <div class="ms-field-group__control">
+        @ChildContent
+    </div>
+    @if (!string.IsNullOrWhiteSpace(Hint))
+    {
+        <small class="ms-field-group__hint">@Hint</small>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public string? Hint { get; set; }
+    [Parameter] public string FieldId { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}
