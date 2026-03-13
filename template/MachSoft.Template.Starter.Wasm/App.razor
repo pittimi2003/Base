@@ -1,0 +1,19 @@
+<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="_additionalAssemblies">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(MachSoft.Template.Core.Layout.MainLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="typeof(MachSoft.Template.Core.Layout.MainLayout)">
+            <PageContainer Title="Not Found" Description="La ruta no existe en el starter WASM.">
+                <BaseCard Title="Navegación" BadgeText="404">
+                    <p>Vuelve al <a href="/">inicio</a>.</p>
+                </BaseCard>
+            </PageContainer>
+        </LayoutView>
+    </NotFound>
+</Router>
+
+@code {
+    private readonly IEnumerable<System.Reflection.Assembly> _additionalAssemblies = [typeof(MachSoft.Template.Core.Pages.Home).Assembly];
+}
