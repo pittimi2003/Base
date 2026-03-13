@@ -1,0 +1,189 @@
+.ms-shell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--ms-sidebar-width) minmax(0, 1fr);
+  position: relative;
+}
+
+.ms-shell__nav {
+  background: linear-gradient(180deg, #101c3d 0%, #0c1530 100%);
+  color: #fff;
+  padding: var(--ms-space-6) var(--ms-space-4) var(--ms-space-5);
+  box-shadow: var(--ms-shadow-sm);
+  z-index: var(--ms-z-sidebar);
+}
+
+.ms-shell__nav-divider {
+  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  margin-block: var(--ms-space-4);
+}
+
+.ms-brand {
+  font-size: var(--ms-font-size-lg);
+  font-weight: 700;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.ms-shell__content {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  min-height: 100vh;
+  min-width: 0;
+}
+
+.ms-shell__header {
+  position: sticky;
+  top: 0;
+  z-index: var(--ms-z-header);
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ms-space-3);
+  padding: 0.875rem var(--ms-space-6);
+  background: color-mix(in oklab, var(--ms-color-surface) 95%, var(--ms-color-brand-soft) 5%);
+  border-bottom: 1px solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.04);
+  backdrop-filter: blur(4px);
+}
+
+.ms-shell__header-main {
+  display: grid;
+  gap: 0.18rem;
+  min-width: 0;
+}
+
+.ms-shell__header-right {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.ms-header-menu-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid color-mix(in oklab, var(--ms-color-border) 82%, var(--ms-color-brand) 18%);
+  border-radius: var(--ms-radius-sm);
+  background: var(--ms-color-surface);
+  color: var(--ms-color-text);
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+.ms-header-menu-btn:hover {
+  background: var(--ms-color-surface-muted);
+  border-color: color-mix(in oklab, var(--ms-color-border) 70%, var(--ms-color-brand) 30%);
+}
+
+.ms-header-menu-btn:active {
+  transform: translateY(1px);
+}
+
+.ms-header-menu-btn:focus-visible {
+  outline: 3px solid var(--ms-color-brand);
+  outline-offset: 2px;
+}
+
+.ms-header-menu-btn__icon,
+.ms-header-menu-btn__icon::before,
+.ms-header-menu-btn__icon::after {
+  width: 1.1rem;
+  height: 2px;
+  background: currentColor;
+  border-radius: 4px;
+  content: "";
+  display: block;
+}
+
+.ms-header-menu-btn__icon {
+  position: relative;
+}
+
+.ms-header-menu-btn__icon::before { position: absolute; top: -0.36rem; }
+.ms-header-menu-btn__icon::after { position: absolute; top: 0.36rem; }
+
+.ms-shell__main {
+  padding: var(--ms-space-6) var(--ms-space-6) var(--ms-space-6);
+  display: grid;
+  align-content: start;
+  gap: var(--ms-space-6);
+}
+
+.ms-shell__footer {
+  padding: 0.875rem var(--ms-space-6);
+  border-top: 1px solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
+  background: color-mix(in oklab, var(--ms-color-surface) 92%, var(--ms-color-bg) 8%);
+  color: color-mix(in oklab, var(--ms-color-text-soft) 90%, var(--ms-color-text) 10%);
+}
+
+.ms-shell__footer small {
+  font-size: 0.8rem;
+}
+
+.ms-shell__overlay {
+  position: fixed;
+  inset: 0;
+  border: 0;
+  background: var(--ms-overlay);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 180ms ease;
+  z-index: var(--ms-z-overlay);
+}
+
+.ms-shell__overlay:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.88);
+  outline-offset: -6px;
+}
+
+/* Desktop: sidebar always visible, no floating overlay pattern. */
+@media (min-width: 1025px) {
+  .ms-header-menu-btn {
+    display: none;
+  }
+
+  .ms-shell__overlay {
+    display: none;
+  }
+}
+
+/* Tablet / Mobile: sidebar hidden by default and opened as floating panel with overlay. */
+@media (max-width: 1024px) {
+  .ms-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-shell__nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--ms-sidebar-width-mobile);
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 180ms ease;
+    box-shadow: var(--ms-shadow-lg);
+  }
+
+  .ms-shell--menu-open .ms-shell__nav,
+  .ms-shell__nav.is-open {
+    transform: translateX(0);
+  }
+
+  .ms-shell__overlay.is-open {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  .ms-shell__main {
+    padding: var(--ms-space-5) var(--ms-space-4);
+    gap: var(--ms-space-5);
+  }
+
+  .ms-shell__header,
+  .ms-shell__footer {
+    padding-inline: var(--ms-space-4);
+  }
+}
