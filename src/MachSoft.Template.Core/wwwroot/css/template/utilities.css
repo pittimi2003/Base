@@ -1,4 +1,4 @@
-.ms-grid { display: grid; gap: var(--ms-space-4); }
+.ms-grid { display: grid; gap: var(--ms-space-5); }
 .ms-grid--2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
 .ms-grid--3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
 .ms-stack-sm { display: grid; gap: var(--ms-space-2); }
@@ -9,6 +9,7 @@
   color: var(--ms-color-brand);
   border-radius: var(--ms-radius-sm);
   padding: var(--ms-space-3);
+  font-size: var(--ms-font-size-sm);
 }
 
 .ms-color-row { display: flex; gap: var(--ms-space-2); }
@@ -25,5 +26,5 @@
 
 .ms-divider {
   border-top: 1px solid var(--ms-color-border);
-  margin: var(--ms-space-4) 0;
+  margin: var(--ms-space-3) 0;
 }

@@ -12,12 +12,15 @@ h1, h2, h3, p { margin: 0; }
 
 .ms-title {
   font-size: var(--ms-font-size-xl);
-  margin-bottom: var(--ms-space-1);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin: 0;
 }
 
 .ms-subtitle {
-  color: var(--ms-color-text-soft);
-  font-size: var(--ms-font-size-md);
+  color: color-mix(in oklab, var(--ms-color-text-soft) 88%, var(--ms-color-text) 12%);
+  font-size: 0.82rem;
+  line-height: 1.45;
 }
 
 .ms-text-lg {

@@ -6,9 +6,9 @@
 }
 
 .ms-shell__nav {
-  background: #0c1530;
+  background: linear-gradient(180deg, #101c3d 0%, #0c1530 100%);
   color: #fff;
-  padding: var(--ms-space-5) var(--ms-space-4);
+  padding: var(--ms-space-6) var(--ms-space-4) var(--ms-space-5);
   box-shadow: var(--ms-shadow-sm);
   z-index: var(--ms-z-sidebar);
 }
@@ -22,6 +22,7 @@
   font-size: var(--ms-font-size-lg);
   font-weight: 700;
   margin: 0;
+  letter-spacing: 0.01em;
 }
 
 .ms-shell__content {
@@ -39,38 +40,44 @@
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: var(--ms-space-3);
-  padding: var(--ms-space-3) var(--ms-space-5);
-  background: var(--ms-color-surface);
-  border-bottom: 1px solid var(--ms-color-border);
-  box-shadow: var(--ms-shadow-sm);
+  padding: 0.875rem var(--ms-space-6);
+  background: color-mix(in oklab, var(--ms-color-surface) 95%, var(--ms-color-brand-soft) 5%);
+  border-bottom: 1px solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
+  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.04);
+  backdrop-filter: blur(4px);
 }
 
 .ms-shell__header-main {
   display: grid;
-  gap: var(--ms-space-1);
+  gap: 0.18rem;
   min-width: 0;
 }
 
 .ms-shell__header-right {
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .ms-header-menu-btn {
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid var(--ms-color-border);
+  border: 1px solid color-mix(in oklab, var(--ms-color-border) 82%, var(--ms-color-brand) 18%);
   border-radius: var(--ms-radius-sm);
   background: var(--ms-color-surface);
   color: var(--ms-color-text);
   display: inline-grid;
   place-items: center;
   cursor: pointer;
-  box-shadow: var(--ms-shadow-sm);
+  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
 }
 
 .ms-header-menu-btn:hover {
   background: var(--ms-color-surface-muted);
+  border-color: color-mix(in oklab, var(--ms-color-border) 70%, var(--ms-color-brand) 30%);
+}
+
+.ms-header-menu-btn:active {
+  transform: translateY(1px);
 }
 
 .ms-header-menu-btn:focus-visible {
@@ -97,14 +104,21 @@
 .ms-header-menu-btn__icon::after { position: absolute; top: 0.36rem; }
 
 .ms-shell__main {
-  padding: var(--ms-space-5);
+  padding: var(--ms-space-6) var(--ms-space-6) var(--ms-space-6);
+  display: grid;
+  align-content: start;
+  gap: var(--ms-space-6);
 }
 
 .ms-shell__footer {
-  padding: var(--ms-space-3) var(--ms-space-5);
-  border-top: 1px solid var(--ms-color-border);
-  background: var(--ms-color-surface);
-  color: var(--ms-color-text-soft);
+  padding: 0.875rem var(--ms-space-6);
+  border-top: 1px solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
+  background: color-mix(in oklab, var(--ms-color-surface) 92%, var(--ms-color-bg) 8%);
+  color: color-mix(in oklab, var(--ms-color-text-soft) 90%, var(--ms-color-text) 10%);
+}
+
+.ms-shell__footer small {
+  font-size: 0.8rem;
 }
 
 .ms-shell__overlay {
@@ -149,7 +163,7 @@
     height: 100vh;
     transform: translateX(-100%);
     transition: transform 180ms ease;
-    box-shadow: var(--ms-shadow-md);
+    box-shadow: var(--ms-shadow-lg);
   }
 
   .ms-shell--menu-open .ms-shell__nav,
@@ -164,7 +178,8 @@
   }
 
   .ms-shell__main {
-    padding: var(--ms-space-4);
+    padding: var(--ms-space-5) var(--ms-space-4);
+    gap: var(--ms-space-5);
   }
 
   .ms-shell__header,
