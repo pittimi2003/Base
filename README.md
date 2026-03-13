@@ -2,6 +2,10 @@
 
 Starter corporativo para proyectos Blazor bajo convención MachSoft, con variantes **Server** y **WebAssembly** sobre una base visual común.
 
+## Versión interna
+- Versión actual del template: **`v1.0.0-internal`**.
+- Convención: versión semántica + sufijo `-internal` para consumo interno controlado.
+
 ## Estructura
 - `MachSoft.Template.sln`
 - `docs/`: arquitectura, migración y guía de uso.
@@ -43,3 +47,6 @@ dotnet run --project samples/MachSoft.Template.SampleApp
 2. Elegir `Starter` (Server) o `Starter.Wasm` según tipo de aplicación.
 3. Mantener componentes y estilo compartido en `MachSoft.Template.Core`.
 4. Usar `SampleApp` para validar cambios de foundation antes de adopción.
+
+## Guía de adopción
+- Flujo operativo completo y checklist de arranque: `docs/ADOPTION_GUIDE.md`.

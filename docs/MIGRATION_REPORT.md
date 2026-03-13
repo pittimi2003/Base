@@ -1,5 +1,8 @@
 # Migration Report
 
+## Versión de referencia
+- Baseline consolidado: **`v1.0.0-internal`**.
+
 ## Criterio de clasificación
 
 ### Grupo A - Migrar al template

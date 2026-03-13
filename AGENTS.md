@@ -4,6 +4,7 @@
 Este repositorio contiene una plantilla corporativa Blazor bajo convención **MachSoft.Template.*** para acelerar nuevos proyectos con una base visual y estructural reutilizable.
 
 Objetivo principal:
+- versión base interna vigente: `v1.0.0-internal`,
 - centralizar UI foundation y estilos en una capa común,
 - ofrecer hosts listos para **Server** y **WebAssembly**,
 - mantener un **sample** para validación funcional y visual.
@@ -121,12 +122,21 @@ Reglas CSS:
 ---
 
 ## 10) Governance Rules
+- **Qué entra en Core**:
+  - layout, estilos y componentes reutilizables por Server y WASM,
+  - contratos UI estables y agnósticos de dominio.
+- **Qué no entra en Core**:
+  - lógica de negocio,
+  - integraciones de infraestructura,
+  - componentes de un único flujo local.
 - Todo cambio reusable debe pasar por `/showcase` antes de adoptarse.
 - No incorporar nuevos components en Core sin:
   1. uso repetido,
   2. contrato claro,
   3. ejemplo en showcase,
   4. docs actualizadas.
+- Exigir actualización de E2E cuando cambie comportamiento/accesibilidad del shell responsive.
+- Exigir actualización de docs cuando cambien arquitectura, contratos o flujo de adopción.
 - Evitar duplicación: preferir extender Foundation antes que crear variantes locales paralelas.
 
 ---

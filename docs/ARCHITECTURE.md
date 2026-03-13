@@ -57,7 +57,8 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 ## Governance Rules
 - **Qué entra en Core**:
   - patrones visuales reutilizados por Server y WASM,
-  - componentes sin dependencia de dominio.
+  - componentes sin dependencia de dominio,
+  - contratos UI estables que funcionen como baseline corporativo.
 - **Qué no entra en Core**:
   - lógica de negocio,
   - servicios de infraestructura host-specific,
@@ -67,8 +68,19 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
   2. contrato mínimo y coherente,
   3. ejemplo en `/showcase`,
   4. guía/documentación actualizada.
+- **Actualización obligatoria de `/showcase`**:
+  - alta de nuevos componentes/variantes en Foundation,
+  - cambios de contrato público de componentes reusables.
+- **Actualización obligatoria de E2E**:
+  - cambios de comportamiento del shell responsive,
+  - cambios de accesibilidad o navegación lateral.
+- **Actualización obligatoria de docs**:
+  - cambios de arquitectura, contratos de componentes, scripts o flujo de adopción.
 
 ## Separación Server vs WASM
 - **Común**: UI, layout, contratos de componentes y estilos (Core).
 - **Server**: renderizado interactivo en servidor + `blazor.web.js`.
 - **WASM**: renderizado cliente + `blazor.webassembly.js` e `index.html` propio.
+
+## Adopción
+- Guía práctica de onboarding y checklist: `docs/ADOPTION_GUIDE.md`.

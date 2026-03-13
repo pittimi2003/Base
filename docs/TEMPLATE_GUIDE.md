@@ -1,5 +1,10 @@
 # Template Guide
 
+## Estado de versión del template
+- Baseline actual: **`v1.0.0-internal`**.
+- Objetivo: primera versión interna lista para adopción en proyectos reales.
+- Convención recomendada: semver con sufijo `-internal` mientras no se publique externamente.
+
 ## Arranque desde variante Server
 1. Abrir `MachSoft.Template.sln`.
 2. Ejecutar `template/MachSoft.Template.Starter`.
@@ -101,12 +106,35 @@
 Cache recomendada: `~/.cache/ms-playwright` (o el path configurado en `PLAYWRIGHT_BROWSERS_PATH`).
 
 ## Governance Rules
-- Todo cambio reusable pasa por `/showcase` antes de adopción.
-- No aceptar componentes foundation sin:
-  - API clara y mínima,
-  - uso en showcase,
-  - documentación en guía/arquitectura.
-- Evitar duplicación entre Server y WASM: si se repite, mover a `Core`.
+- **Qué entra en Core**:
+  - layout, componentes y estilos reutilizables cross-host,
+  - primitivas visuales sin lógica de negocio,
+  - contratos estables que reduzcan duplicación entre Server/WASM.
+- **Qué no entra en Core**:
+  - lógica de negocio,
+  - integraciones de infraestructura,
+  - UI específica de un solo flujo/módulo de producto.
+- **Cuándo promover algo a Foundation**:
+  1. hay uso repetido real en más de un contexto,
+  2. el contrato es mínimo y explícito,
+  3. existe demo en `/showcase`,
+  4. se actualiza documentación técnica.
+- **Cuándo exigir actualización de `/showcase`**:
+  - cuando cambia API/contrato de foundation,
+  - cuando se agrega variante visual reusable,
+  - cuando se modifica comportamiento esperado del layout común.
+- **Cuándo exigir actualización de E2E**:
+  - cambios en comportamiento del shell responsive,
+  - cambios de accesibilidad/navegación del menú lateral,
+  - cambios de sincronización de interactividad que afecten timings.
+- **Cuándo exigir actualización de docs**:
+  - cambio arquitectónico,
+  - cambio en reglas de composición/gobernanza,
+  - cambio de scripts, prerrequisitos o flujo de adopción.
+
+## Adopción operativa
+- Referencia principal de adopción y checklist: `docs/ADOPTION_GUIDE.md`.
+- Usar esta guía al iniciar nuevos proyectos sobre `Starter` o `Starter.Wasm`.
 
 ## Dónde tocar estilos globales
 - Variables y escala: `tokens.css`.
