@@ -1,0 +1,58 @@
+# MachSoft Template - Architecture
+
+## Visión
+Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre una base reusable única para maximizar consistencia y minimizar duplicación.
+
+## Capas y responsabilidad
+- **Capa común (`MachSoft.Template.Core`)**
+  - Layout corporativo desacoplado (`MainLayout`, `AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
+  - Foundation components (`PageContainer`, `BaseCard`, `AppMenuTile`) y base mínima de formularios (`FormSection`, `FieldGroup`, `SectionTitle`).
+  - Páginas base (`Home`, `Showcase`).
+  - Static web assets compartidos (`wwwroot/css/template/*`).
+- **Capa host Server (`MachSoft.Template.Starter`)**
+  - Bootstrap de Blazor Server.
+  - Registro del root component + `AddAdditionalAssemblies(...)` para páginas enrutables del Core.
+  - Páginas específicas de host (ej. `/demo`).
+- **Capa host WASM (`MachSoft.Template.Starter.Wasm`)**
+  - Bootstrap de Blazor WebAssembly.
+  - `index.html` de cliente y páginas específicas de host (ej. `/wasm-demo`).
+- **Capa de ejemplo (`MachSoft.Template.SampleApp`)**
+  - App de validación funcional consumiendo el Core.
+
+## Contratos de diseño
+1. **MainLayout liviano**: solo composición/orquestación.
+2. **Variantes tipadas**:
+   - `BaseCard` usa `SurfaceVariant`.
+   - `AppMenuTile` usa `TileVariant`.
+3. **Compact mode explícito**: `IsCompact` en `PageContainer` y `BaseCard`.
+4. **Token-first CSS**: spacing/radius/shadows/typography/z-index definidos por tokens.
+5. **Sidebar responsive (patrón único)**: visible fijo en desktop y panel flotante en tablet/mobile con overlay gestionado en Blazor.
+
+## Patrón de navegación lateral
+- **Desktop (>=1025px)**: sidebar visible por defecto y sin overlay.
+- **Tablet/Mobile (<=1024px)**: sidebar oculto por defecto y abierto como panel flotante.
+- Estado de menú centralizado en `AppShell` (`IsMenuOpen`).
+- `AppHeader` dispara toggle de hamburguesa (visible solo en tablet/mobile).
+- `AppNavigation` renderiza panel lateral con prioridad visual (`z-index` mayor que overlay y contenido).
+- Overlay gris semitransparente cubre toda la pantalla (`position: fixed; inset: 0`) cuando el menú está abierto en tablet/mobile.
+- `SideNav` notifica selección de ítem para cierre automático del menú.
+- Cierre por `Escape` soportado desde `AppShell`.
+
+## Governance Rules
+- **Qué entra en Core**:
+  - patrones visuales reutilizados por Server y WASM,
+  - componentes sin dependencia de dominio.
+- **Qué no entra en Core**:
+  - lógica de negocio,
+  - servicios de infraestructura host-specific,
+  - UI de un único flujo local.
+- **Aprobación de nuevos foundation components**:
+  1. uso repetido real en al menos dos contextos,
+  2. contrato mínimo y coherente,
+  3. ejemplo en `/showcase`,
+  4. guía/documentación actualizada.
+
+## Separación Server vs WASM
+- **Común**: UI, layout, contratos de componentes y estilos (Core).
+- **Server**: renderizado interactivo en servidor + `blazor.web.js`.
+- **WASM**: renderizado cliente + `blazor.webassembly.js` e `index.html` propio.

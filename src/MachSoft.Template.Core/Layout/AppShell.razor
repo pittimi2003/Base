@@ -1,0 +1,67 @@
+@using MachSoft.Template.Core.Models
+
+<div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
+     @onkeydown:window="HandleWindowKeyDown">
+    <AppNavigation BrandTitle="@BrandTitle"
+                   IsOpen="@IsMenuOpen"
+                   NavigationItems="NavigationItems"
+                   OnNavigationItemSelected="CloseMenuFromNavigation" />
+
+    <div class="ms-shell__content">
+        <AppHeader Title="@Title" Subtitle="@Subtitle" IsMenuOpen="@IsMenuOpen" OnToggleMenu="ToggleMenu" />
+
+        <main class="ms-shell__main" @onclick="CloseMenuOnContentClick">
+            @ChildContent
+        </main>
+
+        <AppFooter FooterText="@FooterText" />
+    </div>
+
+    <button type="button"
+            class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
+            @onclick="CloseMenu"
+            aria-label="Close sidebar navigation"></button>
+</div>
+
+@code {
+    [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
+    [Parameter] public string Title { get; set; } = "MachSoft Starter";
+    [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
+    [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
+    [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private bool IsMenuOpen { get; set; }
+
+    private Task ToggleMenu()
+    {
+        IsMenuOpen = !IsMenuOpen;
+        return Task.CompletedTask;
+    }
+
+    private Task CloseMenuFromNavigation()
+    {
+        IsMenuOpen = false;
+        return Task.CompletedTask;
+    }
+
+    private void CloseMenu() => IsMenuOpen = false;
+
+    private void CloseMenuOnContentClick()
+    {
+        if (IsMenuOpen)
+        {
+            CloseMenu();
+        }
+    }
+
+    private Task HandleWindowKeyDown(KeyboardEventArgs args)
+    {
+        if (IsMenuOpen && args.Key is "Escape")
+        {
+            CloseMenu();
+        }
+
+        return Task.CompletedTask;
+    }
+}
