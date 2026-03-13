@@ -9,6 +9,7 @@ Starter corporativo para proyectos Blazor bajo convención MachSoft, con variant
 ## Estructura
 - `MachSoft.Template.sln`
 - `docs/`: arquitectura, migración y guía de uso.
+- `docs/MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md`: base formal del MachSoft Design System (identidad, foundations, tokens, componentes y governance).
 - `src/MachSoft.Template.Core`: base reusable (layout, foundation components, estilos, páginas base).
 - `template/MachSoft.Template.Starter`: starter principal en Blazor Server.
 - `template/MachSoft.Template.Starter.Wasm`: starter equivalente en Blazor WebAssembly.
@@ -27,6 +28,7 @@ Starter corporativo para proyectos Blazor bajo convención MachSoft, con variant
 - Componentes foundation (`PageContainer`, `BaseCard`, `AppMenuTile`).
 - Páginas base (`/`, `/showcase`).
 - Sistema de estilos (`tokens.css`, `base.css`, `layout.css`, `components.css`, `utilities.css`).
+  - `tokens.css` ahora agrega arquitectura `--mx-*` (primitives/semantic/themes) y mantiene compatibilidad `--ms-*`.
 
 ## Ejecutar
 > Requiere .NET SDK 8+

@@ -1,0 +1,24 @@
+:root,
+[data-mx-theme="light"] {
+  --mx-color-bg-canvas: var(--mx-primitive-color-neutral-100);
+  --mx-color-bg-surface: var(--mx-primitive-color-neutral-0);
+  --mx-color-bg-surface-muted: var(--mx-primitive-color-neutral-50);
+
+  --mx-color-text-primary: var(--mx-primitive-color-neutral-900);
+  --mx-color-text-secondary: var(--mx-primitive-color-neutral-600);
+  --mx-color-text-inverse: var(--mx-primitive-color-neutral-0);
+
+  --mx-color-border-default: var(--mx-primitive-color-neutral-200);
+  --mx-color-border-strong: var(--mx-primitive-color-neutral-300);
+
+  --mx-color-brand-primary: var(--mx-primitive-color-brand-600);
+  --mx-color-brand-strong: var(--mx-primitive-color-brand-700);
+  --mx-color-brand-soft: var(--mx-primitive-color-brand-100);
+
+  --mx-color-state-success: var(--mx-primitive-color-success-500);
+  --mx-color-state-warning: var(--mx-primitive-color-warning-500);
+  --mx-color-state-danger: var(--mx-primitive-color-danger-500);
+  --mx-color-state-info: var(--mx-primitive-color-info-500);
+
+  --mx-color-overlay: rgba(18, 24, 38, 0.56);
+}

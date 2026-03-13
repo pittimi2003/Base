@@ -54,6 +54,13 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 - Escenarios obligatorios en desktop: sidebar visible, overlay oculto, hamburguesa no visible y navegación entre `/`, `/showcase` y `/demo`.
 - Guía operativa E2E (prerrequisitos, scripts, restricciones de red/CDN y recomendaciones de CI) en `tests/e2e/README.md`.
 
+
+## MachSoft Design System Foundation (base inicial)
+- Documento rector: `docs/MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md`.
+- Arquitectura de tokens en Core: `wwwroot/css/template/design-system/*` con separación de primitives, semantic, typography, motion y themes (`light`/`dark`).
+- `tokens.css` actúa como agregador oficial del Design System y conserva aliases `--ms-*` para transición no destructiva.
+- La API pública objetivo de componentes del sistema es `Mx*` (MachSoft-first); el uso de MudBlazor queda permitido como implementación interna mediante wrappers.
+
 ## Governance Rules
 - **Qué entra en Core**:
   - patrones visuales reutilizados por Server y WASM,

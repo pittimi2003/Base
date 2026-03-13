@@ -136,6 +136,13 @@ Cache recomendada: `~/.cache/ms-playwright` (o el path configurado en `PLAYWRIGH
 - Referencia principal de adopción y checklist: `docs/ADOPTION_GUIDE.md`.
 - Usar esta guía al iniciar nuevos proyectos sobre `Starter` o `Starter.Wasm`.
 
+
+## MachSoft Design System (base formal)
+- Documento de referencia: `docs/MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md`.
+- Tokens oficiales del sistema: `src/MachSoft.Template.Core/wwwroot/css/template/design-system/`.
+- `tokens.css` centraliza imports de primitives + semantic + themes y mantiene compatibilidad con tokens `--ms-*` para no romper componentes actuales.
+- Objetivo de API pública de componentes: prefijo `Mx*` (MachSoft-first).
+
 ## Dónde tocar estilos globales
 - Variables y escala: `tokens.css`.
 - Tipografía/base: `base.css`.

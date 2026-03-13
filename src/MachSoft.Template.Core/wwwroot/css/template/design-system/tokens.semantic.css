@@ -1,0 +1,39 @@
+:root {
+  --mx-font-family-sans: "Segoe UI", "Inter", Roboto, Arial, sans-serif;
+  --mx-font-family-mono: "Cascadia Mono", "Consolas", "SFMono-Regular", monospace;
+
+  --mx-font-size-display: 2rem;
+  --mx-font-size-h1: 1.5rem;
+  --mx-font-size-h2: 1.25rem;
+  --mx-font-size-h3: 1.125rem;
+  --mx-font-size-subtitle: 1rem;
+  --mx-font-size-body: 0.9375rem;
+  --mx-font-size-caption: 0.8125rem;
+  --mx-font-size-mono: 0.8125rem;
+
+  --mx-font-weight-regular: 400;
+  --mx-font-weight-medium: 500;
+  --mx-font-weight-semibold: 600;
+  --mx-font-weight-bold: 700;
+
+  --mx-line-height-tight: 1.2;
+  --mx-line-height-normal: 1.45;
+  --mx-line-height-relaxed: 1.6;
+
+  --mx-layout-sidebar-width: 260px;
+  --mx-layout-sidebar-width-mobile: min(320px, 86vw);
+
+  --mx-z-header: 30;
+  --mx-z-overlay: 40;
+  --mx-z-sidebar: 50;
+
+  --mx-motion-duration-fast: 120ms;
+  --mx-motion-duration-base: 180ms;
+  --mx-motion-duration-slow: 260ms;
+  --mx-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+
+  --mx-density-comfortable-control-height: 40px;
+  --mx-density-compact-control-height: 32px;
+  --mx-density-comfortable-spacing: var(--mx-space-4);
+  --mx-density-compact-spacing: var(--mx-space-3);
+}

@@ -43,3 +43,10 @@
 
 ## Resultado
 La solución queda con base reusable común + starter Server + starter WASM + sample, sin dependencia estructural del legacy.
+
+
+## Consolidación Design System MachSoft
+- Se incorpora documento formal de base en `docs/MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md`.
+- Se introduce arquitectura de tokens `--mx-*` en `src/MachSoft.Template.Core/wwwroot/css/template/design-system/` (primitives, semantic, typography, motion, themes).
+- Se mantiene compatibilidad temporal con `--ms-*` desde `tokens.css` para preservar adopción no destructiva del template actual.
+

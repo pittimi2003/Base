@@ -1,0 +1,78 @@
+:root {
+  /* Brand primitives (logo-driven) */
+  --mx-primitive-color-brand-50: #f0f4ff;
+  --mx-primitive-color-brand-100: #d9e4ff;
+  --mx-primitive-color-brand-200: #b7ccff;
+  --mx-primitive-color-brand-300: #8cacff;
+  --mx-primitive-color-brand-400: #5e86f5;
+  --mx-primitive-color-brand-500: #315fd3;
+  --mx-primitive-color-brand-600: #214db7;
+  --mx-primitive-color-brand-700: #1a3f95;
+  --mx-primitive-color-brand-800: #173577;
+  --mx-primitive-color-brand-900: #172f61;
+
+  /* Neutral primitives */
+  --mx-primitive-color-neutral-0: #ffffff;
+  --mx-primitive-color-neutral-50: #f7f9fc;
+  --mx-primitive-color-neutral-100: #eef2f7;
+  --mx-primitive-color-neutral-200: #dde3ec;
+  --mx-primitive-color-neutral-300: #c6cfdd;
+  --mx-primitive-color-neutral-400: #9ca8bc;
+  --mx-primitive-color-neutral-500: #6f7d94;
+  --mx-primitive-color-neutral-600: #505d74;
+  --mx-primitive-color-neutral-700: #394559;
+  --mx-primitive-color-neutral-800: #243042;
+  --mx-primitive-color-neutral-900: #182131;
+
+  /* Semantic state primitives */
+  --mx-primitive-color-success-500: #0e8a55;
+  --mx-primitive-color-warning-500: #b46a00;
+  --mx-primitive-color-danger-500: #c23a31;
+  --mx-primitive-color-info-500: #0e6fba;
+
+  /* Data visualization primitives */
+  --mx-primitive-color-data-1: #315fd3;
+  --mx-primitive-color-data-2: #0f766e;
+  --mx-primitive-color-data-3: #9358f6;
+  --mx-primitive-color-data-4: #cb5f25;
+  --mx-primitive-color-data-5: #1278a8;
+  --mx-primitive-color-data-6: #6b7f15;
+
+  /* Spacing scale */
+  --mx-space-0: 0;
+  --mx-space-1: 0.25rem;
+  --mx-space-2: 0.5rem;
+  --mx-space-3: 0.75rem;
+  --mx-space-4: 1rem;
+  --mx-space-5: 1.5rem;
+  --mx-space-6: 2rem;
+  --mx-space-7: 2.5rem;
+  --mx-space-8: 3rem;
+  --mx-space-9: 4rem;
+
+  /* Radius */
+  --mx-radius-none: 0;
+  --mx-radius-sm: 6px;
+  --mx-radius-md: 10px;
+  --mx-radius-lg: 14px;
+  --mx-radius-pill: 999px;
+
+  /* Borders */
+  --mx-border-width-0: 0;
+  --mx-border-width-1: 1px;
+  --mx-border-width-2: 2px;
+
+  /* Shadows */
+  --mx-shadow-0: none;
+  --mx-shadow-1: 0 1px 2px rgba(16, 24, 40, 0.08);
+  --mx-shadow-2: 0 4px 12px rgba(16, 24, 40, 0.1);
+  --mx-shadow-3: 0 12px 30px rgba(16, 24, 40, 0.12);
+
+  /* Breakpoints */
+  --mx-breakpoint-xs: 0;
+  --mx-breakpoint-sm: 480px;
+  --mx-breakpoint-md: 768px;
+  --mx-breakpoint-lg: 1024px;
+  --mx-breakpoint-xl: 1280px;
+  --mx-breakpoint-2xl: 1440px;
+}

@@ -1,0 +1,23 @@
+[data-mx-theme="dark"] {
+  --mx-color-bg-canvas: #121923;
+  --mx-color-bg-surface: #172131;
+  --mx-color-bg-surface-muted: #1f2b3d;
+
+  --mx-color-text-primary: #e8edf7;
+  --mx-color-text-secondary: #b8c4d8;
+  --mx-color-text-inverse: #0f1724;
+
+  --mx-color-border-default: #2a384f;
+  --mx-color-border-strong: #3a4c69;
+
+  --mx-color-brand-primary: #8cacff;
+  --mx-color-brand-strong: #b7ccff;
+  --mx-color-brand-soft: rgba(49, 95, 211, 0.28);
+
+  --mx-color-state-success: #53c58a;
+  --mx-color-state-warning: #e8a947;
+  --mx-color-state-danger: #ef7f7b;
+  --mx-color-state-info: #53b2f0;
+
+  --mx-color-overlay: rgba(0, 0, 0, 0.62);
+}
