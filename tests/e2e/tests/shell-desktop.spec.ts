@@ -1,10 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { shellSelectors } from './support/shell-selectors';
+import { waitForBlazorServerReady } from './support/blazor-ready';
 
 test.describe('AppShell desktop behavior', () => {
   test.beforeEach(async ({ page }, testInfo) => {
     test.skip(testInfo.project.name !== 'desktop', 'Desktop-only assertions.');
-    await page.goto('/');
+    await waitForBlazorServerReady(page);
+    await expect(page.locator(shellSelectors.shell)).toBeVisible({ timeout: 30_000 });
   });
 
   test('shows fixed sidebar by default and hides mobile controls', async ({ page }) => {

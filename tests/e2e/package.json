@@ -6,14 +6,16 @@
     "node": ">=18"
   },
   "scripts": {
-    "test": "playwright test",
-    "test:headed": "playwright test --headed",
-    "test:ui": "playwright test --ui",
-    "test:debug": "playwright test --debug",
-    "test:mobile": "playwright test --project=mobile --project=tablet",
-    "test:desktop": "playwright test --project=desktop",
-    "test:ci": "playwright test --reporter=line",
-    "install:browsers": "playwright install --with-deps chromium"
+    "install:browsers": "playwright install --with-deps chromium",
+    "cleanup:hosts": "./scripts/cleanup-hosts.sh",
+    "test": "npm run cleanup:hosts && E2E_PORT=5010 playwright test",
+    "test:headed": "npm run cleanup:hosts && E2E_PORT=5010 playwright test --headed",
+    "test:ui": "npm run cleanup:hosts && E2E_PORT=5010 playwright test --ui",
+    "test:debug": "npm run cleanup:hosts && E2E_PORT=5010 playwright test --debug",
+    "test:mobile": "npm run cleanup:hosts && E2E_PORT=5110 playwright test --project=mobile --project=tablet",
+    "test:desktop": "npm run cleanup:hosts && E2E_PORT=5111 playwright test --project=desktop",
+    "test:ci": "npm run cleanup:hosts && E2E_PORT=5120 playwright test --reporter=line",
+    "test:ci:prepared": "npm run install:browsers && npm run test:ci"
   },
   "devDependencies": {
     "@playwright/test": "1.53.1"

@@ -8,26 +8,35 @@ const repoRoot = path.resolve(__dirname, '../..');
 export default defineConfig({
   testDir: './tests',
   timeout: 60_000,
+  globalTimeout: 12 * 60_000,
   expect: {
-    timeout: 10_000
+    timeout: 20_000
   },
-  fullyParallel: true,
+  fullyParallel: false,
+  workers: process.env.CI ? 1 : undefined,
   retries: 0,
-  reporter: [['list']],
+  reporter: process.env.CI ? [['line']] : [['list']],
   use: {
     baseURL,
-    trace: 'on-first-retry'
+    headless: true,
+    trace: 'on-first-retry',
+    launchOptions: {
+      args: ['--no-sandbox', '--disable-dev-shm-usage']
+    }
   },
   webServer: {
-    command: `dotnet run --project template/MachSoft.Template.Starter --urls ${baseURL}`,
+    command: `dotnet build template/MachSoft.Template.Starter/MachSoft.Template.Starter.csproj && dotnet run --no-build --project template/MachSoft.Template.Starter --urls ${baseURL}`,
     url: baseURL,
     cwd: repoRoot,
-    reuseExistingServer: true,
-    timeout: 120_000
+    reuseExistingServer: false,
+    timeout: 240_000,
+    stdout: 'pipe',
+    stderr: 'pipe'
   },
   projects: [
     {
       name: 'mobile',
+      testMatch: ['**/shell-mobile-tablet.spec.ts'],
       use: {
         browserName: 'chromium',
         viewport: { width: 390, height: 844 },
@@ -37,6 +46,7 @@ export default defineConfig({
     },
     {
       name: 'tablet',
+      testMatch: ['**/shell-mobile-tablet.spec.ts'],
       use: {
         browserName: 'chromium',
         viewport: { width: 834, height: 1112 },
@@ -46,6 +56,7 @@ export default defineConfig({
     },
     {
       name: 'desktop',
+      testMatch: ['**/shell-desktop.spec.ts'],
       use: {
         browserName: 'chromium',
         viewport: { width: 1440, height: 900 }

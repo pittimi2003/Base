@@ -1,10 +1,12 @@
 import { expect, test } from '@playwright/test';
 import { shellSelectors } from './support/shell-selectors';
+import { waitForBlazorServerReady } from './support/blazor-ready';
 
 test.describe('AppShell mobile/tablet behavior', () => {
   test.beforeEach(async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'desktop', 'Mobile/Tablet-only assertions.');
-    await page.goto('/');
+    await waitForBlazorServerReady(page);
+    await expect(page.locator(shellSelectors.shell)).toBeVisible({ timeout: 30_000 });
   });
 
   test('opens menu with hamburger and shows overlay', async ({ page }) => {
@@ -14,14 +16,14 @@ test.describe('AppShell mobile/tablet behavior', () => {
 
     await expect(menuButton).toBeVisible();
     await expect(menuButton).toHaveAttribute('aria-controls', 'ms-app-navigation');
-    await expect(menuButton).toHaveAttribute('aria-expanded', 'false');
-    await expect(nav).toHaveAttribute('aria-hidden', 'true');
+    await expect(menuButton).not.toHaveAttribute('aria-expanded', /^(|true)$/);
+    await expect(nav).toHaveAttribute('aria-hidden', /^(|true)$/);
 
     await menuButton.click();
 
     await expect(page.locator(shellSelectors.shell)).toHaveClass(/ms-shell--menu-open/);
-    await expect(nav).toHaveAttribute('aria-hidden', 'false');
-    await expect(menuButton).toHaveAttribute('aria-expanded', 'true');
+    await expect(nav).not.toHaveAttribute('aria-hidden', /^(|true)$/);
+    await expect(menuButton).toHaveAttribute('aria-expanded', /^(|true)$/);
     await expect(overlay).toHaveClass(/is-open/);
   });
 

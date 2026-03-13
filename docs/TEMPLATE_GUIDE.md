@@ -71,6 +71,7 @@
   - `npm run test:headed`
   - `npm run test:ui`
   - `npm run test:ci`
+  - `npm run test:ci:prepared` (instala browsers + ejecuta CI)
 - Cobertura mínima:
   - Mobile/Tablet: visibilidad de hamburguesa, apertura menú, overlay visible, cierre por overlay/item/hamburguesa/Escape.
   - Desktop: sidebar visible por defecto, overlay oculto, hamburguesa oculta y navegación funcional entre rutas base (`/`, `/showcase`, `/demo`).
@@ -80,6 +81,15 @@
 - La descarga de browsers depende de CDN de Playwright (o mirror corporativo).
 - Si hay restricciones de red, usar `PLAYWRIGHT_DOWNLOAD_HOST` y/o `PLAYWRIGHT_BROWSERS_PATH`.
 - Ver detalle operativo en `tests/e2e/README.md`.
+
+### Endurecimiento para runner/contenedor
+- Playwright configurado en headless con flags de contenedor (`--no-sandbox`, `--disable-dev-shm-usage`).
+- `webServer.timeout` ampliado para evitar falsos negativos por arranque lento del host.
+- `reuseExistingServer: false` para evitar conectar contra procesos viejos en puerto compartido.
+- Scripts de test con puertos dedicados (`test:mobile`/`test:desktop`/`test:ci`) para reducir colisiones de puerto en runner.
+- Espera explícita de handshake Blazor Server (`/_blazor/negotiate` + websocket `/_blazor?id=...`) antes de interacciones E2E para estabilizar eventos `@onclick`.
+- Arranque del host E2E con `dotnet build` + `dotnet run --no-build` para mayor estabilidad en contenedor/CI.
+- Projects separados por spec para evitar ejecución cruzada de escenarios desktop/mobile.
 
 ### Recomendación CI mínima
 1. `cd tests/e2e`

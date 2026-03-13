@@ -14,8 +14,26 @@ npm install
 npm run install:browsers
 ```
 
+> Si `playwright: not found`, falta ejecutar `npm install` en `tests/e2e`.
+
 ## Ejecución
-> Los tests levantan automáticamente el host Server en `http://127.0.0.1:5010` usando `webServer` de Playwright.
+> Los tests levantan automáticamente el host Server usando `webServer` de Playwright.
+> Scripts principales usan puertos dedicados para evitar colisiones en runner compartido:
+> - `test`: 5010
+> - `test:mobile`: 5110
+> - `test:desktop`: 5111
+> - `test:ci`: 5120
+> - todos ejecutan `cleanup:hosts` (`scripts/cleanup-hosts.sh`) antes de iniciar para limpiar procesos previos.
+
+La configuración está endurecida para contenedor/CI con:
+- `headless: true`;
+- `launchOptions.args`: `--no-sandbox`, `--disable-dev-shm-usage`;
+- `webServer.timeout` ampliado a 180s;
+- `reuseExistingServer: false` para forzar host limpio por corrida;
+- `expect.timeout` en 20s;
+- espera explícita de handshake Blazor Server (`/_blazor/negotiate` + websocket `/_blazor?id=...`) antes de interacciones para evitar flakiness en `@onclick`.
+
+Además, el `webServer.command` ejecuta `dotnet build` + `dotnet run --no-build` para reducir variabilidad de arranque en contenedor/CI.
 
 ```bash
 # todas las pruebas
@@ -29,6 +47,9 @@ npm run test:desktop
 npm run test:headed
 npm run test:ui
 npm run test:debug
+
+# comando recomendado para CI si el runner no cachea browsers
+npm run test:ci:prepared
 ```
 
 ## Escenarios cubiertos
@@ -53,6 +74,8 @@ Si `npm run install:browsers` falla por bloqueo CDN:
 - definir un mirror interno compatible con Playwright mediante `PLAYWRIGHT_DOWNLOAD_HOST`;
 - o preinstalar binarios y compartir `PLAYWRIGHT_BROWSERS_PATH` en el equipo/runner.
 
+Observación de este runner: la URL primaria `cdn.playwright.dev` puede responder 403 (`Domain forbidden`), pero la URL fallback de Microsoft (`playwright.download.prss.microsoft.com`) puede completar la descarga.
+
 Ejemplo:
 ```bash
 export PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright
@@ -70,3 +93,8 @@ npm run install:browsers
 npm run test:ci
 ```
 - Si existe mirror corporativo, exportar `PLAYWRIGHT_DOWNLOAD_HOST` para evitar dependencia directa de CDN pública.
+
+## Diagnóstico rápido de fallos comunes
+- `playwright: not found`: falta `npm install` en `tests/e2e`.
+- `Executable doesn't exist at ...chromium_headless_shell...`: browsers no instalados (ejecutar `npm run install:browsers`).
+- timeout en `webServer`: validar que `dotnet run --project template/MachSoft.Template.Starter --urls http://127.0.0.1:5010` levante y responda.

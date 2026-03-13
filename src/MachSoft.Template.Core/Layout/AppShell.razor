@@ -1,7 +1,8 @@
 @using MachSoft.Template.Core.Models
 
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
-     @onkeydown:window="HandleWindowKeyDown">
+     tabindex="-1"
+     @onkeydown="HandleWindowKeyDown">
     <AppNavigation BrandTitle="@BrandTitle"
                    NavigationId="@NavigationId"
                    IsOpen="@IsMenuOpen"

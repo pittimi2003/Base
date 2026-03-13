@@ -152,6 +152,10 @@ La documentación debe reflejar estado real del código (no intenciones futuras)
 7. Ejecutar cobertura E2E mínima del shell (`tests/e2e`) cuando haya cambios en layout/navigation.
    - Revisar/actualizar `tests/e2e/README.md` si cambian scripts o prerrequisitos.
    - Mantener separación por comportamiento (`shell-mobile-tablet.spec.ts` y `shell-desktop.spec.ts`).
+   - Para runner/contenedor, mantener flags de Chromium `--no-sandbox` y `--disable-dev-shm-usage` en Playwright.
+   - Mantener `reuseExistingServer: false` en E2E para evitar interferencia de procesos previos en CI compartido.
+   - Mantener arranque de host E2E con `dotnet build` + `dotnet run --no-build` cuando se ajuste `webServer.command`.
+   - Si falla por binarios ausentes, ejecutar `npm run install:browsers` antes de diagnosticar el shell.
 8. Actualizar docs.
 9. Commit atómico con mensaje claro y PR con resumen técnico.
 
