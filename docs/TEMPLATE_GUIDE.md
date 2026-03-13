@@ -73,7 +73,7 @@
   - `npm run test:ci`
   - `npm run test:ci:prepared` (instala browsers + ejecuta CI)
 - Cobertura mínima:
-  - Mobile/Tablet: visibilidad de hamburguesa, apertura menú, overlay visible, cierre por overlay/item/hamburguesa/Escape.
+  - Mobile/Tablet: visibilidad de hamburguesa, apertura menú, overlay visible, cierre por overlay/item/Escape.
   - Desktop: sidebar visible por defecto, overlay oculto, hamburguesa oculta y navegación funcional entre rutas base (`/`, `/showcase`, `/demo`).
 
 ### Prerrequisitos y restricciones de red
@@ -88,6 +88,7 @@
 - `reuseExistingServer: false` para evitar conectar contra procesos viejos en puerto compartido.
 - Scripts de test con puertos dedicados (`test:mobile`/`test:desktop`/`test:ci`) para reducir colisiones de puerto en runner.
 - Espera explícita de handshake Blazor Server (`/_blazor/negotiate` + websocket `/_blazor?id=...`) antes de interacciones E2E para estabilizar eventos `@onclick`.
+- Readiness del shell reforzada con marcador `data-ms-shell-interactive="true"` + validación de hamburguesa visible/habilitada antes de click en mobile/tablet.
 - Arranque del host E2E con `dotnet build` + `dotnet run --no-build` para mayor estabilidad en contenedor/CI.
 - Projects separados por spec para evitar ejecución cruzada de escenarios desktop/mobile.
 

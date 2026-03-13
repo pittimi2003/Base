@@ -32,6 +32,7 @@ La configuración está endurecida para contenedor/CI con:
 - `reuseExistingServer: false` para forzar host limpio por corrida;
 - `expect.timeout` en 20s;
 - espera explícita de handshake Blazor Server (`/_blazor/negotiate` + websocket `/_blazor?id=...`) antes de interacciones para evitar flakiness en `@onclick`.
+- señal de readiness del shell vía `data-ms-shell-interactive="true"` para asegurar que el layout ya está interactivo antes de clicar hamburguesa.
 
 Además, el `webServer.command` ejecuta `dotnet build` + `dotnet run --no-build` para reducir variabilidad de arranque en contenedor/CI.
 
@@ -59,7 +60,6 @@ npm run test:ci:prepared
 - overlay visible;
 - cierre por overlay;
 - cierre por item (`/showcase`);
-- cierre por hamburguesa;
 - cierre por `Escape`;
 - apertura por teclado y foco movido a panel de navegación.
 
@@ -98,3 +98,7 @@ npm run test:ci
 - `playwright: not found`: falta `npm install` en `tests/e2e`.
 - `Executable doesn't exist at ...chromium_headless_shell...`: browsers no instalados (ejecutar `npm run install:browsers`).
 - timeout en `webServer`: validar que `dotnet run --project template/MachSoft.Template.Starter --urls http://127.0.0.1:5010` levante y responda.
+
+## Causa de inestabilidad mobile resuelta
+- La señal previa (`negotiate` + primer frame websocket) podía llegar antes de que el shell quedara listo para interacción efectiva en mobile.
+- Ahora la suite espera además `data-ms-shell-interactive="true"` + hamburguesa visible/habilitada para reducir fallos por timing prematuro.

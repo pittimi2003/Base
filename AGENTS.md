@@ -156,6 +156,7 @@ La documentación debe reflejar estado real del código (no intenciones futuras)
    - Mantener `reuseExistingServer: false` en E2E para evitar interferencia de procesos previos en CI compartido.
    - Mantener arranque de host E2E con `dotnet build` + `dotnet run --no-build` cuando se ajuste `webServer.command`.
    - Si falla por binarios ausentes, ejecutar `npm run install:browsers` antes de diagnosticar el shell.
+   - En mobile/tablet, sincronizar acciones con readiness real del shell (`data-ms-shell-interactive="true"` + hamburguesa operativa).
 8. Actualizar docs.
 9. Commit atómico con mensaje claro y PR con resumen técnico.
 

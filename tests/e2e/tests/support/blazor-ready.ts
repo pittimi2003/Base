@@ -1,6 +1,13 @@
 import type { Page } from '@playwright/test';
+import { expect } from '@playwright/test';
+import { shellSelectors } from './shell-selectors';
 
-export async function waitForBlazorServerReady(page: Page): Promise<void> {
+type BlazorReadyOptions = {
+  requireMenuVisible?: boolean;
+};
+
+export async function waitForBlazorServerReady(page: Page, options: BlazorReadyOptions = {}): Promise<void> {
+  const { requireMenuVisible = true } = options;
   const websocketPromise = page.waitForEvent(
     'websocket',
     (websocket) => websocket.url().includes('/_blazor?id='),
@@ -15,4 +22,14 @@ export async function waitForBlazorServerReady(page: Page): Promise<void> {
 
   const websocket = await websocketPromise;
   await websocket.waitForEvent('framereceived', { timeout: 45_000 });
+
+  const shell = page.locator(shellSelectors.interactiveShell);
+  const menuButton = page.locator(shellSelectors.menuButton);
+
+  await expect(shell).toBeVisible({ timeout: 30_000 });
+
+  if (requireMenuVisible) {
+    await expect(menuButton).toBeVisible({ timeout: 30_000 });
+    await expect(menuButton).toBeEnabled({ timeout: 30_000 });
+  }
 }

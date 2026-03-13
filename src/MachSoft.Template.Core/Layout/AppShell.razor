@@ -1,6 +1,7 @@
 @using MachSoft.Template.Core.Models
 
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
+     data-ms-shell-interactive="@(_isInteractive ? "true" : "false")"
      tabindex="-1"
      @onkeydown="HandleWindowKeyDown">
     <AppNavigation BrandTitle="@BrandTitle"
@@ -44,7 +45,17 @@
     private const string ToggleButtonId = "ms-shell-menu-toggle";
     private const string OverlayId = "ms-shell-overlay";
 
+    private bool _isInteractive;
     private bool IsMenuOpen { get; set; }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            _isInteractive = true;
+            StateHasChanged();
+        }
+    }
 
     private Task ToggleMenu()
     {

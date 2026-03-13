@@ -1,5 +1,6 @@
 export const shellSelectors = {
   shell: '.ms-shell',
+  interactiveShell: '[data-ms-shell-interactive="true"]',
   nav: '#ms-app-navigation',
   overlay: '#ms-shell-overlay',
   menuButton: '#ms-shell-menu-toggle',

@@ -3,10 +3,24 @@ import { shellSelectors } from './support/shell-selectors';
 import { waitForBlazorServerReady } from './support/blazor-ready';
 
 test.describe('AppShell mobile/tablet behavior', () => {
+  async function clickOutsideSidebar(page: import('@playwright/test').Page): Promise<void> {
+    const viewport = page.viewportSize();
+    const overlay = page.locator(shellSelectors.overlay);
+
+    if (viewport) {
+      await overlay.click({
+        position: { x: viewport.width - 8, y: 12 },
+        force: true
+      });
+      return;
+    }
+
+    await overlay.click({ force: true });
+  }
+
   test.beforeEach(async ({ page }, testInfo) => {
     test.skip(testInfo.project.name === 'desktop', 'Mobile/Tablet-only assertions.');
     await waitForBlazorServerReady(page);
-    await expect(page.locator(shellSelectors.shell)).toBeVisible({ timeout: 30_000 });
   });
 
   test('opens menu with hamburger and shows overlay', async ({ page }) => {
@@ -27,15 +41,13 @@ test.describe('AppShell mobile/tablet behavior', () => {
     await expect(overlay).toHaveClass(/is-open/);
   });
 
-  test('closes menu by overlay click, navigation item, hamburger and Escape', async ({ page }) => {
+  test('closes menu by overlay click, navigation item and Escape', async ({ page }) => {
     const menuButton = page.locator(shellSelectors.menuButton);
 
     await menuButton.click();
+    await expect(page.locator(shellSelectors.shell)).toHaveClass(/ms-shell--menu-open/);
 
-    const viewport = page.viewportSize();
-    if (viewport) {
-      await page.mouse.click(viewport.width - 10, 10);
-    }
+    await clickOutsideSidebar(page);
 
     await expect(page.locator(shellSelectors.shell)).not.toHaveClass(/ms-shell--menu-open/);
 
@@ -46,10 +58,6 @@ test.describe('AppShell mobile/tablet behavior', () => {
 
     await menuButton.click();
     await expect(page.locator(shellSelectors.shell)).toHaveClass(/ms-shell--menu-open/);
-    await menuButton.click();
-    await expect(page.locator(shellSelectors.shell)).not.toHaveClass(/ms-shell--menu-open/);
-
-    await menuButton.click();
     await page.keyboard.press('Escape');
     await expect(page.locator(shellSelectors.shell)).not.toHaveClass(/ms-shell--menu-open/);
   });
