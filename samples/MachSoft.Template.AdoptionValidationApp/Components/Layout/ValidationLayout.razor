@@ -1,0 +1,21 @@
+@inherits LayoutComponentBase
+@using MachSoft.Template.Core.Layout
+@using MachSoft.Template.Core.Models
+
+<AppShell BrandTitle="Contoso Field Ops"
+          Title="Operations Portal"
+          Subtitle="Validación de adopción sobre MachSoft.Template"
+          FooterText="Contoso Field Ops • Powered by MachSoft.Template"
+          NavigationItems="_items">
+    @Body
+</AppShell>
+
+@code {
+    private readonly IReadOnlyList<NavItem> _items =
+    [
+        new("Inicio", "/", "🏠"),
+        new("Showcase", "/showcase", "🧩"),
+        new("Operaciones", "/operations", "⚙️"),
+        new("Configuración", "/settings", "🔐")
+    ];
+}

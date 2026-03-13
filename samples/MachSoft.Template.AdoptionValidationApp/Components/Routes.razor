@@ -1,0 +1,12 @@
+@using MachSoft.Template.AdoptionValidationApp.Components.Layout
+
+<Router AppAssembly="typeof(Program).Assembly" AdditionalAssemblies="_additionalAssemblies">
+    <Found Context="routeData">
+        <RouteView RouteData="routeData" DefaultLayout="typeof(ValidationLayout)" />
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>
+
+@code {
+    private readonly IEnumerable<Assembly> _additionalAssemblies = [typeof(MachSoft.Template.Core.Pages.Home).Assembly];
+}
