@@ -51,6 +51,24 @@
 4. Clic nuevamente en hamburguesa.
 5. Tecla `Escape`.
 
+## Accesibilidad mínima obligatoria del shell
+- Hamburguesa con `aria-label`, `aria-controls`, `aria-expanded` y `aria-haspopup`.
+- Sidebar con `id` estable (`ms-app-navigation`), `role="navigation"`, `aria-label` y `aria-hidden` sincronizado.
+- Overlay con `id` estable (`ms-shell-overlay`) y `aria-label` para cierre.
+- Foco visible con `:focus-visible` en hamburguesa, overlay y links laterales.
+- En apertura mobile/tablet, el foco se mueve al panel de navegación para navegación por teclado.
+
+## Pruebas E2E del shell (Playwright)
+- Ubicación: `tests/e2e`.
+- Ejecución:
+  1. `cd tests/e2e`
+  2. `npm install`
+  3. `npx playwright install --with-deps chromium`
+  4. `npm test`
+- Cobertura mínima:
+  - Mobile/Tablet: visibilidad de hamburguesa, apertura menú, overlay visible, cierre por overlay/item/hamburguesa/Escape.
+  - Desktop: sidebar visible por defecto, overlay oculto, hamburguesa oculta y navegación funcional entre rutas base (`/`, `/showcase`).
+
 ## Governance Rules
 - Todo cambio reusable pasa por `/showcase` antes de adopción.
 - No aceptar componentes foundation sin:

@@ -1,6 +1,6 @@
 @using MachSoft.Template.Core.Models
 
-<nav class="ms-nav">
+<nav class="ms-nav" aria-label="Primary">
     @foreach (var item in Items)
     {
         <NavLink href="@item.Href" class="ms-nav__item" Match="NavLinkMatch.Prefix" @onclick="HandleItemSelected">

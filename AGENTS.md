@@ -63,6 +63,10 @@ Ubicación: `src/MachSoft.Template.Core/Layout`.
 - `AppShell` gestiona estado de sidebar colapsable (`IsMenuOpen`) y overlay.
 - Patrón oficial de shell: **desktop con sidebar fijo y sin overlay**; **mobile/tablet con sidebar flotante + overlay**.
 - Botón hamburguesa visible solo en mobile/tablet.
+- Mantener accesibilidad mínima del shell:
+  - hamburguesa con `aria-label`, `aria-expanded`, `aria-controls`,
+  - sidebar con `role="navigation"`, `aria-label`, `aria-hidden` sincronizado,
+  - foco visible en controles interactivos (`:focus-visible`).
 - Cierre automático del menú cuando:
   1. clic en overlay,
   2. clic en contenido fuera del sidebar,
@@ -145,8 +149,9 @@ La documentación debe reflejar estado real del código (no intenciones futuras)
 4. Verificar que Server y WASM sigan reutilizando Core.
 5. Ejecutar validaciones de arranque básicas cuando sea posible.
 6. Validar visualmente `/showcase` y navegación lateral al cambiar layout/styles.
-7. Actualizar docs.
-8. Commit atómico con mensaje claro y PR con resumen técnico.
+7. Ejecutar cobertura E2E mínima del shell (`tests/e2e`) cuando haya cambios en layout/navigation.
+8. Actualizar docs.
+9. Commit atómico con mensaje claro y PR con resumen técnico.
 
 Comandos base sugeridos:
 - `dotnet restore MachSoft.Template.sln`

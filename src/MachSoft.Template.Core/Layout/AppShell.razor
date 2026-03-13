@@ -3,12 +3,19 @@
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
      @onkeydown:window="HandleWindowKeyDown">
     <AppNavigation BrandTitle="@BrandTitle"
+                   NavigationId="@NavigationId"
                    IsOpen="@IsMenuOpen"
+                   FocusOnOpen="@IsMenuOpen"
                    NavigationItems="NavigationItems"
                    OnNavigationItemSelected="CloseMenuFromNavigation" />
 
     <div class="ms-shell__content">
-        <AppHeader Title="@Title" Subtitle="@Subtitle" IsMenuOpen="@IsMenuOpen" OnToggleMenu="ToggleMenu" />
+        <AppHeader Title="@Title"
+                   Subtitle="@Subtitle"
+                   IsMenuOpen="@IsMenuOpen"
+                   ToggleButtonId="@ToggleButtonId"
+                   NavigationId="@NavigationId"
+                   OnToggleMenu="ToggleMenu" />
 
         <main class="ms-shell__main" @onclick="CloseMenuOnContentClick">
             @ChildContent
@@ -18,6 +25,7 @@
     </div>
 
     <button type="button"
+            id="@OverlayId"
             class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
             @onclick="CloseMenu"
             aria-label="Close sidebar navigation"></button>
@@ -30,6 +38,10 @@
     [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private const string NavigationId = "ms-app-navigation";
+    private const string ToggleButtonId = "ms-shell-menu-toggle";
+    private const string OverlayId = "ms-shell-overlay";
 
     private bool IsMenuOpen { get; set; }
 

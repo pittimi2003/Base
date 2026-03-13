@@ -38,6 +38,18 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 - `SideNav` notifica selección de ítem para cierre automático del menú.
 - Cierre por `Escape` soportado desde `AppShell`.
 
+## Accesibilidad del shell
+- Botón hamburguesa con `aria-label`, `aria-expanded`, `aria-controls` y `aria-haspopup`.
+- Navegación lateral con `role="navigation"`, `aria-label` y `aria-hidden` sincronizado con el estado abierto/cerrado.
+- Overlay cerrable con botón accesible (`aria-label`) y foco visible.
+- Estilos `:focus-visible` obligatorios para hamburguesa y links de navegación lateral.
+- Al abrir menú en mobile/tablet, foco programático en el panel de navegación para asegurar continuidad por teclado.
+
+## Cobertura E2E mínima del shell
+- Suite Playwright ubicada en `tests/e2e`.
+- Escenarios obligatorios en mobile/tablet: abrir menú, overlay visible, cierre por overlay, cierre por item, cierre por hamburguesa y por `Escape`.
+- Escenarios obligatorios en desktop: sidebar visible, overlay oculto, hamburguesa no visible y navegación entre `/` y `/showcase`.
+
 ## Governance Rules
 - **Qué entra en Core**:
   - patrones visuales reutilizados por Server y WASM,

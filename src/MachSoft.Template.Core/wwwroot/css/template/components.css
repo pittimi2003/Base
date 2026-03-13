@@ -5,6 +5,12 @@
   padding: var(--ms-space-3) var(--ms-space-4);
   border-radius: var(--ms-radius-sm);
 }
+.ms-nav__item:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 2px;
+  background: #314777;
+  color: #fff;
+}
 .ms-nav__item.active { background: #24345f; color: #fff; }
 .ms-nav__icon { margin-right: var(--ms-space-2); }
 

@@ -1,14 +1,35 @@
 @using MachSoft.Template.Core.Models
 
-<aside id="ms-app-navigation" class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)">
+<aside id="@NavigationId"
+       class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)"
+       role="navigation"
+       aria-label="Main navigation"
+       aria-hidden="@(!IsOpen)"
+       tabindex="-1"
+       @ref="NavigationElementRef">
     <div class="ms-brand">@BrandTitle</div>
     <div class="ms-shell__nav-divider"></div>
     <SideNav Items="NavigationItems" OnItemSelected="OnNavigationItemSelected" />
 </aside>
 
 @code {
+    private ElementReference NavigationElementRef;
+    private bool _wasOpen;
+
     [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
+    [Parameter] public string NavigationId { get; set; } = "ms-app-navigation";
     [Parameter] public bool IsOpen { get; set; }
+    [Parameter] public bool FocusOnOpen { get; set; }
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter] public EventCallback OnNavigationItemSelected { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (FocusOnOpen && !_wasOpen)
+        {
+            await NavigationElementRef.FocusAsync();
+        }
+
+        _wasOpen = FocusOnOpen;
+    }
 }

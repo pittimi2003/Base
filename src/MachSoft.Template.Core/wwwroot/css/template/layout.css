@@ -73,6 +73,11 @@
   background: var(--ms-color-surface-muted);
 }
 
+.ms-header-menu-btn:focus-visible {
+  outline: 3px solid var(--ms-color-brand);
+  outline-offset: 2px;
+}
+
 .ms-header-menu-btn__icon,
 .ms-header-menu-btn__icon::before,
 .ms-header-menu-btn__icon::after {
@@ -112,6 +117,11 @@
   pointer-events: none;
   transition: opacity 180ms ease;
   z-index: var(--ms-z-overlay);
+}
+
+.ms-shell__overlay:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.88);
+  outline-offset: -6px;
 }
 
 /* Desktop: sidebar always visible, no floating overlay pattern. */
