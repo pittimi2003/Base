@@ -1,0 +1,35 @@
+<header class="ms-shell__header">
+    <div class="ms-shell__header-left">
+        <button class="ms-header-menu-btn"
+                id="@ToggleButtonId"
+                type="button"
+                @onclick="HandleToggleClick"
+                aria-label="Toggle sidebar navigation"
+                aria-expanded="@IsMenuOpen"
+                aria-controls="@NavigationId"
+                aria-haspopup="true">
+            <span class="ms-header-menu-btn__icon" aria-hidden="true"></span>
+        </button>
+    </div>
+
+    <div class="ms-shell__header-main">
+        <h1 class="ms-title">@Title</h1>
+        @if (!string.IsNullOrWhiteSpace(Subtitle))
+        {
+            <p class="ms-subtitle">@Subtitle</p>
+        }
+    </div>
+
+    <div class="ms-shell__header-right" aria-hidden="true"></div>
+</header>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
+    [Parameter] public bool IsMenuOpen { get; set; }
+    [Parameter] public string ToggleButtonId { get; set; } = "ms-shell-menu-toggle";
+    [Parameter] public string NavigationId { get; set; } = "ms-app-navigation";
+    [Parameter] public EventCallback OnToggleMenu { get; set; }
+
+    private Task HandleToggleClick() => OnToggleMenu.InvokeAsync();
+}
