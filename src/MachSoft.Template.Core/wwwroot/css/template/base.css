@@ -2,6 +2,7 @@ html, body {
   margin: 0;
   font-family: var(--ms-font-family);
   font-size: var(--ms-font-size-md);
+  line-height: var(--mx-typo-body-line-height);
   background: var(--ms-color-bg);
   color: var(--ms-color-text);
 }
@@ -12,20 +13,20 @@ h1, h2, h3, p { margin: 0; }
 
 .ms-title {
   font-size: var(--ms-font-size-xl);
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: var(--mx-typo-h2-line-height);
+  letter-spacing: var(--mx-letter-spacing-tight);
   margin: 0;
 }
 
 .ms-subtitle {
   color: color-mix(in oklab, var(--ms-color-text-soft) 88%, var(--ms-color-text) 12%);
-  font-size: 0.82rem;
-  line-height: 1.45;
+  font-size: var(--ms-font-size-sm);
+  line-height: var(--mx-line-height-normal);
 }
 
 .ms-text-lg {
   font-size: var(--ms-font-size-lg);
-  font-weight: 600;
+  font-weight: var(--mx-font-weight-semibold);
 }
 
 .ms-text-sm {

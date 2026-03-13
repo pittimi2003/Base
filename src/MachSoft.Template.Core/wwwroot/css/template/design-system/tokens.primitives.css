@@ -1,42 +1,67 @@
 :root {
-  /* Brand primitives (logo-driven) */
-  --mx-primitive-color-brand-50: #f0f4ff;
-  --mx-primitive-color-brand-100: #d9e4ff;
-  --mx-primitive-color-brand-200: #b7ccff;
-  --mx-primitive-color-brand-300: #8cacff;
-  --mx-primitive-color-brand-400: #5e86f5;
-  --mx-primitive-color-brand-500: #315fd3;
-  --mx-primitive-color-brand-600: #214db7;
-  --mx-primitive-color-brand-700: #1a3f95;
-  --mx-primitive-color-brand-800: #173577;
-  --mx-primitive-color-brand-900: #172f61;
+  /* MachSoft brand primary scale (logo-driven deep technical blue) */
+  --mx-primitive-color-brand-50: #edf3ff;
+  --mx-primitive-color-brand-100: #dbe8ff;
+  --mx-primitive-color-brand-200: #bcd3ff;
+  --mx-primitive-color-brand-300: #93b5ff;
+  --mx-primitive-color-brand-400: #6892f2;
+  --mx-primitive-color-brand-500: #3f72de;
+  --mx-primitive-color-brand-600: #285dc3;
+  --mx-primitive-color-brand-700: #1f4aa0;
+  --mx-primitive-color-brand-800: #1b3d80;
+  --mx-primitive-color-brand-900: #183466;
 
-  /* Neutral primitives */
+  /* MachSoft accent secondary scale (industrial teal for operational context) */
+  --mx-primitive-color-accent-50: #e7f9f7;
+  --mx-primitive-color-accent-100: #cff3ef;
+  --mx-primitive-color-accent-200: #a6e7df;
+  --mx-primitive-color-accent-300: #78d6cb;
+  --mx-primitive-color-accent-400: #42bbaa;
+  --mx-primitive-color-accent-500: #219b8c;
+  --mx-primitive-color-accent-600: #157f72;
+  --mx-primitive-color-accent-700: #13685e;
+  --mx-primitive-color-accent-800: #14544d;
+  --mx-primitive-color-accent-900: #134640;
+
+  /* Neutral scale (cool gray for enterprise readability) */
   --mx-primitive-color-neutral-0: #ffffff;
   --mx-primitive-color-neutral-50: #f7f9fc;
-  --mx-primitive-color-neutral-100: #eef2f7;
-  --mx-primitive-color-neutral-200: #dde3ec;
-  --mx-primitive-color-neutral-300: #c6cfdd;
-  --mx-primitive-color-neutral-400: #9ca8bc;
-  --mx-primitive-color-neutral-500: #6f7d94;
-  --mx-primitive-color-neutral-600: #505d74;
-  --mx-primitive-color-neutral-700: #394559;
-  --mx-primitive-color-neutral-800: #243042;
-  --mx-primitive-color-neutral-900: #182131;
+  --mx-primitive-color-neutral-100: #edf1f7;
+  --mx-primitive-color-neutral-200: #dce3ed;
+  --mx-primitive-color-neutral-300: #c3cddd;
+  --mx-primitive-color-neutral-400: #98a6ba;
+  --mx-primitive-color-neutral-500: #6f7f95;
+  --mx-primitive-color-neutral-600: #4f6076;
+  --mx-primitive-color-neutral-700: #39485d;
+  --mx-primitive-color-neutral-800: #243145;
+  --mx-primitive-color-neutral-900: #172131;
 
-  /* Semantic state primitives */
-  --mx-primitive-color-success-500: #0e8a55;
-  --mx-primitive-color-warning-500: #b46a00;
-  --mx-primitive-color-danger-500: #c23a31;
-  --mx-primitive-color-info-500: #0e6fba;
+  /* State scales */
+  --mx-primitive-color-success-100: #dcf9e9;
+  --mx-primitive-color-success-500: #148a56;
+  --mx-primitive-color-success-700: #0f6942;
 
-  /* Data visualization primitives */
-  --mx-primitive-color-data-1: #315fd3;
-  --mx-primitive-color-data-2: #0f766e;
-  --mx-primitive-color-data-3: #9358f6;
-  --mx-primitive-color-data-4: #cb5f25;
-  --mx-primitive-color-data-5: #1278a8;
-  --mx-primitive-color-data-6: #6b7f15;
+  --mx-primitive-color-warning-100: #fff1d7;
+  --mx-primitive-color-warning-500: #b86b00;
+  --mx-primitive-color-warning-700: #8f5200;
+
+  --mx-primitive-color-danger-100: #ffe2e0;
+  --mx-primitive-color-danger-500: #c63d35;
+  --mx-primitive-color-danger-700: #9a2e28;
+
+  --mx-primitive-color-info-100: #dff1ff;
+  --mx-primitive-color-info-500: #0f71bc;
+  --mx-primitive-color-info-700: #0d588f;
+
+  /* Data visualization palette */
+  --mx-primitive-color-data-1: #3f72de;
+  --mx-primitive-color-data-2: #219b8c;
+  --mx-primitive-color-data-3: #a35de8;
+  --mx-primitive-color-data-4: #dd7b2b;
+  --mx-primitive-color-data-5: #2b8fbd;
+  --mx-primitive-color-data-6: #6d8b2a;
+  --mx-primitive-color-data-7: #d65185;
+  --mx-primitive-color-data-8: #8f6bdb;
 
   /* Spacing scale */
   --mx-space-0: 0;
@@ -44,29 +69,41 @@
   --mx-space-2: 0.5rem;
   --mx-space-3: 0.75rem;
   --mx-space-4: 1rem;
-  --mx-space-5: 1.5rem;
-  --mx-space-6: 2rem;
-  --mx-space-7: 2.5rem;
-  --mx-space-8: 3rem;
-  --mx-space-9: 4rem;
+  --mx-space-5: 1.25rem;
+  --mx-space-6: 1.5rem;
+  --mx-space-7: 2rem;
+  --mx-space-8: 2.5rem;
+  --mx-space-9: 3rem;
+  --mx-space-10: 4rem;
+
+  /* Semantic spacing aliases */
+  --mx-space-semantic-xs: var(--mx-space-2);
+  --mx-space-semantic-sm: var(--mx-space-3);
+  --mx-space-semantic-md: var(--mx-space-4);
+  --mx-space-semantic-lg: var(--mx-space-6);
+  --mx-space-semantic-xl: var(--mx-space-8);
+  --mx-space-semantic-2xl: var(--mx-space-10);
 
   /* Radius */
   --mx-radius-none: 0;
+  --mx-radius-xs: 4px;
   --mx-radius-sm: 6px;
   --mx-radius-md: 10px;
   --mx-radius-lg: 14px;
+  --mx-radius-xl: 18px;
   --mx-radius-pill: 999px;
 
-  /* Borders */
+  /* Borders / strokes */
   --mx-border-width-0: 0;
   --mx-border-width-1: 1px;
   --mx-border-width-2: 2px;
+  --mx-border-width-3: 3px;
 
-  /* Shadows */
+  /* Elevation */
   --mx-shadow-0: none;
-  --mx-shadow-1: 0 1px 2px rgba(16, 24, 40, 0.08);
-  --mx-shadow-2: 0 4px 12px rgba(16, 24, 40, 0.1);
-  --mx-shadow-3: 0 12px 30px rgba(16, 24, 40, 0.12);
+  --mx-shadow-1: 0 1px 2px rgba(15, 23, 38, 0.08), 0 1px 1px rgba(15, 23, 38, 0.04);
+  --mx-shadow-2: 0 6px 16px rgba(15, 23, 38, 0.1), 0 2px 4px rgba(15, 23, 38, 0.06);
+  --mx-shadow-3: 0 14px 32px rgba(15, 23, 38, 0.14), 0 4px 8px rgba(15, 23, 38, 0.08);
 
   /* Breakpoints */
   --mx-breakpoint-xs: 0;

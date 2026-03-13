@@ -1,25 +1,37 @@
 :root {
   --mx-typo-display-size: var(--mx-font-size-display);
   --mx-typo-display-weight: var(--mx-font-weight-bold);
+  --mx-typo-display-line-height: var(--mx-line-height-tight);
+  --mx-typo-display-letter-spacing: var(--mx-letter-spacing-tight);
 
   --mx-typo-h1-size: var(--mx-font-size-h1);
   --mx-typo-h1-weight: var(--mx-font-weight-semibold);
+  --mx-typo-h1-line-height: var(--mx-line-height-tight);
+  --mx-typo-h1-letter-spacing: var(--mx-letter-spacing-tight);
 
   --mx-typo-h2-size: var(--mx-font-size-h2);
   --mx-typo-h2-weight: var(--mx-font-weight-semibold);
+  --mx-typo-h2-line-height: var(--mx-line-height-tight);
+  --mx-typo-h2-letter-spacing: var(--mx-letter-spacing-normal);
 
   --mx-typo-h3-size: var(--mx-font-size-h3);
   --mx-typo-h3-weight: var(--mx-font-weight-semibold);
+  --mx-typo-h3-line-height: var(--mx-line-height-normal);
+  --mx-typo-h3-letter-spacing: var(--mx-letter-spacing-normal);
 
   --mx-typo-subtitle-size: var(--mx-font-size-subtitle);
   --mx-typo-subtitle-weight: var(--mx-font-weight-medium);
+  --mx-typo-subtitle-line-height: var(--mx-line-height-normal);
 
   --mx-typo-body-size: var(--mx-font-size-body);
   --mx-typo-body-weight: var(--mx-font-weight-regular);
+  --mx-typo-body-line-height: var(--mx-line-height-normal);
 
   --mx-typo-caption-size: var(--mx-font-size-caption);
   --mx-typo-caption-weight: var(--mx-font-weight-regular);
+  --mx-typo-caption-line-height: var(--mx-line-height-normal);
 
   --mx-typo-mono-size: var(--mx-font-size-mono);
   --mx-typo-mono-weight: var(--mx-font-weight-medium);
+  --mx-typo-mono-line-height: var(--mx-line-height-normal);
 }

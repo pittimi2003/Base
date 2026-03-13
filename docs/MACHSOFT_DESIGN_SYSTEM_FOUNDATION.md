@@ -1,267 +1,227 @@
 # MachSoft Design System Foundation
 
 ## 1) Resumen ejecutivo
-MachSoft Design System (MDS) se define como un sistema propio, orientado a aplicaciones enterprise de operación, backoffice y dashboards. El benchmark externo en `design/benchmark/external-system` se usa solo como referencia de madurez (tokens, capas y estructura), sin adoptar su identidad o API.
+MachSoft Design System (MDS) se consolida como un sistema visual y técnico propio para aplicaciones enterprise (dashboards, operación, gestión y backoffice) en Blazor Server/WASM.
 
-Esta base inicial establece:
-- identidad formal del sistema,
-- foundations visuales,
-- arquitectura de tokens `--mx-*`,
-- estrategia de componentes MachSoft-first,
-- patrones enterprise iniciales,
-- lineamientos de governance,
-- integración no destructiva con `MachSoft.Template` (Server y WASM).
+En esta iteración se completó:
+- foundations con valores concretos,
+- arquitectura de tokens `--mx-*` con capas explícitas,
+- dark mode funcional real con activación y persistencia,
+- integración no destructiva con la base actual (`--ms-*` bridge),
+- showcase actualizado como validación visual.
 
 ---
 
-## 2) Principios del MachSoft Design System (Fase 0)
+## 2) Principios del MachSoft Design System
+1. Precisión operativa.
+2. Claridad jerárquica.
+3. Consistencia cross-host (Server/WASM).
+4. Densidad equilibrada (comfort/compact).
+5. Neutralidad profesional.
+6. Evolución gobernada con docs + showcase + pruebas.
 
-### Principios
-1. **Precisión operativa**: UI enfocada en decisiones rápidas y errores mínimos.
-2. **Claridad jerárquica**: información crítica visible primero.
-3. **Consistencia transversal**: mismos contratos visuales en Server/WASM.
-4. **Densidad equilibrada**: alta productividad sin saturación visual.
-5. **Neutralidad profesional**: estilo sobrio, técnico, no consumer.
-6. **Evolución gobernada**: cambios via showcase, docs y validación técnica.
-
-### Perfil de usuarios objetivo
-- Operadores de procesos.
-- Supervisores de turno/área.
-- Analistas de datos operativos.
-- Administradores funcionales de plataforma.
-- Equipos de backoffice enterprise.
-
-### Tono visual
-- Profesional, técnico, claro, moderno, sobrio y preciso.
-- Alto contraste funcional para lectura en jornadas largas.
-- Componentes con señal semántica explícita (éxito, alerta, error, info).
-
-### Relación marca MachSoft ↔ UI
-- La identidad parte del logo MachSoft (base cromática azul corporativa + neutrales técnicos).
-- Marca en UI como **sistema de señales** (acciones primarias, foco, navegación activa), no como decoración excesiva.
-- El branding se traduce en tokens semánticos y contratos reutilizables, no en estilos ad-hoc por página.
+Usuarios objetivo: operadores, supervisores, analistas, administradores y equipos de backoffice enterprise.
 
 ---
 
-## 3) Foundations definidas (Fase 1)
+## 3) Foundations completadas
 
-### Color system
-- **Brand**: escala azul (`brand-50..900`) para acciones primarias y estados activos.
-- **Neutrals**: escala gris-azulada (`neutral-0..900`) para superficies, texto y bordes.
-- **Semantic states**: success/warning/danger/info para feedback operativo.
-- **Data colors**: paleta de 6 colores para dashboards/charts con contraste entre series.
+### 3.1 Paleta concreta MachSoft
+#### Brand primary scale (logo-driven blue)
+- `brand-50 #edf3ff`
+- `brand-100 #dbe8ff`
+- `brand-200 #bcd3ff`
+- `brand-300 #93b5ff`
+- `brand-400 #6892f2`
+- `brand-500 #3f72de`
+- `brand-600 #285dc3`
+- `brand-700 #1f4aa0`
+- `brand-800 #1b3d80`
+- `brand-900 #183466`
 
-### Typography
-Jerarquía base:
-- Display: 2rem / 700
-- H1: 1.5rem / 600
-- H2: 1.25rem / 600
-- H3: 1.125rem / 600
-- Subtitle: 1rem / 500
-- Body: 0.9375rem / 400
-- Caption: 0.8125rem / 400
-- Mono: 0.8125rem / 500
+#### Brand secondary / accent scale (industrial teal)
+- `accent-50 #e7f9f7`
+- `accent-100 #cff3ef`
+- `accent-200 #a6e7df`
+- `accent-300 #78d6cb`
+- `accent-400 #42bbaa`
+- `accent-500 #219b8c`
+- `accent-600 #157f72`
+- `accent-700 #13685e`
+- `accent-800 #14544d`
+- `accent-900 #134640`
 
-Familias:
-- Sans: `Segoe UI`, `Inter`, Roboto, Arial.
-- Mono: `Cascadia Mono`, Consolas, monospace.
+#### Neutral scale
+- `neutral-0 #ffffff`
+- `neutral-50 #f7f9fc`
+- `neutral-100 #edf1f7`
+- `neutral-200 #dce3ed`
+- `neutral-300 #c3cddd`
+- `neutral-400 #98a6ba`
+- `neutral-500 #6f7f95`
+- `neutral-600 #4f6076`
+- `neutral-700 #39485d`
+- `neutral-800 #243145`
+- `neutral-900 #172131`
 
-### Spacing scale
-Escala tokenizada de `0` a `9` (`0`, `0.25rem`, `0.5rem`, `0.75rem`, `1rem`, `1.5rem`, `2rem`, `2.5rem`, `3rem`, `4rem`).
+#### Semantic states
+- Success: `#148a56`
+- Warning: `#b86b00`
+- Danger: `#c63d35`
+- Info: `#0f71bc`
 
-### Border radius
-Sistema sobrio: `none`, `sm (6px)`, `md (10px)`, `lg (14px)`, `pill`.
+#### Data palette
+`#3f72de`, `#219b8c`, `#a35de8`, `#dd7b2b`, `#2b8fbd`, `#6d8b2a`, `#d65185`, `#8f6bdb`.
 
-### Shadows / elevation
-- `shadow-0`: none
-- `shadow-1`: bajo (cards base)
-- `shadow-2`: medio (superficies elevadas)
-- `shadow-3`: alto (overlays/paneles prioritarios)
+### 3.2 Typography completa
+- Font family final: `Segoe UI, Inter, Noto Sans, Roboto, Arial, sans-serif`.
+- Mono: `Cascadia Mono, JetBrains Mono, SFMono-Regular, Consolas, monospace`.
+- Jerarquía: display/h1/h2/h3/subtitle/body/caption/mono.
+- Line-heights: `tight 1.2`, `normal 1.45`, `relaxed 1.6`.
+- Weights: `400/500/600/700`.
+- Letter spacing: `-0.01em / 0 / 0.01em`.
 
-### Border / stroke
-- `border-width-1` como default estructural.
-- `border-width-2` para énfasis puntual (focus/active states).
+### 3.3 Spacing
+Escala numérica: `0..10`.
 
-### Breakpoints
-- `sm: 480`, `md: 768`, `lg: 1024`, `xl: 1280`, `2xl: 1440`.
-- Estrategia shell oficial: desktop fijo sin overlay; tablet/mobile flotante con overlay.
+Capa semántica:
+- `xs -> space-2`
+- `sm -> space-3`
+- `md -> space-4`
+- `lg -> space-6`
+- `xl -> space-8`
+- `2xl -> space-10`
 
-### Density
-- **Comfortable**: control height 40px, spacing estándar.
-- **Compact**: control height 32px, spacing reducida.
+### 3.4 Borders / Radius / Elevation
+- Radius: `xs(4)`, `sm(6)`, `md(10)`, `lg(14)`, `xl(18)`, `pill`.
+- Stroke: `1px`, `2px`, `3px`.
+- Elevation:
+  - `shadow-0 none`
+  - `shadow-1 0 1px 2px ...`
+  - `shadow-2 0 6px 16px ...`
+  - `shadow-3 0 14px 32px ...`
 
----
+### 3.5 Motion tokens
+- `duration-fast 120ms`
+- `duration-base 180ms`
+- `duration-slow 260ms`
+- `ease-standard cubic-bezier(0.2, 0, 0, 1)`
+- `ease-emphasis cubic-bezier(0.2, 0, 0, 1.1)`
 
-## 4) Arquitectura de tokens propuesta (Fase 2)
+### 3.6 Z-index tokens
+- `z-base 1`
+- `z-sticky 20`
+- `z-overlay 40`
+- `z-drawer 50`
+- `z-dialog 70`
+- `z-toast 80`
+- `z-tooltip 90`
 
-### Nomenclatura
-- Prefijo oficial: `--mx-*`.
-- Tipos principales: `--mx-primitive-*`, `--mx-color-*`, `--mx-space-*`, `--mx-radius-*`, `--mx-shadow-*`, `--mx-font-*`, `--mx-motion-*`, `--mx-density-*`.
-
-### Primitive vs Semantic
-- **Primitive**: valores puros de escala (colores, spacing, radio, borders, breakpoints).
-- **Semantic**: intención UI (`bg-canvas`, `text-primary`, `border-default`, `brand-primary`, etc.).
-
-### Estructura de archivos
-- `tokens.primitives.css`
-- `tokens.semantic.css`
-- `typography.css`
-- `motion.css`
-- `themes/light.css`
-- `themes/dark.css`
-- `tokens.css` (agregador + puente de compatibilidad `--ms-*`)
-
-### Preparación para dark mode
-- `themes/dark.css` con overrides bajo `[data-mx-theme="dark"]`.
-- Sin migración completa aún; solo habilitación estructural inicial.
-
----
-
-## 5) Estrategia de componentes (Fase 3 y Fase 4)
-
-### A) Componentes propios MachSoft (API pública objetivo)
-- `MxButton`, `MxCard`, `MxBadge`, `MxPageHeader`, `MxSidebarNav`, `MxPanel`, `MxToolbar`.
-- Deben exponer contratos estables, semánticos y agnósticos del vendor.
-
-### B) Wrappers sobre MudBlazor
-- `MxTextField`, `MxSelect`, `MxDatePicker`, `MxDialog`.
-- Uso de MudBlazor como motor interno permitido, ocultando API vendor.
-
-### C) Vendor-direct (excepciones controladas)
-Solo en casos de alto costo de envoltura o funcionalidad compleja no madura en capa MachSoft (documentando deuda técnica y plan de encapsulación posterior).
-
-### Estrategia enterprise components
-- **DataGrid/TreeGrid/Scheduler/Charts**: wrapper recomendado cuando el contrato se repite en 2+ productos o requiere reglas corporativas de accesibilidad/estilo.
-- **FileUpload/Autocomplete/Toast/Tooltip**: wrapper si se requiere API uniforme de validación, estados y telemetría UI.
-- Evitar acoplamiento:
-  1. contratos `Mx*` estables,
-  2. adapter interno por vendor,
-  3. tests/Showcase sobre API MachSoft, no API Mud.
-
----
-
-## 6) Patterns iniciales (Fase 5)
-1. Dashboard shell (sidebar + topbar + content zones).
-2. Page header + primary/secondary actions.
-3. Card grid para resumen operativo.
-4. Search/filter panel con criterios persistentes.
-5. List + details (master/detail).
-6. Form sections jerárquicas con validación contextual.
-7. Settings pages por categorías.
-8. Workspace layout (filtros laterales + área de trabajo principal).
-
-Cada pattern debe tener demostración en `/showcase` y guía de composición.
+### 3.7 Focus system
+- Ring width: `3px`
+- Offset: `2px`
+- Color tokenizado en `--mx-focus-ring-color`.
+- Regla: todos los controles interactivos usan `:focus-visible` con tokens (sin hardcodes por componente).
 
 ---
 
-## 7) Showcase (Fase 6)
-El showcase debe incluir secciones dedicadas a:
-- foundations (color, typography, spacing, radius, elevation, borders, density),
-- tokens (`primitive` y `semantic`),
-- componentes Foundation y futuros `Mx*`,
-- patterns enterprise,
-- evidencia de compatibilidad Server/WASM.
+## 4) Arquitectura de tokens (implementada)
+Ruta base: `src/MachSoft.Template.Core/wwwroot/css/template/design-system/`
 
-Regla: ningún componente reusable se declara “Foundation” sin ejemplo funcional en showcase.
+- `tokens.primitives.css`: escalas base (color, space, radius, border, shadow, breakpoint).
+- `tokens.semantic.css`: tokens de intención (tipografía, z-index, density, motion, focus base).
+- `typography.css`: contratos tipográficos por rol.
+- `motion.css`: composición de foco y motion helper tokens.
+- `themes/light.css`: semantic mappings para tema light.
+- `themes/dark.css`: semantic overrides reales para tema dark.
+
+Agregador oficial: `tokens.css`.
+Compatibilidad: alias `--ms-*` para evitar ruptura del template existente.
 
 ---
 
-## 8) Governance (Fase 7)
+## 5) Dark mode real (implementado)
+- Dark mode activo por semantic overrides en `themes/dark.css`.
+- Se cubren: canvas, surface, text, border, brand, states, nav y overlay.
+- No se usan hardcodes dispersos para tema; componentes consumen tokens.
+- Impacta shell/header/sidebar/footer/cards/inputs/showcase.
 
-### Qué entra al Design System
-- Contratos UI reusables cross-host.
-- Foundations y patterns de uso recurrente.
-- Elementos agnósticos de dominio.
+### Activación y persistencia
+- JS mínimo en `wwwroot/js/theme.js`.
+- API: `machsoftTheme.init()`, `getPreferredTheme()`, `setTheme(theme)`.
+- Persistencia en `localStorage` key: `mx-theme`.
+- Aplicación de tema con atributo root: `data-mx-theme="light|dark"`.
+- Toggle expuesto en header del layout y funcional en Server + WASM.
 
-### Qué no entra
-- Flujos de negocio específicos.
+---
+
+## 6) Estrategia de componentes
+API pública objetivo del sistema: `Mx*` (MachSoft-first).
+
+- Propios: `MxButton`, `MxCard`, `MxBadge`, `MxPageHeader`, `MxSidebarNav`, `MxPanel`, `MxToolbar`.
+- Wrappers sobre MudBlazor: `MxTextField`, `MxSelect`, `MxDatePicker`, `MxDialog`.
+- Vendor direct solo por excepción justificada y con plan de encapsulación.
+
+---
+
+## 7) Patterns iniciales
+1. Dashboard shell.
+2. Page header + actions.
+3. Card grid.
+4. Search/filter panel.
+5. List + details.
+6. Form sections.
+7. Settings pages.
+8. Workspace layout.
+
+Todos deben vivir con ejemplo en `/showcase` antes de promoverse a Foundation.
+
+---
+
+## 8) Governance
+### Entra
+- Contratos UI reutilizables cross-host.
+- Foundations/patterns repetidos.
+
+### No entra
+- Lógica de negocio.
 - Integraciones de infraestructura.
-- Variantes locales de un solo producto.
+- Componentes locales de un único flujo.
 
-### Criterios para pasar a Foundation
-1. Repetición real en al menos dos contextos.
-2. Contrato claro y mínimo.
-3. Ejemplo en showcase.
-4. Documentación técnica actualizada.
-
-### Reglas de actualización obligatoria
-- **Docs**: cambios de arquitectura, contratos o flujo de adopción.
-- **Showcase**: nuevos componentes/variantes o cambios de comportamiento.
-- **Tests**: cambios que impacten shell, accesibilidad o interacción responsive.
-
-### Naming rules
-- Prefijo API pública: `Mx*`.
-- Prefijo CSS/tokens: `mx-` / `--mx-*`.
-- Mantener `ms-` temporalmente solo como compatibilidad en el template actual.
-
-### Breaking change policy
-- Cambios de contratos `Mx*` o tokens semánticos requieren:
-  - nota de ruptura,
-  - guía de migración,
-  - actualización de showcase y tests.
-
-### Versionado
-- Mientras sea interno: `MAJOR.MINOR.PATCH-internal`.
-- Recomendación inicial:
-  - `MAJOR`: ruptura de API/token semántico,
-  - `MINOR`: nuevos componentes/tokens compatibles,
-  - `PATCH`: fixes visuales/técnicos sin cambio de contrato.
+### Reglas de evolución
+- Todo cambio reusable requiere showcase + docs + validación.
+- Breaking changes de tokens o API `Mx*` requieren nota de migración.
+- Versionado interno: `MAJOR.MINOR.PATCH-internal`.
 
 ---
 
-## 9) Estructura de carpetas (propuesta)
-
+## 9) Estructura de carpetas
 ```text
 src/MachSoft.Template.Core/
-  Components/
-    Foundation/
-    Forms/
-    Enterprise/              # fase posterior
-    VendorAdapters/          # wrappers/bridges
   Layout/
-  Pages/
-  wwwroot/css/template/
-    tokens.css               # agregador + compatibilidad ms
-    design-system/
-      tokens.primitives.css
-      tokens.semantic.css
-      typography.css
-      motion.css
-      themes/
-        light.css
-        dark.css
+  Components/
+  wwwroot/
+    css/template/
+      tokens.css
+      design-system/
+        tokens.primitives.css
+        tokens.semantic.css
+        typography.css
+        motion.css
+        themes/
+          light.css
+          dark.css
+    js/
+      theme.js
 docs/
   MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md
 ```
 
 ---
 
-## 10) Integración inicial en MachSoft.Template
-- Se incorpora arquitectura de tokens `--mx-*` en Core sin romper estilos existentes.
-- `tokens.css` mantiene puente de compatibilidad `--ms-*` para componentes actuales.
-- La misma base CSS continúa siendo consumida por Server, WASM y Sample.
-
----
-
-## 11) Hoja de ruta recomendada
-
-### Iteración 1 (actual)
-- Identidad + foundations + tokens + governance base.
-- Documento formal MDS.
-- Integración no destructiva en template.
-
-### Iteración 2
-- Crear primeros contratos `MxButton`, `MxCard`, `MxBadge`, `MxPageHeader`.
-- Añadir demos y tests de contrato visual en showcase.
-
-### Iteración 3
-- Wrappers críticos (`MxTextField`, `MxSelect`, `MxDialog`) desacoplados de Mud API.
-- Definir adapter layer para vendor swap futuro.
-
-### Iteración 4
-- Enterprise components priorizados (DataGrid, Charts, FileUpload) bajo criterios de adopción real.
-- Consolidar telemetry hooks y accesibilidad avanzada.
-
-### Iteración 5
-- Dark mode completo y políticas de theming por producto.
-- Paquete distribuible interno del Design System (si aplica).
+## 10) Hoja de ruta recomendada
+1. Consolidar wrappers iniciales `MxButton/MxCard/MxBadge`.
+2. Estandarizar formularios wrapper (`MxTextField`, `MxSelect`, `MxDialog`).
+3. Definir contratos enterprise (DataGrid/Charts/FileUpload).
+4. Añadir pruebas visuales de tema (light/dark) en E2E.
+5. Expandir theming (high-contrast, brand variants por producto si aplica).

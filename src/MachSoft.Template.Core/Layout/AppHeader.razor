@@ -1,3 +1,5 @@
+@using MachSoft.Template.Core.Models
+
 <header class="ms-shell__header">
     <div class="ms-shell__header-left">
         <button class="ms-header-menu-btn"
@@ -20,7 +22,15 @@
         }
     </div>
 
-    <div class="ms-shell__header-right" aria-hidden="true"></div>
+    <div class="ms-shell__header-right">
+        <button type="button"
+                class="ms-theme-toggle"
+                @onclick="HandleThemeToggle"
+                aria-label="Switch color mode"
+                aria-pressed="@(CurrentTheme is ThemeMode.Dark)">
+            @(CurrentTheme is ThemeMode.Dark ? "☀️" : "🌙")
+        </button>
+    </div>
 </header>
 
 @code {
@@ -29,7 +39,11 @@
     [Parameter] public bool IsMenuOpen { get; set; }
     [Parameter] public string ToggleButtonId { get; set; } = "ms-shell-menu-toggle";
     [Parameter] public string NavigationId { get; set; } = "ms-app-navigation";
+    [Parameter] public ThemeMode CurrentTheme { get; set; } = ThemeMode.Light;
     [Parameter] public EventCallback OnToggleMenu { get; set; }
+    [Parameter] public EventCallback OnToggleTheme { get; set; }
 
     private Task HandleToggleClick() => OnToggleMenu.InvokeAsync();
+
+    private Task HandleThemeToggle() => OnToggleTheme.InvokeAsync();
 }

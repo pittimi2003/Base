@@ -1,6 +1,6 @@
 :root {
-  --mx-font-family-sans: "Segoe UI", "Inter", Roboto, Arial, sans-serif;
-  --mx-font-family-mono: "Cascadia Mono", "Consolas", "SFMono-Regular", monospace;
+  --mx-font-family-sans: "Segoe UI", Inter, "Noto Sans", Roboto, Arial, sans-serif;
+  --mx-font-family-mono: "Cascadia Mono", "JetBrains Mono", "SFMono-Regular", Consolas, monospace;
 
   --mx-font-size-display: 2rem;
   --mx-font-size-h1: 1.5rem;
@@ -20,20 +20,32 @@
   --mx-line-height-normal: 1.45;
   --mx-line-height-relaxed: 1.6;
 
+  --mx-letter-spacing-tight: -0.01em;
+  --mx-letter-spacing-normal: 0;
+  --mx-letter-spacing-wide: 0.01em;
+
   --mx-layout-sidebar-width: 260px;
   --mx-layout-sidebar-width-mobile: min(320px, 86vw);
 
-  --mx-z-header: 30;
+  --mx-z-base: 1;
+  --mx-z-sticky: 20;
   --mx-z-overlay: 40;
-  --mx-z-sidebar: 50;
+  --mx-z-drawer: 50;
+  --mx-z-dialog: 70;
+  --mx-z-toast: 80;
+  --mx-z-tooltip: 90;
 
   --mx-motion-duration-fast: 120ms;
   --mx-motion-duration-base: 180ms;
   --mx-motion-duration-slow: 260ms;
   --mx-motion-ease-standard: cubic-bezier(0.2, 0, 0, 1);
+  --mx-motion-ease-emphasis: cubic-bezier(0.2, 0, 0, 1.1);
 
   --mx-density-comfortable-control-height: 40px;
   --mx-density-compact-control-height: 32px;
-  --mx-density-comfortable-spacing: var(--mx-space-4);
-  --mx-density-compact-spacing: var(--mx-space-3);
+  --mx-density-comfortable-spacing: var(--mx-space-semantic-md);
+  --mx-density-compact-spacing: var(--mx-space-semantic-sm);
+
+  --mx-focus-ring-width: 3px;
+  --mx-focus-ring-offset: 2px;
 }

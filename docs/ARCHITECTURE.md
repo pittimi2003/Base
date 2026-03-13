@@ -61,6 +61,13 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 - `tokens.css` actúa como agregador oficial del Design System y conserva aliases `--ms-*` para transición no destructiva.
 - La API pública objetivo de componentes del sistema es `Mx*` (MachSoft-first); el uso de MudBlazor queda permitido como implementación interna mediante wrappers.
 
+
+## Theming y Dark Mode
+- Theming centralizado en tokens semánticos (`themes/light.css` + `themes/dark.css`).
+- Activación por atributo `data-mx-theme` aplicado al root document.
+- Persistencia del modo en `localStorage` (`mx-theme`) con helper JS liviano (`wwwroot/js/theme.js`).
+- Toggle de tema integrado en `AppHeader` y coordinado por `AppShell` para Server/WASM sin duplicación de lógica de host.
+
 ## Governance Rules
 - **Qué entra en Core**:
   - patrones visuales reutilizados por Server y WASM,

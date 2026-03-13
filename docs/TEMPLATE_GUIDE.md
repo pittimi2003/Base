@@ -137,6 +137,12 @@ Cache recomendada: `~/.cache/ms-playwright` (o el path configurado en `PLAYWRIGH
 - Usar esta guía al iniciar nuevos proyectos sobre `Starter` o `Starter.Wasm`.
 
 
+## Dark mode (light/dark)
+- Activo por defecto con arquitectura de tokens semánticos en `design-system/themes`.
+- Toggle de modo en header (`🌙/☀️`) para alternar entre `light` y `dark`.
+- Persistencia en `localStorage` (`mx-theme`) y aplicación por `data-mx-theme` en root.
+- El modo oscuro afecta shell, navigation, cards, formularios base y showcase sin hardcodes por vista.
+
 ## MachSoft Design System (base formal)
 - Documento de referencia: `docs/MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md`.
 - Tokens oficiales del sistema: `src/MachSoft.Template.Core/wwwroot/css/template/design-system/`.

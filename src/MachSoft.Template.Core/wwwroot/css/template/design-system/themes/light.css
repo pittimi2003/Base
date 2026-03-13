@@ -14,11 +14,27 @@
   --mx-color-brand-primary: var(--mx-primitive-color-brand-600);
   --mx-color-brand-strong: var(--mx-primitive-color-brand-700);
   --mx-color-brand-soft: var(--mx-primitive-color-brand-100);
+  --mx-color-accent-primary: var(--mx-primitive-color-accent-600);
 
   --mx-color-state-success: var(--mx-primitive-color-success-500);
   --mx-color-state-warning: var(--mx-primitive-color-warning-500);
   --mx-color-state-danger: var(--mx-primitive-color-danger-500);
   --mx-color-state-info: var(--mx-primitive-color-info-500);
 
-  --mx-color-overlay: rgba(18, 24, 38, 0.56);
+  --mx-color-data-1: var(--mx-primitive-color-data-1);
+  --mx-color-data-2: var(--mx-primitive-color-data-2);
+  --mx-color-data-3: var(--mx-primitive-color-data-3);
+  --mx-color-data-4: var(--mx-primitive-color-data-4);
+  --mx-color-data-5: var(--mx-primitive-color-data-5);
+  --mx-color-data-6: var(--mx-primitive-color-data-6);
+  --mx-color-data-7: var(--mx-primitive-color-data-7);
+  --mx-color-data-8: var(--mx-primitive-color-data-8);
+
+  --mx-color-nav-surface: #0f1d42;
+  --mx-color-nav-surface-strong: #0d1734;
+  --mx-color-nav-text: #e4ebff;
+  --mx-color-nav-text-muted: #c4d0ef;
+  --mx-color-nav-active: #213b80;
+
+  --mx-color-overlay: rgba(8, 16, 30, 0.56);
 }

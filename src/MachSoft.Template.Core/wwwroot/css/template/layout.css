@@ -3,26 +3,27 @@
   display: grid;
   grid-template-columns: var(--ms-sidebar-width) minmax(0, 1fr);
   position: relative;
+  z-index: var(--ms-z-base);
 }
 
 .ms-shell__nav {
-  background: linear-gradient(180deg, #101c3d 0%, #0c1530 100%);
-  color: #fff;
-  padding: var(--ms-space-6) var(--ms-space-4) var(--ms-space-5);
+  background: linear-gradient(180deg, var(--ms-color-nav-surface) 0%, var(--ms-color-nav-surface-strong) 100%);
+  color: var(--ms-color-nav-text);
+  padding: var(--ms-space-7) var(--ms-space-4) var(--ms-space-6);
   box-shadow: var(--ms-shadow-sm);
   z-index: var(--ms-z-sidebar);
 }
 
 .ms-shell__nav-divider {
-  border-top: 1px solid rgba(255, 255, 255, 0.18);
+  border-top: 1px solid color-mix(in oklab, var(--ms-color-nav-text) 18%, transparent);
   margin-block: var(--ms-space-4);
 }
 
 .ms-brand {
   font-size: var(--ms-font-size-lg);
-  font-weight: 700;
+  font-weight: var(--mx-font-weight-bold);
   margin: 0;
-  letter-spacing: 0.01em;
+  letter-spacing: var(--mx-letter-spacing-wide);
 }
 
 .ms-shell__content {
@@ -42,8 +43,8 @@
   gap: var(--ms-space-3);
   padding: 0.875rem var(--ms-space-6);
   background: color-mix(in oklab, var(--ms-color-surface) 95%, var(--ms-color-brand-soft) 5%);
-  border-bottom: 1px solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
-  box-shadow: 0 8px 20px rgba(16, 24, 40, 0.04);
+  border-bottom: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
+  box-shadow: var(--ms-shadow-sm);
   backdrop-filter: blur(4px);
 }
 
@@ -54,35 +55,44 @@
 }
 
 .ms-shell__header-right {
-  width: 2.5rem;
-  height: 2.5rem;
+  display: flex;
+  justify-content: flex-end;
 }
 
-.ms-header-menu-btn {
+.ms-header-menu-btn,
+.ms-theme-toggle {
   width: 2.5rem;
   height: 2.5rem;
-  border: 1px solid color-mix(in oklab, var(--ms-color-border) 82%, var(--ms-color-brand) 18%);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 82%, var(--ms-color-brand) 18%);
   border-radius: var(--ms-radius-sm);
   background: var(--ms-color-surface);
   color: var(--ms-color-text);
   display: inline-grid;
   place-items: center;
   cursor: pointer;
-  transition: background 140ms ease, border-color 140ms ease, transform 140ms ease;
+  transition: background var(--ms-motion-fast) var(--ms-motion-ease), border-color var(--ms-motion-fast) var(--ms-motion-ease), transform var(--ms-motion-fast) var(--ms-motion-ease);
 }
 
-.ms-header-menu-btn:hover {
+.ms-header-menu-btn:hover,
+.ms-theme-toggle:hover {
   background: var(--ms-color-surface-muted);
   border-color: color-mix(in oklab, var(--ms-color-border) 70%, var(--ms-color-brand) 30%);
 }
 
-.ms-header-menu-btn:active {
+.ms-header-menu-btn:active,
+.ms-theme-toggle:active {
   transform: translateY(1px);
 }
 
-.ms-header-menu-btn:focus-visible {
-  outline: 3px solid var(--ms-color-brand);
-  outline-offset: 2px;
+.ms-header-menu-btn:focus-visible,
+.ms-theme-toggle:focus-visible {
+  outline: var(--ms-focus-ring-width) solid var(--ms-focus-ring-color);
+  outline-offset: var(--ms-focus-ring-offset);
+  box-shadow: var(--ms-focus-ring-shadow);
+}
+
+.ms-theme-toggle {
+  font-size: 1rem;
 }
 
 .ms-header-menu-btn__icon,
@@ -104,15 +114,15 @@
 .ms-header-menu-btn__icon::after { position: absolute; top: 0.36rem; }
 
 .ms-shell__main {
-  padding: var(--ms-space-6) var(--ms-space-6) var(--ms-space-6);
+  padding: var(--ms-space-7) var(--ms-space-7) var(--ms-space-7);
   display: grid;
   align-content: start;
-  gap: var(--ms-space-6);
+  gap: var(--ms-space-7);
 }
 
 .ms-shell__footer {
-  padding: 0.875rem var(--ms-space-6);
-  border-top: 1px solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
+  padding: 0.875rem var(--ms-space-7);
+  border-top: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
   background: color-mix(in oklab, var(--ms-color-surface) 92%, var(--ms-color-bg) 8%);
   color: color-mix(in oklab, var(--ms-color-text-soft) 90%, var(--ms-color-text) 10%);
 }
@@ -129,16 +139,15 @@
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 180ms ease;
+  transition: opacity var(--ms-motion-base) var(--ms-motion-ease);
   z-index: var(--ms-z-overlay);
 }
 
 .ms-shell__overlay:focus-visible {
-  outline: 3px solid rgba(255, 255, 255, 0.88);
+  outline: var(--ms-focus-ring-width) solid var(--ms-color-text-inverse, #fff);
   outline-offset: -6px;
 }
 
-/* Desktop: sidebar always visible, no floating overlay pattern. */
 @media (min-width: 1025px) {
   .ms-header-menu-btn {
     display: none;
@@ -149,7 +158,6 @@
   }
 }
 
-/* Tablet / Mobile: sidebar hidden by default and opened as floating panel with overlay. */
 @media (max-width: 1024px) {
   .ms-shell {
     grid-template-columns: 1fr;
@@ -162,7 +170,7 @@
     width: var(--ms-sidebar-width-mobile);
     height: 100vh;
     transform: translateX(-100%);
-    transition: transform 180ms ease;
+    transition: transform var(--ms-motion-base) var(--ms-motion-ease);
     box-shadow: var(--ms-shadow-lg);
   }
 
@@ -178,8 +186,8 @@
   }
 
   .ms-shell__main {
-    padding: var(--ms-space-5) var(--ms-space-4);
-    gap: var(--ms-space-5);
+    padding: var(--ms-space-6) var(--ms-space-4);
+    gap: var(--ms-space-6);
   }
 
   .ms-shell__header,
