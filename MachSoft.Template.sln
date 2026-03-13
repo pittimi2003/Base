@@ -1,4 +1,4 @@
-Microsoft Visual Studio Solution File, Format Version 12.00
+﻿Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35222.181
 MinimumVisualStudioVersion = 10.0.40219.1
@@ -9,6 +9,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachSoft.Template.SampleApp", "samples\MachSoft.Template.SampleApp\MachSoft.Template.SampleApp.csproj", "{B5F69808-B522-44BC-8C2A-AEF388567366}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MachSoft.Template.Starter.Wasm", "template\MachSoft.Template.Starter.Wasm\MachSoft.Template.Starter.Wasm.csproj", "{7C4E84B7-2B0A-48E5-9C67-A8F56B3AA2B1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{1124656A-53E6-41A1-83BC-51F6B56F4240}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachSoft.Template.AdoptionValidationApp", "samples\MachSoft.Template.AdoptionValidationApp\MachSoft.Template.AdoptionValidationApp.csproj", "{D4F1285D-B5A9-40D2-BE80-1936753C4B3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -32,11 +36,18 @@ Global
 		{7C4E84B7-2B0A-48E5-9C67-A8F56B3AA2B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7C4E84B7-2B0A-48E5-9C67-A8F56B3AA2B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7C4E84B7-2B0A-48E5-9C67-A8F56B3AA2B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D4F1285D-B5A9-40D2-BE80-1936753C4B3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D4F1285D-B5A9-40D2-BE80-1936753C4B3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D4F1285D-B5A9-40D2-BE80-1936753C4B3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D4F1285D-B5A9-40D2-BE80-1936753C4B3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B014320E-A0B0-4C5A-BDD8-E8EC439F86A0}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D4F1285D-B5A9-40D2-BE80-1936753C4B3E} = {1124656A-53E6-41A1-83BC-51F6B56F4240}
 	EndGlobalSection
 EndGlobal

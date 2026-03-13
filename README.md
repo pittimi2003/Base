@@ -13,12 +13,14 @@ Starter corporativo para proyectos Blazor bajo convención MachSoft, con variant
 - `template/MachSoft.Template.Starter`: starter principal en Blazor Server.
 - `template/MachSoft.Template.Starter.Wasm`: starter equivalente en Blazor WebAssembly.
 - `samples/MachSoft.Template.SampleApp`: demo funcional de referencia.
+- `samples/MachSoft.Template.AdoptionValidationApp`: app de validación de adopción (simula proyecto nuevo).
 
 ## Proyectos
 - **MachSoft.Template.Core**: Razor Class Library reusable compartida por Server/WASM.
 - **MachSoft.Template.Starter**: starter productivo mínimo (Server).
 - **MachSoft.Template.Starter.Wasm**: starter productivo mínimo (WASM standalone).
 - **MachSoft.Template.SampleApp**: showcase funcional de referencia (Server).
+- **MachSoft.Template.AdoptionValidationApp**: validación de adopción real con branding y páginas propias (Server).
 
 ## Qué comparten Server y WASM
 - `MainLayout` corporativo.
@@ -40,6 +42,9 @@ dotnet run --project template/MachSoft.Template.Starter.Wasm
 
 # Sample Server
 dotnet run --project samples/MachSoft.Template.SampleApp
+
+# Adoption validation app
+dotnet run --project samples/MachSoft.Template.AdoptionValidationApp
 ```
 
 ## Uso como base corporativa
@@ -50,3 +55,8 @@ dotnet run --project samples/MachSoft.Template.SampleApp
 
 ## Guía de adopción
 - Flujo operativo completo y checklist de arranque: `docs/ADOPTION_GUIDE.md`.
+
+
+## Validación de adopción real
+- Referencia implementada: `samples/MachSoft.Template.AdoptionValidationApp`.
+- Simula un equipo que adopta `Starter` y personaliza branding, navegación y páginas (`/operations`, `/settings`) usando Foundation del Core.

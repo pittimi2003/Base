@@ -93,3 +93,32 @@ Un equipo puede considerar “adoptado” el template si:
 - conserva shell responsive y accesibilidad base;
 - mantiene separación Core/host sin duplicación;
 - pasó build de solución y E2E mínima del shell.
+
+
+## 9) Validación de adopción real (implementada)
+Se agregó una app de ejemplo de adopción real:
+- `samples/MachSoft.Template.AdoptionValidationApp`
+- host elegido: **Server** (mismo patrón operativo de la mayoría de despliegues internos actuales)
+- branding cambiado: *Contoso Field Ops / Operations Portal*
+- páginas agregadas: `/operations` y `/settings`
+- composición: `PageContainer`, `BaseCard`, `AppMenuTile`, `FormSection`, `SectionTitle`, `FieldGroup`
+
+### Flujo aplicado (como equipo adoptante)
+1. Copiar base de `template/MachSoft.Template.Starter`.
+2. Renombrar proyecto/namespace (`MachSoft.Template.AdoptionValidationApp`).
+3. Crear `ValidationLayout` para branding y navegación propios sin tocar `Core`.
+4. Agregar páginas de negocio iniciales usando Foundation existente.
+5. Mantener `/showcase` operativo para validar no-regresión visual de Foundation.
+
+## 10) Fricciones detectadas y mitigaciones mínimas
+1. **Fricción:** el `MainLayout` del Core trae navegación predefinida de template.
+   - **Impacto en adopción:** equipos nuevos necesitan branding/rutas propias desde día 1.
+   - **Mitigación aplicada:** documentar y usar layout local (`ValidationLayout`) que compone `AppShell` con `NavigationItems` propios.
+2. **Fricción:** pasos de renombre pueden olvidarse (namespace + branding + rutas).
+   - **Impacto:** arranques inconsistentes entre equipos.
+   - **Mitigación aplicada:** se reforzó README + esta guía con referencia explícita a la app de adopción y comandos de ejecución.
+
+## 11) Recomendación de adopción para equipos
+- Usar la app de validación como patrón de referencia para nuevos proyectos Server.
+- Mantener personalización en el host (layout local) y reservar `Core` para piezas reusables.
+- Promover a Foundation solo cuando exista reutilización real en más de un contexto.
