@@ -1,0 +1,16 @@
+<section class="ms-form-section">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <SectionTitle Title="@Title" Description="@Description" />
+    }
+
+    <div class="ms-form-section__body">
+        @ChildContent
+    </div>
+</section>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}
