@@ -1,0 +1,61 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<MxFieldGroup Label="@Label"
+              FieldId="@ResolvedId"
+              Required="@Required"
+              HelperText="@HelperText"
+              ErrorText="@ErrorText"
+              IsCompact="@IsCompact">
+    <select id="@ResolvedId"
+            class="@InputClass"
+            multiple
+            disabled="@Disabled"
+            required="@Required"
+            aria-required="@Required"
+            aria-invalid="@HasError"
+            aria-describedby="@DescribedBy"
+            @onchange="OnSelectionChanged">
+        @foreach (var option in Options)
+        {
+            <option value="@option.Value" selected="@SelectedValues.Contains(option.Value)" disabled="@option.Disabled">@option.Text</option>
+        }
+    </select>
+
+    @if (!string.IsNullOrWhiteSpace(Placeholder) && SelectedValues.Count == 0)
+    {
+        <p class="ms-mx-field-group__message">@Placeholder</p>
+    }
+</MxFieldGroup>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public IReadOnlyList<string> SelectedValues { get; set; } = Array.Empty<string>();
+    [Parameter] public EventCallback<IReadOnlyList<string>> SelectedValuesChanged { get; set; }
+    [Parameter] public IEnumerable<MxInputOption> Options { get; set; } = Array.Empty<MxInputOption>();
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+
+    private readonly string _fallbackId = $"mx-multiselect-{Guid.NewGuid():N}";
+    private string ResolvedId => Id ?? _fallbackId;
+    private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? $"{ResolvedId}-message" : null;
+    private string InputClass => $"ms-mx-input ms-mx-input--multiselect{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+
+    private async Task OnSelectionChanged(ChangeEventArgs args)
+    {
+        IReadOnlyList<string> next = args.Value switch
+        {
+            string[] values => values,
+            string single when !string.IsNullOrWhiteSpace(single) => new[] { single },
+            _ => Array.Empty<string>()
+        };
+
+        SelectedValues = next;
+        await SelectedValuesChanged.InvokeAsync(next);
+    }
+}

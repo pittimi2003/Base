@@ -1,0 +1,52 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<article class="@CardClass">
+    @if (HasHeader)
+    {
+        <header class="ms-mx-card__header">
+            <div class="ms-mx-card__header-main">
+                @if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    <h3>@Title</h3>
+                }
+
+                @if (HeaderContent is not null)
+                {
+                    @HeaderContent
+                }
+            </div>
+
+            @if (Metadata is not null)
+            {
+                <div class="ms-mx-card__metadata">
+                    @Metadata
+                </div>
+            }
+        </header>
+    }
+
+    <div class="ms-mx-card__body">
+        @ChildContent
+    </div>
+
+    @if (FooterContent is not null)
+    {
+        <footer class="ms-mx-card__footer">
+            @FooterContent
+        </footer>
+    }
+</article>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public SurfaceVariant Variant { get; set; } = SurfaceVariant.Default;
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+    [Parameter] public RenderFragment? Metadata { get; set; }
+    [Parameter] public RenderFragment? FooterContent { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private bool HasHeader => !string.IsNullOrWhiteSpace(Title) || HeaderContent is not null || Metadata is not null;
+    private string CardClass =>
+        $"ms-mx-card ms-mx-card--{Variant.ToString().ToLowerInvariant()}{(IsCompact ? " ms-mx-card--compact" : string.Empty)}";
+}

@@ -155,3 +155,131 @@ Cache recomendada: `~/.cache/ms-playwright` (o el path configurado en `PLAYWRIGH
 - Shell y layout: `layout.css`.
 - Componentes: `components.css`.
 - Helpers: `utilities.css`.
+
+## Catálogo de componentes Mx* · Grupo 1
+La baseline incluye un primer lote de componentes públicos del Design System con contratos estables y enfoque cross-host:
+
+- `MxButton`: CTA principal/secundaria/terciaria/destructiva con tamaños `Small|Medium|Large`.
+- `MxIconButton`: acción compacta con icono y `AriaLabel` obligatorio.
+- `MxCard`: superficie de contenido con header/body/footer opcionales y metadata.
+- `MxBadge`: etiqueta de estado ligera (`Neutral|Brand|Success|Warning|Danger`).
+- `MxPageHeader`: cabecera enterprise con `Title`, `Description`, `Metadata` y `Actions`.
+- `MxPanel`: contenedor de bloque para filtros/contexto con header opcional.
+
+### Reglas de uso rápidas
+1. Priorizar `MxButton.Primary` para una sola acción principal por bloque.
+2. `MxIconButton` siempre con `AriaLabel` descriptivo; no usar solo iconografía decorativa.
+3. Usar `MxCard` para contenido principal y `MxPanel` para contexto secundario o utilitario.
+4. `MxBadge` solo para señales breves de estado/metadata (evitar párrafos o labels extensos).
+5. Validar cualquier cambio reusable en `/showcase` y mantener contraste en light/dark.
+
+## Catálogo de componentes Mx* · Grupo 2 (Forms base)
+Se incorporó la capa base de formularios del Design System:
+
+- `MxTextField`
+- `MxTextarea`
+- `MxSelect`
+- `MxCheckbox`
+- `MxSwitch`
+- `MxFieldGroup`
+- `MxFormSection`
+
+Componente auxiliar:
+- `MxSelectOption` para opciones tipadas en selects.
+
+### Criterio de implementación
+- Grupo 2 se implementa como **componentes propios puros** (Blazor + HTML + CSS tokenizado).
+- No se expone API de MudBlazor en contratos públicos.
+- Se preserva posibilidad de wrappers internos futuros sin romper API `Mx*`.
+
+### Reglas de uso rápidas
+1. Usar `MxTextField/MxTextarea/MxSelect` para captura base con `HelperText`/`ErrorText`.
+2. Usar `MxCheckbox` para flags y `MxSwitch` para toggles de configuración.
+3. Usar `MxFieldGroup` para encapsular controles custom manteniendo contrato visual.
+4. Agrupar formularios por contexto usando `MxFormSection`.
+5. Validar siempre contraste y foco visible en `/showcase` light/dark al cambiar estilos de formularios.
+
+## Catálogo de componentes Mx* · Grupo 3 (Navigation + Overlays)
+Se incorporó una base reusable de navegación y overlays:
+
+- `MxTabs`
+- `MxDialog`
+- `MxDrawer`
+- `MxToast`
+- `MxBreadcrumb`
+
+Modelos auxiliares:
+- `MxTabItem`
+- `MxBreadcrumbItem`
+
+### Criterio de implementación
+- Grupo 3 implementado como componentes propios puros (Blazor + HTML + CSS tokenizado).
+- API pública estable `Mx*` sin contratos vendor expuestos.
+
+### Reglas de uso rápidas
+1. Usar `MxTabs` para secciones hermanas con contenido alternable en contexto de página.
+2. Usar `MxDialog` para confirmaciones o flujos cortos bloqueantes.
+3. Usar `MxDrawer` para filtros/contexto lateral no destructivo.
+4. Usar `MxToast` para feedback efímero no bloqueante.
+5. Usar `MxBreadcrumb` para jerarquía de navegación de páginas enterprise.
+
+## Catálogo de componentes Mx* · Grupo 4 (Data display + feedback)
+Se incorporó la base de visualización informativa para dashboards y backoffice:
+
+- `MxTag`
+- `MxStatusIndicator`
+- `MxEmptyState`
+- `MxStatCard`
+- `MxProgress`
+
+### Reglas de uso rápidas
+1. `MxTag` para etiquetar entidades operativas (lote, canal, prioridad).
+2. `MxStatusIndicator` para estado vivo de procesos/servicios con lectura compacta.
+3. `MxEmptyState` para módulos/listas sin datos con próxima acción clara.
+4. `MxStatCard` para KPIs principales con contexto y tendencia.
+5. `MxProgress` para progreso de tareas/lotes/importaciones con semántica accesible.
+
+### Diferencias clave
+- `MxBadge` = metadata UI.
+- `MxTag` = etiqueta de entidad operativa.
+- `MxStatusIndicator` = estado operativo compacto.
+
+## Catálogo de componentes Mx* · Grupo 5 (Enterprise inputs)
+Se incorporó la capa base de inputs enterprise:
+
+- `MxDatePicker`
+- `MxDateRangePicker`
+- `MxAutocomplete`
+- `MxMultiSelect`
+- `MxFileUpload`
+
+Modelo auxiliar:
+- `MxInputOption`.
+
+### Reglas de uso rápidas
+1. `MxDatePicker` para fecha operativa única.
+2. `MxDateRangePicker` para filtros por rango temporal.
+3. `MxAutocomplete` para catálogos con búsqueda textual rápida.
+4. `MxMultiSelect` para selección múltiple de estados/regiones/tags.
+5. `MxFileUpload` para adjuntos de evidencia/lotes con validación en backend.
+
+### Límites del alcance actual
+- Baseline enfocada en contratos mínimos y consistentes.
+- Comportamientos avanzados (virtualización, async remote search, drag-drop upload) quedan para iteraciones posteriores.
+
+## Catálogo de componentes Mx* · Grupo 6 (Enterprise data)
+Se incorporó una base de visualización de datos enterprise:
+
+- `MxDataGrid`
+- `MxTreeGrid`
+- `MxChart`
+
+### Reglas de uso rápidas
+1. `MxDataGrid` para tablas operativas con columnas definidas por contrato.
+2. `MxTreeGrid` para estructuras jerárquicas con drill-down básico.
+3. `MxChart` para métricas de tendencia/capacidad con tipos `Bar` y `Line`.
+
+### Límites del alcance actual
+- Grid sin sorting/filtering/paging avanzados.
+- Tree con estructura jerárquica simple y expand/collapse.
+- Chart base sin capacidades analíticas avanzadas.
