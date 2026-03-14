@@ -456,3 +456,31 @@ Motivo: baseline enterprise usable sin exponer API vendor, con contratos control
 - Estados base cubiertos: default, hover, focus-visible, disabled, error.
 - Asociación label/control vía `MxFieldGroup`.
 - Inputs con `aria-required`, `aria-invalid`, `aria-describedby` cuando aplica.
+
+---
+
+## 16) Catálogo Mx* - Grupo 6 (Enterprise data components)
+Ubicación en Core:
+- `Components/Foundation/Data`: `MxDataGrid`, `MxTreeGrid`, `MxChart`.
+- `Models`: `MxDataGridColumn<TItem>`, `MxTreeGridItem`, `MxChartSeries`.
+
+### 16.1 Decisión de implementación y alcance real
+- `MxDataGrid`: **propio puro** con alcance inicial: headers, rows, empty state y densidad compacta opcional.
+- `MxTreeGrid`: **propio puro** con alcance inicial: jerarquía, indentación y expand/collapse.
+- `MxChart`: **propio puro** con alcance inicial controlado: tipo `Bar` y `Line`, una serie principal, categorías y empty state.
+
+### 16.2 Contratos públicos
+- `MxDataGrid`: `Items`, `Columns`, `EmptyText`, `IsCompact`, `AriaLabel`.
+- `MxTreeGrid`: `Items`, `EmptyText`, `AriaLabel`.
+- `MxChart`: `Type`, `Title`, `Categories`, `Series`, `EmptyText`, `AriaLabel`.
+
+### 16.3 Limitaciones explícitas actuales
+- `MxDataGrid`: sin sorting/filtering/paging server-side en esta iteración.
+- `MxTreeGrid`: modelo jerárquico fijo (`MxTreeGridItem`) sin edición inline.
+- `MxChart`: enfoque en visualización base, sin ejes/tooltip avanzados ni múltiples series complejas.
+
+### 16.4 Accesibilidad y estados
+- Soporte light/dark con tokens del sistema.
+- Data states no-data cubiertos en los tres componentes.
+- `MxTreeGrid` con `role=tree/treeitem/group` y toggles con foco visible.
+- Contraste y legibilidad base priorizados para contexto operativo enterprise.

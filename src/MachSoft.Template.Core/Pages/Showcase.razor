@@ -187,6 +187,35 @@
         </MxCard>
     </section>
 
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 6 · Enterprise Data Components</h2>
+
+        <MxDataGrid TItem="OrderRow"
+                    Items="@Orders"
+                    Columns="@OrderColumns"
+                    EmptyText="Sin órdenes para el criterio seleccionado."
+                    AriaLabel="Órdenes operativas" />
+
+        <MxTreeGrid Items="@ProcessTree"
+                    EmptyText="Sin jerarquía de procesos"
+                    AriaLabel="Jerarquía de almacenes y procesos" />
+
+        <div class="ms-grid ms-grid--2">
+            <MxChart Title="Throughput por turno"
+                     Type="MxChartType.Bar"
+                     Categories="@ChartCategories"
+                     Series="@ChartSeries"
+                     AriaLabel="Chart de throughput" />
+
+            <MxChart Title="Errores por día"
+                     Type="MxChartType.Line"
+                     Categories="@ChartCategories"
+                     Series="@ErrorSeries"
+                     AriaLabel="Chart de errores" />
+        </div>
+    </section>
+
     <section class="ms-showcase-group">
         <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
         <div class="ms-grid ms-grid--2">
@@ -291,4 +320,53 @@
         UploadedFileNames = files.Select(f => f.Name).ToArray();
         return Task.CompletedTask;
     }
+
+
+    private sealed record OrderRow(string OrderId, string Warehouse, string Status, string Priority);
+
+    private IReadOnlyList<OrderRow> Orders { get; } =
+    [
+        new("SO-12991", "North Hub", "Picking", "High"),
+        new("SO-13002", "East Terminal", "Blocked", "Critical"),
+        new("SO-13008", "LATAM Node", "Ready", "Normal")
+    ];
+
+    private IReadOnlyList<MxDataGridColumn<OrderRow>> OrderColumns { get; } =
+    [
+        new("Order", x => x.OrderId, "18%"),
+        new("Warehouse", x => x.Warehouse, "30%"),
+        new("Status", x => x.Status, "26%"),
+        new("Priority", x => x.Priority, "26%")
+    ];
+
+    private IReadOnlyList<MxTreeGridItem> ProcessTree { get; } =
+    [
+        new MxTreeGridItem
+        {
+            Id = "north",
+            Label = "North Hub",
+            Meta = "3 procesos",
+            Children =
+            [
+                new MxTreeGridItem { Id = "north-in", Label = "Inbound", Meta = "12 tareas" },
+                new MxTreeGridItem { Id = "north-pick", Label = "Picking", Meta = "35 tareas" },
+                new MxTreeGridItem { Id = "north-out", Label = "Outbound", Meta = "7 tareas" }
+            ]
+        },
+        new MxTreeGridItem
+        {
+            Id = "east",
+            Label = "East Terminal",
+            Meta = "2 procesos",
+            Children =
+            [
+                new MxTreeGridItem { Id = "east-in", Label = "Inbound", Meta = "8 tareas" },
+                new MxTreeGridItem { Id = "east-out", Label = "Outbound", Meta = "11 tareas" }
+            ]
+        }
+    ];
+
+    private IReadOnlyList<string> ChartCategories { get; } = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    private IReadOnlyList<MxChartSeries> ChartSeries { get; } = [new("Orders/hour", [85, 92, 88, 97, 104])];
+    private IReadOnlyList<MxChartSeries> ErrorSeries { get; } = [new("Errors", [7, 5, 6, 4, 3])];
 }

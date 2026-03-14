@@ -303,3 +303,24 @@ Reglas adicionales:
 2. Reusar `MxFieldGroup` para consistencia de accesibilidad y mensajes.
 3. Evitar exponer API vendor; si se encapsula framework-level, mantener contrato Mx estable.
 4. Reflejar siempre cambios del Grupo 5 en `/showcase` y documentación técnica.
+
+---
+
+## 18) Catálogo MachSoft Components — Grupo 6 (Enterprise data)
+Ubicación recomendada en Core:
+- `Components/Foundation/Data`:
+  - `MxDataGrid`
+  - `MxTreeGrid`
+  - `MxChart`
+- `Models`: `MxDataGridColumn<TItem>`, `MxTreeGridItem`, `MxChartSeries`.
+
+Contratos públicos mínimos del Grupo 6:
+- `MxDataGrid`: `Items`, `Columns`, `EmptyText`, `IsCompact`, `AriaLabel`.
+- `MxTreeGrid`: `Items`, `EmptyText`, `AriaLabel`.
+- `MxChart`: `Type`, `Title`, `Categories`, `Series`, `EmptyText`, `AriaLabel`.
+
+Reglas adicionales:
+1. Mantener alcance inicial honesto y controlado (sin feature creep).
+2. Priorizar legibilidad enterprise y estados no-data.
+3. Asegurar comportamiento base real (rows renderizables, tree expand/collapse, chart visible).
+4. Documentar limitaciones actuales y roadmap de evolución antes de ampliar APIs.

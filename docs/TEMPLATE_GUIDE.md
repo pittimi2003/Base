@@ -266,3 +266,20 @@ Modelo auxiliar:
 ### Límites del alcance actual
 - Baseline enfocada en contratos mínimos y consistentes.
 - Comportamientos avanzados (virtualización, async remote search, drag-drop upload) quedan para iteraciones posteriores.
+
+## Catálogo de componentes Mx* · Grupo 6 (Enterprise data)
+Se incorporó una base de visualización de datos enterprise:
+
+- `MxDataGrid`
+- `MxTreeGrid`
+- `MxChart`
+
+### Reglas de uso rápidas
+1. `MxDataGrid` para tablas operativas con columnas definidas por contrato.
+2. `MxTreeGrid` para estructuras jerárquicas con drill-down básico.
+3. `MxChart` para métricas de tendencia/capacidad con tipos `Bar` y `Line`.
+
+### Límites del alcance actual
+- Grid sin sorting/filtering/paging avanzados.
+- Tree con estructura jerárquica simple y expand/collapse.
+- Chart base sin capacidades analíticas avanzadas.

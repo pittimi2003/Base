@@ -994,3 +994,155 @@
     display: none;
   }
 }
+
+/* MachSoft Design System - Grupo 6 (Enterprise data components) */
+.ms-mx-data-grid {
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  overflow: auto;
+  background: var(--ms-color-surface);
+}
+
+.ms-mx-data-grid__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 520px;
+}
+
+.ms-mx-data-grid__table th,
+.ms-mx-data-grid__table td {
+  padding: var(--ms-space-3);
+  border-bottom: var(--ms-border-width-1) solid var(--ms-color-border);
+  text-align: left;
+}
+
+.ms-mx-data-grid__table th {
+  font-size: var(--ms-font-size-sm);
+  color: var(--ms-color-text-soft);
+  font-weight: var(--mx-font-weight-semibold);
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 65%, var(--ms-color-surface) 35%);
+}
+
+.ms-mx-data-grid__table tbody tr:hover {
+  background: color-mix(in oklab, var(--ms-color-brand-soft) 35%, transparent 65%);
+}
+
+.ms-mx-data-grid__table--compact th,
+.ms-mx-data-grid__table--compact td { padding: var(--ms-space-2); }
+
+.ms-mx-data-grid__empty {
+  color: var(--ms-color-text-soft);
+  text-align: center;
+}
+
+.ms-mx-tree-grid {
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  background: var(--ms-color-surface);
+  padding: var(--ms-space-2) var(--ms-space-3);
+}
+
+.ms-mx-tree-grid__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.ms-mx-tree-grid__row {
+  display: flex;
+  align-items: center;
+  gap: var(--ms-space-2);
+  padding: var(--ms-space-2) 0;
+  padding-left: calc(var(--mx-tree-depth) * var(--ms-space-4));
+}
+
+.ms-mx-tree-grid__toggle {
+  border: 0;
+  background: transparent;
+  color: var(--ms-color-brand);
+  cursor: pointer;
+  inline-size: 1.5rem;
+}
+
+.ms-mx-tree-grid__toggle:focus-visible {
+  outline: var(--ms-focus-ring-width) solid var(--ms-focus-ring-color);
+  outline-offset: var(--ms-focus-ring-offset);
+}
+
+.ms-mx-tree-grid__leaf { color: var(--ms-color-text-soft); inline-size: 1.5rem; text-align: center; }
+.ms-mx-tree-grid__meta { margin-left: auto; color: var(--ms-color-text-soft); font-size: var(--ms-font-size-sm); }
+.ms-mx-tree-grid__empty { color: var(--ms-color-text-soft); margin: var(--ms-space-2) 0; }
+
+.ms-mx-chart {
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  background: var(--ms-color-surface);
+  padding: var(--ms-space-4);
+  display: grid;
+  gap: var(--ms-space-3);
+}
+
+.ms-mx-chart h4 { margin: 0; }
+.ms-mx-chart__empty { margin: 0; color: var(--ms-color-text-soft); }
+
+.ms-mx-chart__bars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  align-items: end;
+  gap: var(--ms-space-2);
+  min-height: 160px;
+}
+
+.ms-mx-chart__bar-group {
+  display: grid;
+  gap: var(--ms-space-1);
+  justify-items: center;
+}
+
+.ms-mx-chart__bar {
+  width: 100%;
+  max-width: 26px;
+  border-radius: var(--ms-radius-sm) var(--ms-radius-sm) 0 0;
+  background: var(--mx-color-data-1);
+}
+
+.ms-mx-chart__category {
+  font-size: var(--ms-font-size-sm);
+  color: var(--ms-color-text-soft);
+}
+
+.ms-mx-chart__line {
+  width: 100%;
+  height: 180px;
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 55%, var(--ms-color-surface) 45%);
+  border-radius: var(--ms-radius-sm);
+}
+
+.ms-mx-chart__line-path {
+  stroke: var(--mx-color-data-2);
+  stroke-width: 2;
+}
+
+.ms-mx-chart__categories {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+  font-size: var(--ms-font-size-sm);
+  color: var(--ms-color-text-soft);
+  text-align: center;
+}
+
+.ms-mx-chart__legend {
+  margin: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ms-space-2);
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-sm);
+}
+
+.ms-mx-chart__legend-dot {
+  inline-size: 0.65rem;
+  block-size: 0.65rem;
+  border-radius: var(--mx-radius-pill);
+  background: var(--mx-color-data-1);
+}

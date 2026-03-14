@@ -196,3 +196,21 @@ Decisiones de arquitectura:
 2. Implementación propia para baseline enterprise con evolución incremental.
 3. Integración con `MxFieldGroup` para consistencia visual, helper/error y accesibilidad.
 4. `MxFileUpload` encapsula `InputFile` de Blazor como dependencia framework-level (no vendor UI API).
+
+## Catálogo MachSoft Components - Grupo 6 (Enterprise data)
+Implementado en `MachSoft.Template.Core/Components/Foundation/Data`:
+
+- `MxDataGrid`
+- `MxTreeGrid`
+- `MxChart`
+
+Modelos de soporte:
+- `MxDataGridColumn<TItem>`
+- `MxTreeGridItem`
+- `MxChartSeries`
+
+Decisiones de arquitectura:
+1. Implementación propia con contratos Mx mínimos y honestos.
+2. Alcance inicial controlado para evitar APIs infladas y deuda de mantenibilidad.
+3. Integración visual con tokens y patrones de empty state.
+4. Base diseñada para evolución incremental (sorting/paging/series avanzadas en futuras iteraciones).

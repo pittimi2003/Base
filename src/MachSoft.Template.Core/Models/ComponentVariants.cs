@@ -98,3 +98,10 @@ public enum MxProgressVariant
     Warning,
     Danger
 }
+
+
+public enum MxChartType
+{
+    Bar,
+    Line
+}
