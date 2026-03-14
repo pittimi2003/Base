@@ -149,7 +149,7 @@
 .ms-field-group__control > textarea {
   width: 100%;
   min-height: var(--mx-density-comfortable-control-height);
-  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 88%, var(--mx-color-brand-soft) 12%);
   border-radius: var(--ms-radius-sm);
   padding: var(--ms-space-2) var(--ms-space-3);
   font-family: var(--ms-font-family);
@@ -299,8 +299,8 @@
 
 .ms-mx-card,
 .ms-mx-panel {
-  background: var(--ms-color-surface);
-  border: var(--ms-border-width-1) solid var(--ms-color-border-subtle);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ms-color-surface) 98%, var(--mx-color-brand-soft) 2%) 0%, var(--ms-color-surface) 100%);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border-subtle) 90%, var(--mx-color-brand-soft) 10%);
   border-radius: var(--ms-radius-md);
   padding: var(--ms-space-6);
   display: grid;
@@ -382,8 +382,8 @@
 .ms-mx-form-section {
   display: grid;
   gap: var(--ms-space-4);
-  background: var(--ms-color-surface);
-  border: var(--ms-border-width-1) solid var(--ms-color-border-subtle);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ms-color-surface) 98%, var(--mx-color-accent-soft) 2%) 0%, var(--ms-color-surface) 100%);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border-subtle) 90%, var(--mx-color-accent-soft) 10%);
   border-radius: var(--ms-radius-md);
   padding: var(--ms-space-6);
 }
@@ -456,20 +456,20 @@
   font-size: var(--ms-font-size-md);
   line-height: 1.35;
   color: var(--ms-color-text);
-  background: var(--ms-color-input-bg);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ms-color-input-bg) 96%, var(--mx-color-brand-soft) 4%) 0%, var(--ms-color-input-bg) 100%);
   box-sizing: border-box;
   transition: border-color var(--ms-motion-fast) var(--ms-motion-ease), box-shadow var(--ms-motion-fast) var(--ms-motion-ease), background-color var(--ms-motion-fast) var(--ms-motion-ease), transform var(--ms-motion-fast) var(--ms-motion-ease);
 }
 
 .ms-mx-input:hover:not(:disabled):not(:read-only) {
-  border-color: color-mix(in oklab, var(--ms-color-border) 70%, var(--mx-color-accent-primary) 30%);
-  background: color-mix(in oklab, var(--ms-color-input-bg) 92%, var(--mx-color-accent-soft) 8%);
+  border-color: color-mix(in oklab, var(--ms-color-border) 64%, var(--mx-color-accent-primary) 36%);
+  background: color-mix(in oklab, var(--ms-color-input-bg) 84%, var(--mx-color-accent-soft) 16%);
 }
 
 .ms-mx-input:focus-visible {
   outline: 0;
   border-color: var(--mx-color-border-focus);
-  box-shadow: var(--ms-focus-ring-shadow);
+  box-shadow: var(--ms-focus-ring-shadow), inset 0 0 0 1px color-mix(in oklab, var(--mx-color-accent-primary) 40%, transparent);
   background: var(--ms-color-surface);
 }
 
@@ -502,12 +502,14 @@
 
 .ms-mx-input--select {
   appearance: none;
+  cursor: pointer;
   background-image:
     linear-gradient(45deg, transparent 50%, color-mix(in oklab, var(--ms-color-text-soft) 72%, var(--mx-color-brand-primary) 28%) 50%),
     linear-gradient(135deg, color-mix(in oklab, var(--ms-color-text-soft) 72%, var(--mx-color-brand-primary) 28%) 50%, transparent 50%),
     linear-gradient(to right, color-mix(in oklab, var(--ms-color-border) 86%, transparent 14%), color-mix(in oklab, var(--ms-color-border) 86%, transparent 14%));
   background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px), calc(100% - 2.25rem) 50%;
   background-size: 6px 6px, 6px 6px, 1px 60%;
+  color-scheme: light dark;
   background-repeat: no-repeat;
   padding-right: 2.5rem;
 }
@@ -515,13 +517,15 @@
 .ms-mx-input[type="date"],
 .ms-mx-input[type="datetime-local"] {
   appearance: none;
+  color-scheme: light dark;
+  cursor: pointer;
 }
 
 .ms-mx-input[type="date"]::-webkit-calendar-picker-indicator,
 .ms-mx-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  opacity: 0.78;
+  opacity: 0.84;
   cursor: pointer;
-  filter: saturate(1.05) hue-rotate(175deg);
+  filter: saturate(1.12) hue-rotate(172deg) contrast(1.05);
 }
 
 .ms-mx-input[type="date"]::-webkit-calendar-picker-indicator:hover,
@@ -531,16 +535,18 @@
 
 .ms-mx-input[type="file"] {
   padding-inline: var(--ms-space-2);
+  background: color-mix(in oklab, var(--ms-color-input-bg) 88%, var(--mx-color-brand-soft) 12%);
 }
 
 .ms-mx-input[type="file"]::file-selector-button {
   margin-right: var(--ms-space-3);
-  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 74%, var(--mx-color-accent-primary) 26%);
   border-radius: var(--ms-radius-sm);
   padding: 0.35rem 0.75rem;
-  background: color-mix(in oklab, var(--mx-color-accent-soft) 68%, var(--ms-color-surface) 32%);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--mx-color-accent-soft) 78%, var(--ms-color-surface) 22%) 0%, color-mix(in oklab, var(--mx-color-accent-soft) 62%, var(--ms-color-surface) 38%) 100%);
   color: var(--ms-color-text);
   font: inherit;
+  cursor: pointer;
 }
 
 .ms-mx-check,
@@ -1034,6 +1040,10 @@
   font-size: var(--ms-font-size-sm);
   display: grid;
   gap: var(--ms-space-1);
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 84%, var(--mx-color-brand-soft) 16%);
+  border: var(--ms-border-width-1) dashed color-mix(in oklab, var(--ms-color-border) 74%, var(--mx-color-brand-soft) 26%);
+  border-radius: var(--ms-radius-sm);
+  padding: var(--ms-space-2) var(--ms-space-3);
 }
 
 @media (max-width: 768px) {
