@@ -2,67 +2,183 @@
 
 <PageContainer Title="Foundation Showcase" Description="Vitrina visual del Design System base para hosts Server y WebAssembly.">
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Core Visual System</h2>
-        <div class="ms-grid ms-grid--3 ms-showcase-grid-tight">
-            <BaseCard Title="Tipografía" BadgeText="typography.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <p class="ms-title">Título principal</p>
-                    <p class="ms-text-lg">Subtítulo jerárquico</p>
-                    <p>Texto base reusable para contenido estándar.</p>
-                    <p class="ms-text-sm">Texto auxiliar / metadata</p>
-                    <p class="ms-token-inline">display/h1/h2/body/caption/mono tokenizados</p>
-                </div>
-            </BaseCard>
+        <h2 class="ms-showcase-group__title">Grupo 1 · Componentes MachSoft</h2>
 
-            <BaseCard Title="Spacing Scale" BadgeText="primitives + semantic" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <div class="ms-surface">xs: var(--mx-space-semantic-xs)</div>
-                    <div class="ms-surface">sm: var(--mx-space-semantic-sm)</div>
-                    <div class="ms-surface">md/lg/xl: layout spacing</div>
-                </div>
-            </BaseCard>
+        <MxPageHeader Title="MachSoft Component Catalog"
+                      Description="Primer lote de componentes públicos Mx* con soporte de tema, accesibilidad y contratos estables.">
+            <Metadata>
+                <MxBadge Variant="MxBadgeVariant.Brand" Text="Group 1" />
+                <MxBadge Variant="MxBadgeVariant.Neutral" Text="Light/Dark ready" />
+            </Metadata>
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Primary" LeadingIcon="➕">Nueva orden</MxButton>
+                <MxButton Variant="MxButtonVariant.Secondary" TrailingIcon="↗">Exportar</MxButton>
+                <MxIconButton Icon="⚙️" AriaLabel="Abrir configuración" Variant="MxButtonVariant.Tertiary" />
+            </Actions>
+        </MxPageHeader>
 
-            <BaseCard Title="Paleta MachSoft" BadgeText="brand + accent + semantic" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-color-row">
-                    <span class="ms-color-swatch ms-color-swatch--brand" title="Brand"></span>
-                    <span class="ms-color-swatch ms-color-swatch--accent" title="Accent"></span>
-                    <span class="ms-color-swatch ms-color-swatch--success" title="Success"></span>
-                    <span class="ms-color-swatch ms-color-swatch--warning" title="Warning"></span>
-                    <span class="ms-color-swatch ms-color-swatch--danger" title="Danger"></span>
-                    <span class="ms-color-swatch ms-color-swatch--surface" title="Surface"></span>
-                    <span class="ms-color-swatch ms-color-swatch--text" title="Text"></span>
-                </div>
-                <div class="ms-divider"></div>
-                <p class="ms-text-sm">Paleta enterprise sobria para dashboards y aplicaciones operativas.</p>
-            </BaseCard>
+        <div class="ms-grid ms-grid--2">
+            <MxCard Title="MxButton" Variant="SurfaceVariant.Outlined">
+                <HeaderContent>
+                    <p class="ms-text-sm">Variantes mínimas enterprise + soporte de iconos leading/trailing.</p>
+                </HeaderContent>
+                <ChildContent>
+                    <div class="ms-stack-sm">
+                        <div class="ms-mx-page-header__actions">
+                            <MxButton Variant="MxButtonVariant.Primary">Primary</MxButton>
+                            <MxButton Variant="MxButtonVariant.Secondary">Secondary</MxButton>
+                            <MxButton Variant="MxButtonVariant.Tertiary">Tertiary</MxButton>
+                            <MxButton Variant="MxButtonVariant.Danger">Danger</MxButton>
+                        </div>
+                        <div class="ms-mx-page-header__actions">
+                            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Small</MxButton>
+                            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Medium">Medium</MxButton>
+                            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Large">Large</MxButton>
+                            <MxButton Variant="MxButtonVariant.Secondary" Disabled="true">Disabled</MxButton>
+                        </div>
+                    </div>
+                </ChildContent>
+            </MxCard>
 
-            <BaseCard Title="Elevation + Border" BadgeText="shadow + stroke tokens" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <BaseCard Title="shadow-1" IsCompact="true"><p class="ms-text-sm">Superficie base</p></BaseCard>
-                    <BaseCard Title="shadow-2" Variant="SurfaceVariant.Elevated" IsCompact="true"><p class="ms-text-sm">Bloque prioritario</p></BaseCard>
-                </div>
-            </BaseCard>
+            <MxCard Title="MxIconButton" Variant="SurfaceVariant.Outlined">
+                <ChildContent>
+                    <div class="ms-stack-sm">
+                        <div class="ms-mx-page-header__actions">
+                            <MxIconButton Icon="✏️" AriaLabel="Editar" Variant="MxButtonVariant.Primary" />
+                            <MxIconButton Icon="🔍" AriaLabel="Buscar" Variant="MxButtonVariant.Secondary" />
+                            <MxIconButton Icon="🗂️" AriaLabel="Ver detalles" Variant="MxButtonVariant.Tertiary" />
+                            <MxIconButton Icon="🗑️" AriaLabel="Eliminar" Variant="MxButtonVariant.Danger" />
+                        </div>
+                        <div class="ms-mx-page-header__actions">
+                            <MxIconButton Icon="⬅️" AriaLabel="Regresar" Size="MxButtonSize.Small" />
+                            <MxIconButton Icon="➡️" AriaLabel="Continuar" Size="MxButtonSize.Large" />
+                            <MxIconButton Icon="🚫" AriaLabel="Acción deshabilitada" Disabled="true" />
+                        </div>
+                    </div>
+                </ChildContent>
+            </MxCard>
+        </div>
 
-            <BaseCard Title="Arquitectura de tokens" BadgeText="design-system/*" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <p class="ms-text-sm"><strong>primitives</strong>: escalas base de color, spacing, radius, border, elevation.</p>
-                    <p class="ms-text-sm"><strong>semantic</strong>: intención UI (surface, text, border, brand, states, z-index).</p>
-                    <p class="ms-text-sm"><strong>themes</strong>: light/dark con overrides semánticos.</p>
-                </div>
-            </BaseCard>
+        <div class="ms-grid ms-grid--2">
+            <MxCard Title="MxBadge" Variant="SurfaceVariant.Outlined" IsCompact="true">
+                <ChildContent>
+                    <div class="ms-mx-page-header__actions">
+                        <MxBadge Variant="MxBadgeVariant.Neutral" Text="Neutral" />
+                        <MxBadge Variant="MxBadgeVariant.Brand" Text="Brand" />
+                        <MxBadge Variant="MxBadgeVariant.Success" Text="Success" />
+                        <MxBadge Variant="MxBadgeVariant.Warning" Text="Warning" />
+                        <MxBadge Variant="MxBadgeVariant.Danger" Text="Danger" />
+                        <MxBadge Variant="MxBadgeVariant.Neutral" Size="MxBadgeSize.Small">SLA +2h</MxBadge>
+                    </div>
+                </ChildContent>
+            </MxCard>
 
-            <BaseCard Title="Theme / Color Mode" BadgeText="light + dark activo" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <p class="ms-text-sm">Usa el botón 🌙/☀️ del header para alternar tema.</p>
-                    <p class="ms-text-sm">Persistencia por <span class="ms-token-inline">localStorage(mx-theme)</span>.</p>
-                    <p class="ms-text-sm">Se aplica al root vía <span class="ms-token-inline">data-mx-theme</span>.</p>
-                </div>
-            </BaseCard>
+            <MxPanel Title="MxPanel" Variant="SurfaceVariant.Muted">
+                <HeaderActions>
+                    <MxBadge Variant="MxBadgeVariant.Brand" Text="Filtro activo" />
+                    <MxIconButton Icon="♻️" AriaLabel="Refrescar panel" Size="MxButtonSize.Small" />
+                </HeaderActions>
+                <ChildContent>
+                    <p class="ms-text-sm">Contenedor de bloque con encabezado opcional y acciones rápidas. Útil para filtros, contextos laterales y paneles de estado.</p>
+                </ChildContent>
+            </MxPanel>
+        </div>
+
+        <div class="ms-grid ms-grid--2">
+            <MxCard Title="MxCard" Variant="SurfaceVariant.Default" FooterContent="@CardFooter">
+                <Metadata>
+                    <MxBadge Variant="MxBadgeVariant.Success" Text="Operativo" />
+                </Metadata>
+                <ChildContent>
+                    <p>Superficie principal para información de negocio. Permite title, header custom, metadata y footer opcional.</p>
+                </ChildContent>
+            </MxCard>
+
+            <MxCard Title="Theme validation" Variant="SurfaceVariant.Elevated" IsCompact="true">
+                <ChildContent>
+                    <p class="ms-text-sm">El contraste de botones, badges, cards, paneles y encabezados se valida tanto en tema light como dark usando tokens semánticos.</p>
+                    <p class="ms-text-sm">Usa el botón 🌙/☀️ del header para alternar entre modos.</p>
+                </ChildContent>
+            </MxCard>
         </div>
     </section>
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Foundation Components</h2>
+        <h2 class="ms-showcase-group__title">Grupo 2 · Formularios MachSoft</h2>
+
+        <MxFormSection Title="MxFormSection + MxFieldGroup"
+                       Description="Base enterprise de formularios con contratos Mx*, estados y mensajes de ayuda/error.">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Cancelar</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Guardar</MxButton>
+            </Actions>
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxTextField Label="Nombre del almacén"
+                                 Placeholder="North Hub"
+                                 Value="@WarehouseName"
+                                 ValueChanged="@(value => WarehouseName = value)"
+                                 HelperText="Usa un nombre corto y descriptivo." />
+
+                    <MxSelect Label="Región"
+                              Value="@Region"
+                              ValueChanged="@(value => Region = value)"
+                              Options="@RegionOptions"
+                              Placeholder="Selecciona una región"
+                              Required="true"
+                              ErrorText="@(string.IsNullOrWhiteSpace(Region) ? "Campo obligatorio" : null)" />
+                </div>
+
+                <MxTextarea Label="Notas operativas"
+                            Value="@Notes"
+                            ValueChanged="@(value => Notes = value)"
+                            Rows="4"
+                            Placeholder="Instrucciones de recepción, restricciones o alertas..."
+                            HelperText="Solo visible para supervisión." />
+
+                <div class="ms-grid ms-grid--2">
+                    <MxCheckbox Label="Permitir ingresos fuera de horario"
+                                Description="Habilita recepciones manuales con auditoría."
+                                Checked="@AllowOffHours"
+                                CheckedChanged="@(value => AllowOffHours = value)" />
+
+                    <MxSwitch Label="Modo compacto de formulario"
+                              HelperText="Reduce altura de controles para operación intensiva."
+                              Checked="@CompactMode"
+                              CheckedChanged="OnCompactModeChanged" />
+                </div>
+
+                <div class="ms-grid ms-grid--2">
+                    <MxTextField Label="Read only"
+                                 Value="WH-9001"
+                                 ReadOnly="true"
+                                 IsCompact="@CompactMode" />
+
+                    <MxTextField Label="Disabled"
+                                 Placeholder="No editable"
+                                 Disabled="true"
+                                 IsCompact="@CompactMode" />
+                </div>
+            </ChildContent>
+        </MxFormSection>
+
+        <MxCard Title="Controles individuales" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxFieldGroup Label="MxFieldGroup manual" FieldId="showcase-custom-control" HelperText="Puedes encapsular cualquier control propio o de terceros.">
+                        <input id="showcase-custom-control" class="ms-mx-input" placeholder="Custom control dentro de MxFieldGroup" />
+                    </MxFieldGroup>
+
+                    <MxFieldGroup Label="Error state" FieldId="showcase-error-control" ErrorText="Valor inválido para la política actual.">
+                        <input id="showcase-error-control" class="ms-mx-input ms-mx-input--error" value="invalid" />
+                    </MxFieldGroup>
+                </div>
+            </ChildContent>
+        </MxCard>
+    </section>
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
         <div class="ms-grid ms-grid--2">
             <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
                 <div class="ms-grid ms-grid--2">
@@ -82,41 +198,30 @@
             </BaseCard>
         </div>
     </section>
-
-    <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Composición y Formularios</h2>
-        <div class="ms-grid ms-grid--2">
-            <BaseCard Title="Form Foundation" BadgeText="FormSection + FieldGroup" Variant="SurfaceVariant.Outlined">
-                <FormSection Title="Create Warehouse" Description="Patrón mínimo para formularios corporativos.">
-                    <FieldGroup Label="Warehouse name" FieldId="warehouse-name" Hint="Usar nombre corto y descriptivo.">
-                        <input id="warehouse-name" type="text" placeholder="North Hub" />
-                    </FieldGroup>
-
-                    <FieldGroup Label="Region" FieldId="warehouse-region">
-                        <select id="warehouse-region">
-                            <option>EMEA</option>
-                            <option>LATAM</option>
-                            <option>NA</option>
-                        </select>
-                    </FieldGroup>
-                </FormSection>
-            </BaseCard>
-
-            <BaseCard Title="Composición recomendada" BadgeText="PageContainer + BaseCard + FormSection" Variant="SurfaceVariant.Outlined">
-                <PageContainer IsCompact="true" Title="Subsección" Description="Combinación equilibrada para contenido + formulario.">
-                    <div class="ms-grid ms-grid--2">
-                        <BaseCard IsCompact="true" Title="Resumen" Variant="SurfaceVariant.Muted">
-                            <p class="ms-text-sm">Bloque informativo en modo compacto.</p>
-                        </BaseCard>
-
-                        <FormSection Title="Quick update" Description="Edición rápida sin romper jerarquía visual.">
-                            <FieldGroup Label="Status" FieldId="status-field">
-                                <input id="status-field" type="text" value="Active" />
-                            </FieldGroup>
-                        </FormSection>
-                    </div>
-                </PageContainer>
-            </BaseCard>
-        </div>
-    </section>
 </PageContainer>
+
+@code {
+    private string? WarehouseName { get; set; }
+    private string? Region { get; set; }
+    private string? Notes { get; set; }
+    private bool AllowOffHours { get; set; }
+    private bool CompactMode { get; set; }
+
+    private IEnumerable<MxSelectOption> RegionOptions { get; } =
+    [
+        new("emea", "EMEA"),
+        new("latam", "LATAM"),
+        new("na", "North America")
+    ];
+
+    private RenderFragment CardFooter => @<div class="ms-mx-page-header__actions">
+        <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Detalles</MxButton>
+        <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Abrir</MxButton>
+    </div>;
+
+    private Task OnCompactModeChanged(bool value)
+    {
+        CompactMode = value;
+        return Task.CompletedTask;
+    }
+}
