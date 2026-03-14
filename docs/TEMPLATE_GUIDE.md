@@ -155,3 +155,20 @@ Cache recomendada: `~/.cache/ms-playwright` (o el path configurado en `PLAYWRIGH
 - Shell y layout: `layout.css`.
 - Componentes: `components.css`.
 - Helpers: `utilities.css`.
+
+## Catálogo de componentes Mx* · Grupo 1
+La baseline incluye un primer lote de componentes públicos del Design System con contratos estables y enfoque cross-host:
+
+- `MxButton`: CTA principal/secundaria/terciaria/destructiva con tamaños `Small|Medium|Large`.
+- `MxIconButton`: acción compacta con icono y `AriaLabel` obligatorio.
+- `MxCard`: superficie de contenido con header/body/footer opcionales y metadata.
+- `MxBadge`: etiqueta de estado ligera (`Neutral|Brand|Success|Warning|Danger`).
+- `MxPageHeader`: cabecera enterprise con `Title`, `Description`, `Metadata` y `Actions`.
+- `MxPanel`: contenedor de bloque para filtros/contexto con header opcional.
+
+### Reglas de uso rápidas
+1. Priorizar `MxButton.Primary` para una sola acción principal por bloque.
+2. `MxIconButton` siempre con `AriaLabel` descriptivo; no usar solo iconografía decorativa.
+3. Usar `MxCard` para contenido principal y `MxPanel` para contexto secundario o utilitario.
+4. `MxBadge` solo para señales breves de estado/metadata (evitar párrafos o labels extensos).
+5. Validar cualquier cambio reusable en `/showcase` y mantener contraste en light/dark.
