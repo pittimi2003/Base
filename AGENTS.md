@@ -254,3 +254,27 @@ Reglas adicionales:
 2. Asegurar base accesible: tabs con roles y teclado; dialog/drawer con `role="dialog"` + `aria-modal`; breadcrumb con `aria-current`.
 3. Usar tokens semánticos para overlays, foco y estados visuales en light/dark.
 4. Toda evolución del Grupo 3 debe reflejarse en `/showcase` y documentación técnica.
+
+---
+
+## 16) Catálogo MachSoft Components — Grupo 4 (Data display + feedback)
+Ubicación recomendada en Core:
+- `Components/Foundation/DataDisplay`:
+  - `MxTag`
+  - `MxStatusIndicator`
+  - `MxEmptyState`
+  - `MxStatCard`
+  - `MxProgress`
+
+Contratos públicos mínimos del Grupo 4:
+- `MxTag`: `Text|ChildContent`, `Variant`, `Dismissible`, `OnDismiss`.
+- `MxStatusIndicator`: `Status`, `Label`.
+- `MxEmptyState`: `Title`, `Description`, `Icon`, `Actions`.
+- `MxStatCard`: `Title`, `Value`, `SupportingText`, `TrendText`, `TrendStatus`, `Status`.
+- `MxProgress`: `Value`, `Max`, `Variant`, `ShowLabel`, `IsInline`, `AriaLabel`.
+
+Reglas adicionales:
+1. Grupo 4 debe priorizar utilidad operativa real (KPIs, estados de proceso, vacíos de datos, progreso).
+2. Mantener diferencias semánticas claras entre `MxBadge` (metadata), `MxTag` (etiqueta de entidad) y `MxStatusIndicator` (estado operativo).
+3. `MxProgress` debe mantener atributos accesibles (`role="progressbar"` + `aria-valuenow/max`).
+4. Todo cambio del Grupo 4 debe verse en `/showcase` y documentación técnica.

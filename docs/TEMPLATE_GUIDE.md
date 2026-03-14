@@ -222,3 +222,24 @@ Modelos auxiliares:
 3. Usar `MxDrawer` para filtros/contexto lateral no destructivo.
 4. Usar `MxToast` para feedback efímero no bloqueante.
 5. Usar `MxBreadcrumb` para jerarquía de navegación de páginas enterprise.
+
+## Catálogo de componentes Mx* · Grupo 4 (Data display + feedback)
+Se incorporó la base de visualización informativa para dashboards y backoffice:
+
+- `MxTag`
+- `MxStatusIndicator`
+- `MxEmptyState`
+- `MxStatCard`
+- `MxProgress`
+
+### Reglas de uso rápidas
+1. `MxTag` para etiquetar entidades operativas (lote, canal, prioridad).
+2. `MxStatusIndicator` para estado vivo de procesos/servicios con lectura compacta.
+3. `MxEmptyState` para módulos/listas sin datos con próxima acción clara.
+4. `MxStatCard` para KPIs principales con contexto y tendencia.
+5. `MxProgress` para progreso de tareas/lotes/importaciones con semántica accesible.
+
+### Diferencias clave
+- `MxBadge` = metadata UI.
+- `MxTag` = etiqueta de entidad operativa.
+- `MxStatusIndicator` = estado operativo compacto.

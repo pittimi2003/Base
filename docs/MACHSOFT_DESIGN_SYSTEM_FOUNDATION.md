@@ -390,3 +390,36 @@ Ubicación en Core:
 - `MxDrawer`: `role=dialog`, overlay + cierre por escape/overlay configurable.
 - `MxToast`: `role=status`, dismiss manual opcional y autocierre por duración.
 - `MxBreadcrumb`: `nav[aria-label="Breadcrumb"]` + `aria-current="page"` para item activo.
+
+---
+
+## 14) Catálogo Mx* - Grupo 4 (Data display + feedback informativo)
+Ubicación en Core:
+- `Components/Foundation/DataDisplay`: `MxTag`, `MxStatusIndicator`, `MxEmptyState`, `MxStatCard`, `MxProgress`.
+
+### 14.1 Decisión de implementación (propio vs wrapper)
+- `MxTag`: **propio puro**.
+- `MxStatusIndicator`: **propio puro**.
+- `MxEmptyState`: **propio puro**.
+- `MxStatCard`: **propio puro**.
+- `MxProgress`: **propio puro**.
+
+Motivo general: contratos compactos y visual/semántica suficientemente cubribles con Blazor + HTML + tokens, sin necesidad de dependencia externa.
+
+### 14.2 Contratos públicos
+- `MxTag`: `Text|ChildContent`, `Variant`, `Dismissible`, `OnDismiss`.
+- `MxStatusIndicator`: `Status`, `Label`.
+- `MxEmptyState`: `Title`, `Description`, `Icon`, `Actions`.
+- `MxStatCard`: `Title`, `Value`, `SupportingText`, `TrendText`, `TrendStatus`, `Status`.
+- `MxProgress`: `Value`, `Max`, `Variant`, `ShowLabel`, `IsInline`, `AriaLabel`.
+
+### 14.3 Diferencias conceptuales (Badge vs Tag vs StatusIndicator)
+- `MxBadge`: metadata corta/categorización de UI (chips informativos de contexto).
+- `MxTag`: etiquetado operativo de entidades (ej. lote, canal, clasificación), opcionalmente dismissible.
+- `MxStatusIndicator`: estado operativo compacto con señal redundante (punto + icono + texto), no solo color.
+
+### 14.4 Estados y accesibilidad
+- Soporte light/dark por tokens semánticos.
+- `MxProgress` con `role="progressbar"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-label`.
+- `MxEmptyState` con estructura clara de título, descripción y acciones.
+- Status semánticos con redundancia visual (icono + texto) para no depender solo de color.

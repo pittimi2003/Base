@@ -16,48 +16,6 @@
                 <MxIconButton Icon="⚙️" AriaLabel="Abrir configuración" Variant="MxButtonVariant.Tertiary" />
             </Actions>
         </MxPageHeader>
-
-        <div class="ms-grid ms-grid--2">
-            <MxCard Title="MxButton" Variant="SurfaceVariant.Outlined">
-                <HeaderContent>
-                    <p class="ms-text-sm">Variantes mínimas enterprise + soporte de iconos leading/trailing.</p>
-                </HeaderContent>
-                <ChildContent>
-                    <div class="ms-stack-sm">
-                        <div class="ms-mx-page-header__actions">
-                            <MxButton Variant="MxButtonVariant.Primary">Primary</MxButton>
-                            <MxButton Variant="MxButtonVariant.Secondary">Secondary</MxButton>
-                            <MxButton Variant="MxButtonVariant.Tertiary">Tertiary</MxButton>
-                            <MxButton Variant="MxButtonVariant.Danger">Danger</MxButton>
-                        </div>
-                        <div class="ms-mx-page-header__actions">
-                            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Small</MxButton>
-                            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Medium">Medium</MxButton>
-                            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Large">Large</MxButton>
-                            <MxButton Variant="MxButtonVariant.Secondary" Disabled="true">Disabled</MxButton>
-                        </div>
-                    </div>
-                </ChildContent>
-            </MxCard>
-
-            <MxCard Title="MxIconButton" Variant="SurfaceVariant.Outlined">
-                <ChildContent>
-                    <div class="ms-stack-sm">
-                        <div class="ms-mx-page-header__actions">
-                            <MxIconButton Icon="✏️" AriaLabel="Editar" Variant="MxButtonVariant.Primary" />
-                            <MxIconButton Icon="🔍" AriaLabel="Buscar" Variant="MxButtonVariant.Secondary" />
-                            <MxIconButton Icon="🗂️" AriaLabel="Ver detalles" Variant="MxButtonVariant.Tertiary" />
-                            <MxIconButton Icon="🗑️" AriaLabel="Eliminar" Variant="MxButtonVariant.Danger" />
-                        </div>
-                        <div class="ms-mx-page-header__actions">
-                            <MxIconButton Icon="⬅️" AriaLabel="Regresar" Size="MxButtonSize.Small" />
-                            <MxIconButton Icon="➡️" AriaLabel="Continuar" Size="MxButtonSize.Large" />
-                            <MxIconButton Icon="🚫" AriaLabel="Acción deshabilitada" Disabled="true" />
-                        </div>
-                    </div>
-                </ChildContent>
-            </MxCard>
-        </div>
     </section>
 
     <section class="ms-showcase-group">
@@ -71,38 +29,8 @@
             </Actions>
             <ChildContent>
                 <div class="ms-grid ms-grid--2">
-                    <MxTextField Label="Nombre del almacén"
-                                 Placeholder="North Hub"
-                                 Value="@WarehouseName"
-                                 ValueChanged="@(value => WarehouseName = value)"
-                                 HelperText="Usa un nombre corto y descriptivo." />
-
-                    <MxSelect Label="Región"
-                              Value="@Region"
-                              ValueChanged="@(value => Region = value)"
-                              Options="@RegionOptions"
-                              Placeholder="Selecciona una región"
-                              Required="true"
-                              ErrorText="@(string.IsNullOrWhiteSpace(Region) ? "Campo obligatorio" : null)" />
-                </div>
-
-                <MxTextarea Label="Notas operativas"
-                            Value="@Notes"
-                            ValueChanged="@(value => Notes = value)"
-                            Rows="4"
-                            Placeholder="Instrucciones de recepción, restricciones o alertas..."
-                            HelperText="Solo visible para supervisión." />
-
-                <div class="ms-grid ms-grid--2">
-                    <MxCheckbox Label="Permitir ingresos fuera de horario"
-                                Description="Habilita recepciones manuales con auditoría."
-                                Checked="@AllowOffHours"
-                                CheckedChanged="@(value => AllowOffHours = value)" />
-
-                    <MxSwitch Label="Modo compacto de formulario"
-                              HelperText="Reduce altura de controles para operación intensiva."
-                              Checked="@CompactMode"
-                              CheckedChanged="OnCompactModeChanged" />
+                    <MxTextField Label="Nombre del almacén" Placeholder="North Hub" Value="@WarehouseName" ValueChanged="@(v => WarehouseName = v)" HelperText="Usa un nombre corto y descriptivo." />
+                    <MxSelect Label="Región" Value="@Region" ValueChanged="@(v => Region = v)" Options="@RegionOptions" Placeholder="Selecciona una región" Required="true" ErrorText="@(string.IsNullOrWhiteSpace(Region) ? "Campo obligatorio" : null)" />
                 </div>
             </ChildContent>
         </MxFormSection>
@@ -110,29 +38,12 @@
 
     <section class="ms-showcase-group">
         <h2 class="ms-showcase-group__title">Grupo 3 · Navegación y Overlays</h2>
-
         <MxBreadcrumb Items="@BreadcrumbItems" />
-
         <MxCard Title="MxTabs + Content" Variant="SurfaceVariant.Outlined">
             <ChildContent>
-                <MxTabs Items="@TabsItems"
-                       ActiveValue="@ActiveTab"
-                       ActiveValueChanged="OnTabChanged"
-                       Variant="MxTabsVariant.Underline"
-                       AriaLabel="Secciones operativas">
+                <MxTabs Items="@TabsItems" ActiveValue="@ActiveTab" ActiveValueChanged="OnTabChanged" Variant="MxTabsVariant.Underline" AriaLabel="Secciones operativas">
                     <ActiveContent>
-                        @if (ActiveTab == "overview")
-                        {
-                            <p class="ms-text-sm">Vista general de operación logística y KPIs del turno.</p>
-                        }
-                        else if (ActiveTab == "activity")
-                        {
-                            <p class="ms-text-sm">Actividad reciente con eventos de recepciones y despacho.</p>
-                        }
-                        else if (ActiveTab == "alerts")
-                        {
-                            <p class="ms-text-sm">Panel de alertas y excepciones activas.</p>
-                        }
+                        <p class="ms-text-sm">@ActiveTabMessage</p>
                     </ActiveContent>
                 </MxTabs>
             </ChildContent>
@@ -144,24 +55,15 @@
             <MxButton Variant="MxButtonVariant.Primary" OnClick="ShowToast">Mostrar toast</MxButton>
         </div>
 
-        <MxDialog Open="@IsDialogOpen"
-                  OpenChanged="OnDialogOpenChanged"
-                  Title="Confirmar actualización"
-                  Size="MxDialogSize.Medium">
-            <ChildContent>
-                <p class="ms-text-sm">¿Deseas aplicar la nueva configuración de operación al turno actual?</p>
-            </ChildContent>
+        <MxDialog Open="@IsDialogOpen" OpenChanged="OnDialogOpenChanged" Title="Confirmar actualización" Size="MxDialogSize.Medium">
+            <ChildContent><p class="ms-text-sm">¿Deseas aplicar la nueva configuración de operación al turno actual?</p></ChildContent>
             <Actions>
                 <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small" OnClick="CloseDialog">Cancelar</MxButton>
                 <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small" OnClick="CloseDialog">Confirmar</MxButton>
             </Actions>
         </MxDialog>
 
-        <MxDrawer Open="@IsDrawerOpen"
-                  OpenChanged="OnDrawerOpenChanged"
-                  Title="Filtros avanzados"
-                  Side="MxDrawerSide.End"
-                  Width="360px">
+        <MxDrawer Open="@IsDrawerOpen" OpenChanged="OnDrawerOpenChanged" Title="Filtros avanzados" Side="MxDrawerSide.End" Width="360px">
             <ChildContent>
                 <MxFormSection IsCompact="true" Title="Scope">
                     <ChildContent>
@@ -172,13 +74,61 @@
             </ChildContent>
         </MxDrawer>
 
-        <MxToast Visible="@IsToastVisible"
-                 VisibleChanged="OnToastVisibleChanged"
-                 Variant="MxToastVariant.Success"
-                 Title="Cambios guardados"
-                 Message="La configuración se aplicó correctamente."
-                 DurationMs="4500"
-                 Dismissible="true" />
+        <MxToast Visible="@IsToastVisible" VisibleChanged="OnToastVisibleChanged" Variant="MxToastVariant.Success" Title="Cambios guardados" Message="La configuración se aplicó correctamente." DurationMs="4500" Dismissible="true" />
+    </section>
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 4 · Data Display & Feedback</h2>
+
+        <MxCard Title="MxTag + MxStatusIndicator" Variant="SurfaceVariant.Outlined">
+            <ChildContent>
+                <div class="ms-mx-page-header__actions">
+                    <MxTag Variant="MxTagVariant.Brand" Text="Lote A-102" />
+                    <MxTag Variant="MxTagVariant.Warning" Text="Revisión" />
+                    <MxTag Variant="MxTagVariant.Success" Text="Completado" />
+                    <MxStatusIndicator Status="MxStatusVariant.Success" Label="Conectado" />
+                    <MxStatusIndicator Status="MxStatusVariant.Warning" Label="Degradado" />
+                    <MxStatusIndicator Status="MxStatusVariant.Offline" Label="Offline" />
+                </div>
+            </ChildContent>
+        </MxCard>
+
+        <div class="ms-grid ms-grid--3">
+            <MxStatCard Title="Orders processed" Value="18,420" SupportingText="Últimas 24h" TrendText="+8.2%" TrendStatus="MxStatusVariant.Success">
+                <Status>
+                    <MxStatusIndicator Status="MxStatusVariant.Success" Label="Healthy" />
+                </Status>
+            </MxStatCard>
+            <MxStatCard Title="Pending picks" Value="246" SupportingText="SLA 2h" TrendText="+14" TrendStatus="MxStatusVariant.Warning">
+                <Status>
+                    <MxTag Variant="MxTagVariant.Warning" Text="Atención" />
+                </Status>
+            </MxStatCard>
+            <MxStatCard Title="Import failures" Value="7" SupportingText="Último ciclo" TrendText="-3" TrendStatus="MxStatusVariant.Success">
+                <Status>
+                    <MxStatusIndicator Status="MxStatusVariant.Danger" Label="Incidentes" />
+                </Status>
+            </MxStatCard>
+        </div>
+
+        <MxCard Title="MxProgress" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <ChildContent>
+                <div class="ms-stack-sm">
+                    <MxProgress Value="67" Max="100" Variant="MxProgressVariant.Brand" ShowLabel="true" AriaLabel="Avance de importación de catálogo" />
+                    <MxProgress Value="39" Max="100" Variant="MxProgressVariant.Warning" ShowLabel="true" AriaLabel="Avance de reconciliación de inventario" />
+                    <MxProgress Value="92" Max="100" Variant="MxProgressVariant.Success" ShowLabel="true" AriaLabel="Avance de sincronización WMS" />
+                </div>
+            </ChildContent>
+        </MxCard>
+
+        <MxEmptyState Title="No hay datos para el turno seleccionado"
+                      Description="Todavía no se registran movimientos en este rango de tiempo. Ajusta filtros o inicia una nueva importación."
+                      Icon="📭">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Cambiar filtros</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Iniciar carga</MxButton>
+            </Actions>
+        </MxEmptyState>
     </section>
 
     <section class="ms-showcase-group">
@@ -207,17 +157,19 @@
 @code {
     private string? WarehouseName { get; set; }
     private string? Region { get; set; }
-    private string? Notes { get; set; }
-    private bool AllowOffHours { get; set; }
-    private bool CompactMode { get; set; }
-
     private bool IsDialogOpen { get; set; }
     private bool IsDrawerOpen { get; set; }
     private bool IsToastVisible { get; set; }
     private bool OnlyPending { get; set; }
     private bool DetailedMode { get; set; }
-
     private string ActiveTab { get; set; } = "overview";
+
+    private string ActiveTabMessage => ActiveTab switch
+    {
+        "activity" => "Actividad reciente con eventos de recepciones y despacho.",
+        "alerts" => "Panel de alertas y excepciones activas.",
+        _ => "Vista general de operación logística y KPIs del turno."
+    };
 
     private IEnumerable<MxSelectOption> RegionOptions { get; } =
     [
@@ -230,7 +182,7 @@
     [
         new("overview", "Overview"),
         new("activity", "Activity"),
-        new("alerts", "Alerts", Disabled: false)
+        new("alerts", "Alerts")
     ];
 
     private IEnumerable<MxBreadcrumbItem> BreadcrumbItems { get; } =
@@ -240,57 +192,12 @@
         new("Group 3", IsCurrent: true)
     ];
 
-    private Task OnCompactModeChanged(bool value)
-    {
-        CompactMode = value;
-        return Task.CompletedTask;
-    }
-
-    private Task OnTabChanged(string value)
-    {
-        ActiveTab = value;
-        return Task.CompletedTask;
-    }
-
-    private Task OnDialogOpenChanged(bool open)
-    {
-        IsDialogOpen = open;
-        return Task.CompletedTask;
-    }
-
-    private Task OnDrawerOpenChanged(bool open)
-    {
-        IsDrawerOpen = open;
-        return Task.CompletedTask;
-    }
-
-    private Task OnToastVisibleChanged(bool visible)
-    {
-        IsToastVisible = visible;
-        return Task.CompletedTask;
-    }
-
-    private Task OpenDialog()
-    {
-        IsDialogOpen = true;
-        return Task.CompletedTask;
-    }
-
-    private Task CloseDialog()
-    {
-        IsDialogOpen = false;
-        return Task.CompletedTask;
-    }
-
-    private Task OpenDrawer()
-    {
-        IsDrawerOpen = true;
-        return Task.CompletedTask;
-    }
-
-    private Task ShowToast()
-    {
-        IsToastVisible = true;
-        return Task.CompletedTask;
-    }
+    private Task OnTabChanged(string value) { ActiveTab = value; return Task.CompletedTask; }
+    private Task OnDialogOpenChanged(bool open) { IsDialogOpen = open; return Task.CompletedTask; }
+    private Task OnDrawerOpenChanged(bool open) { IsDrawerOpen = open; return Task.CompletedTask; }
+    private Task OnToastVisibleChanged(bool visible) { IsToastVisible = visible; return Task.CompletedTask; }
+    private Task OpenDialog() { IsDialogOpen = true; return Task.CompletedTask; }
+    private Task CloseDialog() { IsDialogOpen = false; return Task.CompletedTask; }
+    private Task OpenDrawer() { IsDrawerOpen = true; return Task.CompletedTask; }
+    private Task ShowToast() { IsToastVisible = true; return Task.CompletedTask; }
 }

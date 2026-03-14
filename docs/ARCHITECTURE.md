@@ -163,3 +163,18 @@ Decisiones de arquitectura:
 3. Navegación y overlays consumen tokens semánticos y z-index del Design System.
 4. Comportamientos interactivos mínimos (tabs por teclado, cierre dialog/drawer, dismiss de toast) se validan en `/showcase`.
 5. Sin refactor masivo: coexistencia con navegación/layout legacy durante migración incremental.
+
+## Catálogo MachSoft Components - Grupo 4 (Data display + feedback)
+Implementado en `MachSoft.Template.Core/Components/Foundation/DataDisplay` con componentes propios:
+
+- `MxTag`
+- `MxStatusIndicator`
+- `MxEmptyState`
+- `MxStatCard`
+- `MxProgress`
+
+Decisiones de arquitectura:
+1. Grupo 4 implementado como componentes propios para mantener contratos mínimos y estables.
+2. Componentes orientados a escenarios enterprise (KPIs, estados operativos, módulos vacíos, progreso de procesos).
+3. Semántica accesible integrada (`progressbar`, roles de status, estructura de empty state, foco visible cuando hay interacción).
+4. Diferenciación explícita entre `MxBadge`, `MxTag` y `MxStatusIndicator` para evitar solapamiento conceptual.

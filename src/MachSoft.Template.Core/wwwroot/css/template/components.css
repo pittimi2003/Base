@@ -794,3 +794,167 @@
     min-width: auto;
   }
 }
+
+/* MachSoft Design System - Grupo 4 (Data display + informational feedback) */
+.ms-mx-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ms-space-2);
+  border-radius: var(--mx-radius-pill);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  background: var(--ms-color-surface-muted);
+  color: var(--ms-color-text);
+  padding: 0.15rem var(--ms-space-3);
+  font-size: var(--ms-font-size-sm);
+  font-weight: var(--mx-font-weight-medium);
+}
+
+.ms-mx-tag--brand { background: var(--ms-color-brand-soft); color: var(--ms-color-brand); border-color: color-mix(in oklab, var(--ms-color-brand) 25%, var(--ms-color-border) 75%); }
+.ms-mx-tag--success { background: color-mix(in oklab, var(--mx-color-state-success) 16%, var(--ms-color-surface)); color: var(--mx-color-state-success); }
+.ms-mx-tag--warning { background: color-mix(in oklab, var(--mx-color-state-warning) 18%, var(--ms-color-surface)); color: var(--mx-color-state-warning); }
+.ms-mx-tag--danger { background: color-mix(in oklab, var(--mx-color-state-danger) 18%, var(--ms-color-surface)); color: var(--mx-color-state-danger); }
+
+.ms-mx-tag__dismiss {
+  border: 0;
+  background: transparent;
+  color: currentcolor;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0;
+}
+
+.ms-mx-tag__dismiss:focus-visible {
+  outline: var(--ms-focus-ring-width) solid var(--ms-focus-ring-color);
+  outline-offset: var(--ms-focus-ring-offset);
+}
+
+.ms-mx-status-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--ms-font-size-sm);
+  font-weight: var(--mx-font-weight-medium);
+}
+
+.ms-mx-status-indicator__dot {
+  inline-size: 0.55rem;
+  block-size: 0.55rem;
+  border-radius: var(--mx-radius-pill);
+  background: currentcolor;
+}
+
+.ms-mx-status-indicator__icon {
+  font-size: 0.8rem;
+  font-weight: var(--mx-font-weight-bold);
+}
+
+.ms-mx-status-indicator--info { color: var(--mx-color-state-info); }
+.ms-mx-status-indicator--success { color: var(--mx-color-state-success); }
+.ms-mx-status-indicator--warning { color: var(--mx-color-state-warning); }
+.ms-mx-status-indicator--danger { color: var(--mx-color-state-danger); }
+.ms-mx-status-indicator--offline { color: var(--ms-color-text-soft); }
+
+.ms-mx-empty-state {
+  border: var(--ms-border-width-1) dashed color-mix(in oklab, var(--ms-color-border) 78%, var(--ms-color-brand) 22%);
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 70%, var(--ms-color-surface) 30%);
+  border-radius: var(--ms-radius-md);
+  padding: var(--ms-space-6);
+  display: grid;
+  gap: var(--ms-space-2);
+  justify-items: start;
+}
+
+.ms-mx-empty-state__icon {
+  font-size: 1.8rem;
+}
+
+.ms-mx-empty-state p {
+  margin: 0;
+  color: var(--ms-color-text-soft);
+  max-width: 76ch;
+}
+
+.ms-mx-empty-state__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ms-space-2);
+  flex-wrap: wrap;
+}
+
+.ms-mx-stat-card {
+  display: grid;
+  gap: var(--ms-space-2);
+  background: var(--ms-color-surface);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  padding: var(--ms-space-4);
+}
+
+.ms-mx-stat-card__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--ms-space-2);
+}
+
+.ms-mx-stat-card__header h4 {
+  margin: 0;
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-sm);
+  font-weight: var(--mx-font-weight-semibold);
+}
+
+.ms-mx-stat-card__value {
+  margin: 0;
+  font-size: var(--mx-font-size-h1);
+  font-weight: var(--mx-font-weight-bold);
+  line-height: var(--mx-line-height-tight);
+}
+
+.ms-mx-stat-card__meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ms-space-2);
+  font-size: var(--ms-font-size-sm);
+  color: var(--ms-color-text-soft);
+}
+
+.ms-mx-stat-card__trend--success { color: var(--mx-color-state-success); }
+.ms-mx-stat-card__trend--warning { color: var(--mx-color-state-warning); }
+.ms-mx-stat-card__trend--danger { color: var(--mx-color-state-danger); }
+.ms-mx-stat-card__trend--info { color: var(--mx-color-state-info); }
+.ms-mx-stat-card__trend--offline { color: var(--ms-color-text-soft); }
+
+.ms-mx-progress {
+  display: grid;
+  gap: var(--ms-space-2);
+}
+
+.ms-mx-progress--inline {
+  grid-template-columns: 1fr auto;
+  align-items: center;
+}
+
+.ms-mx-progress__track {
+  block-size: 0.6rem;
+  border-radius: var(--mx-radius-pill);
+  background: color-mix(in oklab, var(--ms-color-border) 65%, var(--ms-color-surface) 35%);
+  overflow: hidden;
+}
+
+.ms-mx-progress__bar {
+  block-size: 100%;
+  background: var(--ms-color-brand);
+  transition: inline-size var(--ms-motion-base) var(--ms-motion-ease);
+}
+
+.ms-mx-progress--success .ms-mx-progress__bar { background: var(--mx-color-state-success); }
+.ms-mx-progress--warning .ms-mx-progress__bar { background: var(--mx-color-state-warning); }
+.ms-mx-progress--danger .ms-mx-progress__bar { background: var(--mx-color-state-danger); }
+
+.ms-mx-progress__label {
+  font-size: var(--ms-font-size-sm);
+  color: var(--ms-color-text-soft);
+}

@@ -71,3 +71,30 @@ public enum MxToastVariant
     Warning,
     Danger
 }
+
+
+public enum MxTagVariant
+{
+    Neutral,
+    Brand,
+    Success,
+    Warning,
+    Danger
+}
+
+public enum MxStatusVariant
+{
+    Info,
+    Success,
+    Warning,
+    Danger,
+    Offline
+}
+
+public enum MxProgressVariant
+{
+    Brand,
+    Success,
+    Warning,
+    Danger
+}
