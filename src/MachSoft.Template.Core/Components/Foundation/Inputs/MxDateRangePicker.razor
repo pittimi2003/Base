@@ -6,29 +6,35 @@
               HelperText="@HelperText"
               ErrorText="@ErrorText"
               IsCompact="@IsCompact">
-    <div class="ms-mx-date-range">
-        <input id="@ResolvedId"
-               class="@InputClass"
-               type="date"
-               value="@StartFormatted"
-               disabled="@Disabled"
-               required="@Required"
-               aria-label="Fecha inicial"
-               aria-invalid="@HasError"
-               aria-describedby="@DescribedBy"
-               @onchange="OnStartChanged" />
+    <div class="ms-mx-date-range" role="group" aria-label="Rango de fechas">
+        <div class="ms-mx-date-input-wrapper ms-mx-date-input-wrapper--range">
+            <input id="@ResolvedId"
+                   class="@InputClass"
+                   type="date"
+                   value="@StartFormatted"
+                   disabled="@Disabled"
+                   required="@Required"
+                   aria-label="Fecha inicial"
+                   aria-invalid="@HasError"
+                   aria-describedby="@DescribedBy"
+                   @onchange="OnStartChanged" />
+            <span class="ms-mx-date-input-wrapper__icon" aria-hidden="true"></span>
+        </div>
 
         <span class="ms-mx-date-range__separator" aria-hidden="true">→</span>
 
-        <input class="@InputClass"
-               type="date"
-               value="@EndFormatted"
-               disabled="@Disabled"
-               required="@Required"
-               aria-label="Fecha final"
-               aria-invalid="@HasError"
-               aria-describedby="@DescribedBy"
-               @onchange="OnEndChanged" />
+        <div class="ms-mx-date-input-wrapper ms-mx-date-input-wrapper--range">
+            <input class="@InputClass"
+                   type="date"
+                   value="@EndFormatted"
+                   disabled="@Disabled"
+                   required="@Required"
+                   aria-label="Fecha final"
+                   aria-invalid="@HasError"
+                   aria-describedby="@DescribedBy"
+                   @onchange="OnEndChanged" />
+            <span class="ms-mx-date-input-wrapper__icon" aria-hidden="true"></span>
+        </div>
     </div>
 </MxFieldGroup>
 
@@ -49,7 +55,7 @@
     private string ResolvedId => Id ?? _fallbackId;
     private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
     private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? $"{ResolvedId}-message" : null;
-    private string InputClass => $"ms-mx-input{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+    private string InputClass => $"ms-mx-input ms-mx-input--date{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
     private string StartFormatted => StartValue?.ToString("yyyy-MM-dd") ?? string.Empty;
     private string EndFormatted => EndValue?.ToString("yyyy-MM-dd") ?? string.Empty;
 

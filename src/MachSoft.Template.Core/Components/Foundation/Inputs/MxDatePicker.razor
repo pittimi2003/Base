@@ -6,17 +6,20 @@
               HelperText="@HelperText"
               ErrorText="@ErrorText"
               IsCompact="@IsCompact">
-    <input id="@ResolvedId"
-           class="@InputClass"
-           type="date"
-           value="@FormattedValue"
-           placeholder="@Placeholder"
-           disabled="@Disabled"
-           required="@Required"
-           aria-required="@Required"
-           aria-invalid="@HasError"
-           aria-describedby="@DescribedBy"
-           @onchange="OnDateChanged" />
+    <div class="ms-mx-date-input-wrapper">
+        <input id="@ResolvedId"
+               class="@InputClass"
+               type="date"
+               value="@FormattedValue"
+               placeholder="@Placeholder"
+               disabled="@Disabled"
+               required="@Required"
+               aria-required="@Required"
+               aria-invalid="@HasError"
+               aria-describedby="@DescribedBy"
+               @onchange="OnDateChanged" />
+        <span class="ms-mx-date-input-wrapper__icon" aria-hidden="true"></span>
+    </div>
 </MxFieldGroup>
 
 @code {
@@ -35,7 +38,7 @@
     private string ResolvedId => Id ?? _fallbackId;
     private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
     private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? $"{ResolvedId}-message" : null;
-    private string InputClass => $"ms-mx-input{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+    private string InputClass => $"ms-mx-input ms-mx-input--date{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
     private string FormattedValue => Value?.ToString("yyyy-MM-dd") ?? string.Empty;
 
     private async Task OnDateChanged(ChangeEventArgs args)
