@@ -42,10 +42,10 @@
   align-items: center;
   gap: var(--ms-space-3);
   padding: 0.875rem var(--ms-space-6);
-  background: color-mix(in oklab, var(--ms-color-surface) 95%, var(--ms-color-brand-soft) 5%);
-  border-bottom: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 90%, var(--ms-color-brand) 10%);
-  box-shadow: var(--ms-shadow-sm);
-  backdrop-filter: blur(4px);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ms-color-surface) 97%, var(--ms-color-brand-soft) 3%) 0%, color-mix(in oklab, var(--ms-color-surface) 94%, var(--ms-color-brand-soft) 6%) 100%);
+  border-bottom: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 95%, var(--ms-color-brand) 5%);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--ms-color-border) 84%, transparent 16%), 0 10px 24px -22px color-mix(in oklab, var(--ms-color-brand) 35%, transparent);
+  backdrop-filter: blur(6px);
 }
 
 .ms-shell__header-main {
@@ -63,9 +63,9 @@
 .ms-theme-toggle {
   width: 2.5rem;
   height: 2.5rem;
-  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 82%, var(--ms-color-brand) 18%);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 88%, var(--ms-color-brand) 12%);
   border-radius: var(--ms-radius-sm);
-  background: var(--ms-color-surface);
+  background: color-mix(in oklab, var(--ms-color-surface) 92%, var(--ms-color-brand-soft) 8%);
   color: var(--ms-color-text);
   display: inline-grid;
   place-items: center;
@@ -75,8 +75,8 @@
 
 .ms-header-menu-btn:hover,
 .ms-theme-toggle:hover {
-  background: var(--ms-color-surface-muted);
-  border-color: color-mix(in oklab, var(--ms-color-border) 70%, var(--ms-color-brand) 30%);
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 78%, var(--mx-color-accent-soft) 22%);
+  border-color: color-mix(in oklab, var(--ms-color-border) 72%, var(--mx-color-accent-primary) 28%);
 }
 
 .ms-header-menu-btn:active,
