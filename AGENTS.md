@@ -175,3 +175,82 @@ Comandos base sugeridos:
 - `dotnet build MachSoft.Template.sln`
 - `dotnet run --project template/MachSoft.Template.Starter`
 - `dotnet run --project template/MachSoft.Template.Starter.Wasm`
+
+---
+
+## 13) Catálogo MachSoft Components — Grupo 1
+Ubicación recomendada en Core:
+- `Components/Foundation/Actions`: `MxButton`, `MxIconButton`
+- `Components/Foundation/Feedback`: `MxBadge`
+- `Components/Foundation/Surfaces`: `MxCard`, `MxPanel`
+- `Components/Foundation/Layout`: `MxPageHeader`
+
+Contratos públicos mínimos del Grupo 1:
+- `MxButton`: `Variant`, `Size`, `Disabled`, `LeadingIcon`, `TrailingIcon`, `ChildContent`.
+- `MxIconButton`: `Icon`, `AriaLabel`, `Variant`, `Size`, `Disabled`.
+- `MxCard`: `Variant`, `IsCompact`, `HeaderContent`, `ChildContent`, `FooterContent`, `Metadata`.
+- `MxBadge`: `Variant`, `Size`, `Text|ChildContent`.
+- `MxPageHeader`: `Title`, `Description`, `Actions`, `Metadata`.
+- `MxPanel`: `Title`, `HeaderActions`, `Variant`, `IsCompact`, `ChildContent`.
+
+Reglas adicionales:
+1. API pública siempre `Mx*`, sin exponer contratos vendor en parámetros.
+2. Limitar variantes a las mínimas útiles; evitar explosión combinatoria.
+3. Cubrir `hover`, `focus-visible`, `disabled` y contraste razonable en light/dark.
+4. Todo componente nuevo del catálogo debe tener ejemplo en `/showcase` + docs actualizadas.
+
+---
+
+## 14) Catálogo MachSoft Components — Grupo 2 (Forms)
+Ubicación recomendada en Core:
+- `Components/Foundation/Forms`:
+  - `MxTextField`
+  - `MxTextarea`
+  - `MxSelect`
+  - `MxCheckbox`
+  - `MxSwitch`
+  - `MxFieldGroup`
+  - `MxFormSection`
+- `Models/MxSelectOption` para opciones tipadas de select.
+
+Contratos públicos mínimos del Grupo 2:
+- `MxTextField`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `HelperText`, `ErrorText`, `IsCompact`.
+- `MxTextarea`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `Rows`, `HelperText`, `ErrorText`.
+- `MxSelect`: `Label`, `Value`, `ValueChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxCheckbox`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `Description`.
+- `MxSwitch`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `HelperText`.
+- `MxFieldGroup`: `Label`, `FieldId`, `HelperText`, `ErrorText`, `ChildContent`.
+- `MxFormSection`: `Title`, `Description`, `Actions`, `ChildContent`.
+
+Reglas adicionales:
+1. Implementación preferente en Blazor/HTML puro y tokenizado; wrappers vendor solo si hay necesidad técnica clara.
+2. Mantener estados base: default, hover, focus-visible, disabled, invalid/error.
+3. Asegurar asociación label/control (`for` + `id`) y mensajes enlazados (`aria-describedby`) cuando aplique.
+4. Todo cambio en Grupo 2 debe reflejarse en `/showcase` y en docs de arquitectura/guía/foundation.
+
+---
+
+## 15) Catálogo MachSoft Components — Grupo 3 (Navigation + Overlays)
+Ubicación recomendada en Core:
+- `Components/Foundation/Navigation`:
+  - `MxTabs`
+  - `MxBreadcrumb`
+- `Components/Foundation/Overlays`:
+  - `MxDialog`
+  - `MxDrawer`
+- `Components/Foundation/Feedback`:
+  - `MxToast`
+- `Models`: `MxTabItem`, `MxBreadcrumbItem`.
+
+Contratos públicos mínimos del Grupo 3:
+- `MxTabs`: `Items`, `ActiveValue`, `ActiveValueChanged`, `Variant`, `AriaLabel`, `ActiveContent`.
+- `MxDialog`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Actions`, `Size`, `CloseOnOverlayClick`, `CloseOnEscape`.
+- `MxDrawer`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Side`, `Width`, `CloseOnOverlayClick`, `CloseOnEscape`.
+- `MxToast`: `Visible`, `VisibleChanged`, `Variant`, `Title`, `Message`, `Dismissible`, `DurationMs`.
+- `MxBreadcrumb`: `Items`.
+
+Reglas adicionales:
+1. Mantener API pública `Mx*` y contratos de interacción simples.
+2. Asegurar base accesible: tabs con roles y teclado; dialog/drawer con `role="dialog"` + `aria-modal`; breadcrumb con `aria-current`.
+3. Usar tokens semánticos para overlays, foco y estados visuales en light/dark.
+4. Toda evolución del Grupo 3 debe reflejarse en `/showcase` y documentación técnica.
