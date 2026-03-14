@@ -225,3 +225,97 @@ docs/
 3. Definir contratos enterprise (DataGrid/Charts/FileUpload).
 4. Añadir pruebas visuales de tema (light/dark) en E2E.
 5. Expandir theming (high-contrast, brand variants por producto si aplica).
+
+---
+
+## 11) Catálogo Mx* - Grupo 1 (implementado)
+Ubicación en Core:
+- `Components/Foundation/Actions`: `MxButton`, `MxIconButton`
+- `Components/Foundation/Feedback`: `MxBadge`
+- `Components/Foundation/Surfaces`: `MxCard`, `MxPanel`
+- `Components/Foundation/Layout`: `MxPageHeader`
+
+### 11.1 MxButton
+**Propósito**: acción principal/secundaria de página o bloque.
+
+**Contrato público**
+- `Variant: MxButtonVariant` (`Primary`, `Secondary`, `Tertiary`, `Danger`)
+- `Size: MxButtonSize` (`Small`, `Medium`, `Large`)
+- `Disabled: bool`
+- `LeadingIcon: string?`
+- `TrailingIcon: string?`
+- `Type: string` (`button` por defecto)
+- `OnClick: EventCallback<MouseEventArgs>`
+- `ChildContent: RenderFragment` (requerido)
+
+**Uso recomendado**
+- Primary: acción principal de contexto.
+- Secondary: acción de soporte.
+- Tertiary: acción de baja jerarquía en toolbars/footers.
+- Danger: acciones destructivas o irreversibles.
+
+### 11.2 MxIconButton
+**Propósito**: acción compacta basada en icono.
+
+**Contrato público**
+- `Icon: string` (requerido)
+- `AriaLabel: string` (requerido)
+- `Variant: MxButtonVariant`
+- `Size: MxButtonSize`
+- `Disabled: bool`
+- `OnClick: EventCallback<MouseEventArgs>`
+
+**Regla de accesibilidad**
+- Siempre incluir `AriaLabel` descriptivo.
+
+### 11.3 MxCard
+**Propósito**: superficie de contenido reusable para bloques de negocio.
+
+**Contrato público**
+- `Title: string?`
+- `Variant: SurfaceVariant` (`Default`, `Elevated`, `Outlined`, `Muted`)
+- `IsCompact: bool`
+- `HeaderContent: RenderFragment?`
+- `Metadata: RenderFragment?`
+- `ChildContent: RenderFragment` (requerido)
+- `FooterContent: RenderFragment?`
+
+### 11.4 MxBadge
+**Propósito**: estado/etiqueta contextual de baja densidad.
+
+**Contrato público**
+- `Variant: MxBadgeVariant` (`Neutral`, `Brand`, `Success`, `Warning`, `Danger`)
+- `Size: MxBadgeSize` (`Small`, `Medium`)
+- `Text: string?`
+- `ChildContent: RenderFragment?`
+
+### 11.5 MxPageHeader
+**Propósito**: encabezado enterprise para páginas y módulos.
+
+**Contrato público**
+- `Title: string` (requerido)
+- `Description: string?`
+- `Metadata: RenderFragment?`
+- `Actions: RenderFragment?`
+
+### 11.6 MxPanel
+**Propósito**: contenedor de contexto/filtros con encabezado opcional.
+
+**Contrato público**
+- `Title: string?`
+- `HeaderActions: RenderFragment?`
+- `ChildContent: RenderFragment` (requerido)
+- `Variant: SurfaceVariant`
+- `IsCompact: bool`
+
+### 11.7 Estados y theming
+- El Grupo 1 soporta light/dark con tokens semánticos (`--mx-color-*`) sin hardcodes por tema.
+- Estados aplicados: `hover`, `focus-visible`, `disabled` (donde aplica).
+- Se mantiene compatibilidad no destructiva con aliases `--ms-*`.
+
+### 11.8 Showcase
+`/showcase` incorpora sección dedicada del Grupo 1 con:
+- variantes mínimas,
+- tamaños clave,
+- estados disabled,
+- ejemplos de composición con `MxPageHeader`, `MxCard` y `MxPanel`.

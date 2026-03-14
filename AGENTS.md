@@ -175,3 +175,26 @@ Comandos base sugeridos:
 - `dotnet build MachSoft.Template.sln`
 - `dotnet run --project template/MachSoft.Template.Starter`
 - `dotnet run --project template/MachSoft.Template.Starter.Wasm`
+
+---
+
+## 13) Catálogo MachSoft Components — Grupo 1
+Ubicación recomendada en Core:
+- `Components/Foundation/Actions`: `MxButton`, `MxIconButton`
+- `Components/Foundation/Feedback`: `MxBadge`
+- `Components/Foundation/Surfaces`: `MxCard`, `MxPanel`
+- `Components/Foundation/Layout`: `MxPageHeader`
+
+Contratos públicos mínimos del Grupo 1:
+- `MxButton`: `Variant`, `Size`, `Disabled`, `LeadingIcon`, `TrailingIcon`, `ChildContent`.
+- `MxIconButton`: `Icon`, `AriaLabel`, `Variant`, `Size`, `Disabled`.
+- `MxCard`: `Variant`, `IsCompact`, `HeaderContent`, `ChildContent`, `FooterContent`, `Metadata`.
+- `MxBadge`: `Variant`, `Size`, `Text|ChildContent`.
+- `MxPageHeader`: `Title`, `Description`, `Actions`, `Metadata`.
+- `MxPanel`: `Title`, `HeaderActions`, `Variant`, `IsCompact`, `ChildContent`.
+
+Reglas adicionales:
+1. API pública siempre `Mx*`, sin exponer contratos vendor en parámetros.
+2. Limitar variantes a las mínimas útiles; evitar explosión combinatoria.
+3. Cubrir `hover`, `focus-visible`, `disabled` y contraste razonable en light/dark.
+4. Todo componente nuevo del catálogo debe tener ejemplo en `/showcase` + docs actualizadas.

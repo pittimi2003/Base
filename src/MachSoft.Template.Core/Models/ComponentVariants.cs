@@ -14,3 +14,33 @@ public enum TileVariant
     Elevated,
     Muted
 }
+
+public enum MxButtonVariant
+{
+    Primary,
+    Secondary,
+    Tertiary,
+    Danger
+}
+
+public enum MxButtonSize
+{
+    Small,
+    Medium,
+    Large
+}
+
+public enum MxBadgeVariant
+{
+    Neutral,
+    Brand,
+    Success,
+    Warning,
+    Danger
+}
+
+public enum MxBadgeSize
+{
+    Small,
+    Medium
+}
