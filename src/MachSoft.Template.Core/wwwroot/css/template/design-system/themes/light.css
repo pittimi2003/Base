@@ -1,17 +1,17 @@
 :root,
 [data-mx-theme="light"] {
-  --mx-color-bg-canvas: #f4f7fc;
+  --mx-color-bg-canvas: #eef3fb;
   --mx-color-bg-surface: #ffffff;
-  --mx-color-bg-surface-muted: #eef3fb;
+  --mx-color-bg-surface-muted: #e6edf8;
   --mx-color-bg-surface-raised: #fbfdff;
 
   --mx-color-text-primary: #132033;
-  --mx-color-text-secondary: #4b5f79;
+  --mx-color-text-secondary: #40556f;
   --mx-color-text-muted: #6a7d96;
   --mx-color-text-inverse: #f8fbff;
 
-  --mx-color-border-subtle: #dfe7f3;
-  --mx-color-border-default: #ccd7e7;
+  --mx-color-border-subtle: #d4deee;
+  --mx-color-border-default: #bdcbdf;
   --mx-color-border-strong: #a9b8ce;
   --mx-color-border-focus: #4d79d2;
 
@@ -19,13 +19,13 @@
   --mx-color-brand-hover: #335aae;
   --mx-color-brand-active: #2d509b;
   --mx-color-brand-strong: #294a8f;
-  --mx-color-brand-soft: #dfe9fb;
+  --mx-color-brand-soft: #d3e0f7;
 
   --mx-color-accent-primary: #1f9d96;
   --mx-color-accent-hover: #1a8a85;
-  --mx-color-accent-soft: #dff5f4;
+  --mx-color-accent-soft: #d3f0ee;
 
-  --mx-color-input-bg: #fbfcff;
+  --mx-color-input-bg: #f7faff;
   --mx-color-input-bg-disabled: #eef2f8;
 
   --mx-color-state-success: var(--mx-primitive-color-success-500);
