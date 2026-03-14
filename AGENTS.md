@@ -175,3 +175,152 @@ Comandos base sugeridos:
 - `dotnet build MachSoft.Template.sln`
 - `dotnet run --project template/MachSoft.Template.Starter`
 - `dotnet run --project template/MachSoft.Template.Starter.Wasm`
+
+---
+
+## 13) Catálogo MachSoft Components — Grupo 1
+Ubicación recomendada en Core:
+- `Components/Foundation/Actions`: `MxButton`, `MxIconButton`
+- `Components/Foundation/Feedback`: `MxBadge`
+- `Components/Foundation/Surfaces`: `MxCard`, `MxPanel`
+- `Components/Foundation/Layout`: `MxPageHeader`
+
+Contratos públicos mínimos del Grupo 1:
+- `MxButton`: `Variant`, `Size`, `Disabled`, `LeadingIcon`, `TrailingIcon`, `ChildContent`.
+- `MxIconButton`: `Icon`, `AriaLabel`, `Variant`, `Size`, `Disabled`.
+- `MxCard`: `Variant`, `IsCompact`, `HeaderContent`, `ChildContent`, `FooterContent`, `Metadata`.
+- `MxBadge`: `Variant`, `Size`, `Text|ChildContent`.
+- `MxPageHeader`: `Title`, `Description`, `Actions`, `Metadata`.
+- `MxPanel`: `Title`, `HeaderActions`, `Variant`, `IsCompact`, `ChildContent`.
+
+Reglas adicionales:
+1. API pública siempre `Mx*`, sin exponer contratos vendor en parámetros.
+2. Limitar variantes a las mínimas útiles; evitar explosión combinatoria.
+3. Cubrir `hover`, `focus-visible`, `disabled` y contraste razonable en light/dark.
+4. Todo componente nuevo del catálogo debe tener ejemplo en `/showcase` + docs actualizadas.
+
+---
+
+## 14) Catálogo MachSoft Components — Grupo 2 (Forms)
+Ubicación recomendada en Core:
+- `Components/Foundation/Forms`:
+  - `MxTextField`
+  - `MxTextarea`
+  - `MxSelect`
+  - `MxCheckbox`
+  - `MxSwitch`
+  - `MxFieldGroup`
+  - `MxFormSection`
+- `Models/MxSelectOption` para opciones tipadas de select.
+
+Contratos públicos mínimos del Grupo 2:
+- `MxTextField`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `HelperText`, `ErrorText`, `IsCompact`.
+- `MxTextarea`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `Rows`, `HelperText`, `ErrorText`.
+- `MxSelect`: `Label`, `Value`, `ValueChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxCheckbox`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `Description`.
+- `MxSwitch`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `HelperText`.
+- `MxFieldGroup`: `Label`, `FieldId`, `HelperText`, `ErrorText`, `ChildContent`.
+- `MxFormSection`: `Title`, `Description`, `Actions`, `ChildContent`.
+
+Reglas adicionales:
+1. Implementación preferente en Blazor/HTML puro y tokenizado; wrappers vendor solo si hay necesidad técnica clara.
+2. Mantener estados base: default, hover, focus-visible, disabled, invalid/error.
+3. Asegurar asociación label/control (`for` + `id`) y mensajes enlazados (`aria-describedby`) cuando aplique.
+4. Todo cambio en Grupo 2 debe reflejarse en `/showcase` y en docs de arquitectura/guía/foundation.
+
+---
+
+## 15) Catálogo MachSoft Components — Grupo 3 (Navigation + Overlays)
+Ubicación recomendada en Core:
+- `Components/Foundation/Navigation`:
+  - `MxTabs`
+  - `MxBreadcrumb`
+- `Components/Foundation/Overlays`:
+  - `MxDialog`
+  - `MxDrawer`
+- `Components/Foundation/Feedback`:
+  - `MxToast`
+- `Models`: `MxTabItem`, `MxBreadcrumbItem`.
+
+Contratos públicos mínimos del Grupo 3:
+- `MxTabs`: `Items`, `ActiveValue`, `ActiveValueChanged`, `Variant`, `AriaLabel`, `ActiveContent`.
+- `MxDialog`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Actions`, `Size`, `CloseOnOverlayClick`, `CloseOnEscape`.
+- `MxDrawer`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Side`, `Width`, `CloseOnOverlayClick`, `CloseOnEscape`.
+- `MxToast`: `Visible`, `VisibleChanged`, `Variant`, `Title`, `Message`, `Dismissible`, `DurationMs`.
+- `MxBreadcrumb`: `Items`.
+
+Reglas adicionales:
+1. Mantener API pública `Mx*` y contratos de interacción simples.
+2. Asegurar base accesible: tabs con roles y teclado; dialog/drawer con `role="dialog"` + `aria-modal`; breadcrumb con `aria-current`.
+3. Usar tokens semánticos para overlays, foco y estados visuales en light/dark.
+4. Toda evolución del Grupo 3 debe reflejarse en `/showcase` y documentación técnica.
+
+---
+
+## 16) Catálogo MachSoft Components — Grupo 4 (Data display + feedback)
+Ubicación recomendada en Core:
+- `Components/Foundation/DataDisplay`:
+  - `MxTag`
+  - `MxStatusIndicator`
+  - `MxEmptyState`
+  - `MxStatCard`
+  - `MxProgress`
+
+Contratos públicos mínimos del Grupo 4:
+- `MxTag`: `Text|ChildContent`, `Variant`, `Dismissible`, `OnDismiss`.
+- `MxStatusIndicator`: `Status`, `Label`.
+- `MxEmptyState`: `Title`, `Description`, `Icon`, `Actions`.
+- `MxStatCard`: `Title`, `Value`, `SupportingText`, `TrendText`, `TrendStatus`, `Status`.
+- `MxProgress`: `Value`, `Max`, `Variant`, `ShowLabel`, `IsInline`, `AriaLabel`.
+
+Reglas adicionales:
+1. Grupo 4 debe priorizar utilidad operativa real (KPIs, estados de proceso, vacíos de datos, progreso).
+2. Mantener diferencias semánticas claras entre `MxBadge` (metadata), `MxTag` (etiqueta de entidad) y `MxStatusIndicator` (estado operativo).
+3. `MxProgress` debe mantener atributos accesibles (`role="progressbar"` + `aria-valuenow/max`).
+4. Todo cambio del Grupo 4 debe verse en `/showcase` y documentación técnica.
+
+---
+
+## 17) Catálogo MachSoft Components — Grupo 5 (Enterprise inputs)
+Ubicación recomendada en Core:
+- `Components/Foundation/Inputs`:
+  - `MxDatePicker`
+  - `MxDateRangePicker`
+  - `MxAutocomplete`
+  - `MxMultiSelect`
+  - `MxFileUpload`
+- `Models/MxInputOption` para opciones de autocomplete/multiselect.
+
+Contratos públicos mínimos del Grupo 5:
+- `MxDatePicker`: `Label`, `Value`, `ValueChanged`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`.
+- `MxDateRangePicker`: `Label`, `StartValue`, `EndValue`, `StartValueChanged`, `EndValueChanged`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxAutocomplete`: `Label`, `Value`, `ValueChanged`, `SearchText`, `SearchTextChanged`, `Items`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxMultiSelect`: `Label`, `SelectedValues`, `SelectedValuesChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxFileUpload`: `Label`, `FilesChanged`, `Disabled`, `Accept`, `Multiple`, `HelperText`, `ErrorText`.
+
+Reglas adicionales:
+1. Mantener alcance base y evitar APIs infladas.
+2. Reusar `MxFieldGroup` para consistencia de accesibilidad y mensajes.
+3. Evitar exponer API vendor; si se encapsula framework-level, mantener contrato Mx estable.
+4. Reflejar siempre cambios del Grupo 5 en `/showcase` y documentación técnica.
+
+---
+
+## 18) Catálogo MachSoft Components — Grupo 6 (Enterprise data)
+Ubicación recomendada en Core:
+- `Components/Foundation/Data`:
+  - `MxDataGrid`
+  - `MxTreeGrid`
+  - `MxChart`
+- `Models`: `MxDataGridColumn<TItem>`, `MxTreeGridItem`, `MxChartSeries`.
+
+Contratos públicos mínimos del Grupo 6:
+- `MxDataGrid`: `Items`, `Columns`, `EmptyText`, `IsCompact`, `AriaLabel`.
+- `MxTreeGrid`: `Items`, `EmptyText`, `AriaLabel`.
+- `MxChart`: `Type`, `Title`, `Categories`, `Series`, `EmptyText`, `AriaLabel`.
+
+Reglas adicionales:
+1. Mantener alcance inicial honesto y controlado (sin feature creep).
+2. Priorizar legibilidad enterprise y estados no-data.
+3. Asegurar comportamiento base real (rows renderizables, tree expand/collapse, chart visible).
+4. Documentar limitaciones actuales y roadmap de evolución antes de ampliar APIs.

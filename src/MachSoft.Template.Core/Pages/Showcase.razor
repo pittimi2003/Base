@@ -2,67 +2,222 @@
 
 <PageContainer Title="Foundation Showcase" Description="Vitrina visual del Design System base para hosts Server y WebAssembly.">
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Core Visual System</h2>
-        <div class="ms-grid ms-grid--3 ms-showcase-grid-tight">
-            <BaseCard Title="Tipografía" BadgeText="typography.css" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <p class="ms-title">Título principal</p>
-                    <p class="ms-text-lg">Subtítulo jerárquico</p>
-                    <p>Texto base reusable para contenido estándar.</p>
-                    <p class="ms-text-sm">Texto auxiliar / metadata</p>
-                    <p class="ms-token-inline">display/h1/h2/body/caption/mono tokenizados</p>
-                </div>
-            </BaseCard>
+        <h2 class="ms-showcase-group__title">Grupo 1 · Componentes MachSoft</h2>
 
-            <BaseCard Title="Spacing Scale" BadgeText="primitives + semantic" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <div class="ms-surface">xs: var(--mx-space-semantic-xs)</div>
-                    <div class="ms-surface">sm: var(--mx-space-semantic-sm)</div>
-                    <div class="ms-surface">md/lg/xl: layout spacing</div>
-                </div>
-            </BaseCard>
+        <MxPageHeader Title="MachSoft Component Catalog"
+                      Description="Primer lote de componentes públicos Mx* con soporte de tema, accesibilidad y contratos estables.">
+            <Metadata>
+                <MxBadge Variant="MxBadgeVariant.Brand" Text="Group 1" />
+                <MxBadge Variant="MxBadgeVariant.Neutral" Text="Light/Dark ready" />
+            </Metadata>
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Primary" LeadingIcon="➕">Nueva orden</MxButton>
+                <MxButton Variant="MxButtonVariant.Secondary" TrailingIcon="↗">Exportar</MxButton>
+                <MxIconButton Icon="⚙️" AriaLabel="Abrir configuración" Variant="MxButtonVariant.Tertiary" />
+            </Actions>
+        </MxPageHeader>
+    </section>
 
-            <BaseCard Title="Paleta MachSoft" BadgeText="brand + accent + semantic" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-color-row">
-                    <span class="ms-color-swatch ms-color-swatch--brand" title="Brand"></span>
-                    <span class="ms-color-swatch ms-color-swatch--accent" title="Accent"></span>
-                    <span class="ms-color-swatch ms-color-swatch--success" title="Success"></span>
-                    <span class="ms-color-swatch ms-color-swatch--warning" title="Warning"></span>
-                    <span class="ms-color-swatch ms-color-swatch--danger" title="Danger"></span>
-                    <span class="ms-color-swatch ms-color-swatch--surface" title="Surface"></span>
-                    <span class="ms-color-swatch ms-color-swatch--text" title="Text"></span>
-                </div>
-                <div class="ms-divider"></div>
-                <p class="ms-text-sm">Paleta enterprise sobria para dashboards y aplicaciones operativas.</p>
-            </BaseCard>
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 2 · Formularios MachSoft</h2>
 
-            <BaseCard Title="Elevation + Border" BadgeText="shadow + stroke tokens" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <BaseCard Title="shadow-1" IsCompact="true"><p class="ms-text-sm">Superficie base</p></BaseCard>
-                    <BaseCard Title="shadow-2" Variant="SurfaceVariant.Elevated" IsCompact="true"><p class="ms-text-sm">Bloque prioritario</p></BaseCard>
+        <MxFormSection Title="MxFormSection + MxFieldGroup"
+                       Description="Base enterprise de formularios con contratos Mx*, estados y mensajes de ayuda/error.">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Cancelar</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Guardar</MxButton>
+            </Actions>
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxTextField Label="Nombre del almacén" Placeholder="North Hub" Value="@WarehouseName" ValueChanged="@(v => WarehouseName = v)" HelperText="Usa un nombre corto y descriptivo." />
+                    <MxSelect Label="Región" Value="@Region" ValueChanged="@(v => Region = v)" Options="@RegionOptions" Placeholder="Selecciona una región" Required="true" ErrorText="@(string.IsNullOrWhiteSpace(Region) ? "Campo obligatorio" : null)" />
                 </div>
-            </BaseCard>
+            </ChildContent>
+        </MxFormSection>
+    </section>
 
-            <BaseCard Title="Arquitectura de tokens" BadgeText="design-system/*" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <p class="ms-text-sm"><strong>primitives</strong>: escalas base de color, spacing, radius, border, elevation.</p>
-                    <p class="ms-text-sm"><strong>semantic</strong>: intención UI (surface, text, border, brand, states, z-index).</p>
-                    <p class="ms-text-sm"><strong>themes</strong>: light/dark con overrides semánticos.</p>
-                </div>
-            </BaseCard>
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 3 · Navegación y Overlays</h2>
+        <MxBreadcrumb Items="@BreadcrumbItems" />
+        <MxCard Title="MxTabs + Content" Variant="SurfaceVariant.Outlined">
+            <ChildContent>
+                <MxTabs Items="@TabsItems" ActiveValue="@ActiveTab" ActiveValueChanged="OnTabChanged" Variant="MxTabsVariant.Underline" AriaLabel="Secciones operativas">
+                    <ActiveContent>
+                        <p class="ms-text-sm">@ActiveTabMessage</p>
+                    </ActiveContent>
+                </MxTabs>
+            </ChildContent>
+        </MxCard>
 
-            <BaseCard Title="Theme / Color Mode" BadgeText="light + dark activo" Variant="SurfaceVariant.Outlined" IsCompact="true">
-                <div class="ms-stack-sm">
-                    <p class="ms-text-sm">Usa el botón 🌙/☀️ del header para alternar tema.</p>
-                    <p class="ms-text-sm">Persistencia por <span class="ms-token-inline">localStorage(mx-theme)</span>.</p>
-                    <p class="ms-text-sm">Se aplica al root vía <span class="ms-token-inline">data-mx-theme</span>.</p>
+        <div class="ms-mx-page-header__actions">
+            <MxButton Variant="MxButtonVariant.Secondary" OnClick="OpenDialog">Abrir dialog</MxButton>
+            <MxButton Variant="MxButtonVariant.Tertiary" OnClick="OpenDrawer">Abrir drawer</MxButton>
+            <MxButton Variant="MxButtonVariant.Primary" OnClick="ShowToast">Mostrar toast</MxButton>
+        </div>
+
+        <MxDialog Open="@IsDialogOpen" OpenChanged="OnDialogOpenChanged" Title="Confirmar actualización" Size="MxDialogSize.Medium">
+            <ChildContent><p class="ms-text-sm">¿Deseas aplicar la nueva configuración de operación al turno actual?</p></ChildContent>
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small" OnClick="CloseDialog">Cancelar</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small" OnClick="CloseDialog">Confirmar</MxButton>
+            </Actions>
+        </MxDialog>
+
+        <MxDrawer Open="@IsDrawerOpen" OpenChanged="OnDrawerOpenChanged" Title="Filtros avanzados" Side="MxDrawerSide.End" Width="360px">
+            <ChildContent>
+                <MxFormSection IsCompact="true" Title="Scope">
+                    <ChildContent>
+                        <MxCheckbox Label="Solo pendientes" Checked="@OnlyPending" CheckedChanged="@(v => OnlyPending = v)" />
+                        <MxSwitch Label="Modo detallado" Checked="@DetailedMode" CheckedChanged="@(v => DetailedMode = v)" />
+                    </ChildContent>
+                </MxFormSection>
+            </ChildContent>
+        </MxDrawer>
+
+        <MxToast Visible="@IsToastVisible" VisibleChanged="OnToastVisibleChanged" Variant="MxToastVariant.Success" Title="Cambios guardados" Message="La configuración se aplicó correctamente." DurationMs="4500" Dismissible="true" />
+    </section>
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 4 · Data Display & Feedback</h2>
+
+        <MxCard Title="MxTag + MxStatusIndicator" Variant="SurfaceVariant.Outlined">
+            <ChildContent>
+                <div class="ms-mx-page-header__actions">
+                    <MxTag Variant="MxTagVariant.Brand" Text="Lote A-102" />
+                    <MxTag Variant="MxTagVariant.Warning" Text="Revisión" />
+                    <MxTag Variant="MxTagVariant.Success" Text="Completado" />
+                    <MxStatusIndicator Status="MxStatusVariant.Success" Label="Conectado" />
+                    <MxStatusIndicator Status="MxStatusVariant.Warning" Label="Degradado" />
+                    <MxStatusIndicator Status="MxStatusVariant.Offline" Label="Offline" />
                 </div>
-            </BaseCard>
+            </ChildContent>
+        </MxCard>
+
+        <div class="ms-grid ms-grid--3">
+            <MxStatCard Title="Orders processed" Value="18,420" SupportingText="Últimas 24h" TrendText="+8.2%" TrendStatus="MxStatusVariant.Success">
+                <Status>
+                    <MxStatusIndicator Status="MxStatusVariant.Success" Label="Healthy" />
+                </Status>
+            </MxStatCard>
+            <MxStatCard Title="Pending picks" Value="246" SupportingText="SLA 2h" TrendText="+14" TrendStatus="MxStatusVariant.Warning">
+                <Status>
+                    <MxTag Variant="MxTagVariant.Warning" Text="Atención" />
+                </Status>
+            </MxStatCard>
+            <MxStatCard Title="Import failures" Value="7" SupportingText="Último ciclo" TrendText="-3" TrendStatus="MxStatusVariant.Success">
+                <Status>
+                    <MxStatusIndicator Status="MxStatusVariant.Danger" Label="Incidentes" />
+                </Status>
+            </MxStatCard>
+        </div>
+
+        <MxCard Title="MxProgress" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <ChildContent>
+                <div class="ms-stack-sm">
+                    <MxProgress Value="67" Max="100" Variant="MxProgressVariant.Brand" ShowLabel="true" AriaLabel="Avance de importación de catálogo" />
+                    <MxProgress Value="39" Max="100" Variant="MxProgressVariant.Warning" ShowLabel="true" AriaLabel="Avance de reconciliación de inventario" />
+                    <MxProgress Value="92" Max="100" Variant="MxProgressVariant.Success" ShowLabel="true" AriaLabel="Avance de sincronización WMS" />
+                </div>
+            </ChildContent>
+        </MxCard>
+
+        <MxEmptyState Title="No hay datos para el turno seleccionado"
+                      Description="Todavía no se registran movimientos en este rango de tiempo. Ajusta filtros o inicia una nueva importación."
+                      Icon="📭">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Cambiar filtros</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Iniciar carga</MxButton>
+            </Actions>
+        </MxEmptyState>
+    </section>
+
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 5 · Enterprise Inputs</h2>
+
+        <MxFormSection Title="Filtros operativos avanzados"
+                       Description="Selección de fechas, catálogos y carga de evidencia en un flujo enterprise.">
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxDatePicker Label="Fecha operativa"
+                                  Value="@OperationDate"
+                                  ValueChanged="@(v => OperationDate = v)"
+                                  HelperText="Fecha principal para corte diario." />
+
+                    <MxDateRangePicker Label="Rango de análisis"
+                                       StartValue="@RangeStart"
+                                       StartValueChanged="@(v => RangeStart = v)"
+                                       EndValue="@RangeEnd"
+                                       EndValueChanged="@(v => RangeEnd = v)"
+                                       HelperText="Usado para consultas históricas de productividad." />
+                </div>
+
+                <div class="ms-grid ms-grid--2">
+                    <MxAutocomplete Label="Almacén"
+                                    SearchText="@WarehouseSearch"
+                                    SearchTextChanged="@(v => WarehouseSearch = v)"
+                                    Value="@WarehouseValue"
+                                    ValueChanged="@(v => WarehouseValue = v)"
+                                    Items="@WarehouseOptions"
+                                    Placeholder="Buscar almacén por nombre" />
+
+                    <MxMultiSelect Label="Estados incluidos"
+                                   SelectedValues="@SelectedStatuses"
+                                   SelectedValuesChanged="OnStatusesChanged"
+                                   Options="@StatusOptions"
+                                   Placeholder="Selecciona uno o más estados" />
+                </div>
+
+                <MxFileUpload Label="Evidencias del lote"
+                              Accept=".pdf,.png,.jpg,.csv"
+                              Multiple="true"
+                              FilesChanged="OnFilesChanged"
+                              HelperText="Adjunta evidencia documental del proceso (máx. validación del backend)." />
+            </ChildContent>
+        </MxFormSection>
+
+        <MxCard Title="Resumen de selección" Variant="SurfaceVariant.Muted" IsCompact="true">
+            <ChildContent>
+                <p class="ms-text-sm">Fecha: @(OperationDate?.ToString("yyyy-MM-dd") ?? "-")</p>
+                <p class="ms-text-sm">Rango: @(RangeStart?.ToString("yyyy-MM-dd") ?? "-") → @(RangeEnd?.ToString("yyyy-MM-dd") ?? "-")</p>
+                <p class="ms-text-sm">Almacén: @WarehouseSearch (@WarehouseValue)</p>
+                <p class="ms-text-sm">Estados: @(SelectedStatuses.Count == 0 ? "Sin selección" : string.Join(", ", SelectedStatuses))</p>
+                <p class="ms-text-sm">Archivos: @(UploadedFileNames.Count == 0 ? "Sin adjuntos" : string.Join(", ", UploadedFileNames))</p>
+            </ChildContent>
+        </MxCard>
+    </section>
+
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 6 · Enterprise Data Components</h2>
+
+        <MxDataGrid TItem="OrderRow"
+                    Items="@Orders"
+                    Columns="@OrderColumns"
+                    EmptyText="Sin órdenes para el criterio seleccionado."
+                    AriaLabel="Órdenes operativas" />
+
+        <MxTreeGrid Items="@ProcessTree"
+                    EmptyText="Sin jerarquía de procesos"
+                    AriaLabel="Jerarquía de almacenes y procesos" />
+
+        <div class="ms-grid ms-grid--2">
+            <MxChart Title="Throughput por turno"
+                     Type="MxChartType.Bar"
+                     Categories="@ChartCategories"
+                     Series="@ChartSeries"
+                     AriaLabel="Chart de throughput" />
+
+            <MxChart Title="Errores por día"
+                     Type="MxChartType.Line"
+                     Categories="@ChartCategories"
+                     Series="@ErrorSeries"
+                     AriaLabel="Chart de errores" />
         </div>
     </section>
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Foundation Components</h2>
+        <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
         <div class="ms-grid ms-grid--2">
             <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
                 <div class="ms-grid ms-grid--2">
@@ -82,41 +237,136 @@
             </BaseCard>
         </div>
     </section>
-
-    <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Composición y Formularios</h2>
-        <div class="ms-grid ms-grid--2">
-            <BaseCard Title="Form Foundation" BadgeText="FormSection + FieldGroup" Variant="SurfaceVariant.Outlined">
-                <FormSection Title="Create Warehouse" Description="Patrón mínimo para formularios corporativos.">
-                    <FieldGroup Label="Warehouse name" FieldId="warehouse-name" Hint="Usar nombre corto y descriptivo.">
-                        <input id="warehouse-name" type="text" placeholder="North Hub" />
-                    </FieldGroup>
-
-                    <FieldGroup Label="Region" FieldId="warehouse-region">
-                        <select id="warehouse-region">
-                            <option>EMEA</option>
-                            <option>LATAM</option>
-                            <option>NA</option>
-                        </select>
-                    </FieldGroup>
-                </FormSection>
-            </BaseCard>
-
-            <BaseCard Title="Composición recomendada" BadgeText="PageContainer + BaseCard + FormSection" Variant="SurfaceVariant.Outlined">
-                <PageContainer IsCompact="true" Title="Subsección" Description="Combinación equilibrada para contenido + formulario.">
-                    <div class="ms-grid ms-grid--2">
-                        <BaseCard IsCompact="true" Title="Resumen" Variant="SurfaceVariant.Muted">
-                            <p class="ms-text-sm">Bloque informativo en modo compacto.</p>
-                        </BaseCard>
-
-                        <FormSection Title="Quick update" Description="Edición rápida sin romper jerarquía visual.">
-                            <FieldGroup Label="Status" FieldId="status-field">
-                                <input id="status-field" type="text" value="Active" />
-                            </FieldGroup>
-                        </FormSection>
-                    </div>
-                </PageContainer>
-            </BaseCard>
-        </div>
-    </section>
 </PageContainer>
+
+@code {
+    private string? WarehouseName { get; set; }
+    private string? Region { get; set; }
+    private bool IsDialogOpen { get; set; }
+    private bool IsDrawerOpen { get; set; }
+    private bool IsToastVisible { get; set; }
+    private bool OnlyPending { get; set; }
+    private bool DetailedMode { get; set; }
+    private string ActiveTab { get; set; } = "overview";
+
+    private string ActiveTabMessage => ActiveTab switch
+    {
+        "activity" => "Actividad reciente con eventos de recepciones y despacho.",
+        "alerts" => "Panel de alertas y excepciones activas.",
+        _ => "Vista general de operación logística y KPIs del turno."
+    };
+
+    private IEnumerable<MxSelectOption> RegionOptions { get; } =
+    [
+        new("emea", "EMEA"),
+        new("latam", "LATAM"),
+        new("na", "North America")
+    ];
+
+    private IEnumerable<MxTabItem> TabsItems { get; } =
+    [
+        new("overview", "Overview"),
+        new("activity", "Activity"),
+        new("alerts", "Alerts")
+    ];
+
+    private IEnumerable<MxBreadcrumbItem> BreadcrumbItems { get; } =
+    [
+        new("Home", "/"),
+        new("Showcase", "/showcase"),
+        new("Group 3", IsCurrent: true)
+    ];
+
+    private Task OnTabChanged(string value) { ActiveTab = value; return Task.CompletedTask; }
+    private Task OnDialogOpenChanged(bool open) { IsDialogOpen = open; return Task.CompletedTask; }
+    private Task OnDrawerOpenChanged(bool open) { IsDrawerOpen = open; return Task.CompletedTask; }
+    private Task OnToastVisibleChanged(bool visible) { IsToastVisible = visible; return Task.CompletedTask; }
+    private Task OpenDialog() { IsDialogOpen = true; return Task.CompletedTask; }
+    private Task CloseDialog() { IsDialogOpen = false; return Task.CompletedTask; }
+    private Task OpenDrawer() { IsDrawerOpen = true; return Task.CompletedTask; }
+    private Task ShowToast() { IsToastVisible = true; return Task.CompletedTask; }
+
+    private DateOnly? OperationDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? RangeStart { get; set; } = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+    private DateOnly? RangeEnd { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private string? WarehouseSearch { get; set; } = "North Hub";
+    private string? WarehouseValue { get; set; } = "north-hub";
+    private IReadOnlyList<string> SelectedStatuses { get; set; } = ["active", "blocked"];
+    private IReadOnlyList<string> UploadedFileNames { get; set; } = Array.Empty<string>();
+
+    private IEnumerable<MxInputOption> WarehouseOptions { get; } =
+    [
+        new("north-hub", "North Hub"),
+        new("east-terminal", "East Terminal"),
+        new("latam-node", "LATAM Node")
+    ];
+
+    private IEnumerable<MxInputOption> StatusOptions { get; } =
+    [
+        new("active", "Active"),
+        new("blocked", "Blocked"),
+        new("review", "Review"),
+        new("closed", "Closed")
+    ];
+
+    private Task OnStatusesChanged(IReadOnlyList<string> values)
+    {
+        SelectedStatuses = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnFilesChanged(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+    {
+        UploadedFileNames = files.Select(f => f.Name).ToArray();
+        return Task.CompletedTask;
+    }
+
+
+    private sealed record OrderRow(string OrderId, string Warehouse, string Status, string Priority);
+
+    private IReadOnlyList<OrderRow> Orders { get; } =
+    [
+        new("SO-12991", "North Hub", "Picking", "High"),
+        new("SO-13002", "East Terminal", "Blocked", "Critical"),
+        new("SO-13008", "LATAM Node", "Ready", "Normal")
+    ];
+
+    private IReadOnlyList<MxDataGridColumn<OrderRow>> OrderColumns { get; } =
+    [
+        new("Order", x => x.OrderId, "18%"),
+        new("Warehouse", x => x.Warehouse, "30%"),
+        new("Status", x => x.Status, "26%"),
+        new("Priority", x => x.Priority, "26%")
+    ];
+
+    private IReadOnlyList<MxTreeGridItem> ProcessTree { get; } =
+    [
+        new MxTreeGridItem
+        {
+            Id = "north",
+            Label = "North Hub",
+            Meta = "3 procesos",
+            Children =
+            [
+                new MxTreeGridItem { Id = "north-in", Label = "Inbound", Meta = "12 tareas" },
+                new MxTreeGridItem { Id = "north-pick", Label = "Picking", Meta = "35 tareas" },
+                new MxTreeGridItem { Id = "north-out", Label = "Outbound", Meta = "7 tareas" }
+            ]
+        },
+        new MxTreeGridItem
+        {
+            Id = "east",
+            Label = "East Terminal",
+            Meta = "2 procesos",
+            Children =
+            [
+                new MxTreeGridItem { Id = "east-in", Label = "Inbound", Meta = "8 tareas" },
+                new MxTreeGridItem { Id = "east-out", Label = "Outbound", Meta = "11 tareas" }
+            ]
+        }
+    ];
+
+    private IReadOnlyList<string> ChartCategories { get; } = ["Mon", "Tue", "Wed", "Thu", "Fri"];
+    private IReadOnlyList<MxChartSeries> ChartSeries { get; } = [new("Orders/hour", [85, 92, 88, 97, 104])];
+    private IReadOnlyList<MxChartSeries> ErrorSeries { get; } = [new("Errors", [7, 5, 6, 4, 3])];
+}

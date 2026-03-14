@@ -1,0 +1,71 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<section class="ms-mx-tree-grid" aria-label="@AriaLabel">
+    @if (!Items.Any())
+    {
+        <p class="ms-mx-tree-grid__empty">@EmptyText</p>
+    }
+    else
+    {
+        <ul class="ms-mx-tree-grid__list" role="tree">
+            @foreach (var item in Items)
+            {
+                @RenderNode(item, 0)
+            }
+        </ul>
+    }
+</section>
+
+@code {
+    [Parameter] public IReadOnlyList<MxTreeGridItem> Items { get; set; } = Array.Empty<MxTreeGridItem>();
+    [Parameter] public string EmptyText { get; set; } = "No tree data available.";
+    [Parameter] public string AriaLabel { get; set; } = "Tree grid";
+
+    private readonly HashSet<string> _expanded = [];
+
+    protected override void OnParametersSet()
+    {
+        foreach (var root in Items)
+        {
+            _expanded.Add(root.Id);
+        }
+    }
+
+    private RenderFragment RenderNode(MxTreeGridItem node, int depth) => @<li class="ms-mx-tree-grid__item" role="treeitem" aria-expanded="@IsExpanded(node)">
+        <div class="ms-mx-tree-grid__row" style="--mx-tree-depth:@depth;">
+            @if (node.Children.Count > 0)
+            {
+                <button type="button" class="ms-mx-tree-grid__toggle" aria-label="Expandir o colapsar" @onclick="() => Toggle(node.Id)">@(IsExpanded(node) ? "▾" : "▸")</button>
+            }
+            else
+            {
+                <span class="ms-mx-tree-grid__leaf" aria-hidden="true">•</span>
+            }
+            <span class="ms-mx-tree-grid__label">@node.Label</span>
+            @if (!string.IsNullOrWhiteSpace(node.Meta))
+            {
+                <span class="ms-mx-tree-grid__meta">@node.Meta</span>
+            }
+        </div>
+
+        @if (node.Children.Count > 0 && IsExpanded(node))
+        {
+            <ul class="ms-mx-tree-grid__list" role="group">
+                @foreach (var child in node.Children)
+                {
+                    @RenderNode(child, depth + 1)
+                }
+            </ul>
+        }
+    </li>;
+
+    private void Toggle(string id)
+    {
+        if (!_expanded.Add(id))
+        {
+            _expanded.Remove(id);
+        }
+    }
+
+    private bool IsExpanded(MxTreeGridItem node) => node.Children.Count == 0 || _expanded.Contains(node.Id);
+}

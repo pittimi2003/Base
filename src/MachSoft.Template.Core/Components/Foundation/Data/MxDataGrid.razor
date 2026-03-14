@@ -1,0 +1,43 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+@typeparam TItem
+
+<section class="ms-mx-data-grid" aria-label="@AriaLabel">
+    <table class="@(IsCompact ? "ms-mx-data-grid__table ms-mx-data-grid__table--compact" : "ms-mx-data-grid__table")">
+        <thead>
+            <tr>
+                @foreach (var column in Columns)
+                {
+                    <th scope="col" style="@(string.IsNullOrWhiteSpace(column.Width) ? null : $"width:{column.Width}")">@column.Title</th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (!Items.Any())
+            {
+                <tr>
+                    <td colspan="@Columns.Count" class="ms-mx-data-grid__empty">@EmptyText</td>
+                </tr>
+            }
+            else
+            {
+                @foreach (var item in Items)
+                {
+                    <tr>
+                        @foreach (var column in Columns)
+                        {
+                            <td>@column.ValueSelector(item)</td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</section>
+
+@code {
+    [Parameter] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
+    [Parameter] public IReadOnlyList<MxDataGridColumn<TItem>> Columns { get; set; } = Array.Empty<MxDataGridColumn<TItem>>();
+    [Parameter] public string EmptyText { get; set; } = "No data available.";
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Data grid";
+}

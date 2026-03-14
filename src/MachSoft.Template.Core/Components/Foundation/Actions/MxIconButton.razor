@@ -1,0 +1,22 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<button type="button"
+        class="@IconButtonClass"
+        aria-label="@AriaLabel"
+        title="@AriaLabel"
+        disabled="@Disabled"
+        @onclick="OnClick">
+    <span aria-hidden="true">@Icon</span>
+</button>
+
+@code {
+    [Parameter, EditorRequired] public string Icon { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = string.Empty;
+    [Parameter] public MxButtonVariant Variant { get; set; } = MxButtonVariant.Secondary;
+    [Parameter] public MxButtonSize Size { get; set; } = MxButtonSize.Medium;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    private string IconButtonClass =>
+        $"ms-mx-icon-button ms-mx-icon-button--{Variant.ToString().ToLowerInvariant()} ms-mx-icon-button--{Size.ToString().ToLowerInvariant()}";
+}
