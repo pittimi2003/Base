@@ -104,6 +104,80 @@
     </section>
 
     <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 2 · Formularios MachSoft</h2>
+
+        <MxFormSection Title="MxFormSection + MxFieldGroup"
+                       Description="Base enterprise de formularios con contratos Mx*, estados y mensajes de ayuda/error.">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Cancelar</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Guardar</MxButton>
+            </Actions>
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxTextField Label="Nombre del almacén"
+                                 Placeholder="North Hub"
+                                 Value="@WarehouseName"
+                                 ValueChanged="@(value => WarehouseName = value)"
+                                 HelperText="Usa un nombre corto y descriptivo." />
+
+                    <MxSelect Label="Región"
+                              Value="@Region"
+                              ValueChanged="@(value => Region = value)"
+                              Options="@RegionOptions"
+                              Placeholder="Selecciona una región"
+                              Required="true"
+                              ErrorText="@(string.IsNullOrWhiteSpace(Region) ? "Campo obligatorio" : null)" />
+                </div>
+
+                <MxTextarea Label="Notas operativas"
+                            Value="@Notes"
+                            ValueChanged="@(value => Notes = value)"
+                            Rows="4"
+                            Placeholder="Instrucciones de recepción, restricciones o alertas..."
+                            HelperText="Solo visible para supervisión." />
+
+                <div class="ms-grid ms-grid--2">
+                    <MxCheckbox Label="Permitir ingresos fuera de horario"
+                                Description="Habilita recepciones manuales con auditoría."
+                                Checked="@AllowOffHours"
+                                CheckedChanged="@(value => AllowOffHours = value)" />
+
+                    <MxSwitch Label="Modo compacto de formulario"
+                              HelperText="Reduce altura de controles para operación intensiva."
+                              Checked="@CompactMode"
+                              CheckedChanged="OnCompactModeChanged" />
+                </div>
+
+                <div class="ms-grid ms-grid--2">
+                    <MxTextField Label="Read only"
+                                 Value="WH-9001"
+                                 ReadOnly="true"
+                                 IsCompact="@CompactMode" />
+
+                    <MxTextField Label="Disabled"
+                                 Placeholder="No editable"
+                                 Disabled="true"
+                                 IsCompact="@CompactMode" />
+                </div>
+            </ChildContent>
+        </MxFormSection>
+
+        <MxCard Title="Controles individuales" Variant="SurfaceVariant.Outlined" IsCompact="true">
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxFieldGroup Label="MxFieldGroup manual" FieldId="showcase-custom-control" HelperText="Puedes encapsular cualquier control propio o de terceros.">
+                        <input id="showcase-custom-control" class="ms-mx-input" placeholder="Custom control dentro de MxFieldGroup" />
+                    </MxFieldGroup>
+
+                    <MxFieldGroup Label="Error state" FieldId="showcase-error-control" ErrorText="Valor inválido para la política actual.">
+                        <input id="showcase-error-control" class="ms-mx-input ms-mx-input--error" value="invalid" />
+                    </MxFieldGroup>
+                </div>
+            </ChildContent>
+        </MxCard>
+    </section>
+
+    <section class="ms-showcase-group">
         <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
         <div class="ms-grid ms-grid--2">
             <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
@@ -127,8 +201,27 @@
 </PageContainer>
 
 @code {
+    private string? WarehouseName { get; set; }
+    private string? Region { get; set; }
+    private string? Notes { get; set; }
+    private bool AllowOffHours { get; set; }
+    private bool CompactMode { get; set; }
+
+    private IEnumerable<MxSelectOption> RegionOptions { get; } =
+    [
+        new("emea", "EMEA"),
+        new("latam", "LATAM"),
+        new("na", "North America")
+    ];
+
     private RenderFragment CardFooter => @<div class="ms-mx-page-header__actions">
         <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Detalles</MxButton>
         <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Abrir</MxButton>
     </div>;
+
+    private Task OnCompactModeChanged(bool value)
+    {
+        CompactMode = value;
+        return Task.CompletedTask;
+    }
 }

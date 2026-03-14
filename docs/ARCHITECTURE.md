@@ -119,3 +119,24 @@ Decisiones clave de arquitectura:
 3. Reuso de `SurfaceVariant` para evitar duplicación de contratos entre superficies.
 4. Estilos token-first en `wwwroot/css/template/components.css` apoyados en `--mx-*` y bridge `--ms-*`.
 5. Integración incremental: convivencia con foundation preexistente (`BaseCard`, `PageContainer`, `AppMenuTile`) para migración no disruptiva.
+
+## Catálogo MachSoft Components - Grupo 2 (Forms)
+Implementado en `MachSoft.Template.Core/Components/Foundation/Forms` con contratos públicos `Mx*` y componentes propios (sin API vendor expuesta):
+
+- `MxTextField`
+- `MxTextarea`
+- `MxSelect`
+- `MxCheckbox`
+- `MxSwitch`
+- `MxFieldGroup`
+- `MxFormSection`
+
+Modelo de soporte:
+- `Models/MxSelectOption.cs` para contrato de opciones tipado en `MxSelect`.
+
+Decisiones de arquitectura:
+1. Baseline de formularios 100% token-first con HTML/Blazor nativo.
+2. Contratos mínimos para mantener estabilidad API y facilitar adopción incremental.
+3. `MxFieldGroup` centraliza patrón de label/control/helper/error para evitar divergencia visual.
+4. `MxFormSection` estandariza agrupación enterprise con acciones de encabezado opcionales.
+5. Convivencia temporal con `Components/Forms` legacy (`FieldGroup`, `FormSection`) para migración no destructiva.

@@ -198,3 +198,32 @@ Reglas adicionales:
 2. Limitar variantes a las mínimas útiles; evitar explosión combinatoria.
 3. Cubrir `hover`, `focus-visible`, `disabled` y contraste razonable en light/dark.
 4. Todo componente nuevo del catálogo debe tener ejemplo en `/showcase` + docs actualizadas.
+
+---
+
+## 14) Catálogo MachSoft Components — Grupo 2 (Forms)
+Ubicación recomendada en Core:
+- `Components/Foundation/Forms`:
+  - `MxTextField`
+  - `MxTextarea`
+  - `MxSelect`
+  - `MxCheckbox`
+  - `MxSwitch`
+  - `MxFieldGroup`
+  - `MxFormSection`
+- `Models/MxSelectOption` para opciones tipadas de select.
+
+Contratos públicos mínimos del Grupo 2:
+- `MxTextField`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `HelperText`, `ErrorText`, `IsCompact`.
+- `MxTextarea`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `Rows`, `HelperText`, `ErrorText`.
+- `MxSelect`: `Label`, `Value`, `ValueChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxCheckbox`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `Description`.
+- `MxSwitch`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `HelperText`.
+- `MxFieldGroup`: `Label`, `FieldId`, `HelperText`, `ErrorText`, `ChildContent`.
+- `MxFormSection`: `Title`, `Description`, `Actions`, `ChildContent`.
+
+Reglas adicionales:
+1. Implementación preferente en Blazor/HTML puro y tokenizado; wrappers vendor solo si hay necesidad técnica clara.
+2. Mantener estados base: default, hover, focus-visible, disabled, invalid/error.
+3. Asegurar asociación label/control (`for` + `id`) y mensajes enlazados (`aria-describedby`) cuando aplique.
+4. Todo cambio en Grupo 2 debe reflejarse en `/showcase` y en docs de arquitectura/guía/foundation.

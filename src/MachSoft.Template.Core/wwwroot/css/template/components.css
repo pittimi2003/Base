@@ -364,3 +364,226 @@
     align-items: stretch;
   }
 }
+
+/* MachSoft Design System - Grupo 2 (Forms) */
+.ms-mx-form-section {
+  display: grid;
+  gap: var(--ms-space-4);
+  background: var(--ms-color-surface);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  padding: var(--ms-space-6);
+}
+
+.ms-mx-form-section--compact {
+  gap: var(--ms-space-3);
+  padding: var(--ms-space-4);
+}
+
+.ms-mx-form-section__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: var(--ms-space-3);
+  flex-wrap: wrap;
+}
+
+.ms-mx-form-section__title-block {
+  display: grid;
+  gap: var(--ms-space-1);
+}
+
+.ms-mx-form-section__title-block p {
+  margin: 0;
+  color: var(--ms-color-text-soft);
+}
+
+.ms-mx-form-section__actions {
+  display: inline-flex;
+  gap: var(--ms-space-2);
+  align-items: center;
+}
+
+.ms-mx-form-section__body {
+  display: grid;
+  gap: var(--ms-space-4);
+}
+
+.ms-mx-field-group {
+  display: grid;
+  gap: var(--ms-space-2);
+}
+
+.ms-mx-field-group--compact {
+  gap: var(--ms-space-1);
+}
+
+.ms-mx-field-group__label {
+  font-size: var(--ms-font-size-sm);
+  font-weight: var(--mx-font-weight-semibold);
+}
+
+.ms-mx-field-group__message {
+  margin: 0;
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-sm);
+}
+
+.ms-mx-field-group__message--error {
+  color: var(--mx-color-state-danger);
+}
+
+.ms-mx-input {
+  width: 100%;
+  min-height: var(--mx-density-comfortable-control-height);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-sm);
+  padding: var(--ms-space-2) var(--ms-space-3);
+  font-family: var(--ms-font-family);
+  font-size: var(--ms-font-size-md);
+  line-height: var(--mx-line-height-normal);
+  color: var(--ms-color-text);
+  background: var(--ms-color-surface);
+  box-sizing: border-box;
+  transition: border-color var(--ms-motion-fast) var(--ms-motion-ease), box-shadow var(--ms-motion-fast) var(--ms-motion-ease), background-color var(--ms-motion-fast) var(--ms-motion-ease);
+}
+
+.ms-mx-input:hover:not(:disabled):not(:read-only) {
+  border-color: color-mix(in oklab, var(--ms-color-border) 60%, var(--ms-color-brand) 40%);
+}
+
+.ms-mx-input:focus-visible {
+  outline: 0;
+  border-color: var(--ms-color-brand);
+  box-shadow: var(--ms-focus-ring-shadow);
+}
+
+.ms-mx-input:disabled {
+  background: var(--ms-color-surface-muted);
+  color: var(--ms-color-text-soft);
+  cursor: not-allowed;
+}
+
+.ms-mx-input:read-only {
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 80%, var(--ms-color-surface) 20%);
+}
+
+.ms-mx-input--error,
+.ms-mx-field-group--error .ms-mx-input {
+  border-color: var(--mx-color-state-danger);
+}
+
+.ms-mx-input--compact {
+  min-height: var(--mx-density-compact-control-height);
+  padding: var(--ms-space-2);
+}
+
+.ms-mx-input--textarea {
+  resize: vertical;
+  min-height: calc(var(--mx-density-comfortable-control-height) * 2);
+}
+
+.ms-mx-input--select {
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, var(--ms-color-text-soft) 50%), linear-gradient(135deg, var(--ms-color-text-soft) 50%, transparent 50%);
+  background-position: calc(100% - 18px) calc(50% - 2px), calc(100% - 12px) calc(50% - 2px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+  padding-right: 2.2rem;
+}
+
+.ms-mx-check,
+.ms-mx-switch {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: var(--ms-space-2);
+  cursor: pointer;
+}
+
+.ms-mx-check input,
+.ms-mx-switch input {
+  margin-top: 0.15rem;
+}
+
+.ms-mx-check input {
+  inline-size: 1rem;
+  block-size: 1rem;
+  accent-color: var(--ms-color-brand);
+}
+
+.ms-mx-check input:focus-visible,
+.ms-mx-switch input:focus-visible + .ms-mx-switch__track {
+  outline: var(--ms-focus-ring-width) solid var(--ms-focus-ring-color);
+  outline-offset: var(--ms-focus-ring-offset);
+}
+
+.ms-mx-check__label-block,
+.ms-mx-switch__label-block {
+  display: grid;
+  gap: var(--ms-space-1);
+}
+
+.ms-mx-check__label,
+.ms-mx-switch__label {
+  font-weight: var(--mx-font-weight-medium);
+}
+
+.ms-mx-check__description,
+.ms-mx-switch__helper {
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-sm);
+}
+
+.ms-mx-switch input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ms-mx-switch {
+  position: relative;
+}
+
+.ms-mx-switch__track {
+  inline-size: 38px;
+  block-size: 22px;
+  border-radius: var(--mx-radius-pill);
+  background: color-mix(in oklab, var(--ms-color-border) 70%, var(--ms-color-surface) 30%);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  display: inline-flex;
+  align-items: center;
+  padding: 2px;
+  box-sizing: border-box;
+  transition: background-color var(--ms-motion-fast) var(--ms-motion-ease), border-color var(--ms-motion-fast) var(--ms-motion-ease);
+}
+
+.ms-mx-switch__thumb {
+  inline-size: 16px;
+  block-size: 16px;
+  border-radius: var(--mx-radius-pill);
+  background: var(--mx-color-neutral-0);
+  box-shadow: var(--ms-shadow-sm);
+  transition: transform var(--ms-motion-fast) var(--ms-motion-ease);
+}
+
+.ms-mx-switch input:checked + .ms-mx-switch__track {
+  background: color-mix(in oklab, var(--ms-color-brand) 78%, var(--ms-color-surface) 22%);
+  border-color: var(--ms-color-brand);
+}
+
+.ms-mx-switch input:checked + .ms-mx-switch__track .ms-mx-switch__thumb {
+  transform: translateX(16px);
+}
+
+.ms-mx-check--disabled,
+.ms-mx-switch--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+  .ms-mx-form-section__header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
