@@ -1,0 +1,26 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<section class="@MasterDetailClass" aria-label="Master detail pattern">
+    <div class="ms-mx-master-detail__master">
+        @MasterContent
+    </div>
+
+    <div class="ms-mx-master-detail__detail">
+        @if (DetailContent is not null)
+        {
+            @DetailContent
+        }
+        else
+        {
+            <MxEmptyState Title="Sin detalle seleccionado" Description="Selecciona un registro de la lista para ver su detalle." Icon="📄" />
+        }
+    </div>
+</section>
+
+@code {
+    [Parameter, EditorRequired] public RenderFragment MasterContent { get; set; } = default!;
+    [Parameter] public RenderFragment? DetailContent { get; set; }
+    [Parameter] public bool IsStacked { get; set; }
+
+    private string MasterDetailClass => $"ms-mx-master-detail{(IsStacked ? " ms-mx-master-detail--stacked" : string.Empty)}";
+}

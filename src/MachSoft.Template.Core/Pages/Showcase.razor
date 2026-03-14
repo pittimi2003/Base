@@ -217,6 +217,76 @@
     </section>
 
     <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 7 · Foundation Patterns</h2>
+
+        <MxSearchPanel Title="Buscar orden" Variant="SurfaceVariant.Outlined">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Limpiar</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Buscar</MxButton>
+            </Actions>
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxTextField Label="ID de orden" Placeholder="SO-13002" Value="@PatternOrderId" ValueChanged="@(v => PatternOrderId = v)" />
+                    <MxSelect Label="Prioridad" Value="@PatternPriority" ValueChanged="@(v => PatternPriority = v)" Options="@PatternPriorityOptions" Placeholder="Selecciona prioridad" />
+                </div>
+            </ChildContent>
+        </MxSearchPanel>
+
+        <MxFilterBar IsCompact="true">
+            <Filters>
+                <MxSwitch Label="Solo críticas" Checked="@PatternOnlyCritical" CheckedChanged="@(v => PatternOnlyCritical = v)" />
+                <MxCheckbox Label="Con incidencia" Checked="@PatternWithIncident" CheckedChanged="@(v => PatternWithIncident = v)" />
+            </Filters>
+            <Summary>
+                <p class="ms-text-sm">@(PatternOnlyCritical ? "Mostrando solo órdenes críticas" : "Mostrando todas las prioridades")</p>
+            </Summary>
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Aplicar</MxButton>
+            </Actions>
+        </MxFilterBar>
+
+        <MxDashboardSection Title="Resumen operativo" Description="Composición de KPIs y alertas con patrón reusable.">
+            <div class="ms-grid ms-grid--3">
+                <MxStatCard Title="Pedidos activos" Value="264" SupportingText="Turno actual" TrendText="+12" TrendStatus="MxStatusVariant.Success" />
+                <MxStatCard Title="Órdenes bloqueadas" Value="18" SupportingText="Última hora" TrendText="+3" TrendStatus="MxStatusVariant.Warning" />
+                <MxStatCard Title="SLA cumplido" Value="98.4%" SupportingText="Últimas 24h" TrendText="+0.6%" TrendStatus="MxStatusVariant.Success" />
+            </div>
+        </MxDashboardSection>
+
+        <MxMasterDetail>
+            <MasterContent>
+                <MxDataGrid Items="@PatternOrders" Columns="@PatternOrderColumns" AriaLabel="Listado master de órdenes" />
+            </MasterContent>
+            <DetailContent>
+                <MxCard Title="Detalle de orden" Variant="SurfaceVariant.Muted" IsCompact="true">
+                    <ChildContent>
+                        <p class="ms-text-sm">Orden seleccionada: <strong>@PatternSelectedOrderId</strong></p>
+                        <p class="ms-text-sm">Estado: Bloqueada por validación de inventario.</p>
+                    </ChildContent>
+                </MxCard>
+            </DetailContent>
+        </MxMasterDetail>
+
+        <MxSettingsPage Title="Configuración de operación" Description="Patrón para vistas de configuración enterprise.">
+            <Categories>
+                <MxTabs Items="@PatternSettingsTabs" ActiveValue="@PatternSettingsTab" ActiveValueChanged="OnPatternSettingsTabChanged" AriaLabel="Categorías de ajustes" />
+            </Categories>
+            <Sections>
+                <MxFormSection IsCompact="true" Title="Ajustes de notificación">
+                    <ChildContent>
+                        <MxSwitch Label="Alertas por correo" Checked="@PatternEmailAlerts" CheckedChanged="@(v => PatternEmailAlerts = v)" />
+                        <MxSwitch Label="Alertas por SMS" Checked="@PatternSmsAlerts" CheckedChanged="@(v => PatternSmsAlerts = v)" />
+                    </ChildContent>
+                </MxFormSection>
+            </Sections>
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary">Cancelar</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary">Guardar configuración</MxButton>
+            </Actions>
+        </MxSettingsPage>
+    </section>
+
+    <section class="ms-showcase-group">
         <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
         <div class="ms-grid ms-grid--2">
             <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
@@ -369,4 +439,47 @@
     private IReadOnlyList<string> ChartCategories { get; } = ["Mon", "Tue", "Wed", "Thu", "Fri"];
     private IReadOnlyList<MxChartSeries> ChartSeries { get; } = [new("Orders/hour", [85, 92, 88, 97, 104])];
     private IReadOnlyList<MxChartSeries> ErrorSeries { get; } = [new("Errors", [7, 5, 6, 4, 3])];
+
+    private string? PatternOrderId { get; set; }
+    private string? PatternPriority { get; set; }
+    private bool PatternOnlyCritical { get; set; }
+    private bool PatternWithIncident { get; set; }
+    private string PatternSelectedOrderId { get; set; } = "SO-13002";
+    private bool PatternEmailAlerts { get; set; } = true;
+    private bool PatternSmsAlerts { get; set; }
+    private string PatternSettingsTab { get; set; } = "notifications";
+
+    private IEnumerable<MxSelectOption> PatternPriorityOptions { get; } =
+    [
+        new("critical", "Crítica"),
+        new("high", "Alta"),
+        new("normal", "Normal")
+    ];
+
+    private IEnumerable<MxTabItem> PatternSettingsTabs { get; } =
+    [
+        new("notifications", "Notificaciones"),
+        new("security", "Seguridad"),
+        new("integrations", "Integraciones")
+    ];
+
+    private IReadOnlyList<OrderRow> PatternOrders { get; } =
+    [
+        new("SO-13002", "East Terminal", "Blocked", "Critical"),
+        new("SO-13008", "LATAM Node", "Ready", "High"),
+        new("SO-13021", "North Hub", "Picking", "Normal")
+    ];
+
+    private IReadOnlyList<MxDataGridColumn<OrderRow>> PatternOrderColumns { get; } =
+    [
+        new("Order", x => x.OrderId, "30%"),
+        new("Warehouse", x => x.Warehouse, "40%"),
+        new("Priority", x => x.Priority, "30%")
+    ];
+
+    private Task OnPatternSettingsTabChanged(string value)
+    {
+        PatternSettingsTab = value;
+        return Task.CompletedTask;
+    }
 }

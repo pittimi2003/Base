@@ -1146,3 +1146,122 @@
   border-radius: var(--mx-radius-pill);
   background: var(--mx-color-data-1);
 }
+
+/* MachSoft Design System - Grupo 7 (Patterns) */
+.ms-mx-search-panel__content {
+  display: grid;
+  gap: var(--ms-space-4);
+}
+
+.ms-mx-filter-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ms-space-3);
+  background: var(--ms-color-surface-muted);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  padding: var(--ms-space-3) var(--ms-space-4);
+}
+
+.ms-mx-filter-bar--compact {
+  padding: var(--ms-space-2) var(--ms-space-3);
+  gap: var(--ms-space-2);
+}
+
+.ms-mx-filter-bar__filters,
+.ms-mx-filter-bar__summary,
+.ms-mx-filter-bar__actions {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--ms-space-2);
+  flex-wrap: wrap;
+}
+
+.ms-mx-filter-bar__summary p {
+  margin: 0;
+  color: var(--ms-color-text-soft);
+}
+
+.ms-mx-dashboard-section {
+  display: grid;
+  gap: var(--ms-space-4);
+  border: var(--ms-border-width-1) solid var(--ms-color-border);
+  border-radius: var(--ms-radius-md);
+  background: var(--ms-color-surface);
+  padding: var(--ms-space-5);
+}
+
+.ms-mx-dashboard-section--compact {
+  padding: var(--ms-space-4);
+  gap: var(--ms-space-3);
+}
+
+.ms-mx-dashboard-section--elevated {
+  box-shadow: var(--ms-shadow-md);
+}
+
+.ms-mx-dashboard-section--muted {
+  background: var(--ms-color-surface-muted);
+}
+
+.ms-mx-dashboard-section__header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: var(--ms-space-3);
+  flex-wrap: wrap;
+}
+
+.ms-mx-dashboard-section__header h3,
+.ms-mx-dashboard-section__header p {
+  margin: 0;
+}
+
+.ms-mx-dashboard-section__header p {
+  color: var(--ms-color-text-soft);
+  margin-top: var(--ms-space-1);
+}
+
+.ms-mx-dashboard-section__actions {
+  display: inline-flex;
+  gap: var(--ms-space-2);
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.ms-mx-master-detail {
+  display: grid;
+  gap: var(--ms-space-4);
+  grid-template-columns: minmax(280px, 2fr) minmax(280px, 3fr);
+}
+
+.ms-mx-master-detail--stacked {
+  grid-template-columns: 1fr;
+}
+
+.ms-mx-master-detail__master,
+.ms-mx-master-detail__detail {
+  display: grid;
+  gap: var(--ms-space-3);
+}
+
+.ms-mx-settings-page__categories,
+.ms-mx-settings-page__sections,
+.ms-mx-settings-page__actions {
+  display: grid;
+  gap: var(--ms-space-3);
+}
+
+.ms-mx-settings-page__actions {
+  display: inline-flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 960px) {
+  .ms-mx-master-detail {
+    grid-template-columns: 1fr;
+  }
+}
