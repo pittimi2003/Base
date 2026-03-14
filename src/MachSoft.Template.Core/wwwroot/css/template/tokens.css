@@ -17,14 +17,22 @@
   --ms-color-accent: var(--mx-color-accent-primary);
   --ms-color-text: var(--mx-color-text-primary);
   --ms-color-text-soft: var(--mx-color-text-secondary);
+  --ms-color-text-muted: var(--mx-color-text-muted, var(--mx-color-text-secondary));
   --ms-color-text-inverse: var(--mx-color-text-inverse);
   --ms-color-border: var(--mx-color-border-default);
+  --ms-color-border-subtle: var(--mx-color-border-subtle, var(--mx-color-border-default));
+  --ms-color-border-strong: var(--mx-color-border-strong);
 
   --ms-color-nav-surface: var(--mx-color-nav-surface);
   --ms-color-nav-surface-strong: var(--mx-color-nav-surface-strong);
   --ms-color-nav-text: var(--mx-color-nav-text);
   --ms-color-nav-text-muted: var(--mx-color-nav-text-muted);
   --ms-color-nav-active: var(--mx-color-nav-active);
+
+  --ms-color-link: var(--mx-color-link, var(--mx-color-brand-primary));
+  --ms-color-link-hover: var(--mx-color-link-hover, var(--mx-color-brand-strong));
+  --ms-color-input-bg: var(--mx-color-input-bg, var(--mx-color-bg-surface));
+  --ms-color-input-bg-disabled: var(--mx-color-input-bg-disabled, var(--mx-color-bg-surface-muted));
 
   --ms-overlay: var(--mx-color-overlay);
 

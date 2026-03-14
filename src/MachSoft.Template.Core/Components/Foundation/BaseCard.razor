@@ -1,3 +1,6 @@
+@* LEGACY COMPONENT *@
+@attribute [Obsolete("LEGACY: replaced by MxCard. This component will be removed in future versions.")]
+
 <article class="@CardClass">
     @if (ShowHeader)
     {
@@ -16,7 +19,12 @@
 </article>
 
 @code {
+    /// <summary>
+    /// LEGACY: replaced by MxCard.
+    /// This component will be removed in future versions.
+    /// </summary>
     [Parameter] public string? Title { get; set; }
+
     [Parameter] public string? BadgeText { get; set; }
     [Parameter] public SurfaceVariant Variant { get; set; } = SurfaceVariant.Default;
     [Parameter] public bool IsCompact { get; set; }

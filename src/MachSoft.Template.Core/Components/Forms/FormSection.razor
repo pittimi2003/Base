@@ -1,3 +1,6 @@
+@* LEGACY COMPONENT *@
+@attribute [Obsolete("LEGACY: replaced by MxFormSection. This component will be removed in future versions.")]
+
 <section class="ms-form-section">
     @if (!string.IsNullOrWhiteSpace(Title))
     {
@@ -10,7 +13,12 @@
 </section>
 
 @code {
+    /// <summary>
+    /// LEGACY: replaced by MxFormSection.
+    /// This component will be removed in future versions.
+    /// </summary>
     [Parameter] public string? Title { get; set; }
+
     [Parameter] public string? Description { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 }

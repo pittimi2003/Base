@@ -1,0 +1,78 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<section class="ms-mx-chart" aria-label="@AriaLabel">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <h4>@Title</h4>
+    }
+
+    @if (!HasData)
+    {
+        <p class="ms-mx-chart__empty">@EmptyText</p>
+    }
+    else
+    {
+        @if (Type == MxChartType.Bar)
+        {
+            <div class="ms-mx-chart__bars">
+                @for (var index = 0; index < Categories.Count; index++)
+                {
+                    var value = PrimarySeries.Values.ElementAtOrDefault(index);
+                    var pct = MaxValue <= 0 ? 0 : (value / MaxValue) * 100;
+                    <div class="ms-mx-chart__bar-group">
+                        <div class="ms-mx-chart__bar" style="height:@Math.Max(6, pct)%"></div>
+                        <span class="ms-mx-chart__category">@Categories[index]</span>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <svg class="ms-mx-chart__line" viewBox="0 0 100 40" role="img" aria-label="Line chart">
+                <polyline fill="none" points="@LinePoints" class="ms-mx-chart__line-path" />
+            </svg>
+            <div class="ms-mx-chart__categories">
+                @foreach (var category in Categories)
+                {
+                    <span>@category</span>
+                }
+            </div>
+        }
+
+        <p class="ms-mx-chart__legend"><span class="ms-mx-chart__legend-dot"></span>@PrimarySeries.Name</p>
+    }
+</section>
+
+@code {
+    [Parameter] public MxChartType Type { get; set; } = MxChartType.Bar;
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public IReadOnlyList<string> Categories { get; set; } = Array.Empty<string>();
+    [Parameter] public IReadOnlyList<MxChartSeries> Series { get; set; } = Array.Empty<MxChartSeries>();
+    [Parameter] public string EmptyText { get; set; } = "No chart data available.";
+    [Parameter] public string AriaLabel { get; set; } = "Chart";
+
+    private MxChartSeries PrimarySeries => Series.First();
+    private bool HasData => Series.Count > 0 && Categories.Count > 0 && PrimarySeries.Values.Count > 0;
+    private double MaxValue => HasData ? Math.Max(PrimarySeries.Values.Max(), 1) : 1;
+
+    private string LinePoints
+    {
+        get
+        {
+            if (!HasData)
+            {
+                return string.Empty;
+            }
+
+            var values = PrimarySeries.Values;
+            var stepX = values.Count == 1 ? 100 : 100.0 / (values.Count - 1);
+            var points = values.Select((value, idx) =>
+            {
+                var x = idx * stepX;
+                var y = 36 - ((value / MaxValue) * 32);
+                return $"{x:0.##},{y:0.##}";
+            });
+            return string.Join(' ', points);
+        }
+    }
+}

@@ -1,12 +1,87 @@
 @page "/demo"
 
-<PageContainer Title="Starter Demo" Description="Página mínima incluida en el starter para arrancar un proyecto corporativo.">
-    <div class="ms-grid ms-grid--2">
-        <BaseCard Title="Estado starter" BadgeText="ready">
-            <p>La solución inicia con layout y tema corporativo conectados.</p>
-        </BaseCard>
-        <BaseCard Title="Próximo paso" BadgeText="guideline">
-            <p>Agregar módulos de negocio en proyectos separados, preservando foundation.</p>
-        </BaseCard>
-    </div>
-</PageContainer>
+<div class="ms-page-container">
+    <MxPageHeader Title="Starter Demo"
+                  Description="Plantilla enterprise consolidada con el lenguaje oficial Mx* para acelerar adopción.">
+        <Metadata>
+            <MxBadge Variant="MxBadgeVariant.Brand" Text="Starter Server" />
+            <MxBadge Variant="MxBadgeVariant.Neutral" Text="Mx* Ready" />
+        </Metadata>
+    </MxPageHeader>
+
+    <MxSearchPanel Title="Búsqueda operativa rápida">
+        <Actions>
+            <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Limpiar</MxButton>
+            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Buscar</MxButton>
+        </Actions>
+        <ChildContent>
+            <div class="ms-grid ms-grid--2">
+                <MxTextField Label="Orden" Placeholder="SO-13021" Value="@OrderQuery" ValueChanged="@(v => OrderQuery = v)" />
+                <MxSelect Label="Prioridad" Value="@Priority" ValueChanged="@(v => Priority = v)" Options="@PriorityOptions" Placeholder="Selecciona prioridad" />
+            </div>
+        </ChildContent>
+    </MxSearchPanel>
+
+    <MxFilterBar>
+        <Filters>
+            <MxSwitch Label="Solo bloqueadas" Checked="@OnlyBlocked" CheckedChanged="@(v => OnlyBlocked = v)" />
+            <MxCheckbox Label="Con incidencias" Checked="@WithIncidents" CheckedChanged="@(v => WithIncidents = v)" />
+        </Filters>
+        <Summary>
+            <p class="ms-text-sm">@(OnlyBlocked ? "Filtro activo: solo bloqueadas" : "Filtro activo: todas las órdenes")</p>
+        </Summary>
+    </MxFilterBar>
+
+    <MxDashboardSection Title="KPIs del turno" Description="Bloques listos para composición de dashboards en equipos de producto.">
+        <div class="ms-grid ms-grid--3">
+            <MxStatCard Title="Órdenes" Value="184" SupportingText="En proceso" TrendText="+12" TrendStatus="MxStatusVariant.Success" />
+            <MxStatCard Title="Bloqueadas" Value="7" SupportingText="Última hora" TrendText="-2" TrendStatus="MxStatusVariant.Success" />
+            <MxStatCard Title="SLA" Value="97.8%" SupportingText="Hoy" TrendText="+0.4%" TrendStatus="MxStatusVariant.Success" />
+        </div>
+    </MxDashboardSection>
+
+    <MxMasterDetail>
+        <MasterContent>
+            <MxDataGrid Items="@Orders" Columns="@OrderColumns" AriaLabel="Órdenes del starter" />
+        </MasterContent>
+        <DetailContent>
+            <MxCard Title="Detalle" Variant="SurfaceVariant.Muted" IsCompact="true">
+                <ChildContent>
+                    <p class="ms-text-sm">Seleccionada: <strong>@SelectedOrderId</strong></p>
+                    <p class="ms-text-sm">Estado enterprise listo para integrar con dominio real.</p>
+                </ChildContent>
+            </MxCard>
+        </DetailContent>
+    </MxMasterDetail>
+</div>
+
+@code {
+    private string? OrderQuery { get; set; }
+    private string? Priority { get; set; }
+    private bool OnlyBlocked { get; set; }
+    private bool WithIncidents { get; set; }
+    private string SelectedOrderId { get; set; } = "SO-13021";
+
+    private IEnumerable<MxSelectOption> PriorityOptions { get; } =
+    [
+        new("critical", "Crítica"),
+        new("high", "Alta"),
+        new("normal", "Normal")
+    ];
+
+    private sealed record StarterOrder(string OrderId, string Warehouse, string Status);
+
+    private IReadOnlyList<StarterOrder> Orders { get; } =
+    [
+        new("SO-13021", "North Hub", "Picking"),
+        new("SO-13028", "East Terminal", "Blocked"),
+        new("SO-13040", "LATAM Node", "Ready")
+    ];
+
+    private IReadOnlyList<MxDataGridColumn<StarterOrder>> OrderColumns { get; } =
+    [
+        new("Order", x => x.OrderId, "30%"),
+        new("Warehouse", x => x.Warehouse, "40%"),
+        new("Status", x => x.Status, "30%")
+    ];
+}
