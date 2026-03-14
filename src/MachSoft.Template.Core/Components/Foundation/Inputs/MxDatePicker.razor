@@ -1,0 +1,52 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<MxFieldGroup Label="@Label"
+              FieldId="@ResolvedId"
+              Required="@Required"
+              HelperText="@HelperText"
+              ErrorText="@ErrorText"
+              IsCompact="@IsCompact">
+    <input id="@ResolvedId"
+           class="@InputClass"
+           type="date"
+           value="@FormattedValue"
+           placeholder="@Placeholder"
+           disabled="@Disabled"
+           required="@Required"
+           aria-required="@Required"
+           aria-invalid="@HasError"
+           aria-describedby="@DescribedBy"
+           @onchange="OnDateChanged" />
+</MxFieldGroup>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public DateOnly? Value { get; set; }
+    [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+
+    private readonly string _fallbackId = $"mx-date-{Guid.NewGuid():N}";
+    private string ResolvedId => Id ?? _fallbackId;
+    private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? $"{ResolvedId}-message" : null;
+    private string InputClass => $"ms-mx-input{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+    private string FormattedValue => Value?.ToString("yyyy-MM-dd") ?? string.Empty;
+
+    private async Task OnDateChanged(ChangeEventArgs args)
+    {
+        DateOnly? parsed = null;
+        if (DateOnly.TryParse(args.Value?.ToString(), out var date))
+        {
+            parsed = date;
+        }
+
+        Value = parsed;
+        await ValueChanged.InvokeAsync(parsed);
+    }
+}
