@@ -484,3 +484,26 @@ Ubicación en Core:
 - Data states no-data cubiertos en los tres componentes.
 - `MxTreeGrid` con `role=tree/treeitem/group` y toggles con foco visible.
 - Contraste y legibilidad base priorizados para contexto operativo enterprise.
+
+---
+
+## Consolidación y adopción (sin nuevos grupos)
+
+Esta iteración está enfocada en consolidar lo ya implementado:
+- normalizar uso de `Mx*` en Starter,
+- reorganizar showcase por capas (Foundations, Components, Enterprise Data, Patterns),
+- marcar legacy para migración progresiva,
+- preparar guía de adopción para equipos.
+
+### Design System Layers
+- **Foundations**: tokens + componentes base reutilizables.
+- **Components**: entradas enterprise.
+- **Data Components**: grilla, árbol y charts.
+- **Patterns**: composiciones de pantalla enterprise.
+
+### Legacy Components
+- `BaseCard` → `MxCard`
+- `PageContainer` → `MxPageHeader` + composición
+- `FormSection` / `FieldGroup` / `SectionTitle` → `MxFormSection` / `MxFieldGroup`
+
+Inventario consolidado: `docs/COMPONENT_INVENTORY.md`.

@@ -324,3 +324,12 @@ Reglas adicionales:
 2. Priorizar legibilidad enterprise y estados no-data.
 3. Asegurar comportamiento base real (rows renderizables, tree expand/collapse, chart visible).
 4. Documentar limitaciones actuales y roadmap de evolución antes de ampliar APIs.
+
+---
+
+## 19) Iteración de consolidación y adopción (regla activa)
+- No crear nuevos grupos de componentes en esta fase.
+- Priorizar adopción de lenguaje oficial `Mx*` en Starter y ejemplos.
+- Mantener componentes legacy funcionales pero marcados explícitamente como deprecated/legacy.
+- Showcase debe organizarse por capas: Foundations, Components, Enterprise Data, Patterns.
+- Cada cambio de consolidación debe mantener compatibilidad Server/WASM y actualizar documentación de adopción.

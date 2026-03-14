@@ -283,3 +283,34 @@ Se incorporó una base de visualización de datos enterprise:
 - Grid sin sorting/filtering/paging avanzados.
 - Tree con estructura jerárquica simple y expand/collapse.
 - Chart base sin capacidades analíticas avanzadas.
+
+---
+
+## Consolidación del Design System (iteración de adopción)
+
+### Design System Layers
+1. **Foundations**: tokens, tipografía, color, spacing y componentes base (`MxButton`, `MxCard`, `MxFormSection`, etc.).
+2. **Components**: controles de entrada enterprise reutilizables (`MxDatePicker`, `MxAutocomplete`, `MxMultiSelect`, `MxFileUpload`).
+3. **Data Components**: visualización enterprise de datos (`MxDataGrid`, `MxTreeGrid`, `MxChart`).
+4. **Patterns**: composiciones recomendadas para pantallas reales (`MxSearchPanel`, `MxFilterBar`, `MxDashboardSection`, `MxMasterDetail`, `MxSettingsPage`).
+
+### Legacy Components
+Los siguientes componentes se mantienen solo para compatibilidad y deben evitarse en nuevas pantallas:
+- `BaseCard` (usar `MxCard`)
+- `PageContainer` (usar `MxPageHeader` + composición con `MxCard`/`MxPanel`)
+- `FormSection` (usar `MxFormSection`)
+- `FieldGroup` (usar `MxFieldGroup`)
+- `SectionTitle` (usar header integrado de `MxFormSection`)
+
+Todos están marcados como `LEGACY` y `Obsolete` en código fuente.
+
+### Adoption Guide (screen blueprint)
+Para construir una pantalla enterprise estándar:
+1. Encabezado con `MxPageHeader`.
+2. Búsqueda con `MxSearchPanel`.
+3. Filtros horizontales con `MxFilterBar`.
+4. KPIs con `MxDashboardSection` + `MxStatCard`.
+5. Datos operativos con `MxDataGrid`.
+6. Si aplica, usar `MxMasterDetail` para lista/detalle.
+
+Referencia de inventario y clasificación: `docs/COMPONENT_INVENTORY.md`.

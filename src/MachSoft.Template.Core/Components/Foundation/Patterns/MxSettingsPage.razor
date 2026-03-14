@@ -1,6 +1,8 @@
 @namespace MachSoft.Template.Core.Components.Foundation
 
-<PageContainer Title="@Title" Description="@Description" IsCompact="@IsCompact">
+<div class="ms-page-container @(IsCompact ? "ms-page-container--compact" : string.Empty)">
+    <MxPageHeader Title="@Title" Description="@Description" />
+
     @if (Categories is not null)
     {
         <div class="ms-mx-settings-page__categories">
@@ -18,7 +20,7 @@
             @Actions
         </div>
     }
-</PageContainer>
+</div>
 
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;

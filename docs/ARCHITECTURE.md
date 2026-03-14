@@ -214,3 +214,21 @@ Decisiones de arquitectura:
 2. Alcance inicial controlado para evitar APIs infladas y deuda de mantenibilidad.
 3. Integración visual con tokens y patrones de empty state.
 4. Base diseñada para evolución incremental (sorting/paging/series avanzadas en futuras iteraciones).
+
+---
+
+## Design System Layers (Consolidación)
+
+La arquitectura oficial de UI queda dividida en cuatro capas:
+1. **Foundations** (`Components/Foundation/*` base)
+2. **Components** (`Components/Foundation/Inputs`)
+3. **Data Components** (`Components/Foundation/Data`)
+4. **Patterns** (`Components/Foundation/Patterns`)
+
+### Legacy lane
+Los componentes legacy siguen disponibles solo para no romper adopción incremental, pero deben considerarse ruta de salida:
+- `BaseCard`
+- `PageContainer`
+- `Components/Forms/*` (`FormSection`, `FieldGroup`, `SectionTitle`)
+
+Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.

@@ -1,8 +1,29 @@
 @page "/showcase"
 
-<PageContainer Title="Foundation Showcase" Description="Vitrina visual del Design System base para hosts Server y WebAssembly.">
+<div class="ms-page-container">
+    <MxPageHeader Title="MachSoft Design System Showcase"
+                  Description="Consolidación del lenguaje oficial Mx* para adopción en hosts Server y WebAssembly.">
+        <Metadata>
+            <MxBadge Variant="MxBadgeVariant.Brand" Text="v1.0.0-internal" />
+            <MxBadge Variant="MxBadgeVariant.Neutral" Text="Adoption Ready" />
+        </Metadata>
+    </MxPageHeader>
+
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 1 · Componentes MachSoft</h2>
+        <h2 class="ms-showcase-group__title">FOUNDATIONS</h2>
+
+        <MxCard Title="Tokens, color, typography, spacing" Variant="SurfaceVariant.Outlined">
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <p class="ms-text-sm"><strong>Tokens:</strong> variables <code>--mx-*</code> para color, densidad, radios y sombras.</p>
+                    <p class="ms-text-sm"><strong>Color:</strong> paleta semántica en light/dark mode con contraste base enterprise.</p>
+                    <p class="ms-text-sm"><strong>Typography:</strong> escalas desde <code>--ms-font-size-sm</code> hasta títulos de página.</p>
+                    <p class="ms-text-sm"><strong>Spacing:</strong> grilla y stack a través de utilidades <code>ms-grid</code> y espacios tokenizados.</p>
+                </div>
+            </ChildContent>
+        </MxCard>
+
+        <h3 class="ms-showcase-group__title">Core components</h3>
 
         <MxPageHeader Title="MachSoft Component Catalog"
                       Description="Primer lote de componentes públicos Mx* con soporte de tema, accesibilidad y contratos estables.">
@@ -19,7 +40,9 @@
     </section>
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 2 · Formularios MachSoft</h2>
+        <h2 class="ms-showcase-group__title">COMPONENTS</h2>
+
+        <h3 class="ms-showcase-group__title">Form components</h3>
 
         <MxFormSection Title="MxFormSection + MxFieldGroup"
                        Description="Base enterprise de formularios con contratos Mx*, estados y mensajes de ayuda/error.">
@@ -37,7 +60,7 @@
     </section>
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 3 · Navegación y Overlays</h2>
+        <h3 class="ms-showcase-group__title">Navigation & overlays</h3>
         <MxBreadcrumb Items="@BreadcrumbItems" />
         <MxCard Title="MxTabs + Content" Variant="SurfaceVariant.Outlined">
             <ChildContent>
@@ -78,7 +101,7 @@
     </section>
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 4 · Data Display & Feedback</h2>
+        <h3 class="ms-showcase-group__title">Data display</h3>
 
         <MxCard Title="MxTag + MxStatusIndicator" Variant="SurfaceVariant.Outlined">
             <ChildContent>
@@ -133,7 +156,7 @@
 
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 5 · Enterprise Inputs</h2>
+        <h3 class="ms-showcase-group__title">Enterprise inputs</h3>
 
         <MxFormSection Title="Filtros operativos avanzados"
                        Description="Selección de fechas, catálogos y carga de evidencia en un flujo enterprise.">
@@ -186,10 +209,11 @@
             </ChildContent>
         </MxCard>
     </section>
+</PageContainer>
 
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 6 · Enterprise Data Components</h2>
+        <h2 class="ms-showcase-group__title">ENTERPRISE DATA</h2>
 
         <MxDataGrid TItem="OrderRow"
                     Items="@Orders"
@@ -217,7 +241,7 @@
     </section>
 
     <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Grupo 7 · Foundation Patterns</h2>
+        <h2 class="ms-showcase-group__title">PATTERNS</h2>
 
         <MxSearchPanel Title="Buscar orden" Variant="SurfaceVariant.Outlined">
             <Actions>
@@ -286,28 +310,7 @@
         </MxSettingsPage>
     </section>
 
-    <section class="ms-showcase-group">
-        <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
-        <div class="ms-grid ms-grid--2">
-            <BaseCard Title="Card Variants" BadgeText="BaseCard" Variant="SurfaceVariant.Elevated">
-                <div class="ms-grid ms-grid--2">
-                    <BaseCard Title="Default" IsCompact="true"><p class="ms-text-sm">Superficie base de contenido.</p></BaseCard>
-                    <BaseCard Title="Elevated" Variant="SurfaceVariant.Elevated" IsCompact="true"><p class="ms-text-sm">Mayor prioridad visual.</p></BaseCard>
-                    <BaseCard Title="Outlined" Variant="SurfaceVariant.Outlined" IsCompact="true"><p class="ms-text-sm">Contenedor estructural neutro.</p></BaseCard>
-                    <BaseCard Title="Muted" Variant="SurfaceVariant.Muted" IsCompact="true"><p class="ms-text-sm">Contexto secundario.</p></BaseCard>
-                </div>
-            </BaseCard>
-
-            <BaseCard Title="Navigation Tiles" BadgeText="AppMenuTile" Variant="SurfaceVariant.Muted">
-                <div class="ms-grid ms-grid--2">
-                    <AppMenuTile Title="Starter" Description="Host Server" Href="/demo" Icon="🚀" Variant="TileVariant.Default" />
-                    <AppMenuTile Title="WASM" Description="Host WebAssembly" Href="/wasm-demo" Icon="🌐" Variant="TileVariant.Elevated" />
-                    <AppMenuTile Title="Showcase" Description="Catálogo visual" Href="/showcase" Icon="🧩" Variant="TileVariant.Muted" />
-                </div>
-            </BaseCard>
-        </div>
-    </section>
-</PageContainer>
+</div>
 
 @code {
     private string? WarehouseName { get; set; }
