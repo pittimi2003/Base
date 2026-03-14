@@ -514,9 +514,18 @@
   padding-right: 2.85rem;
 }
 
+.ms-mx-input--select option {
+  background: var(--ms-color-surface);
+  color: var(--ms-color-text);
+}
+
+.ms-mx-input--select option:checked {
+  background: color-mix(in oklab, var(--mx-color-accent-soft) 32%, var(--ms-color-surface) 68%);
+  color: color-mix(in oklab, var(--ms-color-text) 86%, var(--mx-color-accent-primary) 14%);
+}
+
 .ms-mx-select-wrapper__icon,
-.ms-mx-multiselect-wrapper__icon,
-.ms-mx-date-input-wrapper__icon {
+.ms-mx-multiselect-wrapper__icon {
   position: absolute;
   right: 0.9rem;
   top: 50%;
@@ -542,59 +551,26 @@
 .ms-mx-input--date,
 .ms-mx-input[type="date"],
 .ms-mx-input[type="datetime-local"] {
-  appearance: none;
   color-scheme: light dark;
   cursor: pointer;
-  padding-right: 2.85rem;
+  padding-right: var(--ms-space-3);
 }
 
-.ms-mx-date-input-wrapper__icon::before,
-.ms-mx-date-input-wrapper__icon::after {
-  content: "";
-  position: absolute;
-  border: 1.8px solid currentColor;
-  box-sizing: border-box;
-}
-
-.ms-mx-date-input-wrapper__icon::before {
-  inset: 17% 7% 7%;
-  border-radius: 0.22rem;
-}
-
-.ms-mx-date-input-wrapper__icon::after {
-  inset: 7% 7% auto;
-  block-size: 0.24rem;
-  border-top-width: 2.4px;
-  border-left-width: 0;
-  border-right-width: 0;
-  border-bottom-width: 0;
-}
-
-.ms-mx-input[type="date"]::-webkit-calendar-picker-indicator,
-.ms-mx-input[type="datetime-local"]::-webkit-calendar-picker-indicator {
-  opacity: 0;
-  inline-size: 1.6rem;
-  block-size: 1.6rem;
-  cursor: pointer;
-}
 
 
 .ms-mx-select-wrapper:has(.ms-mx-input--select:hover:not(:disabled)) .ms-mx-select-wrapper__icon,
-.ms-mx-multiselect-wrapper:has(.ms-mx-input--multiselect:hover:not(:disabled)) .ms-mx-multiselect-wrapper__icon,
-.ms-mx-date-input-wrapper:has(.ms-mx-input--date:hover:not(:disabled)) .ms-mx-date-input-wrapper__icon {
+.ms-mx-multiselect-wrapper:has(.ms-mx-input--multiselect:hover:not(:disabled)) .ms-mx-multiselect-wrapper__icon {
   color: color-mix(in oklab, var(--mx-color-accent-primary) 64%, var(--ms-color-text-soft) 36%);
 }
 
 .ms-mx-select-wrapper:has(.ms-mx-input--select:focus-visible) .ms-mx-select-wrapper__icon,
-.ms-mx-multiselect-wrapper:has(.ms-mx-input--multiselect:focus-visible) .ms-mx-multiselect-wrapper__icon,
-.ms-mx-date-input-wrapper:has(.ms-mx-input--date:focus-visible) .ms-mx-date-input-wrapper__icon {
+.ms-mx-multiselect-wrapper:has(.ms-mx-input--multiselect:focus-visible) .ms-mx-multiselect-wrapper__icon {
   color: var(--mx-color-accent-primary);
   transform: translateY(-50%) scale(1.04);
 }
 
 .ms-mx-select-wrapper:has(.ms-mx-input--select:disabled) .ms-mx-select-wrapper__icon,
-.ms-mx-multiselect-wrapper:has(.ms-mx-input--multiselect:disabled) .ms-mx-multiselect-wrapper__icon,
-.ms-mx-date-input-wrapper:has(.ms-mx-input--date:disabled) .ms-mx-date-input-wrapper__icon {
+.ms-mx-multiselect-wrapper:has(.ms-mx-input--multiselect:disabled) .ms-mx-multiselect-wrapper__icon {
   color: color-mix(in oklab, var(--ms-color-text-soft) 66%, var(--ms-color-bg) 34%);
 }
 
@@ -667,36 +643,34 @@
 }
 
 .ms-mx-switch__track {
-  inline-size: 44px;
-  block-size: 26px;
+  inline-size: 42px;
+  block-size: 24px;
   border-radius: var(--mx-radius-pill);
-  background: linear-gradient(180deg, color-mix(in oklab, var(--ms-color-input-bg) 72%, var(--ms-color-border) 28%) 0%, color-mix(in oklab, var(--ms-color-input-bg) 58%, var(--ms-color-border) 42%) 100%);
-  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 74%, var(--ms-color-bg) 26%);
+  background: color-mix(in oklab, var(--ms-color-surface-muted) 56%, var(--ms-color-input-bg) 44%);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 86%, var(--ms-color-bg) 14%);
   display: inline-flex;
   align-items: center;
   padding: 2px;
   box-sizing: border-box;
-  box-shadow: inset 0 1px 0 color-mix(in oklab, var(--ms-color-surface) 40%, transparent);
-  transition: background-color var(--ms-motion-fast) var(--ms-motion-ease), border-color var(--ms-motion-fast) var(--ms-motion-ease), box-shadow var(--ms-motion-fast) var(--ms-motion-ease);
+  transition: background-color var(--ms-motion-fast) var(--ms-motion-ease), border-color var(--ms-motion-fast) var(--ms-motion-ease);
 }
 
 .ms-mx-switch__thumb {
-  inline-size: 20px;
-  block-size: 20px;
+  inline-size: 18px;
+  block-size: 18px;
   border-radius: var(--mx-radius-pill);
-  background: linear-gradient(180deg, color-mix(in oklab, var(--mx-color-neutral-0) 92%, var(--ms-color-surface) 8%) 0%, var(--mx-color-neutral-0) 100%);
-  border: 1px solid color-mix(in oklab, var(--ms-color-border) 62%, var(--mx-color-neutral-0) 38%);
-  box-shadow: var(--ms-shadow-sm);
-  transition: transform var(--ms-motion-fast) var(--ms-motion-ease), box-shadow var(--ms-motion-fast) var(--ms-motion-ease);
+  background: var(--mx-color-neutral-0);
+  border: 1px solid color-mix(in oklab, var(--ms-color-border) 64%, var(--mx-color-neutral-0) 36%);
+  transition: transform var(--ms-motion-fast) var(--ms-motion-ease);
 }
 
 .ms-mx-switch input:hover:not(:disabled) + .ms-mx-switch__track {
-  border-color: color-mix(in oklab, var(--mx-color-accent-primary) 32%, var(--ms-color-border) 68%);
+  border-color: color-mix(in oklab, var(--mx-color-accent-primary) 28%, var(--ms-color-border) 72%);
 }
 
 .ms-mx-switch input:checked + .ms-mx-switch__track {
-  background: linear-gradient(180deg, color-mix(in oklab, var(--mx-color-accent-primary) 84%, var(--ms-color-brand) 16%) 0%, color-mix(in oklab, var(--mx-color-accent-primary) 66%, var(--ms-color-brand) 34%) 100%);
-  border-color: color-mix(in oklab, var(--mx-color-accent-primary) 72%, var(--ms-color-brand) 28%);
+  background: color-mix(in oklab, var(--mx-color-accent-primary) 58%, var(--ms-color-surface) 42%);
+  border-color: color-mix(in oklab, var(--mx-color-accent-primary) 66%, var(--ms-color-border) 34%);
 }
 
 .ms-mx-switch input:checked + .ms-mx-switch__track .ms-mx-switch__thumb {
@@ -704,31 +678,7 @@
 }
 
 .ms-mx-switch input:active:not(:disabled) + .ms-mx-switch__track .ms-mx-switch__thumb {
-  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--mx-color-accent-primary) 34%, transparent), var(--ms-shadow-sm);
-}
-
-.ms-mx-switch__label-row {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--ms-space-2);
-}
-
-.ms-mx-switch__state {
-  border-radius: var(--ms-radius-pill);
-  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 82%, transparent 18%);
-  font-size: 0.68rem;
-  font-weight: var(--mx-font-weight-semibold);
-  line-height: 1;
-  letter-spacing: 0.06em;
-  padding: 0.22rem 0.4rem;
-  color: var(--ms-color-text-soft);
-  background: color-mix(in oklab, var(--ms-color-input-bg) 88%, var(--ms-color-surface-muted) 12%);
-}
-
-.ms-mx-switch input:checked ~ .ms-mx-switch__label-block .ms-mx-switch__state {
-  color: color-mix(in oklab, var(--mx-color-accent-primary) 70%, var(--ms-color-text) 30%);
-  border-color: color-mix(in oklab, var(--mx-color-accent-primary) 46%, var(--ms-color-border) 54%);
-  background: color-mix(in oklab, var(--mx-color-accent-soft) 76%, var(--ms-color-surface) 24%);
+  transform: scale(0.96);
 }
 
 .ms-mx-check--disabled,
@@ -1124,7 +1074,7 @@
   padding: var(--ms-space-2);
   border: var(--ms-border-width-1) solid color-mix(in oklab, var(--ms-color-border) 88%, transparent 12%);
   border-radius: var(--ms-radius-md);
-  background: color-mix(in oklab, var(--ms-color-input-bg) 82%, var(--ms-color-surface) 18%);
+  background: color-mix(in oklab, var(--ms-color-input-bg) 90%, var(--ms-color-surface) 10%);
 }
 
 .ms-mx-date-range:has(.ms-mx-input:focus-visible) {
@@ -1154,8 +1104,8 @@
 }
 
 .ms-mx-input--multiselect option:checked {
-  background: color-mix(in oklab, var(--mx-color-accent-soft) 72%, var(--ms-color-surface) 28%);
-  color: var(--ms-color-text);
+  background: color-mix(in oklab, var(--mx-color-accent-soft) 42%, var(--ms-color-surface) 58%);
+  color: color-mix(in oklab, var(--ms-color-text) 84%, var(--mx-color-accent-primary) 16%);
 }
 
 .ms-mx-multiselect__chips {
@@ -1170,9 +1120,9 @@
   align-items: center;
   min-height: 1.45rem;
   border-radius: var(--ms-radius-pill);
-  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--mx-color-accent-primary) 34%, var(--ms-color-border) 66%);
-  background: color-mix(in oklab, var(--mx-color-accent-soft) 68%, var(--ms-color-surface) 32%);
-  color: color-mix(in oklab, var(--mx-color-accent-primary) 58%, var(--ms-color-text) 42%);
+  border: var(--ms-border-width-1) solid color-mix(in oklab, var(--mx-color-accent-primary) 22%, var(--ms-color-border) 78%);
+  background: color-mix(in oklab, var(--ms-color-surface) 90%, var(--mx-color-accent-soft) 10%);
+  color: color-mix(in oklab, var(--ms-color-text) 80%, var(--mx-color-accent-primary) 20%);
   font-size: var(--ms-font-size-xs);
   font-weight: var(--mx-font-weight-medium);
   padding: 0 0.5rem;
