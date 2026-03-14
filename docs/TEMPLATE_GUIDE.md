@@ -16,23 +16,23 @@
 3. Validar rutas: `/`, `/showcase`, `/wasm-demo`.
 
 ## Contratos Foundation (API estable)
-- `PageContainer`
-  - `Title`, `Description`, `IsCompact`.
-  - Usar como wrapper de primer nivel por página.
-- `BaseCard`
-  - `Title`, `BadgeText`, `Variant: SurfaceVariant`, `IsCompact`.
-  - Usar `Variant` para intención visual; evitar combinar estilos ad-hoc.
+- `MxPageHeader`
+  - `Title`, `Description`, `Actions`, `Metadata`.
+  - Usar como encabezado de primer nivel por página.
+- `MxCard` / `MxPanel`
+  - `Title`, `Variant: SurfaceVariant`, `IsCompact` (según componente).
+  - Usar `Variant` para intención visual; evitar estilos ad-hoc.
 - `AppMenuTile`
   - `Title`, `Description`, `Href`, `Icon`, `Variant: TileVariant`.
-  - Usar para accesos de navegación/resumen, no para formularios.
+  - Helper de navegación del template para accesos de resumen.
 
 ## Base mínima de formularios
-- `FormSection`: contenedor de bloque de formulario.
-- `SectionTitle`: título + descripción de sección.
-- `FieldGroup`: etiqueta, control y hint.
+- `MxFormSection`: contenedor de bloque de formulario con header y acciones opcionales.
+- `MxFieldGroup`: etiqueta, control y helper/error para controles custom.
+- Inputs base Mx: `MxTextField`, `MxTextarea`, `MxSelect`, `MxCheckbox`, `MxSwitch`.
 
 ## Reglas de composición
-- `PageContainer + BaseCard` es la combinación por defecto para páginas de negocio.
+- `MxPageHeader + MxPanel/MxCard` es la combinación por defecto para páginas de negocio.
 - Usar `IsCompact=true` solo en subsecciones densas o anidadas.
 - `SurfaceVariant.Outlined`: estructura/base neutral.
 - `SurfaceVariant.Elevated`: destacar bloque prioritario.

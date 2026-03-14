@@ -158,9 +158,9 @@ Compatibilidad: alias `--ms-*` para evitar ruptura del template existente.
 ## 6) Estrategia de componentes
 API pública objetivo del sistema: `Mx*` (MachSoft-first).
 
-- Propios: `MxButton`, `MxCard`, `MxBadge`, `MxPageHeader`, `MxSidebarNav`, `MxPanel`, `MxToolbar`.
-- Wrappers sobre MudBlazor: `MxTextField`, `MxSelect`, `MxDatePicker`, `MxDialog`.
-- Vendor direct solo por excepción justificada y con plan de encapsulación.
+- Componentes y patterns oficiales: `MxButton`, `MxCard`, `MxBadge`, `MxPageHeader`, `MxPanel`, `MxFormSection`, `MxDataGrid`, `MxSearchPanel` y catálogo `Mx*` consolidado.
+- Implementación base preferente: Blazor/HTML tokenizado en Core, sin exponer contratos vendor en API pública.
+- Integración vendor solo por excepción técnica justificada y sin romper contrato `Mx*`.
 
 ---
 
@@ -219,12 +219,11 @@ docs/
 
 ---
 
-## 10) Hoja de ruta recomendada
-1. Consolidar wrappers iniciales `MxButton/MxCard/MxBadge`.
-2. Estandarizar formularios wrapper (`MxTextField`, `MxSelect`, `MxDialog`).
-3. Definir contratos enterprise (DataGrid/Charts/FileUpload).
-4. Añadir pruebas visuales de tema (light/dark) en E2E.
-5. Expandir theming (high-contrast, brand variants por producto si aplica).
+## 10) Estado de consolidación para release interna
+1. Catálogo `Mx*` Grupos 1-7 implementado y validado en `/showcase`, `/demo` y `/wasm-demo`.
+2. Legacy (`PageContainer`, `BaseCard`, `FormSection`, `FieldGroup`, `SectionTitle`) mantenido solo por compatibilidad y marcado `Obsolete`.
+3. Validación mínima obligatoria: restore/build Release + smoke visual en hosts Server/WASM.
+4. Criterio de cambio vigente: hardening, coherencia de documentación y cero ambigüedad para adopción interna.
 
 ---
 

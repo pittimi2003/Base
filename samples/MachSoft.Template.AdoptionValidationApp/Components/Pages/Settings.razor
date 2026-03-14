@@ -1,23 +1,46 @@
 @page "/settings"
 
-<PageContainer Title="Configuración" Description="Preferencias base del portal para equipos de operaciones.">
-    <BaseCard Title="Preferencias del workspace" BadgeText="base settings" Variant="SurfaceVariant.Outlined">
-        <FormSection Description="Formulario mínimo para validar primitives de formulario en un contexto real.">
-            <FieldGroup Label="Zona horaria" Hint="Usado para reportes y agenda de turnos.">
-                <select>
-                    <option>UTC-5 (Bogotá)</option>
-                    <option>UTC-3 (Buenos Aires)</option>
-                    <option>UTC+1 (Madrid)</option>
-                </select>
-            </FieldGroup>
+<MxPageHeader Title="Configuración"
+              Description="Preferencias base del portal para equipos de operaciones.">
+    <Actions>
+        <MxBadge Variant="MxBadgeVariant.Brand" Text="Adoption Validation" />
+        <MxBadge Variant="MxBadgeVariant.Neutral" Text="Grupo 2 Forms" />
+    </Actions>
+</MxPageHeader>
 
-            <FieldGroup Label="Idioma" Hint="Impacta etiquetas y mensajes del dashboard.">
-                <select>
-                    <option>Español</option>
-                    <option>English</option>
-                    <option>Português</option>
-                </select>
-            </FieldGroup>
-        </FormSection>
-    </BaseCard>
-</PageContainer>
+<MxPanel Title="Preferencias del workspace" Variant="SurfaceVariant.Outlined">
+    <MxFormSection Description="Formulario mínimo para validar componentes Mx* de formularios en un contexto real.">
+        <div class="ms-grid ms-grid--2">
+            <MxSelect Label="Zona horaria"
+                      HelperText="Usado para reportes y agenda de turnos."
+                      Value="@Timezone"
+                      ValueChanged="@(v => Timezone = v)"
+                      Options="@TimezoneOptions" />
+
+            <MxSelect Label="Idioma"
+                      HelperText="Impacta etiquetas y mensajes del dashboard."
+                      Value="@Language"
+                      ValueChanged="@(v => Language = v)"
+                      Options="@LanguageOptions" />
+        </div>
+    </MxFormSection>
+</MxPanel>
+
+@code {
+    private string? Timezone { get; set; } = "utc-5";
+    private string? Language { get; set; } = "es";
+
+    private IEnumerable<MxSelectOption> TimezoneOptions { get; } =
+    [
+        new("utc-5", "UTC-5 (Bogotá)"),
+        new("utc-3", "UTC-3 (Buenos Aires)"),
+        new("utc+1", "UTC+1 (Madrid)")
+    ];
+
+    private IEnumerable<MxSelectOption> LanguageOptions { get; } =
+    [
+        new("es", "Español"),
+        new("en", "English"),
+        new("pt", "Português")
+    ];
+}

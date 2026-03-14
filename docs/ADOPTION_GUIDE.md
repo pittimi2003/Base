@@ -23,8 +23,7 @@
 ## 2) Qué vive en `MachSoft.Template.Core`
 Debe contener solo assets y componentes **reusables cross-host**:
 - layout común (`MainLayout`, `AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`);
-- foundation components (`PageContainer`, `BaseCard`, `AppMenuTile`);
-- primitivas visuales mínimas de formularios (`FormSection`, `SectionTitle`, `FieldGroup`);
+- foundation components y patterns oficiales (`MxPageHeader`, `MxCard`, `MxPanel`, `MxFormSection`, `MxFieldGroup`, `AppMenuTile`);
 - páginas base compartidas (`/`, `/showcase`);
 - tokens y CSS corporativo (`tokens/base/layout/components/utilities`).
 
@@ -34,7 +33,7 @@ No debe contener:
 - componentes acoplados a un flujo único de una app.
 
 ## 3) Extender sin romper el sistema
-1. Reusar primero `PageContainer + BaseCard` antes de crear nuevos wrappers.
+1. Reusar primero composición `MxPageHeader + MxPanel/MxCard` antes de crear piezas nuevas.
 2. Si necesitas una variante visual, evaluar primero `SurfaceVariant`/`TileVariant`.
 3. Promover a Foundation solo si hay repetición real en al menos 2 contextos (Server/WASM o múltiples módulos).
 4. Todo patrón promovido a Core debe tener ejemplo en `/showcase`.
@@ -101,7 +100,7 @@ Se agregó una app de ejemplo de adopción real:
 - host elegido: **Server** (mismo patrón operativo de la mayoría de despliegues internos actuales)
 - branding cambiado: *Contoso Field Ops / Operations Portal*
 - páginas agregadas: `/operations` y `/settings`
-- composición: `PageContainer`, `BaseCard`, `AppMenuTile`, `FormSection`, `SectionTitle`, `FieldGroup`
+- composición: `MxPageHeader`, `MxPanel`, `MxCard`, `AppMenuTile`, `MxFormSection`, `MxSelect`
 
 ### Flujo aplicado (como equipo adoptante)
 1. Copiar base de `template/MachSoft.Template.Starter`.

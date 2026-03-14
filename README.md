@@ -25,7 +25,7 @@ Starter corporativo para proyectos Blazor bajo convención MachSoft, con variant
 
 ## Qué comparten Server y WASM
 - `MainLayout` corporativo.
-- Componentes foundation (`PageContainer`, `BaseCard`, `AppMenuTile`).
+- Componentes foundation y patterns oficiales (`MxPageHeader`, `MxCard`, `MxPanel`, `MxFormSection`, `MxSearchPanel`, `MxDashboardSection`) y `AppMenuTile` como helper de navegación del template.
 - Páginas base (`/`, `/showcase`).
 - Sistema de estilos (`tokens.css`, `base.css`, `layout.css`, `components.css`, `utilities.css`).
   - `tokens.css` agrega arquitectura `--mx-*` (primitives/semantic/themes), dark mode y mantiene compatibilidad `--ms-*`.
@@ -61,7 +61,7 @@ dotnet run --project samples/MachSoft.Template.AdoptionValidationApp
 
 ## Validación de adopción real
 - Referencia implementada: `samples/MachSoft.Template.AdoptionValidationApp`.
-- Simula un equipo que adopta `Starter` y personaliza branding, navegación y páginas (`/operations`, `/settings`) usando Foundation del Core.
+- Simula un equipo que adopta `Starter` y personaliza branding, navegación y páginas (`/operations`, `/settings`) usando lenguaje oficial `Mx*` del Core.
 
 
 ## Theming

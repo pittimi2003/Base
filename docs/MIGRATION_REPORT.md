@@ -13,7 +13,7 @@
 ### Grupo B - Adaptar
 - Navegación drawer/breadcrumb legacy: simplificada a `SideNav` genérica.
 - Estilos globales legacy: depurados en 5 capas CSS corporativas.
-- Estructura Home/Menu: convertida en `AppMenuTile`, `BaseCard`, `PageContainer`.
+- Estructura Home/Menu: convertida a composición oficial `MxPageHeader`, `MxPanel/MxCard` y `AppMenuTile` como helper de navegación.
 
 ### Grupo C - Descartar
 - Páginas de negocio (Planning, Labor, Designer, Scenario, Alerts, etc.).

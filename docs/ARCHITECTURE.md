@@ -6,7 +6,7 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 ## Capas y responsabilidad
 - **Capa común (`MachSoft.Template.Core`)**
   - Layout corporativo desacoplado (`MainLayout`, `AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
-  - Foundation components (`PageContainer`, `BaseCard`, `AppMenuTile`) y base mínima de formularios (`FormSection`, `FieldGroup`, `SectionTitle`).
+  - Foundation components y patterns oficiales (`MxPageHeader`, `MxCard`, `MxPanel`, `MxFormSection`, `MxFieldGroup`, `AppMenuTile`).
   - Páginas base (`Home`, `Showcase`).
   - Static web assets compartidos (`wwwroot/css/template/*`).
 - **Capa host Server (`MachSoft.Template.Starter`)**
@@ -22,9 +22,9 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 ## Contratos de diseño
 1. **MainLayout liviano**: solo composición/orquestación.
 2. **Variantes tipadas**:
-   - `BaseCard` usa `SurfaceVariant`.
+   - `MxCard` y `MxPanel` usan `SurfaceVariant`.
    - `AppMenuTile` usa `TileVariant`.
-3. **Compact mode explícito**: `IsCompact` en `PageContainer` y `BaseCard`.
+3. **Compact mode explícito**: `IsCompact` en componentes Mx que exponen densidad (`MxCard`, `MxFormSection`, inputs).
 4. **Token-first CSS**: spacing/radius/shadows/typography/z-index definidos por tokens.
 5. **Sidebar responsive (patrón único)**: visible fijo en desktop y panel flotante en tablet/mobile con overlay gestionado en Blazor.
 
@@ -59,7 +59,7 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 - Documento rector: `docs/MACHSOFT_DESIGN_SYSTEM_FOUNDATION.md`.
 - Arquitectura de tokens en Core: `wwwroot/css/template/design-system/*` con separación de primitives, semantic, typography, motion y themes (`light`/`dark`).
 - `tokens.css` actúa como agregador oficial del Design System y conserva aliases `--ms-*` para transición no destructiva.
-- La API pública objetivo de componentes del sistema es `Mx*` (MachSoft-first); el uso de MudBlazor queda permitido como implementación interna mediante wrappers.
+- La API pública oficial de componentes del sistema es `Mx*` (MachSoft-first); la implementación base actual es Blazor/HTML tokenizada en Core y no expone contratos vendor.
 
 
 ## Theming y Dark Mode
@@ -118,7 +118,7 @@ Decisiones clave de arquitectura:
 2. Variantes tipadas por enums en `Models/ComponentVariants.cs`.
 3. Reuso de `SurfaceVariant` para evitar duplicación de contratos entre superficies.
 4. Estilos token-first en `wwwroot/css/template/components.css` apoyados en `--mx-*` y bridge `--ms-*`.
-5. Integración incremental: convivencia con foundation preexistente (`BaseCard`, `PageContainer`, `AppMenuTile`) para migración no disruptiva.
+5. Integración incremental: `AppMenuTile` se mantiene como helper de navegación del template y los componentes legacy quedan explícitamente relegados para compatibilidad temporal.
 
 ## Catálogo MachSoft Components - Grupo 2 (Forms)
 Implementado en `MachSoft.Template.Core/Components/Foundation/Forms` con contratos públicos `Mx*` y componentes propios (sin API vendor expuesta):
@@ -139,7 +139,7 @@ Decisiones de arquitectura:
 2. Contratos mínimos para mantener estabilidad API y facilitar adopción incremental.
 3. `MxFieldGroup` centraliza patrón de label/control/helper/error para evitar divergencia visual.
 4. `MxFormSection` estandariza agrupación enterprise con acciones de encabezado opcionales.
-5. Convivencia temporal con `Components/Forms` legacy (`FieldGroup`, `FormSection`) para migración no destructiva.
+5. Convivencia temporal con `Components/Forms` legacy (`FieldGroup`, `FormSection`, `SectionTitle`) solo para compatibilidad de adopciones en tránsito.
 
 ## Catálogo MachSoft Components - Grupo 3 (Navigation + Overlays)
 Implementado en `MachSoft.Template.Core` con componentes propios y contratos `Mx*`:
@@ -227,8 +227,8 @@ La arquitectura oficial de UI queda dividida en cuatro capas:
 
 ### Legacy lane
 Los componentes legacy siguen disponibles solo para no romper adopción incremental, pero deben considerarse ruta de salida:
-- `BaseCard`
-- `PageContainer`
-- `Components/Forms/*` (`FormSection`, `FieldGroup`, `SectionTitle`)
+- `BaseCard` (LEGACY)
+- `PageContainer` (LEGACY)
+- `Components/Forms/*` (`FormSection`, `FieldGroup`, `SectionTitle`) (LEGACY)
 
 Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
