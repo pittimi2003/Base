@@ -1,0 +1,39 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<article class="ms-mx-stat-card" aria-label="@Title">
+    <header class="ms-mx-stat-card__header">
+        <h4>@Title</h4>
+        @if (Status is not null)
+        {
+            @Status
+        }
+    </header>
+
+    <p class="ms-mx-stat-card__value">@Value</p>
+
+    @if (!string.IsNullOrWhiteSpace(SupportingText) || !string.IsNullOrWhiteSpace(TrendText))
+    {
+        <div class="ms-mx-stat-card__meta">
+            @if (!string.IsNullOrWhiteSpace(SupportingText))
+            {
+                <span>@SupportingText</span>
+            }
+
+            @if (!string.IsNullOrWhiteSpace(TrendText))
+            {
+                <span class="@TrendClass">@TrendText</span>
+            }
+        </div>
+    }
+</article>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Value { get; set; } = string.Empty;
+    [Parameter] public string? SupportingText { get; set; }
+    [Parameter] public string? TrendText { get; set; }
+    [Parameter] public MxStatusVariant TrendStatus { get; set; } = MxStatusVariant.Info;
+    [Parameter] public RenderFragment? Status { get; set; }
+
+    private string TrendClass => $"ms-mx-stat-card__trend ms-mx-stat-card__trend--{TrendStatus.ToString().ToLowerInvariant()}";
+}

@@ -1,3 +1,6 @@
+@* LEGACY COMPONENT *@
+@attribute [Obsolete("LEGACY: replaced by MxFieldGroup. This component will be removed in future versions.")]
+
 <div class="ms-field-group">
     <label class="ms-field-group__label" for="@FieldId">@Label</label>
     <div class="ms-field-group__control">
@@ -10,7 +13,12 @@
 </div>
 
 @code {
+    /// <summary>
+    /// LEGACY: replaced by MxFieldGroup.
+    /// This component will be removed in future versions.
+    /// </summary>
     [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+
     [Parameter] public string? Hint { get; set; }
     [Parameter] public string FieldId { get; set; } = string.Empty;
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;

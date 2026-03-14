@@ -1,3 +1,6 @@
+@* LEGACY COMPONENT *@
+@attribute [Obsolete("LEGACY: replaced by MxFormSection header semantics. This component will be removed in future versions.")]
+
 <header class="ms-section-title">
     <h3>@Title</h3>
     @if (!string.IsNullOrWhiteSpace(Description))
@@ -7,6 +10,11 @@
 </header>
 
 @code {
+    /// <summary>
+    /// LEGACY: replaced by MxFormSection header semantics.
+    /// This component will be removed in future versions.
+    /// </summary>
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
     [Parameter] public string? Description { get; set; }
 }

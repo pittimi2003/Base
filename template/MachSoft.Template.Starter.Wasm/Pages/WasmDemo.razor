@@ -1,12 +1,26 @@
 @page "/wasm-demo"
 
-<PageContainer Title="Starter WASM Demo" Description="Variante WebAssembly reutilizando el Core corporativo.">
-    <div class="ms-grid ms-grid--2">
-        <BaseCard Title="Runtime" BadgeText="WASM">
-            <p>Esta app ejecuta UI del template en cliente WebAssembly.</p>
-        </BaseCard>
-        <BaseCard Title="Reutilización" BadgeText="Core">
-            <p>Layout, componentes foundation y estilos provienen de <strong>MachSoft.Template.Core</strong>.</p>
-        </BaseCard>
-    </div>
-</PageContainer>
+<div class="ms-page-container">
+    <MxPageHeader Title="Starter WASM Demo"
+                  Description="Variante WebAssembly consolidada con componentes Mx* compartidos desde Core.">
+        <Metadata>
+            <MxBadge Variant="MxBadgeVariant.Brand" Text="WASM" />
+            <MxBadge Variant="MxBadgeVariant.Neutral" Text="Core Shared" />
+        </Metadata>
+    </MxPageHeader>
+
+    <MxDashboardSection Title="Estado de adopción" Description="Mismo lenguaje visual enterprise entre Server y WASM.">
+        <div class="ms-grid ms-grid--2">
+            <MxCard Title="Runtime cliente" Variant="SurfaceVariant.Outlined">
+                <ChildContent>
+                    <p class="ms-text-sm">Esta app ejecuta UI del template directamente en WebAssembly.</p>
+                </ChildContent>
+            </MxCard>
+            <MxCard Title="Reutilización del Core" Variant="SurfaceVariant.Muted">
+                <ChildContent>
+                    <p class="ms-text-sm">Layouts, patterns y estilos provienen de <strong>MachSoft.Template.Core</strong>.</p>
+                </ChildContent>
+            </MxCard>
+        </div>
+    </MxDashboardSection>
+</div>
