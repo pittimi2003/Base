@@ -278,3 +278,28 @@ Reglas adicionales:
 2. Mantener diferencias semánticas claras entre `MxBadge` (metadata), `MxTag` (etiqueta de entidad) y `MxStatusIndicator` (estado operativo).
 3. `MxProgress` debe mantener atributos accesibles (`role="progressbar"` + `aria-valuenow/max`).
 4. Todo cambio del Grupo 4 debe verse en `/showcase` y documentación técnica.
+
+---
+
+## 17) Catálogo MachSoft Components — Grupo 5 (Enterprise inputs)
+Ubicación recomendada en Core:
+- `Components/Foundation/Inputs`:
+  - `MxDatePicker`
+  - `MxDateRangePicker`
+  - `MxAutocomplete`
+  - `MxMultiSelect`
+  - `MxFileUpload`
+- `Models/MxInputOption` para opciones de autocomplete/multiselect.
+
+Contratos públicos mínimos del Grupo 5:
+- `MxDatePicker`: `Label`, `Value`, `ValueChanged`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`.
+- `MxDateRangePicker`: `Label`, `StartValue`, `EndValue`, `StartValueChanged`, `EndValueChanged`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxAutocomplete`: `Label`, `Value`, `ValueChanged`, `SearchText`, `SearchTextChanged`, `Items`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxMultiSelect`: `Label`, `SelectedValues`, `SelectedValuesChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
+- `MxFileUpload`: `Label`, `FilesChanged`, `Disabled`, `Accept`, `Multiple`, `HelperText`, `ErrorText`.
+
+Reglas adicionales:
+1. Mantener alcance base y evitar APIs infladas.
+2. Reusar `MxFieldGroup` para consistencia de accesibilidad y mensajes.
+3. Evitar exponer API vendor; si se encapsula framework-level, mantener contrato Mx estable.
+4. Reflejar siempre cambios del Grupo 5 en `/showcase` y documentación técnica.

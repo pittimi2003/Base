@@ -958,3 +958,39 @@
   font-size: var(--ms-font-size-sm);
   color: var(--ms-color-text-soft);
 }
+
+/* MachSoft Design System - Grupo 5 (Enterprise inputs) */
+.ms-mx-date-range {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--ms-space-2);
+}
+
+.ms-mx-date-range__separator {
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-sm);
+}
+
+.ms-mx-input--multiselect {
+  min-height: calc(var(--mx-density-comfortable-control-height) * 2.2);
+}
+
+.ms-mx-file-upload__list {
+  margin: 0;
+  padding-left: 1.1rem;
+  color: var(--ms-color-text-soft);
+  font-size: var(--ms-font-size-sm);
+  display: grid;
+  gap: var(--ms-space-1);
+}
+
+@media (max-width: 768px) {
+  .ms-mx-date-range {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-mx-date-range__separator {
+    display: none;
+  }
+}

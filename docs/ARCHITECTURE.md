@@ -178,3 +178,21 @@ Decisiones de arquitectura:
 2. Componentes orientados a escenarios enterprise (KPIs, estados operativos, módulos vacíos, progreso de procesos).
 3. Semántica accesible integrada (`progressbar`, roles de status, estructura de empty state, foco visible cuando hay interacción).
 4. Diferenciación explícita entre `MxBadge`, `MxTag` y `MxStatusIndicator` para evitar solapamiento conceptual.
+
+## Catálogo MachSoft Components - Grupo 5 (Enterprise inputs)
+Implementado en `MachSoft.Template.Core/Components/Foundation/Inputs`:
+
+- `MxDatePicker`
+- `MxDateRangePicker`
+- `MxAutocomplete`
+- `MxMultiSelect`
+- `MxFileUpload`
+
+Modelo de soporte:
+- `Models/MxInputOption.cs`.
+
+Decisiones de arquitectura:
+1. Grupo 5 se mantiene MachSoft-first con contratos compactos y sin API vendor expuesta.
+2. Implementación propia para baseline enterprise con evolución incremental.
+3. Integración con `MxFieldGroup` para consistencia visual, helper/error y accesibilidad.
+4. `MxFileUpload` encapsula `InputFile` de Blazor como dependencia framework-level (no vendor UI API).

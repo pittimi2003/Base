@@ -423,3 +423,36 @@ Motivo general: contratos compactos y visual/semántica suficientemente cubrible
 - `MxProgress` con `role="progressbar"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-label`.
 - `MxEmptyState` con estructura clara de título, descripción y acciones.
 - Status semánticos con redundancia visual (icono + texto) para no depender solo de color.
+
+---
+
+## 15) Catálogo Mx* - Grupo 5 (Enterprise inputs)
+Ubicación en Core:
+- `Components/Foundation/Inputs`: `MxDatePicker`, `MxDateRangePicker`, `MxAutocomplete`, `MxMultiSelect`, `MxFileUpload`.
+- `Models`: `MxInputOption`.
+
+### 15.1 Decisión de implementación por componente
+- `MxDatePicker`: **propio puro** sobre `<input type="date">`.
+- `MxDateRangePicker`: **propio puro** combinando dos inputs date.
+- `MxAutocomplete`: **propio puro** con `datalist` + resolución de valor mediante opciones.
+- `MxMultiSelect`: **propio puro** con `<select multiple>`.
+- `MxFileUpload`: **propio puro** usando `InputFile` de Blazor encapsulado en contrato Mx.
+
+Motivo: baseline enterprise usable sin exponer API vendor, con contratos controlados y evolución incremental posterior.
+
+### 15.2 Contratos públicos
+- `MxDatePicker`: `Label`, `Value`, `ValueChanged`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`, `IsCompact`.
+- `MxDateRangePicker`: `Label`, `StartValue`, `StartValueChanged`, `EndValue`, `EndValueChanged`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`, `IsCompact`.
+- `MxAutocomplete`: `Label`, `Value`, `ValueChanged`, `SearchText`, `SearchTextChanged`, `Items`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`, `IsCompact`.
+- `MxMultiSelect`: `Label`, `SelectedValues`, `SelectedValuesChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`, `IsCompact`.
+- `MxFileUpload`: `Label`, `FilesChanged`, `Disabled`, `Accept`, `Multiple`, `HelperText`, `ErrorText`, `Id`, `IsCompact`.
+
+### 15.3 Alcance y límites actuales
+- Sin selector de calendario custom avanzado ni manejo cultural avanzado en esta fase.
+- `MxAutocomplete` y `MxMultiSelect` priorizan simplicidad contractual (baseline funcional).
+- `MxFileUpload` cubre selección/listado y callback; validación de tamaño/tipo queda en capa aplicación/backend.
+
+### 15.4 Accesibilidad y estados
+- Estados base cubiertos: default, hover, focus-visible, disabled, error.
+- Asociación label/control vía `MxFieldGroup`.
+- Inputs con `aria-required`, `aria-invalid`, `aria-describedby` cuando aplica.

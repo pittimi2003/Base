@@ -131,6 +131,62 @@
         </MxEmptyState>
     </section>
 
+
+    <section class="ms-showcase-group">
+        <h2 class="ms-showcase-group__title">Grupo 5 · Enterprise Inputs</h2>
+
+        <MxFormSection Title="Filtros operativos avanzados"
+                       Description="Selección de fechas, catálogos y carga de evidencia en un flujo enterprise.">
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MxDatePicker Label="Fecha operativa"
+                                  Value="@OperationDate"
+                                  ValueChanged="@(v => OperationDate = v)"
+                                  HelperText="Fecha principal para corte diario." />
+
+                    <MxDateRangePicker Label="Rango de análisis"
+                                       StartValue="@RangeStart"
+                                       StartValueChanged="@(v => RangeStart = v)"
+                                       EndValue="@RangeEnd"
+                                       EndValueChanged="@(v => RangeEnd = v)"
+                                       HelperText="Usado para consultas históricas de productividad." />
+                </div>
+
+                <div class="ms-grid ms-grid--2">
+                    <MxAutocomplete Label="Almacén"
+                                    SearchText="@WarehouseSearch"
+                                    SearchTextChanged="@(v => WarehouseSearch = v)"
+                                    Value="@WarehouseValue"
+                                    ValueChanged="@(v => WarehouseValue = v)"
+                                    Items="@WarehouseOptions"
+                                    Placeholder="Buscar almacén por nombre" />
+
+                    <MxMultiSelect Label="Estados incluidos"
+                                   SelectedValues="@SelectedStatuses"
+                                   SelectedValuesChanged="OnStatusesChanged"
+                                   Options="@StatusOptions"
+                                   Placeholder="Selecciona uno o más estados" />
+                </div>
+
+                <MxFileUpload Label="Evidencias del lote"
+                              Accept=".pdf,.png,.jpg,.csv"
+                              Multiple="true"
+                              FilesChanged="OnFilesChanged"
+                              HelperText="Adjunta evidencia documental del proceso (máx. validación del backend)." />
+            </ChildContent>
+        </MxFormSection>
+
+        <MxCard Title="Resumen de selección" Variant="SurfaceVariant.Muted" IsCompact="true">
+            <ChildContent>
+                <p class="ms-text-sm">Fecha: @(OperationDate?.ToString("yyyy-MM-dd") ?? "-")</p>
+                <p class="ms-text-sm">Rango: @(RangeStart?.ToString("yyyy-MM-dd") ?? "-") → @(RangeEnd?.ToString("yyyy-MM-dd") ?? "-")</p>
+                <p class="ms-text-sm">Almacén: @WarehouseSearch (@WarehouseValue)</p>
+                <p class="ms-text-sm">Estados: @(SelectedStatuses.Count == 0 ? "Sin selección" : string.Join(", ", SelectedStatuses))</p>
+                <p class="ms-text-sm">Archivos: @(UploadedFileNames.Count == 0 ? "Sin adjuntos" : string.Join(", ", UploadedFileNames))</p>
+            </ChildContent>
+        </MxCard>
+    </section>
+
     <section class="ms-showcase-group">
         <h2 class="ms-showcase-group__title">Foundation Components previos</h2>
         <div class="ms-grid ms-grid--2">
@@ -200,4 +256,39 @@
     private Task CloseDialog() { IsDialogOpen = false; return Task.CompletedTask; }
     private Task OpenDrawer() { IsDrawerOpen = true; return Task.CompletedTask; }
     private Task ShowToast() { IsToastVisible = true; return Task.CompletedTask; }
+
+    private DateOnly? OperationDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private DateOnly? RangeStart { get; set; } = DateOnly.FromDateTime(DateTime.Today.AddDays(-7));
+    private DateOnly? RangeEnd { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+    private string? WarehouseSearch { get; set; } = "North Hub";
+    private string? WarehouseValue { get; set; } = "north-hub";
+    private IReadOnlyList<string> SelectedStatuses { get; set; } = ["active", "blocked"];
+    private IReadOnlyList<string> UploadedFileNames { get; set; } = Array.Empty<string>();
+
+    private IEnumerable<MxInputOption> WarehouseOptions { get; } =
+    [
+        new("north-hub", "North Hub"),
+        new("east-terminal", "East Terminal"),
+        new("latam-node", "LATAM Node")
+    ];
+
+    private IEnumerable<MxInputOption> StatusOptions { get; } =
+    [
+        new("active", "Active"),
+        new("blocked", "Blocked"),
+        new("review", "Review"),
+        new("closed", "Closed")
+    ];
+
+    private Task OnStatusesChanged(IReadOnlyList<string> values)
+    {
+        SelectedStatuses = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnFilesChanged(IReadOnlyList<Microsoft.AspNetCore.Components.Forms.IBrowserFile> files)
+    {
+        UploadedFileNames = files.Select(f => f.Name).ToArray();
+        return Task.CompletedTask;
+    }
 }

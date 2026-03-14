@@ -243,3 +243,26 @@ Se incorporó la base de visualización informativa para dashboards y backoffice
 - `MxBadge` = metadata UI.
 - `MxTag` = etiqueta de entidad operativa.
 - `MxStatusIndicator` = estado operativo compacto.
+
+## Catálogo de componentes Mx* · Grupo 5 (Enterprise inputs)
+Se incorporó la capa base de inputs enterprise:
+
+- `MxDatePicker`
+- `MxDateRangePicker`
+- `MxAutocomplete`
+- `MxMultiSelect`
+- `MxFileUpload`
+
+Modelo auxiliar:
+- `MxInputOption`.
+
+### Reglas de uso rápidas
+1. `MxDatePicker` para fecha operativa única.
+2. `MxDateRangePicker` para filtros por rango temporal.
+3. `MxAutocomplete` para catálogos con búsqueda textual rápida.
+4. `MxMultiSelect` para selección múltiple de estados/regiones/tags.
+5. `MxFileUpload` para adjuntos de evidencia/lotes con validación en backend.
+
+### Límites del alcance actual
+- Baseline enfocada en contratos mínimos y consistentes.
+- Comportamientos avanzados (virtualización, async remote search, drag-drop upload) quedan para iteraciones posteriores.
