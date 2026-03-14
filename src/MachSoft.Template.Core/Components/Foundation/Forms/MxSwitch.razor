@@ -11,7 +11,10 @@
         <span class="ms-mx-switch__thumb"></span>
     </span>
     <span class="ms-mx-switch__label-block">
-        <span class="ms-mx-switch__label">@Label</span>
+        <span class="ms-mx-switch__label-row">
+            <span class="ms-mx-switch__label">@Label</span>
+            <span class="ms-mx-switch__state" aria-hidden="true">@(Checked ? "ON" : "OFF")</span>
+        </span>
         @if (!string.IsNullOrWhiteSpace(HelperText))
         {
             <span class="ms-mx-switch__helper">@HelperText</span>

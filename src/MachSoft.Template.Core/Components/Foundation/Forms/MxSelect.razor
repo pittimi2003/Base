@@ -6,15 +6,16 @@
               HelperText="@HelperText"
               ErrorText="@ErrorText"
               IsCompact="@IsCompact">
-    <select id="@ResolvedId"
-            class="@SelectClass"
-            value="@Value"
-            disabled="@Disabled"
-            required="@Required"
-            aria-required="@Required"
-            aria-invalid="@HasError"
-            aria-describedby="@DescribedBy"
-            @onchange="OnValueChanged">
+    <div class="ms-mx-select-wrapper">
+        <select id="@ResolvedId"
+                class="@SelectClass"
+                value="@Value"
+                disabled="@Disabled"
+                required="@Required"
+                aria-required="@Required"
+                aria-invalid="@HasError"
+                aria-describedby="@DescribedBy"
+                @onchange="OnValueChanged">
         @if (!string.IsNullOrWhiteSpace(Placeholder))
         {
             <option value="" disabled="@Required">@Placeholder</option>
@@ -24,7 +25,9 @@
         {
             <option value="@option.Value" disabled="@option.Disabled">@option.Text</option>
         }
-    </select>
+        </select>
+        <span class="ms-mx-select-wrapper__icon" aria-hidden="true"></span>
+    </div>
 </MxFieldGroup>
 
 @code {

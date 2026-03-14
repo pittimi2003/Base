@@ -6,24 +6,37 @@
               HelperText="@HelperText"
               ErrorText="@ErrorText"
               IsCompact="@IsCompact">
-    <select id="@ResolvedId"
-            class="@InputClass"
-            multiple
-            disabled="@Disabled"
-            required="@Required"
-            aria-required="@Required"
-            aria-invalid="@HasError"
-            aria-describedby="@DescribedBy"
-            @onchange="OnSelectionChanged">
+    <div class="ms-mx-multiselect-wrapper">
+        <select id="@ResolvedId"
+                class="@InputClass"
+                multiple
+                disabled="@Disabled"
+                required="@Required"
+                aria-required="@Required"
+                aria-invalid="@HasError"
+                aria-describedby="@DescribedBy"
+                @onchange="OnSelectionChanged">
         @foreach (var option in Options)
         {
             <option value="@option.Value" selected="@SelectedValues.Contains(option.Value)" disabled="@option.Disabled">@option.Text</option>
         }
-    </select>
+        </select>
+        <span class="ms-mx-multiselect-wrapper__icon" aria-hidden="true"></span>
+    </div>
+
+    @if (SelectedLabels.Count > 0)
+    {
+        <div class="ms-mx-multiselect__chips" aria-hidden="true">
+            @foreach (var label in SelectedLabels)
+            {
+                <span class="ms-mx-multiselect__chip">@label</span>
+            }
+        </div>
+    }
 
     @if (!string.IsNullOrWhiteSpace(Placeholder) && SelectedValues.Count == 0)
     {
-        <p class="ms-mx-field-group__message">@Placeholder</p>
+        <p class="ms-mx-field-group__message ms-mx-multiselect__placeholder">@Placeholder</p>
     }
 </MxFieldGroup>
 
@@ -45,6 +58,7 @@
     private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
     private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? $"{ResolvedId}-message" : null;
     private string InputClass => $"ms-mx-input ms-mx-input--multiselect{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+    private IReadOnlyList<string> SelectedLabels => Options.Where(option => SelectedValues.Contains(option.Value)).Select(option => option.Text).ToArray();
 
     private async Task OnSelectionChanged(ChangeEventArgs args)
     {
