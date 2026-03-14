@@ -98,3 +98,83 @@ Solución de plantilla corporativa Blazor con dos hosts (Server y WASM) sobre un
 
 ## Adopción
 - Guía práctica de onboarding y checklist: `docs/ADOPTION_GUIDE.md`.
+
+## Catálogo MachSoft Components - Grupo 1
+Implementado como contratos públicos `Mx*` en `MachSoft.Template.Core`, con organización por dominio visual:
+
+- `Components/Foundation/Actions`
+  - `MxButton`
+  - `MxIconButton`
+- `Components/Foundation/Feedback`
+  - `MxBadge`
+- `Components/Foundation/Surfaces`
+  - `MxCard`
+  - `MxPanel`
+- `Components/Foundation/Layout`
+  - `MxPageHeader`
+
+Decisiones clave de arquitectura:
+1. API pública vendor-agnostic (`Mx*`) y orientada a uso enterprise.
+2. Variantes tipadas por enums en `Models/ComponentVariants.cs`.
+3. Reuso de `SurfaceVariant` para evitar duplicación de contratos entre superficies.
+4. Estilos token-first en `wwwroot/css/template/components.css` apoyados en `--mx-*` y bridge `--ms-*`.
+5. Integración incremental: convivencia con foundation preexistente (`BaseCard`, `PageContainer`, `AppMenuTile`) para migración no disruptiva.
+
+## Catálogo MachSoft Components - Grupo 2 (Forms)
+Implementado en `MachSoft.Template.Core/Components/Foundation/Forms` con contratos públicos `Mx*` y componentes propios (sin API vendor expuesta):
+
+- `MxTextField`
+- `MxTextarea`
+- `MxSelect`
+- `MxCheckbox`
+- `MxSwitch`
+- `MxFieldGroup`
+- `MxFormSection`
+
+Modelo de soporte:
+- `Models/MxSelectOption.cs` para contrato de opciones tipado en `MxSelect`.
+
+Decisiones de arquitectura:
+1. Baseline de formularios 100% token-first con HTML/Blazor nativo.
+2. Contratos mínimos para mantener estabilidad API y facilitar adopción incremental.
+3. `MxFieldGroup` centraliza patrón de label/control/helper/error para evitar divergencia visual.
+4. `MxFormSection` estandariza agrupación enterprise con acciones de encabezado opcionales.
+5. Convivencia temporal con `Components/Forms` legacy (`FieldGroup`, `FormSection`) para migración no destructiva.
+
+## Catálogo MachSoft Components - Grupo 3 (Navigation + Overlays)
+Implementado en `MachSoft.Template.Core` con componentes propios y contratos `Mx*`:
+
+- `Components/Foundation/Navigation`
+  - `MxTabs`
+  - `MxBreadcrumb`
+- `Components/Foundation/Overlays`
+  - `MxDialog`
+  - `MxDrawer`
+- `Components/Foundation/Feedback`
+  - `MxToast`
+
+Modelos de soporte:
+- `Models/MxTabItem.cs`
+- `Models/MxBreadcrumbItem.cs`
+
+Decisiones de arquitectura:
+1. Grupo 3 se mantiene vendor-agnostic en API pública y en implementación.
+2. Overlays centralizados con patrón de `Open/OpenChanged` para interoperar en Server y WASM.
+3. Navegación y overlays consumen tokens semánticos y z-index del Design System.
+4. Comportamientos interactivos mínimos (tabs por teclado, cierre dialog/drawer, dismiss de toast) se validan en `/showcase`.
+5. Sin refactor masivo: coexistencia con navegación/layout legacy durante migración incremental.
+
+## Catálogo MachSoft Components - Grupo 4 (Data display + feedback)
+Implementado en `MachSoft.Template.Core/Components/Foundation/DataDisplay` con componentes propios:
+
+- `MxTag`
+- `MxStatusIndicator`
+- `MxEmptyState`
+- `MxStatCard`
+- `MxProgress`
+
+Decisiones de arquitectura:
+1. Grupo 4 implementado como componentes propios para mantener contratos mínimos y estables.
+2. Componentes orientados a escenarios enterprise (KPIs, estados operativos, módulos vacíos, progreso de procesos).
+3. Semántica accesible integrada (`progressbar`, roles de status, estructura de empty state, foco visible cuando hay interacción).
+4. Diferenciación explícita entre `MxBadge`, `MxTag` y `MxStatusIndicator` para evitar solapamiento conceptual.

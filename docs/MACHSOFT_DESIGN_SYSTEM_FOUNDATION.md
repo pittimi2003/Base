@@ -225,3 +225,201 @@ docs/
 3. Definir contratos enterprise (DataGrid/Charts/FileUpload).
 4. Añadir pruebas visuales de tema (light/dark) en E2E.
 5. Expandir theming (high-contrast, brand variants por producto si aplica).
+
+---
+
+## 11) Catálogo Mx* - Grupo 1 (implementado)
+Ubicación en Core:
+- `Components/Foundation/Actions`: `MxButton`, `MxIconButton`
+- `Components/Foundation/Feedback`: `MxBadge`
+- `Components/Foundation/Surfaces`: `MxCard`, `MxPanel`
+- `Components/Foundation/Layout`: `MxPageHeader`
+
+### 11.1 MxButton
+**Propósito**: acción principal/secundaria de página o bloque.
+
+**Contrato público**
+- `Variant: MxButtonVariant` (`Primary`, `Secondary`, `Tertiary`, `Danger`)
+- `Size: MxButtonSize` (`Small`, `Medium`, `Large`)
+- `Disabled: bool`
+- `LeadingIcon: string?`
+- `TrailingIcon: string?`
+- `Type: string` (`button` por defecto)
+- `OnClick: EventCallback<MouseEventArgs>`
+- `ChildContent: RenderFragment` (requerido)
+
+**Uso recomendado**
+- Primary: acción principal de contexto.
+- Secondary: acción de soporte.
+- Tertiary: acción de baja jerarquía en toolbars/footers.
+- Danger: acciones destructivas o irreversibles.
+
+### 11.2 MxIconButton
+**Propósito**: acción compacta basada en icono.
+
+**Contrato público**
+- `Icon: string` (requerido)
+- `AriaLabel: string` (requerido)
+- `Variant: MxButtonVariant`
+- `Size: MxButtonSize`
+- `Disabled: bool`
+- `OnClick: EventCallback<MouseEventArgs>`
+
+**Regla de accesibilidad**
+- Siempre incluir `AriaLabel` descriptivo.
+
+### 11.3 MxCard
+**Propósito**: superficie de contenido reusable para bloques de negocio.
+
+**Contrato público**
+- `Title: string?`
+- `Variant: SurfaceVariant` (`Default`, `Elevated`, `Outlined`, `Muted`)
+- `IsCompact: bool`
+- `HeaderContent: RenderFragment?`
+- `Metadata: RenderFragment?`
+- `ChildContent: RenderFragment` (requerido)
+- `FooterContent: RenderFragment?`
+
+### 11.4 MxBadge
+**Propósito**: estado/etiqueta contextual de baja densidad.
+
+**Contrato público**
+- `Variant: MxBadgeVariant` (`Neutral`, `Brand`, `Success`, `Warning`, `Danger`)
+- `Size: MxBadgeSize` (`Small`, `Medium`)
+- `Text: string?`
+- `ChildContent: RenderFragment?`
+
+### 11.5 MxPageHeader
+**Propósito**: encabezado enterprise para páginas y módulos.
+
+**Contrato público**
+- `Title: string` (requerido)
+- `Description: string?`
+- `Metadata: RenderFragment?`
+- `Actions: RenderFragment?`
+
+### 11.6 MxPanel
+**Propósito**: contenedor de contexto/filtros con encabezado opcional.
+
+**Contrato público**
+- `Title: string?`
+- `HeaderActions: RenderFragment?`
+- `ChildContent: RenderFragment` (requerido)
+- `Variant: SurfaceVariant`
+- `IsCompact: bool`
+
+### 11.7 Estados y theming
+- El Grupo 1 soporta light/dark con tokens semánticos (`--mx-color-*`) sin hardcodes por tema.
+- Estados aplicados: `hover`, `focus-visible`, `disabled` (donde aplica).
+- Se mantiene compatibilidad no destructiva con aliases `--ms-*`.
+
+### 11.8 Showcase
+`/showcase` incorpora sección dedicada del Grupo 1 con:
+- variantes mínimas,
+- tamaños clave,
+- estados disabled,
+- ejemplos de composición con `MxPageHeader`, `MxCard` y `MxPanel`.
+
+---
+
+## 12) Catálogo Mx* - Grupo 2 (Forms base)
+Ubicación en Core:
+- `Components/Foundation/Forms`: `MxTextField`, `MxTextarea`, `MxSelect`, `MxCheckbox`, `MxSwitch`, `MxFieldGroup`, `MxFormSection`.
+- `Models`: `MxSelectOption`.
+
+### 12.1 Decisión de implementación (propio vs wrapper)
+- `MxTextField`: **propio puro** (HTML input + tokens). Motivo: contrato mínimo estable y control total de accesibilidad/estados.
+- `MxTextarea`: **propio puro**. Motivo: mismo criterio que `MxTextField`, sin necesidad de dependencia vendor.
+- `MxSelect`: **propio puro**. Motivo: API clara por `MxSelectOption` y comportamiento suficientemente simple en baseline.
+- `MxCheckbox`: **propio puro**. Motivo: control nativo robusto con `accent-color` tokenizado.
+- `MxSwitch`: **propio puro**. Motivo: patrón visual corporativo con `role="switch"` y estados tokenizados.
+- `MxFieldGroup`: **propio puro**. Motivo: unidad visual reusable para label/control/helper/error.
+- `MxFormSection`: **propio puro**. Motivo: agrupador enterprise con header y acciones opcionales.
+
+### 12.2 Contratos públicos
+- `MxTextField`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `HelperText`, `ErrorText`, `IsCompact`, `InputType`, `Id`.
+- `MxTextarea`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `Rows`, `HelperText`, `ErrorText`, `IsCompact`, `Id`.
+- `MxSelect`: `Label`, `Value`, `ValueChanged`, `Options: IEnumerable<MxSelectOption>`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `IsCompact`, `Id`.
+- `MxCheckbox`: `Label`, `Description`, `Checked`, `CheckedChanged`, `Disabled`, `Id`.
+- `MxSwitch`: `Label`, `HelperText`, `Checked`, `CheckedChanged`, `Disabled`, `Id`.
+- `MxFieldGroup`: `Label`, `FieldId`, `Required`, `HelperText`, `ErrorText`, `IsCompact`, `ChildContent`.
+- `MxFormSection`: `Title`, `Description`, `Actions`, `IsCompact`, `ChildContent`.
+
+### 12.3 Estados y accesibilidad
+- Estados cubiertos: default, hover, focus-visible, disabled e invalid/error.
+- Soporte light/dark vía tokens semánticos (`--mx-*` + bridge `--ms-*`).
+- Asociación label-control mediante `for`/`id`.
+- Mensajes de ayuda/error enlazados por `aria-describedby` en text/select/textarea.
+- `MxSwitch` usa `role="switch"` para semántica explícita.
+
+### 12.4 Reglas de uso
+- Usar `MxTextField/MxTextarea/MxSelect` para captura estructurada de datos.
+- Usar `MxCheckbox` para flags no críticos binarios y `MxSwitch` para toggles de estado de configuración.
+- Usar `MxFieldGroup` cuando se necesite envolver controles custom manteniendo espaciado y mensaje consistente.
+- Usar `MxFormSection` para agrupar bloques de formulario por contexto funcional.
+- Evitar usar Grupo 2 para validaciones de dominio complejas sin una capa de formularios superior.
+
+---
+
+## 13) Catálogo Mx* - Grupo 3 (Navigation + Overlays)
+Ubicación en Core:
+- `Components/Foundation/Navigation`: `MxTabs`, `MxBreadcrumb`
+- `Components/Foundation/Overlays`: `MxDialog`, `MxDrawer`
+- `Components/Foundation/Feedback`: `MxToast`
+- `Models`: `MxTabItem`, `MxBreadcrumbItem`
+
+### 13.1 Decisión de implementación (propio vs wrapper)
+- `MxTabs`: **propio puro**. Motivo: contrato acotado y navegación teclado básica implementable sin vendor.
+- `MxDialog`: **propio puro**. Motivo: control claro de `Open/OpenChanged`, overlay y cierre por escape.
+- `MxDrawer`: **propio puro**. Motivo: comportamiento de panel lateral y overlay simple, consistente y tokenizado.
+- `MxToast`: **propio puro**. Motivo: feedback efímero con contrato mínimo (`Visible`, `Variant`, `DurationMs`).
+- `MxBreadcrumb`: **propio puro**. Motivo: navegación jerárquica estática de baja complejidad.
+
+### 13.2 Contratos públicos
+- `MxTabs`: `Items: IEnumerable<MxTabItem>`, `ActiveValue`, `ActiveValueChanged`, `Variant`, `AriaLabel`, `ActiveContent`.
+- `MxDialog`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Actions`, `Size`, `CloseOnOverlayClick`, `CloseOnEscape`, `ShowCloseButton`.
+- `MxDrawer`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Side`, `Width`, `CloseOnOverlayClick`, `CloseOnEscape`, `ShowCloseButton`.
+- `MxToast`: `Visible`, `VisibleChanged`, `Variant`, `Title`, `Message`, `Dismissible`, `DurationMs`.
+- `MxBreadcrumb`: `Items: IEnumerable<MxBreadcrumbItem>`.
+
+### 13.3 Estados, interacción y accesibilidad
+- Estados cubiertos: default, hover, focus-visible y disabled donde aplica.
+- Light/dark soportado por tokens semánticos del sistema.
+- `MxTabs`: `role=tablist/tab/tabpanel`, selección activa y navegación teclado (`ArrowLeft/ArrowRight/Home/End`).
+- `MxDialog`: `role=dialog`, `aria-modal`, cierre por overlay/escape configurable.
+- `MxDrawer`: `role=dialog`, overlay + cierre por escape/overlay configurable.
+- `MxToast`: `role=status`, dismiss manual opcional y autocierre por duración.
+- `MxBreadcrumb`: `nav[aria-label="Breadcrumb"]` + `aria-current="page"` para item activo.
+
+---
+
+## 14) Catálogo Mx* - Grupo 4 (Data display + feedback informativo)
+Ubicación en Core:
+- `Components/Foundation/DataDisplay`: `MxTag`, `MxStatusIndicator`, `MxEmptyState`, `MxStatCard`, `MxProgress`.
+
+### 14.1 Decisión de implementación (propio vs wrapper)
+- `MxTag`: **propio puro**.
+- `MxStatusIndicator`: **propio puro**.
+- `MxEmptyState`: **propio puro**.
+- `MxStatCard`: **propio puro**.
+- `MxProgress`: **propio puro**.
+
+Motivo general: contratos compactos y visual/semántica suficientemente cubribles con Blazor + HTML + tokens, sin necesidad de dependencia externa.
+
+### 14.2 Contratos públicos
+- `MxTag`: `Text|ChildContent`, `Variant`, `Dismissible`, `OnDismiss`.
+- `MxStatusIndicator`: `Status`, `Label`.
+- `MxEmptyState`: `Title`, `Description`, `Icon`, `Actions`.
+- `MxStatCard`: `Title`, `Value`, `SupportingText`, `TrendText`, `TrendStatus`, `Status`.
+- `MxProgress`: `Value`, `Max`, `Variant`, `ShowLabel`, `IsInline`, `AriaLabel`.
+
+### 14.3 Diferencias conceptuales (Badge vs Tag vs StatusIndicator)
+- `MxBadge`: metadata corta/categorización de UI (chips informativos de contexto).
+- `MxTag`: etiquetado operativo de entidades (ej. lote, canal, clasificación), opcionalmente dismissible.
+- `MxStatusIndicator`: estado operativo compacto con señal redundante (punto + icono + texto), no solo color.
+
+### 14.4 Estados y accesibilidad
+- Soporte light/dark por tokens semánticos.
+- `MxProgress` con `role="progressbar"`, `aria-valuemin`, `aria-valuemax`, `aria-valuenow`, `aria-label`.
+- `MxEmptyState` con estructura clara de título, descripción y acciones.
+- Status semánticos con redundancia visual (icono + texto) para no depender solo de color.

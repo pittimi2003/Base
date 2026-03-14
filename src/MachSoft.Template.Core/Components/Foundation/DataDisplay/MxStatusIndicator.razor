@@ -1,0 +1,22 @@
+@namespace MachSoft.Template.Core.Components.Foundation
+
+<span class="@StatusClass" role="status" aria-live="polite">
+    <span class="ms-mx-status-indicator__dot" aria-hidden="true"></span>
+    <span class="ms-mx-status-indicator__icon" aria-hidden="true">@StatusIcon</span>
+    <span class="ms-mx-status-indicator__label">@Label</span>
+</span>
+
+@code {
+    [Parameter] public MxStatusVariant Status { get; set; } = MxStatusVariant.Info;
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+
+    private string StatusClass => $"ms-mx-status-indicator ms-mx-status-indicator--{Status.ToString().ToLowerInvariant()}";
+    private string StatusIcon => Status switch
+    {
+        MxStatusVariant.Success => "✔",
+        MxStatusVariant.Warning => "!",
+        MxStatusVariant.Danger => "✕",
+        MxStatusVariant.Offline => "○",
+        _ => "i"
+    };
+}
