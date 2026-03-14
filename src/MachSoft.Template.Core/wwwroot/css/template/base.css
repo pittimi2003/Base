@@ -3,11 +3,19 @@ html, body {
   font-family: var(--ms-font-family);
   font-size: var(--ms-font-size-md);
   line-height: var(--mx-typo-body-line-height);
-  background: var(--ms-color-bg);
+  background: linear-gradient(180deg, color-mix(in oklab, var(--ms-color-bg) 92%, var(--ms-color-brand-soft) 8%), var(--ms-color-bg));
   color: var(--ms-color-text);
 }
 
-a { color: inherit; }
+a {
+  color: var(--ms-color-link);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.16em;
+}
+
+a:hover {
+  color: var(--ms-color-link-hover);
+}
 
 h1, h2, h3, p { margin: 0; }
 

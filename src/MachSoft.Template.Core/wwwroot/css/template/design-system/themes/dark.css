@@ -2,18 +2,30 @@
   --mx-color-bg-canvas: #101825;
   --mx-color-bg-surface: #172131;
   --mx-color-bg-surface-muted: #1e2b40;
+  --mx-color-bg-surface-raised: #22314a;
 
   --mx-color-text-primary: #e8eefc;
   --mx-color-text-secondary: #b5c3db;
+  --mx-color-text-muted: #90a4c3;
   --mx-color-text-inverse: #111928;
 
+  --mx-color-border-subtle: #23344d;
   --mx-color-border-default: #2a3a53;
   --mx-color-border-strong: #39506e;
+  --mx-color-border-focus: #7ea5ff;
 
   --mx-color-brand-primary: #7ea5ff;
+  --mx-color-brand-hover: #9bb8ff;
+  --mx-color-brand-active: #6f98f2;
   --mx-color-brand-strong: #aac4ff;
   --mx-color-brand-soft: rgba(52, 102, 214, 0.32);
+
   --mx-color-accent-primary: #4fc7b6;
+  --mx-color-accent-hover: #63d6c7;
+  --mx-color-accent-soft: rgba(79, 199, 182, 0.18);
+
+  --mx-color-input-bg: #1b263a;
+  --mx-color-input-bg-disabled: #223149;
 
   --mx-color-state-success: #58c98f;
   --mx-color-state-warning: #ecb059;
@@ -34,6 +46,9 @@
   --mx-color-nav-text: #dce7ff;
   --mx-color-nav-text-muted: #a8bbdb;
   --mx-color-nav-active: #274070;
+
+  --mx-color-link: #90b2ff;
+  --mx-color-link-hover: #aac4ff;
 
   --mx-color-overlay: rgba(0, 0, 0, 0.66);
 }
