@@ -44,3 +44,30 @@ public enum MxBadgeSize
     Small,
     Medium
 }
+
+public enum MxTabsVariant
+{
+    Underline,
+    Pills
+}
+
+public enum MxDialogSize
+{
+    Small,
+    Medium,
+    Large
+}
+
+public enum MxDrawerSide
+{
+    Start,
+    End
+}
+
+public enum MxToastVariant
+{
+    Info,
+    Success,
+    Warning,
+    Danger
+}

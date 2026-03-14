@@ -358,3 +358,35 @@ Ubicación en Core:
 - Usar `MxFieldGroup` cuando se necesite envolver controles custom manteniendo espaciado y mensaje consistente.
 - Usar `MxFormSection` para agrupar bloques de formulario por contexto funcional.
 - Evitar usar Grupo 2 para validaciones de dominio complejas sin una capa de formularios superior.
+
+---
+
+## 13) Catálogo Mx* - Grupo 3 (Navigation + Overlays)
+Ubicación en Core:
+- `Components/Foundation/Navigation`: `MxTabs`, `MxBreadcrumb`
+- `Components/Foundation/Overlays`: `MxDialog`, `MxDrawer`
+- `Components/Foundation/Feedback`: `MxToast`
+- `Models`: `MxTabItem`, `MxBreadcrumbItem`
+
+### 13.1 Decisión de implementación (propio vs wrapper)
+- `MxTabs`: **propio puro**. Motivo: contrato acotado y navegación teclado básica implementable sin vendor.
+- `MxDialog`: **propio puro**. Motivo: control claro de `Open/OpenChanged`, overlay y cierre por escape.
+- `MxDrawer`: **propio puro**. Motivo: comportamiento de panel lateral y overlay simple, consistente y tokenizado.
+- `MxToast`: **propio puro**. Motivo: feedback efímero con contrato mínimo (`Visible`, `Variant`, `DurationMs`).
+- `MxBreadcrumb`: **propio puro**. Motivo: navegación jerárquica estática de baja complejidad.
+
+### 13.2 Contratos públicos
+- `MxTabs`: `Items: IEnumerable<MxTabItem>`, `ActiveValue`, `ActiveValueChanged`, `Variant`, `AriaLabel`, `ActiveContent`.
+- `MxDialog`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Actions`, `Size`, `CloseOnOverlayClick`, `CloseOnEscape`, `ShowCloseButton`.
+- `MxDrawer`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Side`, `Width`, `CloseOnOverlayClick`, `CloseOnEscape`, `ShowCloseButton`.
+- `MxToast`: `Visible`, `VisibleChanged`, `Variant`, `Title`, `Message`, `Dismissible`, `DurationMs`.
+- `MxBreadcrumb`: `Items: IEnumerable<MxBreadcrumbItem>`.
+
+### 13.3 Estados, interacción y accesibilidad
+- Estados cubiertos: default, hover, focus-visible y disabled donde aplica.
+- Light/dark soportado por tokens semánticos del sistema.
+- `MxTabs`: `role=tablist/tab/tabpanel`, selección activa y navegación teclado (`ArrowLeft/ArrowRight/Home/End`).
+- `MxDialog`: `role=dialog`, `aria-modal`, cierre por overlay/escape configurable.
+- `MxDrawer`: `role=dialog`, overlay + cierre por escape/overlay configurable.
+- `MxToast`: `role=status`, dismiss manual opcional y autocierre por duración.
+- `MxBreadcrumb`: `nav[aria-label="Breadcrumb"]` + `aria-current="page"` para item activo.

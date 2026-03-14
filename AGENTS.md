@@ -227,3 +227,30 @@ Reglas adicionales:
 2. Mantener estados base: default, hover, focus-visible, disabled, invalid/error.
 3. Asegurar asociación label/control (`for` + `id`) y mensajes enlazados (`aria-describedby`) cuando aplique.
 4. Todo cambio en Grupo 2 debe reflejarse en `/showcase` y en docs de arquitectura/guía/foundation.
+
+---
+
+## 15) Catálogo MachSoft Components — Grupo 3 (Navigation + Overlays)
+Ubicación recomendada en Core:
+- `Components/Foundation/Navigation`:
+  - `MxTabs`
+  - `MxBreadcrumb`
+- `Components/Foundation/Overlays`:
+  - `MxDialog`
+  - `MxDrawer`
+- `Components/Foundation/Feedback`:
+  - `MxToast`
+- `Models`: `MxTabItem`, `MxBreadcrumbItem`.
+
+Contratos públicos mínimos del Grupo 3:
+- `MxTabs`: `Items`, `ActiveValue`, `ActiveValueChanged`, `Variant`, `AriaLabel`, `ActiveContent`.
+- `MxDialog`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Actions`, `Size`, `CloseOnOverlayClick`, `CloseOnEscape`.
+- `MxDrawer`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Side`, `Width`, `CloseOnOverlayClick`, `CloseOnEscape`.
+- `MxToast`: `Visible`, `VisibleChanged`, `Variant`, `Title`, `Message`, `Dismissible`, `DurationMs`.
+- `MxBreadcrumb`: `Items`.
+
+Reglas adicionales:
+1. Mantener API pública `Mx*` y contratos de interacción simples.
+2. Asegurar base accesible: tabs con roles y teclado; dialog/drawer con `role="dialog"` + `aria-modal`; breadcrumb con `aria-current`.
+3. Usar tokens semánticos para overlays, foco y estados visuales en light/dark.
+4. Toda evolución del Grupo 3 debe reflejarse en `/showcase` y documentación técnica.

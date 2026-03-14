@@ -198,3 +198,27 @@ Componente auxiliar:
 3. Usar `MxFieldGroup` para encapsular controles custom manteniendo contrato visual.
 4. Agrupar formularios por contexto usando `MxFormSection`.
 5. Validar siempre contraste y foco visible en `/showcase` light/dark al cambiar estilos de formularios.
+
+## Catálogo de componentes Mx* · Grupo 3 (Navigation + Overlays)
+Se incorporó una base reusable de navegación y overlays:
+
+- `MxTabs`
+- `MxDialog`
+- `MxDrawer`
+- `MxToast`
+- `MxBreadcrumb`
+
+Modelos auxiliares:
+- `MxTabItem`
+- `MxBreadcrumbItem`
+
+### Criterio de implementación
+- Grupo 3 implementado como componentes propios puros (Blazor + HTML + CSS tokenizado).
+- API pública estable `Mx*` sin contratos vendor expuestos.
+
+### Reglas de uso rápidas
+1. Usar `MxTabs` para secciones hermanas con contenido alternable en contexto de página.
+2. Usar `MxDialog` para confirmaciones o flujos cortos bloqueantes.
+3. Usar `MxDrawer` para filtros/contexto lateral no destructivo.
+4. Usar `MxToast` para feedback efímero no bloqueante.
+5. Usar `MxBreadcrumb` para jerarquía de navegación de páginas enterprise.

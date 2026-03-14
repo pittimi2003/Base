@@ -140,3 +140,26 @@ Decisiones de arquitectura:
 3. `MxFieldGroup` centraliza patrón de label/control/helper/error para evitar divergencia visual.
 4. `MxFormSection` estandariza agrupación enterprise con acciones de encabezado opcionales.
 5. Convivencia temporal con `Components/Forms` legacy (`FieldGroup`, `FormSection`) para migración no destructiva.
+
+## Catálogo MachSoft Components - Grupo 3 (Navigation + Overlays)
+Implementado en `MachSoft.Template.Core` con componentes propios y contratos `Mx*`:
+
+- `Components/Foundation/Navigation`
+  - `MxTabs`
+  - `MxBreadcrumb`
+- `Components/Foundation/Overlays`
+  - `MxDialog`
+  - `MxDrawer`
+- `Components/Foundation/Feedback`
+  - `MxToast`
+
+Modelos de soporte:
+- `Models/MxTabItem.cs`
+- `Models/MxBreadcrumbItem.cs`
+
+Decisiones de arquitectura:
+1. Grupo 3 se mantiene vendor-agnostic en API pública y en implementación.
+2. Overlays centralizados con patrón de `Open/OpenChanged` para interoperar en Server y WASM.
+3. Navegación y overlays consumen tokens semánticos y z-index del Design System.
+4. Comportamientos interactivos mínimos (tabs por teclado, cierre dialog/drawer, dismiss de toast) se validan en `/showcase`.
+5. Sin refactor masivo: coexistencia con navegación/layout legacy durante migración incremental.
