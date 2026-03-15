@@ -325,3 +325,46 @@ Referencia de inventario y clasificación: `docs/COMPONENT_INVENTORY.md`.
 5. Usar componentes `Mx*` desde los namespaces de `MachSoft.Template.Core`.
 
 > Referencia operativa mínima dentro del paquete: `src/MachSoft.Template.Core/NUGET_README.md`.
+
+
+## Fase 15 — Template corporativo oficial
+
+### Base oficial definida
+- Plantilla oficial: `template/MachSoft.Template.Official`.
+- Tipo: `dotnet new` template para Blazor Server.
+- Identidad: `MachSoft.Template.Official.Server`.
+- Short name: `machsoft-app`.
+
+### Qué incluye
+- Shell/layout corporativo MachSoft (`AppShell`) con sidebar responsive y toggle de tema.
+- Wiring de assets del runtime reusable (`_content/MachSoft.Template.Core/css/template/*` + `js/theme.js`).
+- Navegación mínima (`Inicio`, `Operaciones`, `Configuracion`).
+- Páginas iniciales útiles para bootstrap real (`/`, `/operations`, `/settings`).
+- Referencia a `MachSoft.Template.Core` como paquete NuGet.
+
+### Qué no incluye
+- Rutas y páginas de validación interna (`/showcase`, `/demo`, `/wasm-demo`).
+- Aplicaciones sample (`samples/*`).
+- Artefactos de benchmark y pruebas E2E.
+- Configuraciones no necesarias para un arranque productivo mínimo.
+
+### Instalación y uso rápido
+1. Empaquetar `MachSoft.Template.Core` para feed local:
+   - `dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o ./.artifacts/local-nuget`
+2. Instalar template local:
+   - `dotnet new install ./template/MachSoft.Template.Official`
+3. Crear aplicación nueva:
+   - `dotnet new machsoft-app -n Contoso.Operations`
+4. Restaurar con feed local + NuGet público:
+   - `dotnet restore --source ./.artifacts/local-nuget --source https://api.nuget.org/v3/index.json`
+5. Ejecutar:
+   - `dotnet run`
+
+### Relación template vs paquete NuGet
+- `MachSoft.Template.Core` es el runtime reusable versionable y distribuible.
+- `MachSoft.Template.Official` es el bootstrap corporativo para instanciar apps nuevas que consumen ese runtime.
+- Evolución de UI reusable: se publica en `MachSoft.Template.Core`; adopción en apps nuevas: vía actualización de paquete.
+
+### Limitaciones iniciales conocidas
+- El template oficial se entrega en variante Server únicamente (WASM permanece como host de referencia dentro del repo).
+- La restauración de una app generada requiere acceso al feed que publique `MachSoft.Template.Core` (local o corporativo).

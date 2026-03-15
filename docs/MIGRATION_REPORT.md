@@ -58,3 +58,10 @@ La solución queda con base reusable común + starter Server + starter WASM + sa
 - Se define metadata de paquete (`MachSoft.Template.Core`) y README embebido de consumo.
 - Se valida empaquetado `dotnet pack` en `Release` con generación de `.nupkg` y `.snupkg`.
 - Se valida consumo desde proyecto limpio externo referenciando paquete local.
+
+
+## Fase 15 - Template corporativo oficial
+- Se define `template/MachSoft.Template.Official` como base oficial para `dotnet new`.
+- Se separa explícitamente el runtime reusable (`MachSoft.Template.Core`) del bootstrap de apps nuevas.
+- El template oficial excluye material de showcase/demo/samples para reducir ruido de arranque.
+- Se valida flujo E2E real: instalación de template, creación de app nueva, restore/build/run con shell/theming activos.
