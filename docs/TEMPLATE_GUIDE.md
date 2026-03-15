@@ -314,3 +314,14 @@ Para construir una pantalla enterprise estándar:
 6. Si aplica, usar `MxMasterDetail` para lista/detalle.
 
 Referencia de inventario y clasificación: `docs/COMPONENT_INVENTORY.md`.
+
+
+## Consumo de paquete NuGet local (pre-template corporativo)
+1. Generar paquete local:
+   - `dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o artifacts/nuget`
+2. En el proyecto consumidor agregar fuente local `artifacts/nuget`.
+3. Instalar paquete `MachSoft.Template.Core`.
+4. Cargar assets `_content/MachSoft.Template.Core/css/template/*` y `_content/MachSoft.Template.Core/js/theme.js`.
+5. Usar componentes `Mx*` desde los namespaces de `MachSoft.Template.Core`.
+
+> Referencia operativa mínima dentro del paquete: `src/MachSoft.Template.Core/NUGET_README.md`.

@@ -232,3 +232,10 @@ Los componentes legacy siguen disponibles solo para no romper adopción incremen
 - `Components/Forms/*` (`FormSection`, `FieldGroup`, `SectionTitle`) (LEGACY)
 
 Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
+
+
+## Frontera de empaquetado NuGet (Fase 14)
+- **Paquete distribuible**: `MachSoft.Template.Core` generado desde `src/MachSoft.Template.Core`.
+- **Runtime reusable incluido**: componentes `Mx*`, layout común, static web assets (`css/template/*`, `js/theme.js`).
+- **Fuera del paquete**: hosts `template/*` y aplicaciones `samples/*` (solo validación/adopción interna).
+- **Dependencia de consumo esperada**: host Blazor (`Server` o `WASM`) que referencia el paquete y carga assets `_content/MachSoft.Template.Core/*`.

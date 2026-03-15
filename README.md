@@ -70,3 +70,15 @@ dotnet run --project samples/MachSoft.Template.AdoptionValidationApp
 - Toggle de tema (🌙/☀️) integrado en el header del layout compartido.
 - Persistencia por `localStorage` (`mx-theme`) y aplicación por atributo `data-mx-theme` en root.
 - Funciona en Server, WASM y Sample al consumir `MachSoft.Template.Core`.
+
+
+## Preparación NuGet (Fase 14)
+- Proyecto empaquetable definido: `src/MachSoft.Template.Core`.
+- Identificador de paquete: `MachSoft.Template.Core`.
+- Empaquetado local:
+
+```bash
+dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o artifacts/nuget
+```
+
+- Guía mínima de consumo del paquete: `src/MachSoft.Template.Core/NUGET_README.md` y `docs/TEMPLATE_GUIDE.md`.

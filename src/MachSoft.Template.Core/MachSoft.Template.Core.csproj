@@ -3,9 +3,24 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageId>MachSoft.Template.Core</PackageId>
+    <Authors>MachSoft</Authors>
+    <Company>MachSoft</Company>
+    <Description>MachSoft Design System reusable Blazor runtime with Mx* components, shared layouts, and static web assets for Server and WebAssembly hosts.</Description>
+    <PackageTags>machsoft;blazor;design-system;components;rcl;ui;enterprise</PackageTags>
+    <PackageReadmeFile>NUGET_README.md</PackageReadmeFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.25" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NUGET_README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 </Project>
