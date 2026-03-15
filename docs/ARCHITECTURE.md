@@ -254,3 +254,12 @@ Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
 - Integra shell/layout corporativo y theming desde `MachSoft.Template.Core`.
 - Mantiene navegación inicial acotada a páginas de bootstrap (`/`, `/operations`, `/settings`).
 - Se apoya en `PackageReference` a `MachSoft.Template.Core` para separar claramente bootstrap vs runtime reusable.
+
+## Fase 16 — Operacionalización de plataforma interna
+- **Versión interna activa**: `v1.0.0-internal`.
+- **Artefactos operables**:
+  - `MachSoft.Template.Core` (NuGet runtime reusable),
+  - `template/MachSoft.Template.Official` (`dotnet new machsoft-app`),
+  - `template/MachSoft.Template.Starter*` (hosts de validación).
+- **Circuito soportado**: pack → publicar/servir feed → instalar template → generar app → restore/build/run.
+- **Gobernanza operativa**: release go/no-go y baseline mínima documentadas en `docs/INTERNAL_RELEASE_CHECKLIST.md` y `docs/OPERATIONS_BASELINE.md`.
