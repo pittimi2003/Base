@@ -51,3 +51,10 @@ La solución queda con base reusable común + starter Server + starter WASM + sa
 - Se mantiene compatibilidad temporal con `--ms-*` desde `tokens.css` para preservar adopción no destructiva del template actual.
 - Se incorpora dark mode funcional cross-host (Server/WASM) con toggle en layout y persistencia en `localStorage` (`mx-theme`).
 
+
+
+## Fase 14 - Preparación de NuGet
+- Se formaliza `src/MachSoft.Template.Core` como artefacto empaquetable.
+- Se define metadata de paquete (`MachSoft.Template.Core`) y README embebido de consumo.
+- Se valida empaquetado `dotnet pack` en `Release` con generación de `.nupkg` y `.snupkg`.
+- Se valida consumo desde proyecto limpio externo referenciando paquete local.
