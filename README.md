@@ -57,6 +57,8 @@ dotnet run --project samples/MachSoft.Template.AdoptionValidationApp
 
 ## Guía de adopción
 - Flujo operativo completo y checklist de arranque: `docs/ADOPTION_GUIDE.md`.
+- Cierre ejecutivo de release interna (estado, clasificación y riesgos): `docs/DESIGN_SYSTEM_STATUS.md`.
+- Playbook de adopción + baseline mínima + delimitación NuGet/template: `docs/DESIGN_SYSTEM_ADOPTION_PLAYBOOK.md`.
 
 
 ## Validación de adopción real
