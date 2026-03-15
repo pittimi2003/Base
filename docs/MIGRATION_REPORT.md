@@ -73,3 +73,9 @@ La solución queda con base reusable común + starter Server + starter WASM + sa
 - Se incorpora checklist ejecutable de release interna (`docs/INTERNAL_RELEASE_CHECKLIST.md`).
 - Se incorpora baseline operativa mínima repetible (`docs/OPERATIONS_BASELINE.md`).
 - Se refuerza guía de adopción por equipos con enfoque práctico y límites reales (`docs/ADOPTION_GUIDE.md`).
+
+## Fase 17 - Cierre final del programa + backlog de evolución
+- Se declara cierre formal del programa principal sobre `v1.0.0-internal` sin reabrir construcción base.
+- Se consolida estado final, entregables cerrados, limitaciones reales y backlog priorizado en `docs/DESIGN_SYSTEM_STATUS.md`.
+- Se separa explícitamente: base cerrada vs operación actual vs evolución futura gobernada.
+

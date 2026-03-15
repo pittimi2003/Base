@@ -1,9 +1,11 @@
 # Template Guide
 
-## Fase 16 — Operacionalización interna
+## Fase 17 — Operación post-cierre del programa
 - Release interna vigente: **`v1.0.0-internal`**.
 - Estado: plataforma **operable** para circuito paquete + template + app nueva.
 - Documentos operativos: `docs/INTERNAL_RELEASE_CHECKLIST.md` y `docs/OPERATIONS_BASELINE.md`.
+- Programa principal cerrado: la base ya no está en fase de construcción; el template entra en evolución controlada.
+- Resumen de cierre + backlog priorizado: `docs/DESIGN_SYSTEM_STATUS.md`.
 
 ## Flujo operativo del template (resumen ejecutable)
 1. Instalar template: `dotnet new install ./template/MachSoft.Template.Official`.
