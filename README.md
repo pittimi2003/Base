@@ -82,3 +82,27 @@ dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release 
 ```
 
 - Guía mínima de consumo del paquete: `src/MachSoft.Template.Core/NUGET_README.md` y `docs/TEMPLATE_GUIDE.md`.
+
+## Template corporativo oficial (Fase 15)
+- Proyecto base del template: `template/MachSoft.Template.Official`.
+- Short name del template: `machsoft-app`.
+- Salida del template: app Blazor Server limpia, con shell/layout corporativo, theming light/dark y wiring mínimo con `MachSoft.Template.Core`.
+- Exclusiones deliberadas: showcase, demo, wasm-demo y apps de sample/adopción (se mantienen en este repositorio solo para validación interna).
+
+Flujo rápido:
+
+```bash
+# 1) Empaquetar runtime reusable
+dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o ./.artifacts/local-nuget
+
+# 2) Instalar template
+dotnet new install ./template/MachSoft.Template.Official
+
+# 3) Crear app nueva
+dotnet new machsoft-app -n MyCompany.App
+
+# 4) Restaurar y ejecutar
+cd MyCompany.App
+dotnet restore
+dotnet run
+```

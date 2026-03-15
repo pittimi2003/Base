@@ -239,3 +239,18 @@ Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
 - **Runtime reusable incluido**: componentes `Mx*`, layout común, static web assets (`css/template/*`, `js/theme.js`).
 - **Fuera del paquete**: hosts `template/*` y aplicaciones `samples/*` (solo validación/adopción interna).
 - **Dependencia de consumo esperada**: host Blazor (`Server` o `WASM`) que referencia el paquete y carga assets `_content/MachSoft.Template.Core/*`.
+
+
+## Template corporativo oficial (Fase 15)
+
+### Delimitación de artefactos
+- **Runtime reusable**: `src/MachSoft.Template.Core` (NuGet `MachSoft.Template.Core`).
+- **Template oficial de arranque**: `template/MachSoft.Template.Official` (`dotnet new machsoft-app`).
+- **Hosts de validación interna**: `template/MachSoft.Template.Starter` y `template/MachSoft.Template.Starter.Wasm`.
+- **Apps de referencia interna**: `samples/*`.
+
+### Contrato del template oficial
+- Genera una app Blazor Server mínima, sin rutas de showcase/demo internas.
+- Integra shell/layout corporativo y theming desde `MachSoft.Template.Core`.
+- Mantiene navegación inicial acotada a páginas de bootstrap (`/`, `/operations`, `/settings`).
+- Se apoya en `PackageReference` a `MachSoft.Template.Core` para separar claramente bootstrap vs runtime reusable.
