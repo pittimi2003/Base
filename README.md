@@ -114,3 +114,7 @@ dotnet run
 - Guía de adopción por equipos: `docs/ADOPTION_GUIDE.md`.
 - Estado de release y alcance soportado: `docs/DESIGN_SYSTEM_STATUS.md`.
 
+## Fase 17 — Cierre formal del programa y backlog de evolución
+- Cierre formal del programa principal (base ejecutada): `docs/DESIGN_SYSTEM_STATUS.md`.
+- Backlog de evolución priorizado y criterio de mantenimiento inmediato: `docs/DESIGN_SYSTEM_STATUS.md`.
+- Estado operativo vigente de plataforma/template: `docs/OPERATIONS_BASELINE.md` e `docs/INTERNAL_RELEASE_CHECKLIST.md`.

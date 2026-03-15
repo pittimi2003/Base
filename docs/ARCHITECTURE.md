@@ -263,3 +263,14 @@ Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
   - `template/MachSoft.Template.Starter*` (hosts de validación).
 - **Circuito soportado**: pack → publicar/servir feed → instalar template → generar app → restore/build/run.
 - **Gobernanza operativa**: release go/no-go y baseline mínima documentadas en `docs/INTERNAL_RELEASE_CHECKLIST.md` y `docs/OPERATIONS_BASELINE.md`.
+
+## Fase 17 — Cierre formal y frontera de evolución
+- El programa base del Design System se declara cerrado sobre `v1.0.0-internal`; la arquitectura de runtime/template queda establecida y operativa.
+- La frontera actual se mantiene:
+  - `MachSoft.Template.Core` como runtime reusable empaquetable.
+  - `MachSoft.Template.Official` como bootstrap corporativo (`machsoft-app`).
+  - `Starter`/`Starter.Wasm` y `samples/*` como superficies de validación y adopción.
+- Evolución permitida: mejoras incrementales y hardening sin reabrir construcción base ni romper contratos `Mx*`.
+- Evolución no permitida en modo mantenimiento base: nuevos grupos de componentes o rediseño estructural transversal fuera de roadmap aprobado.
+- Referencia de cierre y backlog priorizado: `docs/DESIGN_SYSTEM_STATUS.md`.
+
