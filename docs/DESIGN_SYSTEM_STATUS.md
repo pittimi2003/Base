@@ -1,51 +1,39 @@
-# Design System Status — MachSoft (Cierre ejecutivo release interna)
+# Design System Status — MachSoft (Fase 16)
 
-## Release evaluada
-- Estado evaluado: **`v1.0.0-internal`**.
-- Decisión ejecutiva: **estable para adopción interna controlada** y **lista para fase de preparación de empaquetado NuGet**.
-- Lenguaje oficial vigente: **`Mx*`**.
+## Release interna definida
+- Release vigente: **`v1.0.0-internal`**.
+- Estado: **operable como plataforma interna** para adopción controlada.
+- Artefactos soportados en esta release:
+  1. paquete NuGet `MachSoft.Template.Core`,
+  2. template oficial `machsoft-app`,
+  3. hosts de validación interna (`Starter` y `Starter.Wasm`).
 
-## Validación técnica base de esta fase
-- Restore de solución: `dotnet restore MachSoft.Template.sln`.
-- Build Release de solución: `dotnet build MachSoft.Template.sln -c Release`.
-- Hosts levantados:
-  - `template/MachSoft.Template.Starter` (Server)
-  - `template/MachSoft.Template.Starter.Wasm` (WASM)
-- Rutas smoke validadas:
-  - Server: `/showcase` (light/dark), `/demo`
-  - WASM: `/showcase` (light/dark), `/wasm-demo`
+## Convención de versionado inmediata
+- Formato: `MAJOR.MINOR.PATCH-internal`.
+- Criterio:
+  - `PATCH`: fixes compatibles,
+  - `MINOR`: ampliaciones compatibles,
+  - `MAJOR`: cambios incompatibles de contrato.
 
-## Clasificación ejecutiva del sistema
+## Qué significa “estable” en el contexto actual
+Se considera estable si:
+1. restore/build Release pasan en la solución,
+2. pack de Core genera `.nupkg` y `.snupkg`,
+3. template instala y genera app nueva,
+4. app nueva restaura/build/run,
+5. smoke de rutas y theming pasa en Server y WASM.
 
-### 1) Estable y soportado
-- **Foundation + tokens**: arquitectura `--mx-*` y bridge `--ms-*` operativa en Core.
-- **Layout/shell compartido**: `MainLayout` + `AppShell` + navegación responsive + toggle de tema funcional.
-- **Catálogo oficial Mx***:
-  - Grupos 1 a 4 (base, forms, navigation/overlays, data display) estables para adopción.
-  - Grupo 5 (enterprise inputs), Grupo 6 (enterprise data), Grupo 7 (patterns) funcionales y consolidados para uso interno.
-- **Cross-host reuse**: Server y WASM consumen el mismo Core sin duplicación de componentes.
-- **Showcase y demos**: vigentes como superficie de validación funcional y visual para adopción.
+## Qué entra en release interna soportada
+- Runtime reusable `Mx*` + shell/layout + theming dentro de `MachSoft.Template.Core`.
+- Flujo documentado de publicación/consumo NuGet interno.
+- Flujo documentado de instalación/uso del template oficial.
+- Checklist go/no-go y baseline mínima repetible.
 
-### 2) Estable con limitaciones conocidas
-- **Controles nativos del navegador/SO** (por ejemplo, date/file) mantienen variaciones de rendering propias de plataforma.
-- **Nivel visual premium homogéneo**: funcionalmente correcto, pero algunos controles avanzados aún priorizan estabilidad/claridad contractual frente a refinamiento visual de nivel “design suite premium”.
-- **Cobertura de validación actual**: baseline mínima sólida (restore/build + smoke de rutas y temas), pero sin matriz exhaustiva cross-browser/cross-device para todos los escenarios enterprise.
-- **Vínculos inter-host desde navegación compartida**: en host Server, la ruta `/wasm-demo` no está expuesta localmente (la demo WASM se valida en su host dedicado).
+## Qué queda como evolución futura (fuera de esta release)
+- Publicación pública externa del paquete/template.
+- Matriz cross-browser/cross-device enterprise ampliada.
+- Evolución premium de controles avanzados más allá del baseline actual.
 
-### 3) Legacy / obsolete
-- Componentes legacy retenidos solo por compatibilidad y no promocionables para desarrollo nuevo:
-  - `PageContainer`
-  - `BaseCard`
-  - `FormSection`
-  - `FieldGroup`
-  - `SectionTitle`
-- Directiva vigente: toda nueva adopción debe usar contratos `Mx*`; legacy queda como puente temporal de compatibilidad.
-
-## Alcance para siguiente fase (preparación NuGet)
-- **Dentro de scope inmediato**: empaquetar Core reutilizable con contratos públicos estables `Mx*`, theming y assets necesarios.
-- **Fuera de scope inmediato**: expandir catálogo, rediseñar arquitectura o abrir mejoras cosméticas sin impacto de plataforma.
-
-## Riesgos residuales (reales y acotados)
-1. Diferencias de UX menores derivadas de controles HTML nativos según navegador/SO.
-2. Necesidad de formalizar una matriz de compatibilidad cross-browser más amplia antes de adopción masiva multi-producto.
-3. Riesgo de uso accidental de componentes legacy en equipos nuevos si no se aplica la checklist de adopción.
+## Riesgos residuales reales
+1. Dependencia de feed interno (o fallback local) para resolver `MachSoft.Template.Core` en apps nuevas.
+2. Variaciones visuales menores de controles nativos por navegador/SO.

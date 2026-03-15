@@ -106,3 +106,11 @@ cd MyCompany.App
 dotnet restore
 dotnet run
 ```
+
+## Fase 16 — Operacionalización y release interna
+- Estado operativo: `v1.0.0-internal` listo para circuito corporativo interno repetible.
+- Checklist de release: `docs/INTERNAL_RELEASE_CHECKLIST.md`.
+- Baseline operativa mínima: `docs/OPERATIONS_BASELINE.md`.
+- Guía de adopción por equipos: `docs/ADOPTION_GUIDE.md`.
+- Estado de release y alcance soportado: `docs/DESIGN_SYSTEM_STATUS.md`.
+

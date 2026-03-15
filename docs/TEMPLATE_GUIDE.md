@@ -1,5 +1,17 @@
 # Template Guide
 
+## Fase 16 — Operacionalización interna
+- Release interna vigente: **`v1.0.0-internal`**.
+- Estado: plataforma **operable** para circuito paquete + template + app nueva.
+- Documentos operativos: `docs/INTERNAL_RELEASE_CHECKLIST.md` y `docs/OPERATIONS_BASELINE.md`.
+
+## Flujo operativo del template (resumen ejecutable)
+1. Instalar template: `dotnet new install ./template/MachSoft.Template.Official`.
+2. Crear app: `dotnet new machsoft-app -n <AppName> -o <output> --CorePackageVersion 1.0.0-internal`.
+3. Si el feed no está configurado, agregar `nuget.config` con source local/interno.
+4. Validar app generada: `dotnet restore`, `dotnet build -c Release`, `dotnet run --no-build -c Release`.
+5. Smoke de app generada: `/`, `/operations`, `/settings`.
+
 ## Estado de versión del template
 - Baseline actual: **`v1.0.0-internal`**.
 - Objetivo: primera versión interna lista para adopción en proyectos reales.
