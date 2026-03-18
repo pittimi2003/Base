@@ -246,6 +246,43 @@ dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https
 - Feed privado: `https://__APP_SERVICE_URL__/nuget`
 - Listado del feed: `https://__APP_SERVICE_URL__/nuget/Packages`
 
+## Paquete de validación Windows reproducible
+
+La validación real en Windows se apoya ahora en un paquete operativo específico:
+
+- `scripts/Validate-WindowsFeed.ps1` para comprobar prerrequisitos, restore, build Release, arranque local, comprobaciones HTTP, push, consumo y veredicto final.
+- `scripts/Test-PackagePush.ps1` para generar y publicar un paquete de validación real en el feed local.
+- `scripts/Test-PackageConsume.ps1` para registrar un source temporal y consumir el paquete publicado desde un proyecto temporal.
+- `docs/WINDOWS_VALIDATION_PREREQUISITES.md` para preparar la máquina Windows.
+- `docs/WINDOWS_VALIDATION_RUNBOOK.md` para ejecutar la validación y revisar la evidencia generada.
+
+### Ejecución recomendada del paquete de validación
+
+```powershell
+Set-ExecutionPolicy -Scope Process Bypass
+.\scripts\Validate-WindowsFeed.ps1 -ApiKey "MachSoft-Validation-Key-Only" -AutoDownloadNuGetExe
+```
+
+### Evidencia generada
+
+Cada ejecución deja trazabilidad bajo:
+
+```text
+artifacts\windows-validation\<timestamp>\
+```
+
+Con artefactos como:
+
+- `logs\validation-transcript.log`
+- `logs\restore.log`
+- `logs\build.log`
+- `logs\push-publish.log`
+- `logs\consume-add-package.log`
+- `http\home.html`
+- `http\nuget-root.xml` o `.txt`
+- `http\nuget-packages.xml`
+- `validation-summary.json`
+
 ## Validación funcional obligatoria después del despliegue
 
 ### 1. Portal
