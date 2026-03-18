@@ -1,0 +1,169 @@
+@using System.Linq
+@model MachSoft.PrivateNuGetFeed.Web.Models.HomeViewModel
+@{ 
+    ViewBag.Title = "Portal";
+}
+<div class="ms-page">
+    <header class="ms-header">
+        <div class="ms-shell ms-header__inner">
+            <a class="ms-brand" href="@Url.Action("Index", "Home")">
+                <img src="@Url.Content("~/Content/images/machsoft-mark.svg")" alt="MachSoft" class="ms-brand__mark" />
+                <div>
+                    <strong>MachSoft</strong>
+                    <span>Private Feed</span>
+                </div>
+            </a>
+            <nav class="ms-topnav" aria-label="Navegación principal">
+                <a href="#consumir">Consumir paquetes</a>
+                <a href="#publicar">Publicar paquetes</a>
+                <a href="#destacados">Paquetes destacados</a>
+                <a href="#guia">Guía rápida</a>
+                <a href="@Model.FeedUrl">Feed /nuget</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="ms-hero">
+            <div class="ms-shell ms-hero__grid">
+                <div>
+                    <span class="ms-badge ms-badge--hero">Uso interno exclusivo</span>
+                    <p class="ms-kicker">Publicación controlada de paquetes MachSoft</p>
+                    <h1>MachSoft Private Feed</h1>
+                    <p class="ms-lead">Repositorio interno de paquetes NuGet para publicar, versionar y consumir dependencias corporativas de forma controlada sin exponer el feed técnico en la raíz del sitio.</p>
+                    <div class="ms-hero__actions">
+                        <a class="ms-button ms-button--primary" href="#consumir">Ver consumo</a>
+                        <a class="ms-button" href="@Model.FeedUrl">Abrir feed técnico</a>
+                    </div>
+                </div>
+                <aside class="ms-panel ms-panel--accent">
+                    <h2>Información operativa</h2>
+                    <dl class="ms-summary">
+                        <div>
+                            <dt>Portal</dt>
+                            <dd>@Model.PortalBaseUrl</dd>
+                        </div>
+                        <div>
+                            <dt>Feed</dt>
+                            <dd>@Model.FeedUrl</dd>
+                        </div>
+                        <div>
+                            <dt>Repositorio de paquetes</dt>
+                            <dd>@Model.PackageRepositoryPath</dd>
+                        </div>
+                        <div>
+                            <dt>Versión del portal</dt>
+                            <dd>@Model.PortalVersion</dd>
+                        </div>
+                    </dl>
+                    <p class="ms-panel__note">La raíz <code>/</code> se reserva para el portal humano y <code>/nuget</code> queda disponible para clientes NuGet y tareas de automatización.</p>
+                </aside>
+            </div>
+        </section>
+
+        <section id="consumir" class="ms-section">
+            <div class="ms-shell">
+                <div class="ms-section__heading">
+                    <p class="ms-kicker">Consumo centralizado de dependencias internas</p>
+                    <h2>Consumir paquetes</h2>
+                    <p>Agrega el source privado una sola vez y usa el alias corporativo para restaurar e instalar paquetes desde CLI, Visual Studio o pipelines internos.</p>
+                </div>
+                <div class="ms-command-grid">
+                    @foreach (var command in Model.Commands.Take(2))
+                    {
+                        <article class="ms-card ms-command-card">
+                            <div class="ms-card__header">
+                                <h3>@command.Title</h3>
+                                <button type="button" class="ms-copy-button" data-copy-command="@command.Command">Copiar</button>
+                            </div>
+                            <pre class="ms-code"><code>@command.Command</code></pre>
+                        </article>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section id="publicar" class="ms-section ms-section--alt">
+            <div class="ms-shell">
+                <div class="ms-section__heading">
+                    <p class="ms-kicker">Control de versiones y distribución interna</p>
+                    <h2>Publicar paquetes</h2>
+                    <p>El push se protege con API key configurable. Configura el valor real en App Settings de Azure App Service o mediante referencia a Key Vault antes de habilitar publicación.</p>
+                </div>
+                <article class="ms-card ms-command-card ms-command-card--wide">
+                    <div class="ms-card__header">
+                        <h3>@Model.Commands.Last().Title</h3>
+                        <button type="button" class="ms-copy-button" data-copy-command="@Model.Commands.Last().Command">Copiar</button>
+                    </div>
+                    <pre class="ms-code"><code>@Model.Commands.Last().Command</code></pre>
+                    <ul class="ms-inline-notes">
+                        <li>Usa una API key dedicada para publicación.</li>
+                        <li>Evita sobrescribir versiones ya distribuidas salvo necesidad operativa controlada.</li>
+                        <li>En Azure App Service Windows se recomienda un repositorio persistente fuera de <code>wwwroot</code>.</li>
+                    </ul>
+                </article>
+            </div>
+        </section>
+
+        <section id="destacados" class="ms-section">
+            <div class="ms-shell">
+                <div class="ms-section__heading">
+                    <p class="ms-kicker">Catálogo de referencia</p>
+                    <h2>Paquetes destacados</h2>
+                    <p>Ejemplos útiles para estandarizar consumo interno y acelerar la adopción del feed dentro de equipos de desarrollo y plataformas.</p>
+                </div>
+                <div class="ms-package-grid">
+                    @foreach (var package in Model.FeaturedPackages)
+                    {
+                        <article class="ms-card ms-package-card">
+                            <div class="ms-package-card__top">
+                                <h3>@package.Name</h3>
+                                <span class="ms-badge">@package.Version</span>
+                            </div>
+                            <p>@package.Description</p>
+                            <pre class="ms-code ms-code--compact"><code>@package.InstallCommand</code></pre>
+                        </article>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section id="guia" class="ms-section ms-section--alt">
+            <div class="ms-shell ms-two-column">
+                <article class="ms-card">
+                    <p class="ms-kicker">Operación mínima recomendada</p>
+                    <h2>Guía rápida</h2>
+                    <ol class="ms-steps">
+                        @foreach (var item in Model.QuickGuide)
+                        {
+                            <li>@item</li>
+                        }
+                    </ol>
+                </article>
+                <article class="ms-card">
+                    <p class="ms-kicker">Hardening operativo</p>
+                    <h2>Notas internas</h2>
+                    <ul class="ms-notes">
+                        @foreach (var item in Model.Notes)
+                        {
+                            <li>@item</li>
+                        }
+                    </ul>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="ms-footer">
+        <div class="ms-shell ms-footer__inner">
+            <div>
+                <strong>MachSoft</strong>
+                <p>Uso interno exclusivo · Repositorio interno de paquetes NuGet</p>
+            </div>
+            <div class="ms-footer__meta">
+                <span>Versión @Model.PortalVersion</span>
+                <span>@Model.CurrentYear</span>
+            </div>
+        </div>
+    </footer>
+</div>

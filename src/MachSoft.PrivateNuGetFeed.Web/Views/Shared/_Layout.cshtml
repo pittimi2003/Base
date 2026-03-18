@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - MachSoft Private Feed</title>
+    <meta name="description" content="Repositorio interno de paquetes NuGet para publicación controlada y consumo corporativo." />
+    <link rel="icon" type="image/svg+xml" href="@Url.Content("~/Content/images/machsoft-mark.svg")" />
+    <link rel="stylesheet" href="@Url.Content("~/Content/css/site.css")" />
+</head>
+<body>
+    @RenderBody()
+    <script src="@Url.Content("~/Scripts/site.js")"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

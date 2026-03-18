@@ -1,0 +1,11 @@
+@{
+    ViewBag.Title = "Error";
+}
+<main class="ms-shell ms-shell--compact">
+    <section class="ms-card">
+        <span class="ms-badge">Incidencia</span>
+        <h1>Se produjo un error al procesar la solicitud.</h1>
+        <p>Revisa el registro del sitio y la configuración del App Service antes de volver a intentar la operación.</p>
+        <p><a class="ms-link" href="@Url.Action("Index", "Home")">Volver al portal</a></p>
+    </section>
+</main>
