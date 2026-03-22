@@ -1,4 +1,3 @@
-using System.IO;
 using BaGet;
 using BaGet.Core;
 using BaGet.Web;
@@ -23,7 +22,7 @@ builder.Services
 builder.Services.AddSingleton<FeedConfigurationInitializer>();
 builder.Services.AddSingleton<PortalContentFactory>();
 builder.Services.AddHttpContextAccessor();
-builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages();
 
 var feedSettings = builder.Configuration.GetSection(FeedRuntimeOptions.SectionName).Get<FeedRuntimeOptions>()
     ?? throw new InvalidOperationException("Feed settings are required.");
@@ -71,12 +70,12 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var initializer = scope.ServiceProvider.GetRequiredService<FeedConfigurationInitializer>();
-    initializer.LogResolvedConfiguration();
+    initializer.LogResolvedConfiguration(resolvedStoragePath, resolvedDatabasePath);
 }
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error");
     app.UseHsts();
 }
 
@@ -93,10 +92,7 @@ app.UseRouting();
 
 await app.RunMigrationsAsync();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
+app.MapRazorPages();
 new BaGetEndpointBuilder().MapEndpoints(app);
 
 app.Run();

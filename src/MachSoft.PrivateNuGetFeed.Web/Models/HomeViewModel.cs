@@ -26,6 +26,10 @@ public sealed class HomeViewModel
 
     public required string PackagePublishUrl { get; init; }
 
+    public required string SourceName { get; init; }
+
+    public required string StorageSummary { get; init; }
+
     public required IReadOnlyList<CommandSnippetViewModel> ConsumeCommands { get; init; }
 
     public required IReadOnlyList<CommandSnippetViewModel> PublishCommands { get; init; }
@@ -33,6 +37,10 @@ public sealed class HomeViewModel
     public required IReadOnlyList<FeaturedPackageViewModel> FeaturedPackages { get; init; }
 
     public required IReadOnlyList<QuickGuideStepViewModel> QuickGuideSteps { get; init; }
+
+    public required IReadOnlyList<CommandSnippetViewModel> RouteSummaries { get; init; }
+
+    public required IReadOnlyList<string> ConfigurationHighlights { get; init; }
 
     public required IReadOnlyList<string> InternalNotes { get; init; }
 }
