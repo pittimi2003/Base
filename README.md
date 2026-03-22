@@ -1,316 +1,435 @@
 # MachSoft.PrivateNuGetFeed
 
-Solución ASP.NET MVC 5 sobre .NET Framework 4.8 para alojar un feed privado de NuGet usando **NuGet.Server** en **Azure App Service Windows** e IIS clásico, con una separación clara entre portal humano (`/`) y feed técnico (`/nuget`).
+Solución moderna basada en **ASP.NET Core 8** para alojar un **feed privado de NuGet** con **BaGet** como motor del protocolo y un **portal corporativo MachSoft** desacoplado del feed técnico. Está preparada para ejecutarse localmente, abrirse en **Visual Studio 2022** y publicarse en **Azure App Service Windows** sin Docker, sin Linux obligatorio y sin stacks legacy de ASP.NET MVC 5 o .NET Framework.
 
-> Esta solución está pensada para un **feed privado interno sencillo**, mantenible y publicable. No pretende sustituir una galería empresarial completa con workflows avanzados de gobernanza, auditoría o multi-tenant.
+> Esta solución está pensada como **feed privado interno** para consumo y publicación controlada de paquetes. No pretende reemplazar una galería empresarial del nivel de nuget.org con workflows avanzados de moderación, multi-tenant o gobierno de paquetes.
 
 ## 1. Descripción del proyecto
 
-`MachSoft.PrivateNuGetFeed` proporciona dos superficies complementarias:
+`MachSoft.PrivateNuGetFeed` ofrece dos superficies claramente separadas:
 
-- **Portal corporativo en la raíz `/`** para que los equipos consulten comandos, flujo operativo y notas internas.
-- **Feed privado real en `/nuget`** respaldado por `NuGet.Server`, compatible con `dotnet CLI`, `nuget.exe` y Visual Studio.
+- **Portal humano en `/`** con branding MachSoft, comandos listos para copiar, guía rápida y notas de operación.
+- **Feed técnico NuGet en `/v3/index.json` y `/api/v2/package`** servido por **BaGet**, manteniendo compatibilidad con `dotnet CLI`, `nuget.exe` y Visual Studio.
 
-La aplicación está preparada para ejecutarse localmente en Visual Studio y para publicarse en **Azure App Service Windows** sin Docker, sin Linux y sin contenedores.
+El portal está optimizado para que cualquier desarrollador entienda en segundos:
+
+- cuál es la URL del feed,
+- cómo registrar el source,
+- cómo instalar paquetes,
+- cómo publicar nuevas versiones,
+- y dónde endurecer seguridad en Azure App Service Windows.
 
 ## 2. Arquitectura funcional
 
-- **ASP.NET MVC 5 / .NET Framework 4.8** como host principal.
-- **NuGet.Server** como backend del feed; no se reimplementa el protocolo NuGet.
-- **Portal visual desacoplado** de los endpoints del feed.
-- **Configuración sensible por App Settings** para URL base, API key de push y ruta del repositorio de paquetes.
-- **Repositorio de paquetes persistente** configurable para evitar sobrescritura durante despliegues del sitio.
+### Superficies expuestas
 
-### Superficies publicadas
+- `/` → portal corporativo de operación humana.
+- `/v3/index.json` → service index NuGet v3.
+- `/api/v2/package` → endpoint de publicación de paquetes.
+- `/v3/search` → búsquedas de paquetes.
+- `/v3/registration` → metadatos de paquetes.
+- `/v3/package` → descarga de contenido de paquetes.
 
-- `https://<sitio>/` → portal corporativo.
-- `https://<sitio>/nuget` → feed técnico.
+### Separación de responsabilidades
 
-## 3. Prerrequisitos
+- **Portal visual**
+  - Renderizado con **ASP.NET Core MVC**.
+  - Layout corporativo sobrio y responsive.
+  - CSS propio, JS mínimo para copiar comandos.
+  - Sin mezclar vistas o layout con los endpoints del protocolo NuGet.
 
-- Windows con **Visual Studio 2022** o superior con la carga de trabajo **ASP.NET and web development**.
-- **.NET Framework 4.8 Developer Pack**.
-- Acceso a Internet para restaurar paquetes NuGet al compilar por primera vez.
-- Una suscripción de Azure con un **App Service Plan Windows** y un **Web App** Windows.
-- `dotnet SDK` actual para validar consumo y publicación desde CLI.
-- Opcional: `nuget.exe` si se desea validar también con el cliente clásico.
+- **Feed técnico**
+  - Integrado con **BaGet.Web**.
+  - Persistencia mediante **SQLite** para metadatos.
+  - Almacenamiento en disco configurable para paquetes `.nupkg`.
+  - API key configurable para publicación.
 
-## 4. Cómo ejecutar localmente
+### Estrategia de almacenamiento
 
-1. Abrir `MachSoft.PrivateNuGetFeed.sln` en Visual Studio.
-2. Ejecutar la restauración de paquetes NuGet.
-3. Verificar que `packagesPath` apunta a `~/App_Data/Packages` para desarrollo local.
-4. Ejecutar la aplicación con IIS Express o Local IIS.
-5. Abrir las rutas:
-   - `https://localhost:<puerto>/`
-   - `https://localhost:<puerto>/nuget`
+- **Desarrollo local recomendado**
+  - Base de datos: `App_Data/Data/baget.db`
+  - Paquetes: `App_Data/Packages`
 
-### Secuencia sugerida en consola de Visual Studio Developer Prompt
+- **Azure App Service Windows recomendado**
+  - Base de datos: `D:\home\data\MachSoft.PrivateNuGetFeed\baget.db`
+  - Paquetes: `D:\home\data\MachSoft.PrivateNuGetFeed\Packages`
 
-```powershell
-nuget restore .\MachSoft.PrivateNuGetFeed.sln
-msbuild .\MachSoft.PrivateNuGetFeed.sln /p:Configuration=Release
+Esta estrategia separa el contenido persistente del feed del contenido publicado del portal, evitando mezclar paquetes con assets estáticos del sitio.
+
+## 3. Stack y decisiones técnicas
+
+### Stack elegido
+
+- **.NET 8**
+- **ASP.NET Core 8 MVC**
+- **BaGet.Web 0.4.0-preview2**
+- **BaGet.Database.Sqlite 0.4.0-preview2**
+- **SQLite** para metadatos del feed
+- **File system storage** para paquetes NuGet
+
+### Decisiones técnicas adoptadas
+
+1. **No usar ASP.NET Framework ni MVC 5**
+   - El host es un proyecto SDK-style `Microsoft.NET.Sdk.Web` sobre `net8.0`.
+
+2. **No usar NuGet.Server**
+   - El protocolo NuGet no se reimplementa y tampoco se usa el stack legacy.
+   - Se integra **BaGet** como implementación existente y moderna del feed.
+
+3. **No usar Blazor**
+   - Para el portal humano se eligió **MVC** por simplicidad, mantenimiento y claridad.
+
+4. **Separar portal y feed**
+   - El portal vive en `/`.
+   - El feed vive en los endpoints estándar de BaGet (`/v3/*`, `/api/v2/package`).
+   - No hay mezcla de layout corporativo con endpoints técnicos.
+
+5. **Configurar secretos por App Settings**
+   - `Feed__ApiKey` debe configurarse fuera del código en Azure App Service.
+   - Se deja preparado el patrón para **Azure App Settings** y, si la organización ya lo usa, **Key Vault references**.
+
+6. **Persistencia lista para App Service Windows**
+   - Se usa almacenamiento de archivos y SQLite para una puesta en marcha simple y coherente.
+   - La ruta persistente recomendada apunta a `D:\home\data\...`, apta para App Service Windows.
+
+## 4. Prerrequisitos
+
+- **Visual Studio 2022** o superior, o **.NET SDK 8**.
+- Acceso a Internet para restaurar paquetes NuGet.
+- Una suscripción Azure con un **App Service Plan Windows** y una **Web App Windows**.
+- Opcional para validación adicional:
+  - `nuget.exe`
+  - PowerShell 7+
+
+## 5. Cómo ejecutar localmente
+
+### Opción Visual Studio 2022
+
+1. Abrir `MachSoft.PrivateNuGetFeed.sln`.
+2. Establecer `MachSoft.PrivateNuGetFeed.Web` como proyecto de inicio.
+3. Restaurar paquetes.
+4. Ejecutar el proyecto.
+5. Abrir:
+   - `https://localhost:7053/`
+   - `https://localhost:7053/v3/index.json`
+
+### Opción CLI
+
+```bash
+dotnet restore MachSoft.PrivateNuGetFeed.sln
+dotnet build MachSoft.PrivateNuGetFeed.sln
+dotnet run --project src/MachSoft.PrivateNuGetFeed.Web
 ```
 
-## 5. Cómo publicar en Azure App Service Windows
+### Configuración local por defecto
 
-1. Crear un **Azure App Service Windows** con **.NET Framework 4.8**.
-2. Publicar el proyecto `src/MachSoft.PrivateNuGetFeed.Web` desde Visual Studio mediante **Web Deploy** o **Zip Deploy**.
-3. Confirmar que la publicación usa configuración **Release**.
-4. Tras la publicación, ir a **Settings > Environment variables / App Settings** del App Service.
-5. Configurar `apiKey`, `packagesPath` y, si se desea fijar la URL base, `PortalBaseUrl`.
-6. Reiniciar el App Service.
-7. Validar portal y feed antes de habilitarlo para otros equipos.
+- URL portal sugerida: `https://localhost:7053`
+- API key desarrollo: `dev-machsoft-private-feed-key`
+- Source name: `MachSoftPrivate`
+- Feed v3: `https://localhost:7053/v3/index.json`
 
-## 6. Cómo configurar App Settings
+## 6. Cómo publicar en Azure App Service Windows
 
-La solución deja estos valores listos para mantenimiento manual:
+1. Crear una **Web App Windows** en Azure App Service.
+2. Seleccionar **.NET 8 (LTS)** como stack del sitio.
+3. Publicar el proyecto `src/MachSoft.PrivateNuGetFeed.Web` desde Visual Studio o con `dotnet publish`.
+4. En Azure, abrir **Settings > Environment variables**.
+5. Configurar los App Settings necesarios.
+6. Reiniciar la aplicación.
+7. Validar portal y feed con las rutas documentadas.
 
-- `PortalBaseUrl`
-  - Uso: URL pública que se mostrará en los comandos del portal.
-  - Ejemplo: `https://machsoft-private-feed.azurewebsites.net`
-  - Si no se configura, el portal intenta inferirla desde la request actual.
+### Publicación por CLI
 
-- `PortalVersion`
-  - Uso: versión visible en footer y bloque de resumen.
+```bash
+dotnet publish src/MachSoft.PrivateNuGetFeed.Web/MachSoft.PrivateNuGetFeed.Web.csproj -c Release -o .\artifacts\publish
+```
+
+El contenido publicado en `artifacts\publish` puede desplegarse en el App Service mediante Zip Deploy o el flujo de publicación de Visual Studio.
+
+## 7. Cómo configurar App Settings
+
+Configura estos valores en **Azure App Service > Environment variables / App Settings**:
+
+### Portal
+
+- `Portal__CompanyName`
+  - Ejemplo: `MachSoft`
+- `Portal__PortalTitle`
+  - Ejemplo: `MachSoft Private Feed`
+- `Portal__PortalSubtitle`
+  - Ejemplo: `Repositorio interno de paquetes NuGet`
+- `Portal__InternalUseBadgeText`
+  - Ejemplo: `Uso interno exclusivo`
+- `Portal__PortalVersion`
   - Ejemplo: `v1.0.0`
+- `Portal__FooterUsageText`
+  - Ejemplo: `Herramienta interna de ingeniería para consumo y publicación controlada de paquetes.`
+- `Portal__FeedOwnerContact`
+  - Ejemplo: `platform@machsoft.local`
+- `Portal__PublicBaseUrl`
+  - Ejemplo: `https://machsoft-private-feed.azurewebsites.net`
+  - Si se omite, el portal intenta construir la URL desde la request actual.
 
-- `apiKey`
-  - Uso: API key compartida para `dotnet nuget push` y `nuget.exe push`.
-  - Nunca dejar el valor real en código fuente.
-  - Puede apuntar a un **Azure Key Vault reference** si la organización ya usa ese patrón.
+### Feed
 
-- `packagesPath`
-  - Uso: ruta física o virtual del repositorio de paquetes.
-  - Desarrollo local recomendado: `~/App_Data/Packages`
-  - Azure App Service Windows recomendado: `D:\home\data\MachSoft.PrivateNuGetFeed\Packages`
+- `Feed__SourceName`
+  - Ejemplo: `MachSoftPrivate`
+- `Feed__ApiKey`
+  - Ejemplo: `__REAL_SECRET__`
+  - **No** dejar un valor real dentro del repositorio.
+  - Puede sustituirse por una **Key Vault reference** de Azure App Service.
+- `Feed__PackageStoragePath`
+  - Desarrollo local: `App_Data/Packages`
+  - Azure App Service Windows: `D:\home\data\MachSoft.PrivateNuGetFeed\Packages`
+- `Feed__DatabasePath`
+  - Desarrollo local: `App_Data/Data/baget.db`
+  - Azure App Service Windows: `D:\home\data\MachSoft.PrivateNuGetFeed\baget.db`
 
-- `requireApiKey`
-  - Uso: obliga a proteger el push.
-  - Valor esperado: `true`
+## 8. Cómo configurar el feed
 
-## 7. Cómo configurar el feed
+La configuración funcional del feed se deriva desde la sección `Feed` y se traduce en tiempo de arranque a la configuración real de BaGet:
 
-El feed técnico se sirve en `/nuget` con `NuGet.Server`. La configuración clave está en `Web.config`:
+- `BaGet:ApiKey`
+- `BaGet:Database:Type = Sqlite`
+- `BaGet:Database:ConnectionString = Data Source=<ruta_db>`
+- `BaGet:Search:Type = Database`
+- `BaGet:Storage:Type = FileSystem`
+- `BaGet:Storage:Path = <ruta_paquetes>`
+- `BaGet:RunMigrationsAtStartup = true`
 
-- `requireApiKey=true`
-- `apiKey=__API_KEY__`
-- `packagesPath=~/App_Data/Packages` en local
-- `packagesPath=D:\home\data\MachSoft.PrivateNuGetFeed\Packages` en publicación Release
+### Qué hace esto en la práctica
 
-### Consideraciones operativas del repositorio de paquetes
+- crea y migra la base SQLite al arrancar,
+- mantiene los paquetes en una carpeta configurable,
+- expone el service index v3 real,
+- protege la publicación de paquetes mediante API key.
 
-- **No** se recomienda usar una carpeta bajo `wwwroot` o una carpeta que pueda sobrescribirse con el despliegue.
-- En **Azure App Service Windows**, usar `D:\home\data\MachSoft.PrivateNuGetFeed\Packages` separa el repositorio del contenido desplegado del sitio.
-- Si se limpia el contenido del sitio durante una publicación, el repositorio persistente seguirá existiendo fuera de la carpeta del portal.
-
-## 8. Cómo subir paquetes
+## 9. Cómo subir paquetes
 
 ### Dotnet CLI
 
-```powershell
-dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https://__APP_SERVICE_URL__/nuget" --api-key __API_KEY__
+```bash
+dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https://__APP_SERVICE_URL__/v3/index.json" --api-key __API_KEY__
 ```
 
 ### NuGet.exe
 
 ```powershell
-nuget.exe push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg __API_KEY__ -Source "https://__APP_SERVICE_URL__/nuget"
+nuget.exe push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg __API_KEY__ -Source "https://__APP_SERVICE_URL__/v3/index.json"
 ```
 
-Recomendaciones:
+> El service index v3 referencia internamente el endpoint de push real `/api/v2/package`, por lo que `dotnet nuget push` puede seguir usando la URL del source v3.
 
-- Mantener `allowOverrideExistingPackageOnPush=false` salvo necesidad excepcional.
-- Aplicar versionado semántico.
-- Publicar primero un paquete de prueba no crítico.
-
-## 9. Cómo consumir paquetes
+## 10. Cómo consumir paquetes
 
 ### Registrar el source
 
-```powershell
-dotnet nuget add source "https://__APP_SERVICE_URL__/nuget" --name MachSoftPrivate
+```bash
+dotnet nuget add source "https://__APP_SERVICE_URL__/v3/index.json" --name MachSoftPrivate
 ```
 
-### Instalar desde el source registrado
+### Instalar un paquete
 
-```powershell
+```bash
 dotnet add package MachSoft.Template.Core --source MachSoftPrivate
 ```
 
-### Restaurar explícitamente usando el feed
+### Restaurar usando el feed
 
-```powershell
-dotnet restore --source "https://__APP_SERVICE_URL__/nuget"
+```bash
+dotnet restore --source "https://__APP_SERVICE_URL__/v3/index.json"
 ```
 
-Visual Studio puede usar la misma URL en **Tools > NuGet Package Manager > Package Sources**.
+### Visual Studio
 
-## 10. Rutas disponibles
+Configurar el mismo source en:
+
+- **Tools**
+- **NuGet Package Manager**
+- **Package Sources**
+
+## 11. Rutas disponibles
 
 - `/` → portal corporativo.
-- `/Home/Index` → home MVC equivalente.
-- `/nuget` → feed técnico de NuGet.Server.
-- `/nuget/Packages` → listado OData del feed.
+- `/v3/index.json` → service index del feed.
+- `/api/v2/package` → publicación de paquetes.
+- `/v3/search` → búsqueda.
+- `/v3/registration` → registro/metadatos.
+- `/v3/package` → descarga de contenido.
 
-## 11. Notas de seguridad básicas
+## 12. Notas de seguridad básicas
 
-- El **push** debe permanecer protegido mediante `apiKey`.
-- El **feed** no debería exponerse de forma anónima a Internet si contiene paquetes internos.
-- Esta solución deja la aplicación preparada para combinarse con:
-  - **Authentication / Authorization de App Service**.
-  - **IP Restrictions** o acceso por red corporativa.
-  - **Private endpoints** o conectividad corporativa adicional según la plataforma.
-- El hardening de acceso en Azure App Service es una tarea **posterior y explícita** de operación.
+- Mantener `Feed__ApiKey` únicamente en Azure App Settings o variables de entorno seguras.
+- No reutilizar la API key de desarrollo en entornos compartidos.
+- No exponer el feed a Internet abierta si contiene paquetes internos sensibles.
+- Separar el almacenamiento persistente del feed del contenido desplegado del sitio.
+- Aplicar **HTTPS only** en App Service.
+- Considerar **Azure Key Vault references** para `Feed__ApiKey` cuando la organización ya tenga ese estándar.
 
-## 12. Cómo restringir acceso por IP en Azure App Service como hardening manual posterior
+## 13. Cómo restringir acceso en Azure App Service como hardening posterior
 
-1. Abrir el recurso App Service en Azure Portal.
-2. Ir a **Networking**.
-3. Abrir **Access Restrictions**.
-4. Definir reglas **Allow** para rangos corporativos o direcciones de VPN.
-5. Añadir una regla final **Deny** para tráfico no autorizado si el modelo de operación lo requiere.
-6. Revalidar acceso al portal y al feed desde una red autorizada.
+Esta solución queda lista para endurecimiento posterior sin cambiar arquitectura base.
 
-> También es válido combinar esto con la autenticación integrada del App Service para no dejar el feed accesible de forma pública.
+### Recomendaciones de hardening
 
-## 13. Limitaciones conocidas de la solución
+1. **App Service Authentication / Easy Auth**
+   - Activar autenticación corporativa para proteger el portal y, si corresponde, el sitio completo.
 
-- `NuGet.Server` expone un feed simple; no ofrece por sí solo catálogo empresarial avanzado, workflow de aprobación, reporting o multi-tenant.
-- La API key es compartida por el feed; no hay trazabilidad por usuario dentro de `NuGet.Server` sin capas adicionales.
-- El entorno de esta entrega no compila proyectos `ASP.NET MVC 5` sobre `.NET Framework 4.8` porque carece de Visual Studio Build Tools para Web Applications, por lo que la validación de compilación debe ejecutarse en Windows.
-- El feed está pensado para operación interna sencilla; si se requieren políticas complejas, retención avanzada o firma obligatoria, será necesario ampliar la plataforma.
+2. **Access Restrictions**
+   - Permitir solo IPs corporativas, VPN o agentes de build autorizados.
 
-## 14. Pasos exactos para publicar
+3. **Private networking**
+   - Si la organización lo requiere, ubicar la Web App detrás de conectividad privada o controles de perímetro corporativos.
 
-1. Crear el App Service Windows destino.
-2. Confirmar que el runtime del sitio es **.NET Framework 4.8**.
-3. Abrir `MachSoft.PrivateNuGetFeed.sln` en Visual Studio.
-4. Ejecutar restauración NuGet.
-5. Compilar en `Release`.
-6. Publicar `MachSoft.PrivateNuGetFeed.Web` al App Service Windows.
-7. En Azure, configurar los App Settings:
-   - `apiKey` = valor real corporativo
-   - `packagesPath` = `D:\home\data\MachSoft.PrivateNuGetFeed\Packages`
-   - `PortalBaseUrl` = `https://<tu-app-service>.azurewebsites.net`
-   - `PortalVersion` = versión operativa deseada
-8. Reiniciar el sitio.
-9. Navegar a `https://<tu-app-service>.azurewebsites.net/`.
-10. Navegar a `https://<tu-app-service>.azurewebsites.net/nuget`.
-11. Registrar el source privado con `dotnet nuget add source`.
-12. Publicar un paquete de prueba.
-13. Instalar ese paquete desde un proyecto de prueba.
-14. Aplicar hardening de acceso por IP o autenticación del App Service antes de abrir el feed a equipos más amplios.
+4. **Secret management**
+   - Sustituir `Feed__ApiKey` por un Key Vault reference.
 
-## 15. Comandos de prueba
+5. **Separación operativa**
+   - Mantener agentes de CI/CD autorizados para `push` y auditar quién puede publicar paquetes.
 
-### Portal y feed
+## 14. Limitaciones conocidas de la solución
 
-```powershell
-curl -I https://__APP_SERVICE_URL__/
-curl -I https://__APP_SERVICE_URL__/nuget
-curl -I https://__APP_SERVICE_URL__/nuget/Packages
+- **BaGet no es nuget.org**: no incluye de serie un marketplace empresarial completo con aprobación humana, reportes avanzados o multi-tenant.
+- **API key compartida**: el mecanismo base de publicación se apoya en una API key configurada a nivel de aplicación, no en identidades finas por usuario.
+- **SQLite es una elección pragmática**: funciona bien para un feed interno pequeño o mediano, pero si el volumen y concurrencia crecen mucho podría ser razonable evolucionar a otro backend compatible.
+- **El portal es operativo, no una suite de administración**: la experiencia está centrada en consumo/publicación y documentación rápida, no en backoffice complejo.
+
+## 15. Pasos exactos para publicar
+
+1. Abrir `MachSoft.PrivateNuGetFeed.sln` en Visual Studio 2022.
+2. Restaurar dependencias.
+3. Compilar en `Release`.
+4. Crear o seleccionar un **Azure App Service Windows** con stack **.NET 8**.
+5. Publicar `MachSoft.PrivateNuGetFeed.Web` desde Visual Studio o ejecutar:
+
+   ```bash
+   dotnet publish src/MachSoft.PrivateNuGetFeed.Web/MachSoft.PrivateNuGetFeed.Web.csproj -c Release -o .\artifacts\publish
+   ```
+
+6. Subir la salida publicada al App Service.
+7. En Azure App Service, configurar:
+   - `Portal__PublicBaseUrl = https://<tu-app>.azurewebsites.net`
+   - `Feed__ApiKey = <api-key-real>`
+   - `Feed__PackageStoragePath = D:\home\data\MachSoft.PrivateNuGetFeed\Packages`
+   - `Feed__DatabasePath = D:\home\data\MachSoft.PrivateNuGetFeed\baget.db`
+   - opcionalmente `Portal__PortalVersion`, `Portal__FeedOwnerContact`, etc.
+8. Reiniciar la Web App.
+9. Navegar a `https://<tu-app>.azurewebsites.net/`.
+10. Validar `https://<tu-app>.azurewebsites.net/v3/index.json`.
+11. Registrar el source con `dotnet nuget add source`.
+12. Publicar un paquete de prueba con `dotnet nuget push`.
+13. Consumir el paquete publicado desde un proyecto de prueba.
+14. Aplicar hardening adicional si el feed va a abrirse a más equipos.
+
+## 16. Comandos de prueba
+
+### Portal
+
+```bash
+curl -i https://__APP_SERVICE_URL__/
+```
+
+### Feed
+
+```bash
+curl -i https://__APP_SERVICE_URL__/v3/index.json
+curl -i https://__APP_SERVICE_URL__/v3/search?q=MachSoft.Template.Core
 ```
 
 ### Registrar source
 
-```powershell
-dotnet nuget add source "https://__APP_SERVICE_URL__/nuget" --name MachSoftPrivate
+```bash
+dotnet nuget add source "https://__APP_SERVICE_URL__/v3/index.json" --name MachSoftPrivate
 ```
 
 ### Consumir paquete
 
-```powershell
+```bash
 dotnet add package MachSoft.Template.Core --source MachSoftPrivate
 ```
 
 ### Publicar paquete
 
-```powershell
-dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https://__APP_SERVICE_URL__/nuget" --api-key __API_KEY__
+```bash
+dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https://__APP_SERVICE_URL__/v3/index.json" --api-key __API_KEY__
 ```
 
 ### Validación de no interferencia
 
-```powershell
-curl -I https://__APP_SERVICE_URL__/
-curl -I https://__APP_SERVICE_URL__/nuget
+```bash
+curl -i https://__APP_SERVICE_URL__/
+curl -i https://__APP_SERVICE_URL__/v3/index.json
+dotnet nuget add source "https://__APP_SERVICE_URL__/v3/index.json" --name MachSoftPrivate
 dotnet add package MachSoft.Template.Core --source MachSoftPrivate
-dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https://__APP_SERVICE_URL__/nuget" --api-key __API_KEY__
 ```
 
-## 16. Rutas esperadas
+## 17. Rutas esperadas
 
 - Portal principal: `https://__APP_SERVICE_URL__/`
-- Home MVC: `https://__APP_SERVICE_URL__/Home/Index`
-- Feed privado: `https://__APP_SERVICE_URL__/nuget`
-- Listado del feed: `https://__APP_SERVICE_URL__/nuget/Packages`
+- Feed v3: `https://__APP_SERVICE_URL__/v3/index.json`
+- Publicación: `https://__APP_SERVICE_URL__/api/v2/package`
+- Búsqueda: `https://__APP_SERVICE_URL__/v3/search`
+- Registro de metadatos: `https://__APP_SERVICE_URL__/v3/registration`
+- Descarga de contenido: `https://__APP_SERVICE_URL__/v3/package`
 
-## Paquete de validación Windows reproducible
+---
 
-La validación real en Windows se apoya ahora en un paquete operativo específico:
+## Archivos generados / actualizados
 
-- `scripts/Validate-WindowsFeed.ps1` para comprobar prerrequisitos, restore, build Release, arranque local, comprobaciones HTTP, push, consumo y veredicto final.
-- `scripts/Test-PackagePush.ps1` para generar y publicar un paquete de validación real en el feed local.
-- `scripts/Test-PackageConsume.ps1` para registrar un source temporal y consumir el paquete publicado desde un proyecto temporal.
-- `docs/WINDOWS_VALIDATION_PREREQUISITES.md` para preparar la máquina Windows.
-- `docs/WINDOWS_VALIDATION_RUNBOOK.md` para ejecutar la validación y revisar la evidencia generada.
+- `MachSoft.PrivateNuGetFeed.sln`
+- `README.md`
+- `src/MachSoft.PrivateNuGetFeed.Web/MachSoft.PrivateNuGetFeed.Web.csproj`
+- `src/MachSoft.PrivateNuGetFeed.Web/Program.cs`
+- `src/MachSoft.PrivateNuGetFeed.Web/appsettings.json`
+- `src/MachSoft.PrivateNuGetFeed.Web/appsettings.Development.json`
+- `src/MachSoft.PrivateNuGetFeed.Web/Properties/launchSettings.json`
+- `src/MachSoft.PrivateNuGetFeed.Web/Controllers/HomeController.cs`
+- `src/MachSoft.PrivateNuGetFeed.Web/Options/*`
+- `src/MachSoft.PrivateNuGetFeed.Web/Models/*`
+- `src/MachSoft.PrivateNuGetFeed.Web/Services/*`
+- `src/MachSoft.PrivateNuGetFeed.Web/Views/**/*`
+- `src/MachSoft.PrivateNuGetFeed.Web/wwwroot/css/site.css`
+- `src/MachSoft.PrivateNuGetFeed.Web/wwwroot/js/site.js`
+- `src/MachSoft.PrivateNuGetFeed.Web/App_Data/**/*`
 
-### Ejecución recomendada del paquete de validación
+## Explicación breve de la estructura
 
-```powershell
-Set-ExecutionPolicy -Scope Process Bypass
-.\scripts\Validate-WindowsFeed.ps1 -ApiKey "MachSoft-Validation-Key-Only" -AutoDownloadNuGetExe
-```
+- `Program.cs` integra ASP.NET Core MVC + BaGet y resuelve rutas/configuración persistente.
+- `Options/` concentra configuración tipada de portal y feed.
+- `Services/` construye el contenido del portal y centraliza lógica de composición.
+- `Controllers/` expone la home corporativa.
+- `Views/` contiene layout, home y error.
+- `wwwroot/` contiene CSS y JS mínimos del portal.
+- `App_Data/` deja listas las ubicaciones locales de paquetes y SQLite.
 
-### Evidencia generada
+## Decisiones técnicas tomadas y por qué
 
-Cada ejecución deja trazabilidad bajo:
+- **MVC en ASP.NET Core 8** para una UI clara, sobria y fácil de mantener.
+- **BaGet** para no reimplementar el protocolo NuGet ni depender de stacks legacy.
+- **SQLite + file storage** para ofrecer una solución publicable y simple de operar en App Service Windows.
+- **Configuración tipada + App Settings** para separar secretos y parámetros de despliegue.
+- **Portal y feed desacoplados** para que la UX humana no interfiera con los clientes NuGet.
 
-```text
-artifacts\windows-validation\<timestamp>\
-```
+## Pasos de validación tras desplegar
 
-Con artefactos como:
+1. Abrir `GET /` y comprobar render del portal.
+2. Abrir `GET /v3/index.json` y verificar que responde el service index.
+3. Ejecutar `dotnet nuget add source` apuntando al service index publicado.
+4. Ejecutar `dotnet nuget push` con una API key válida.
+5. Ejecutar `dotnet add package` desde un proyecto de prueba.
+6. Confirmar que el portal sigue respondiendo mientras el feed también responde correctamente.
 
-- `logs\validation-transcript.log`
-- `logs\restore.log`
-- `logs\build.log`
-- `logs\push-publish.log`
-- `logs\consume-add-package.log`
-- `http\home.html`
-- `http\nuget-root.xml` o `.txt`
-- `http\nuget-packages.xml`
-- `validation-summary.json`
+## Rutas finales esperadas
 
-## Validación funcional obligatoria después del despliegue
+- `/`
+- `/v3/index.json`
+- `/api/v2/package`
+- `/v3/search`
+- `/v3/registration`
+- `/v3/package`
 
-### 1. Portal
+## Limitaciones conocidas reales
 
-- Ejecutar `GET /`.
-- Confirmar render correcto del portal, secciones visibles y comandos con URL del feed.
-
-### 2. Feed
-
-- Abrir `/nuget`.
-- Confirmar respuesta válida del feed de `NuGet.Server`.
-- Abrir `/nuget/Packages` para validar el endpoint OData.
-
-### 3. Consumo
-
-```powershell
-dotnet nuget add source "https://__APP_SERVICE_URL__/nuget" --name MachSoftPrivate
-dotnet add package MachSoft.Template.Core --source MachSoftPrivate
-```
-
-### 4. Publicación
-
-```powershell
-dotnet nuget push .\artifacts\MachSoft.Template.Core.1.0.0.nupkg --source "https://__APP_SERVICE_URL__/nuget" --api-key __API_KEY__
-```
-
-### 5. Validación de no interferencia
-
-- Abrir `https://__APP_SERVICE_URL__/` y comprobar que la home responde correctamente.
-- Abrir `https://__APP_SERVICE_URL__/nuget` y comprobar que el feed sigue operativo.
-- Repetir la consulta al portal tras publicar un paquete para validar convivencia sin interferencias.
+- No hay autenticación granular por usuario incorporada en el push base.
+- No existe panel administrativo avanzado tipo galería corporativa completa.
+- La solución está optimizada para una herramienta interna seria y evolutiva, no para convertirse de inmediato en un marketplace global de paquetes.

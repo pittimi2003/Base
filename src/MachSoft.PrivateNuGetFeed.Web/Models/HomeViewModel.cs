@@ -1,27 +1,38 @@
-using System.Collections.Generic;
+namespace MachSoft.PrivateNuGetFeed.Web.Models;
 
-namespace MachSoft.PrivateNuGetFeed.Web.Models
+public sealed class HomeViewModel
 {
-    public class HomeViewModel
-    {
-        public string PortalBaseUrl { get; set; }
+    public required string CompanyName { get; init; }
 
-        public string FeedUrl { get; set; }
+    public required string PortalTitle { get; init; }
 
-        public string PushApiKeyPlaceholder { get; set; }
+    public required string PortalSubtitle { get; init; }
 
-        public string PortalVersion { get; set; }
+    public required string HeroDescription { get; init; }
 
-        public int CurrentYear { get; set; }
+    public required string InternalUseBadgeText { get; init; }
 
-        public string PackageRepositoryPath { get; set; }
+    public required string PortalVersion { get; init; }
 
-        public IReadOnlyCollection<CommandSnippetViewModel> Commands { get; set; }
+    public required string FooterUsageText { get; init; }
 
-        public IReadOnlyCollection<PackageHighlightViewModel> FeaturedPackages { get; set; }
+    public required string FeedOwnerContact { get; init; }
 
-        public IReadOnlyCollection<string> QuickGuide { get; set; }
+    public required int CurrentYear { get; init; }
 
-        public IReadOnlyCollection<string> Notes { get; set; }
-    }
+    public required string PortalBaseUrl { get; init; }
+
+    public required string ServiceIndexUrl { get; init; }
+
+    public required string PackagePublishUrl { get; init; }
+
+    public required IReadOnlyList<CommandSnippetViewModel> ConsumeCommands { get; init; }
+
+    public required IReadOnlyList<CommandSnippetViewModel> PublishCommands { get; init; }
+
+    public required IReadOnlyList<FeaturedPackageViewModel> FeaturedPackages { get; init; }
+
+    public required IReadOnlyList<QuickGuideStepViewModel> QuickGuideSteps { get; init; }
+
+    public required IReadOnlyList<string> InternalNotes { get; init; }
 }
