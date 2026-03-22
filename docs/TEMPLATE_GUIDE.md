@@ -8,11 +8,13 @@
 - Resumen de cierre + backlog priorizado: `docs/DESIGN_SYSTEM_STATUS.md`.
 
 ## Flujo operativo del template (resumen ejecutable)
-1. Instalar template: `dotnet new install ./template/MachSoft.Template.Official`.
-2. Crear app: `dotnet new machsoft-app -n <AppName> -o <output> --CorePackageVersion 1.0.0-internal`.
-3. Si el feed no está configurado, agregar `nuget.config` con source local/interno.
-4. Validar app generada: `dotnet restore`, `dotnet build -c Release`, `dotnet run --no-build -c Release`.
-5. Smoke de app generada: `/`, `/operations`, `/settings`.
+1. Empaquetar template: `dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates`.
+2. Publicar `.nupkg` del template al feed privado con `dotnet nuget push`.
+3. Instalar template: `dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg`.
+4. Crear app: `dotnet new machsoft-app -n <AppName> -o <output> --CorePackageVersion 1.0.0-internal`.
+5. Si el feed no está configurado, agregar el source privado que resuelve `MachSoft.Template.Core`.
+6. Validar app generada: `dotnet restore`, `dotnet build -c Release`, `dotnet run --no-build -c Release`.
+7. Smoke de app generada: `/`, `/operations`, `/settings`.
 
 ## Estado de versión del template
 - Baseline actual: **`v1.0.0-internal`**.
@@ -344,7 +346,7 @@ Referencia de inventario y clasificación: `docs/COMPONENT_INVENTORY.md`.
 ## Fase 15 — Template corporativo oficial
 
 ### Base oficial definida
-- Plantilla oficial: `template/MachSoft.Template.Official`.
+- Plantilla oficial: `template/MachSoft.Template.Official/content/MachSoft.Template.App` (contenido generado) + `template/MachSoft.Template.Official.Pack` (paquete NuGet Template).
 - Tipo: `dotnet new` template para Blazor Server.
 - Identidad: `MachSoft.Template.Official.Server`.
 - Short name: `machsoft-app`.
@@ -366,7 +368,8 @@ Referencia de inventario y clasificación: `docs/COMPONENT_INVENTORY.md`.
 1. Empaquetar `MachSoft.Template.Core` para feed local:
    - `dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o ./.artifacts/local-nuget`
 2. Instalar template local:
-   - `dotnet new install ./template/MachSoft.Template.Official`
+   - `dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates`
+   - `dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg`
 3. Crear aplicación nueva:
    - `dotnet new machsoft-app -n Contoso.Operations`
 4. Restaurar con feed local + NuGet público:

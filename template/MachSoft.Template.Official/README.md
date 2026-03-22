@@ -1,52 +1,39 @@
 # MachSoft.Template.Official
 
-Template corporativo oficial para generar aplicaciones Blazor Server con shell/layout MachSoft y consumo de `MachSoft.Template.Core`.
+Template corporativo oficial para generar la app base MachSoft sobre ASP.NET Core 8, manteniendo el runtime reusable en `MachSoft.Template.Core` y empaquetando el bootstrap como template NuGet para `dotnet new install`.
 
-## Estado de release interna
-- Versión baseline: **`v1.0.0-internal`**.
-- Short name: **`machsoft-app`**.
-- Propósito: bootstrap repetible de app nueva bajo estándar MachSoft.
+## Estructura operativa
+- `template/MachSoft.Template.Official/content/MachSoft.Template.App/` contiene exactamente la app base que generará `dotnet new machsoft-app`.
+- `template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj` genera el paquete NuGet de tipo `Template`.
+- `MachSoft.Template.Core` se distribuye como paquete NuGet separado y la app generada lo consume vía `PackageReference`.
 
-## Instalación y actualización del template
-
-### Instalar
+## Empaquetar el template
 ```bash
-dotnet new install ./template/MachSoft.Template.Official
+dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates
 ```
 
-### Reinstalar/actualizar
+## Publicar en feed privado
 ```bash
-dotnet new uninstall ./template/MachSoft.Template.Official
-dotnet new install ./template/MachSoft.Template.Official
+dotnet nuget push ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg --source "<PRIVATE_FEED_URL>" --api-key "<API_KEY>"
 ```
 
-## Crear app nueva
+## Instalar el template
+```bash
+dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg
+```
+
+## Generar una app nueva
 ```bash
 dotnet new machsoft-app -n MyCompany.App -o ./MyCompany.App --CorePackageVersion 1.0.0-internal
 ```
 
-## Parámetros
-- `--CorePackageVersion`: versión del paquete `MachSoft.Template.Core` que quedará referenciada en la app generada.
+## Actualizar a una nueva versión
+1. Ajustar la versión compartida (`Version`) usada por el paquete del template.
+2. Empaquetar nuevamente con `dotnet pack`.
+3. Publicar la nueva versión con `dotnet nuget push`.
+4. Reinstalar o actualizar localmente con `dotnet new install <ruta-o-paquete>`.
 
-## Qué genera exactamente
-- App Blazor Server mínima para adopción corporativa.
-- Referencia a `MachSoft.Template.Core` vía `PackageReference`.
-- Shell corporativo y theming base (light/dark) ya cableados.
-- Páginas iniciales de operación: `/`, `/operations`, `/settings`.
-
-## Wiring que deja resuelto
-- Registro de servicios/render mode base de Blazor Server.
-- Estructura de layout y navegación inicial.
-- Inclusión de assets `_content/MachSoft.Template.Core/*`.
-- Composición inicial con componentes `Mx*` para extender funcionalidad.
-
-## Qué debe hacer el equipo luego de generar
-1. Configurar source NuGet interno (o local temporal) para resolver `MachSoft.Template.Core`.
-2. Ejecutar `dotnet restore`, `dotnet build -c Release`, `dotnet run`.
-3. Personalizar branding y navegación del host sin mover lógica de negocio al Core.
-4. Mantener contratos `Mx*` para desarrollo nuevo.
-
-## Qué no debe esperar del template
-- No incluye `/showcase`, `/demo`, `/wasm-demo`.
-- No incluye lógica de dominio ni integraciones corporativas específicas.
-- No reemplaza la guía de release/checklist operativa del repositorio.
+## Relación con MachSoft.Template.Core
+- El template **no** embebe `MachSoft.Template.Core`.
+- La app generada queda apuntando al paquete `MachSoft.Template.Core` para preservar la separación entre bootstrap de aplicación y runtime reusable compartido.
+- Para compilar la app generada, el consumidor debe tener acceso al feed privado que publique `MachSoft.Template.Core`.

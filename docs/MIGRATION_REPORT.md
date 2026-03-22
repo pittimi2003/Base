@@ -61,7 +61,7 @@ La solución queda con base reusable común + starter Server + starter WASM + sa
 
 
 ## Fase 15 - Template corporativo oficial
-- Se define `template/MachSoft.Template.Official` como base oficial para `dotnet new`.
+- Se define `template/MachSoft.Template.Official/content/MachSoft.Template.App` como app base oficial para `dotnet new` y `template/MachSoft.Template.Official.Pack` como proyecto empaquetador NuGet Template.
 - Se separa explícitamente el runtime reusable (`MachSoft.Template.Core`) del bootstrap de apps nuevas.
 - El template oficial excluye material de showcase/demo/samples para reducir ruido de arranque.
 - Se valida flujo E2E real: instalación de template, creación de app nueva, restore/build/run con shell/theming activos.
@@ -69,7 +69,7 @@ La solución queda con base reusable común + starter Server + starter WASM + sa
 ## Fase 16 - Operacionalización y release interna
 - Se formaliza release interna operable `v1.0.0-internal`.
 - Se documenta flujo operativo real de NuGet en `src/MachSoft.Template.Core/NUGET_README.md`.
-- Se documenta flujo operativo real del template oficial en `template/MachSoft.Template.Official/README.md` y `docs/TEMPLATE_GUIDE.md`.
+- Se documenta flujo operativo real del template oficial empaquetado en `template/MachSoft.Template.Official/README.md` y `docs/TEMPLATE_GUIDE.md`.
 - Se incorpora checklist ejecutable de release interna (`docs/INTERNAL_RELEASE_CHECKLIST.md`).
 - Se incorpora baseline operativa mínima repetible (`docs/OPERATIONS_BASELINE.md`).
 - Se refuerza guía de adopción por equipos con enfoque práctico y límites reales (`docs/ADOPTION_GUIDE.md`).

@@ -24,7 +24,7 @@
 
 ### 3) Activos de plataforma
 - Paquete NuGet interno: `MachSoft.Template.Core`.
-- Template corporativo oficial: `template/MachSoft.Template.Official` (`machsoft-app`).
+- Template corporativo oficial: `template/MachSoft.Template.Official/content/MachSoft.Template.App` + `template/MachSoft.Template.Official.Pack` (`machsoft-app`).
 - Documentación operativa, checklist y baseline de release interna.
 
 ### 4) Estado de adopción interna
@@ -39,8 +39,9 @@ Se considera estado operativo válido si se mantiene este circuito mínimo:
 3. `dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release`
 4. Arranque de `template/MachSoft.Template.Starter` y `template/MachSoft.Template.Starter.Wasm`
 5. Smoke de rutas: `/showcase` (light/dark), `/demo`, `/wasm-demo` (en host WASM)
-6. `dotnet new install ./template/MachSoft.Template.Official`
-7. `dotnet new machsoft-app ...` + restore/build/run de app nueva usando feed interno o source local
+6. `dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates`
+7. `dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg`
+8. `dotnet new machsoft-app ...` + restore/build/run de app nueva usando feed interno o source local
 
 ## Limitaciones conocidas (no bloqueantes)
 1. **Feed de paquetes**: la app generada por template requiere que `MachSoft.Template.Core` esté disponible en feed interno o source local; con solo `nuget.org` el restore falla.

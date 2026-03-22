@@ -245,7 +245,7 @@ Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
 
 ### Delimitación de artefactos
 - **Runtime reusable**: `src/MachSoft.Template.Core` (NuGet `MachSoft.Template.Core`).
-- **Template oficial de arranque**: `template/MachSoft.Template.Official` (`dotnet new machsoft-app`).
+- **Template oficial de arranque**: contenido en `template/MachSoft.Template.Official/content/MachSoft.Template.App` y empaquetado por `template/MachSoft.Template.Official.Pack` (`dotnet new machsoft-app`).
 - **Hosts de validación interna**: `template/MachSoft.Template.Starter` y `template/MachSoft.Template.Starter.Wasm`.
 - **Apps de referencia interna**: `samples/*`.
 
@@ -259,7 +259,7 @@ Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
 - **Versión interna activa**: `v1.0.0-internal`.
 - **Artefactos operables**:
   - `MachSoft.Template.Core` (NuGet runtime reusable),
-  - `template/MachSoft.Template.Official` (`dotnet new machsoft-app`),
+  - `template/MachSoft.Template.Official/content/MachSoft.Template.App` + `template/MachSoft.Template.Official.Pack` (`dotnet new machsoft-app`),
   - `template/MachSoft.Template.Starter*` (hosts de validación).
 - **Circuito soportado**: pack → publicar/servir feed → instalar template → generar app → restore/build/run.
 - **Gobernanza operativa**: release go/no-go y baseline mínima documentadas en `docs/INTERNAL_RELEASE_CHECKLIST.md` y `docs/OPERATIONS_BASELINE.md`.
@@ -268,7 +268,7 @@ Ver detalle y clasificación actual en `docs/COMPONENT_INVENTORY.md`.
 - El programa base del Design System se declara cerrado sobre `v1.0.0-internal`; la arquitectura de runtime/template queda establecida y operativa.
 - La frontera actual se mantiene:
   - `MachSoft.Template.Core` como runtime reusable empaquetable.
-  - `MachSoft.Template.Official` como bootstrap corporativo (`machsoft-app`).
+  - `MachSoft.Template.Official` como bootstrap corporativo (`machsoft-app`), separado entre contenido de app base y proyecto empaquetador NuGet Template.
   - `Starter`/`Starter.Wasm` y `samples/*` como superficies de validación y adopción.
 - Evolución permitida: mejoras incrementales y hardening sin reabrir construcción base ni romper contratos `Mx*`.
 - Evolución no permitida en modo mantenimiento base: nuevos grupos de componentes o rediseño estructural transversal fuera de roadmap aprobado.

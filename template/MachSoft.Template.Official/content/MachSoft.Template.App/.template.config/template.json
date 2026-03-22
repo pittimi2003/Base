@@ -3,16 +3,20 @@
   "author": "MachSoft",
   "classifications": ["Web", "Blazor", "MachSoft", "Enterprise"],
   "identity": "MachSoft.Template.Official.Server",
-  "name": "MachSoft Corporate Blazor Server App",
+  "name": "MachSoft Corporate ASP.NET Core App",
   "shortName": "machsoft-app",
-  "description": "Plantilla corporativa oficial MachSoft para iniciar aplicaciones Blazor Server con shell, theming y wiring de MachSoft.Template.Core.",
+  "description": "Template corporativo oficial de MachSoft para generar una aplicacion ASP.NET Core 8 lista para consumir MachSoft.Template.Core.",
   "sourceName": "MachSoft.Template.App",
   "preferNameDirectory": true,
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
   "symbols": {
     "CorePackageVersion": {
       "type": "parameter",
       "datatype": "text",
-      "description": "Version de MachSoft.Template.Core consumida por la app generada.",
+      "description": "Version del paquete MachSoft.Template.Core referenciada por la app generada.",
       "defaultValue": "1.0.0-internal",
       "replaces": "1.0.0-internal"
     }
