@@ -4,11 +4,13 @@
     --ms-surface: #ffffff;
     --ms-surface-alt: #eef3f9;
     --ms-border: #d9e3ee;
+    --ms-border-strong: #bfccda;
     --ms-text: #102033;
     --ms-text-soft: #546477;
     --ms-primary: #1f4b7a;
     --ms-primary-strong: #183a60;
     --ms-accent: #0d6c91;
+    --ms-accent-soft: rgba(13, 108, 145, 0.08);
     --ms-shadow: 0 20px 40px rgba(16, 32, 51, 0.08);
     --ms-radius-lg: 24px;
     --ms-radius-md: 18px;
@@ -91,7 +93,8 @@ code {
 .ms-card p,
 .ms-package-card p,
 .ms-footer span,
-.ms-notes li {
+.ms-notes li,
+.ms-route-list p {
     color: var(--ms-text-soft);
 }
 
@@ -118,13 +121,15 @@ code {
 
 .ms-pill,
 .ms-link-chip,
-.ms-version {
+.ms-version,
+.ms-inline-badge {
     border-radius: 999px;
     padding: 0.45rem 0.85rem;
     font-size: 0.9rem;
 }
 
-.ms-pill {
+.ms-pill,
+.ms-inline-badge {
     background: #edf4ff;
     color: var(--ms-primary-strong);
     border: 1px solid #d7e6ff;
@@ -182,7 +187,8 @@ code {
     margin-bottom: 1rem;
 }
 
-.ms-hero-copy h1 {
+.ms-hero-copy h1,
+.ms-error-card h1 {
     margin: 0;
     font-size: clamp(2.4rem, 4vw, 4rem);
     line-height: 1.05;
@@ -226,7 +232,8 @@ code {
     margin-bottom: 1rem;
 }
 
-.ms-section-heading h2 {
+.ms-section-heading h2,
+.ms-section-heading h1 {
     margin: 0 0 0.55rem;
     font-size: 1.8rem;
 }
@@ -242,8 +249,11 @@ code {
     grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
-.ms-package-grid,
-.ms-two-column {
+.ms-command-grid-single {
+    grid-template-columns: 1fr;
+}
+
+.ms-package-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -271,7 +281,8 @@ code {
 }
 
 .ms-command-header h3,
-.ms-package-meta h3 {
+.ms-package-meta h3,
+.ms-route-list strong {
     margin: 0;
     font-size: 1.12rem;
 }
@@ -315,28 +326,37 @@ code {
 }
 
 .ms-package-version,
-.ms-step-number {
+.ms-step-number,
+.ms-route-list span {
     color: var(--ms-primary-strong);
     font-weight: 700;
 }
 
 .ms-steps,
-.ms-notes {
+.ms-notes,
+.ms-route-list {
     margin: 0;
     padding: 0;
     list-style: none;
 }
 
 .ms-steps li,
-.ms-notes li {
+.ms-notes li,
+.ms-route-list li {
     display: flex;
     gap: 1rem;
     padding: 1rem 0;
     border-top: 1px solid rgba(217, 227, 238, 0.75);
 }
 
+.ms-route-list li {
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
 .ms-steps li:first-child,
-.ms-notes li:first-child {
+.ms-notes li:first-child,
+.ms-route-list li:first-child {
     border-top: none;
     padding-top: 0;
 }
@@ -344,6 +364,10 @@ code {
 .ms-step-number {
     min-width: 2.8rem;
     font-size: 1.1rem;
+}
+
+.ms-error-card {
+    max-width: 780px;
 }
 
 .ms-footer {
@@ -393,7 +417,8 @@ code {
         padding: 1.25rem;
     }
 
-    .ms-hero-copy h1 {
+    .ms-hero-copy h1,
+    .ms-error-card h1 {
         font-size: 2.25rem;
     }
 }

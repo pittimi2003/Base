@@ -10,14 +10,14 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - @portal.CompanyName</title>
-    <meta name="description" content="Portal corporativo para consumir y publicar paquetes NuGet internos con BaGet sobre ASP.NET Core 8." />
+    <meta name="description" content="Portal corporativo para operar un feed privado de NuGet con BaGet y ASP.NET Core 8 sobre Azure App Service Windows." />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
     <div class="ms-shell">
         <header class="ms-header">
             <div class="ms-brandbar">
-                <a class="ms-brand" asp-controller="Home" asp-action="Index" aria-label="Volver al portal principal">
+                <a class="ms-brand" asp-page="/Index" aria-label="Volver al portal principal MachSoft">
                     <span class="ms-brand-mark">M</span>
                     <span>
                         <strong>@portal.CompanyName</strong>
@@ -41,7 +41,7 @@
                 <span>@portal.FooterUsageText</span>
             </div>
             <div>
-                <span>Versión @portal.PortalVersion</span>
+                <span>Uso interno · Versión @portal.PortalVersion · @DateTime.UtcNow.Year</span>
             </div>
         </footer>
     </div>

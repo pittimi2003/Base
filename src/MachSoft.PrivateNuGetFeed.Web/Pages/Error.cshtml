@@ -1,0 +1,19 @@
+@page
+@model MachSoft.PrivateNuGetFeed.Web.Pages.ErrorModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<section class="ms-section">
+    <article class="ms-card ms-error-card">
+        <div class="ms-section-heading">
+            <h1>Error no controlado</h1>
+            <p>Se produjo una incidencia al procesar la solicitud actual. Revise los logs de aplicación y, si el problema persiste, contacte al responsable del feed.</p>
+        </div>
+
+        @if (Model.Error.ShowRequestId)
+        {
+            <p><strong>Request ID:</strong> <code>@Model.Error.RequestId</code></p>
+        }
+    </article>
+</section>

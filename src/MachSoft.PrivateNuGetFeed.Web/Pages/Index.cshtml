@@ -1,0 +1,166 @@
+@page "/"
+@model MachSoft.PrivateNuGetFeed.Web.Pages.IndexModel
+@{
+    ViewData["Title"] = Model.Home.PortalTitle;
+}
+
+<section class="ms-hero">
+    <div class="ms-hero-copy">
+        <span class="ms-eyebrow">@Model.Home.PortalSubtitle</span>
+        <h1>MachSoft Private Feed</h1>
+        <p>@Model.Home.HeroDescription</p>
+        <div class="ms-hero-actions">
+            <span class="ms-pill ms-pill-strong">@Model.Home.InternalUseBadgeText</span>
+            <a class="ms-link-chip" href="#consumir">Consumir paquetes</a>
+            <a class="ms-link-chip" href="#publicar">Publicar paquetes</a>
+            <a class="ms-link-chip" href="#rutas">Ver rutas</a>
+        </div>
+    </div>
+    <aside class="ms-hero-panel">
+        <div class="ms-stat">
+            <span class="ms-stat-label">Feed v3</span>
+            <strong>@Model.Home.ServiceIndexUrl</strong>
+        </div>
+        <div class="ms-stat">
+            <span class="ms-stat-label">Push endpoint</span>
+            <strong>@Model.Home.PackagePublishUrl</strong>
+        </div>
+        <div class="ms-stat">
+            <span class="ms-stat-label">Source name</span>
+            <strong>@Model.Home.SourceName</strong>
+        </div>
+        <div class="ms-stat">
+            <span class="ms-stat-label">Persistencia</span>
+            <strong>@Model.Home.StorageSummary</strong>
+        </div>
+    </aside>
+</section>
+
+<section id="consumir" class="ms-section">
+    <div class="ms-section-heading">
+        <h2>Consumir paquetes</h2>
+        <p>Comandos listos para copiar para registrar el source privado, restaurar dependencias e instalar paquetes internos sin romper el funcionamiento natural de dotnet CLI, Visual Studio o nuget.exe.</p>
+    </div>
+    <div class="ms-command-grid">
+        @foreach (var item in Model.Home.ConsumeCommands)
+        {
+            <article class="ms-command-card">
+                <div class="ms-command-header">
+                    <h3>@item.Label</h3>
+                    <button type="button" class="ms-copy-button" data-copy-target="@item.Command">Copiar</button>
+                </div>
+                <p>@item.Description</p>
+                <pre><code>@item.Command</code></pre>
+            </article>
+        }
+    </div>
+</section>
+
+<section id="publicar" class="ms-section">
+    <div class="ms-section-heading">
+        <h2>Publicar paquetes</h2>
+        <p>La publicación utiliza el feed técnico real de BaGet y requiere una API key configurable desde appsettings o Azure App Service App Settings para evitar un push abierto por defecto.</p>
+    </div>
+    <div class="ms-command-grid ms-command-grid-single">
+        @foreach (var item in Model.Home.PublishCommands)
+        {
+            <article class="ms-command-card ms-command-card-accent">
+                <div class="ms-command-header">
+                    <h3>@item.Label</h3>
+                    <button type="button" class="ms-copy-button" data-copy-target="@item.Command">Copiar</button>
+                </div>
+                <p>@item.Description</p>
+                <pre><code>@item.Command</code></pre>
+            </article>
+        }
+    </div>
+</section>
+
+<section class="ms-section">
+    <div class="ms-section-heading">
+        <h2>Paquetes destacados</h2>
+        <p>Ejemplos de artefactos internos que pueden vivir en este repositorio privado para distribuir UI foundation, starters y building blocks compartidos.</p>
+    </div>
+    <div class="ms-package-grid">
+        @foreach (var package in Model.Home.FeaturedPackages)
+        {
+            <article class="ms-package-card">
+                <div class="ms-package-meta">
+                    <div>
+                        <h3>@package.Name</h3>
+                        <span class="ms-package-version">Versión @package.Version</span>
+                    </div>
+                    <span class="ms-inline-badge">Destacado</span>
+                </div>
+                <p>@package.Description</p>
+                <pre><code>@package.InstallCommand</code></pre>
+            </article>
+        }
+    </div>
+</section>
+
+<section class="ms-section ms-two-column">
+    <article class="ms-card">
+        <div class="ms-section-heading">
+            <h2>Guía rápida</h2>
+            <p>Secuencia visual recomendada para validar que el portal y el feed conviven sin interferencias.</p>
+        </div>
+        <ol class="ms-steps">
+            @foreach (var step in Model.Home.QuickGuideSteps)
+            {
+                <li>
+                    <span class="ms-step-number">@step.Number</span>
+                    <div>
+                        <strong>@step.Title</strong>
+                        <p>@step.Detail</p>
+                    </div>
+                </li>
+            }
+        </ol>
+    </article>
+
+    <article class="ms-card">
+        <div class="ms-section-heading">
+            <h2>Notas internas</h2>
+            <p>Políticas mínimas para mantener el feed como herramienta interna seria y evolutiva.</p>
+        </div>
+        <ul class="ms-notes">
+            @foreach (var note in Model.Home.InternalNotes)
+            {
+                <li>@note</li>
+            }
+        </ul>
+    </article>
+</section>
+
+<section id="rutas" class="ms-section ms-two-column">
+    <article class="ms-card">
+        <div class="ms-section-heading">
+            <h2>Rutas operativas</h2>
+            <p>Separación explícita entre la superficie humana y el feed técnico.</p>
+        </div>
+        <ul class="ms-route-list">
+            @foreach (var route in Model.Home.RouteSummaries)
+            {
+                <li>
+                    <strong>@route.Label</strong>
+                    <span>@route.Command</span>
+                    <p>@route.Description</p>
+                </li>
+            }
+        </ul>
+    </article>
+
+    <article class="ms-card">
+        <div class="ms-section-heading">
+            <h2>Configuración preparada para App Service</h2>
+            <p>Valores que deben gobernarse por App Settings o variables de entorno, con opción de usar Key Vault references a nivel de plataforma.</p>
+        </div>
+        <ul class="ms-notes">
+            @foreach (var item in Model.Home.ConfigurationHighlights)
+            {
+                <li>@item</li>
+            }
+        </ul>
+    </article>
+</section>

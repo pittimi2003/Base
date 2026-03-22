@@ -19,12 +19,13 @@ public sealed class FeedConfigurationInitializer
         _environment = environment;
     }
 
-    public void LogResolvedConfiguration()
+    public void LogResolvedConfiguration(string resolvedStoragePath, string resolvedDatabasePath)
     {
         _logger.LogInformation(
-            "MachSoft Private Feed initialized in {Environment}. Package storage: {StoragePath}. Database path: {DatabasePath}.",
+            "MachSoft Private Feed initialized in {Environment}. Source name: {SourceName}. Storage path: {StoragePath}. Database path: {DatabasePath}.",
             _environment.EnvironmentName,
-            _feedOptions.PackageStoragePath,
-            _feedOptions.DatabasePath);
+            _feedOptions.SourceName,
+            resolvedStoragePath,
+            resolvedDatabasePath);
     }
 }
