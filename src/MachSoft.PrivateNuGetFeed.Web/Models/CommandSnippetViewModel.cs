@@ -1,15 +1,10 @@
-namespace MachSoft.PrivateNuGetFeed.Web.Models
+namespace MachSoft.PrivateNuGetFeed.Web.Models;
+
+public sealed class CommandSnippetViewModel
 {
-    public class CommandSnippetViewModel
-    {
-        public CommandSnippetViewModel(string title, string command)
-        {
-            Title = title;
-            Command = command;
-        }
+    public required string Label { get; init; }
 
-        public string Title { get; }
+    public required string Command { get; init; }
 
-        public string Command { get; }
-    }
+    public required string Description { get; init; }
 }

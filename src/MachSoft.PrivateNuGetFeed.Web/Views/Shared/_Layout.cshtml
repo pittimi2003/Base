@@ -1,16 +1,52 @@
+@using MachSoft.PrivateNuGetFeed.Web.Options
+@using Microsoft.Extensions.Options
+@inject IOptions<PortalOptions> PortalOptionsAccessor
+@{
+    var portal = PortalOptionsAccessor.Value;
+}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewBag.Title - MachSoft Private Feed</title>
-    <meta name="description" content="Repositorio interno de paquetes NuGet para publicación controlada y consumo corporativo." />
-    <link rel="icon" type="image/svg+xml" href="@Url.Content("~/Content/images/machsoft-mark.svg")" />
-    <link rel="stylesheet" href="@Url.Content("~/Content/css/site.css")" />
+    <title>@ViewData["Title"] - @portal.CompanyName</title>
+    <meta name="description" content="Portal corporativo para consumir y publicar paquetes NuGet internos con BaGet sobre ASP.NET Core 8." />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    @RenderBody()
-    <script src="@Url.Content("~/Scripts/site.js")"></script>
-    @RenderSection("scripts", required: false)
+    <div class="ms-shell">
+        <header class="ms-header">
+            <div class="ms-brandbar">
+                <a class="ms-brand" asp-controller="Home" asp-action="Index" aria-label="Volver al portal principal">
+                    <span class="ms-brand-mark">M</span>
+                    <span>
+                        <strong>@portal.CompanyName</strong>
+                        <small>Private NuGet Platform</small>
+                    </span>
+                </a>
+                <div class="ms-header-meta">
+                    <span class="ms-pill">@portal.InternalUseBadgeText</span>
+                    <span class="ms-version">@portal.PortalVersion</span>
+                </div>
+            </div>
+        </header>
+
+        <main role="main" class="ms-main">
+            @RenderBody()
+        </main>
+
+        <footer class="ms-footer">
+            <div>
+                <strong>@portal.CompanyName</strong>
+                <span>@portal.FooterUsageText</span>
+            </div>
+            <div>
+                <span>Versión @portal.PortalVersion</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
