@@ -19,10 +19,10 @@
 
 ## 3) Cómo arrancar una app nueva (flujo recomendado)
 ```bash
-dotnet new install ./template/MachSoft.Template.Official
+dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg
 dotnet new machsoft-app -n Contoso.App -o ./Contoso.App --CorePackageVersion 1.0.0-internal
 cd Contoso.App
-dotnet restore
+dotnet restore --source "<PRIVATE_FEED_OR_LOCAL_SOURCE>" --source https://api.nuget.org/v3/index.json
 dotnet build -c Release
 dotnet run --no-build -c Release
 ```

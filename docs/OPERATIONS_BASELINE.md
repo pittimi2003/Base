@@ -29,13 +29,14 @@ dotnet run --project template/MachSoft.Template.Starter.Wasm --no-build -c Relea
 
 ### B.1 Instalar template y crear app
 ```bash
-dotnet new install ./template/MachSoft.Template.Official
+dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates
+dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg
 dotnet new machsoft-app -n Contoso.App -o ./Contoso.App --CorePackageVersion 1.0.0-internal
 ```
 
 ### B.2 Restaurar/build/run
 ```bash
-dotnet restore ./Contoso.App/Contoso.App.csproj
+dotnet restore ./Contoso.App/Contoso.App.csproj --source "<PRIVATE_FEED_OR_LOCAL_SOURCE>" --source https://api.nuget.org/v3/index.json
 dotnet build ./Contoso.App/Contoso.App.csproj -c Release
 dotnet run --project ./Contoso.App/Contoso.App.csproj --no-build -c Release
 ```

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>MachSoft.Template.Official</PackageId>
+    <PackageVersion>$(Version)</PackageVersion>
+    <Authors>MachSoft</Authors>
+    <Description>Template corporativo oficial de MachSoft para generar aplicaciones ASP.NET Core 8 con el bootstrap base y consumo de MachSoft.Template.Core.</Description>
+    <PackageTags>dotnet-new;template;machsoft;aspnetcore;blazor-server;enterprise</PackageTags>
+    <PackageType>Template</PackageType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeContentInPack>true</IncludeContentInPack>
+    <IncludeBuildOutput>false</IncludeBuildOutput>
+    <ContentTargetFolders>content</ContentTargetFolders>
+    <NoDefaultExcludes>true</NoDefaultExcludes>
+    <NoWarn>$(NoWarn);NU5128</NoWarn>
+    <IsPackable>true</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="..\MachSoft.Template.Official\content\**\*">
+      <Pack>true</Pack>
+      <PackagePath>content\%(RecursiveDir)%(Filename)%(Extension)</PackagePath>
+    </Content>
+    <None Include="..\MachSoft.Template.Official\README.md">
+      <Pack>true</Pack>
+      <PackagePath>README.md</PackagePath>
+    </None>
+  </ItemGroup>
+</Project>

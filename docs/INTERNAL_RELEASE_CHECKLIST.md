@@ -20,7 +20,8 @@ Checklist ejecutable para declarar una release interna de la plataforma MachSoft
   - [ ] `MachSoft.Template.Core.<version>.snupkg`
 
 ### 1.3 Template oficial
-- [ ] `dotnet new install ./template/MachSoft.Template.Official`
+- [ ] `dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates`
+- [ ] `dotnet new install ./artifacts/templates/MachSoft.Template.Official.1.0.0-internal.nupkg`
 - [ ] `dotnet new machsoft-app -n <AppName> -o <output> [--CorePackageVersion <version>]`
 
 ### 1.4 App generada (smoke técnico)
