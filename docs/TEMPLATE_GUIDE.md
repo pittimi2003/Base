@@ -59,3 +59,35 @@ dotnet new uninstall MachSoft.Template.Official.Wasm
 - `RootNamespace`: namespace raíz opcional.
 - `CorePackageVersion`: versión de `MachSoft.Template.Core`.
 - `PrivateFeedUrl`: URL del feed privado para `NuGet.config`.
+
+
+## Catálogo oficial Core.Control
+
+### Build
+
+```powershell
+dotnet build ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.csproj
+```
+
+### Pack NuGet interno
+
+```powershell
+dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.csproj -c Release -o ./artifacts/packages
+```
+
+### Validación visual con Showcase
+
+```powershell
+dotnet run --project ./src/MachSoft.Template.Core.Control.Showcase/MachSoft.Template.Core.Control.Showcase.csproj
+```
+
+Abrir `https://localhost:<puerto>/` y validar:
+- Home del catálogo
+- Foundations visuales (`/foundations`)
+- Familias de controles
+- Cambio de tema Light/Dark desde navegación lateral
+
+
+### Nota de alcance actual
+
+`MachSoft.Template.Core.Control` está listo como base distribuible, pero **no contiene todavía la implementación completa de todas las familias premium**. El Showcase valida la infraestructura base (navegación, theming, rutas y separación de responsabilidades).

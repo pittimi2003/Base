@@ -1,0 +1,14 @@
+@using MachSoft.Template.Core.Control.Showcase.Services
+
+<section class="ms-control-catalog-roadmap" aria-label="Roadmap de familias del catálogo oficial">
+    @foreach (var family in ControlCatalogRegistry.Families)
+    {
+        <article class="ms-control-catalog-roadmap__item">
+            <header>
+                <h3>@family.Name</h3>
+                <span class="ms-control-catalog-roadmap__status">@family.Status</span>
+            </header>
+            <p>@family.Description</p>
+        </article>
+    }
+</section>

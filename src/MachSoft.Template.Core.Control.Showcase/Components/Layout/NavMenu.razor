@@ -1,0 +1,26 @@
+<div class="ms-showcase-nav">
+    <div>
+        <p class="ms-showcase-nav__eyebrow">MachSoft</p>
+        <h1>Core.Control Showcase</h1>
+        <p class="ms-showcase-nav__description">Validación visual y funcional del catálogo oficial Mx* desacoplado del paquete NuGet distribuible.</p>
+    </div>
+
+    <nav>
+        <ul>
+            <li><NavLink href="/" Match="NavLinkMatch.All">Home del catálogo</NavLink></li>
+            <li><NavLink href="/foundations">Fundamentos visuales</NavLink></li>
+            <li><NavLink href="/families">Familias de controles</NavLink></li>
+        </ul>
+    </nav>
+
+    <MxButton Variant="MxButtonVariant.Secondary" OnClick="OnToggleTheme">
+        Tema actual: @CurrentThemeLabel
+    </MxButton>
+</div>
+
+@code {
+    [Parameter] public string CurrentTheme { get; set; } = "light";
+    [Parameter] public EventCallback OnToggleTheme { get; set; }
+
+    private string CurrentThemeLabel => CurrentTheme == "light" ? "Light" : "Dark";
+}
