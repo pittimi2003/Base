@@ -1,67 +1,37 @@
 @page "/premium-showcase"
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="ms-page-container ms-stack-md">
+<div class="ms-page-container ms-stack-lg ms-premium-showcase">
     <MachPageHeaderPremium Title="Premium Operations Workspace"
                            Eyebrow="MachSoft.Template.CorePremium"
-                           Subtitle="Vista principal para validar visualmente componentes premium, composición enterprise y estados operativos.">
+                           Subtitle="Vista de referencia enterprise para validar composición, jerarquía visual, estados y flujo operativo con controles premium.">
         <Metadata>
             <MxBadge Variant="MxBadgeVariant.Brand" Text="v1.0.0-internal" />
-            <MxBadge Variant="MxBadgeVariant.Success" Text="Ready for NuGet" />
+            <MxBadge Variant="MxBadgeVariant.Success" Text="Release candidate" />
             <MxBadge Variant="MxBadgeVariant.Neutral" Text="Core + CorePremium" />
         </Metadata>
         <SecondaryActions>
-            <MxButton Variant="MxButtonVariant.Tertiary">Exportar vista</MxButton>
+            <MxButton Variant="MxButtonVariant.Tertiary">Exportar tablero</MxButton>
+            <MxButton Variant="MxButtonVariant.Secondary" OnClick="(() => IsDialogOpen = true)">Nueva configuración</MxButton>
         </SecondaryActions>
         <PrimaryActions>
             <MxButton Variant="MxButtonVariant.Primary" OnClick="(() => IsToastVisible = true)">Guardar workspace</MxButton>
         </PrimaryActions>
     </MachPageHeaderPremium>
 
-    <MachBreadcrumbsPremium Items="@Breadcrumbs">
-        <EndContent>
-            <MxStatusIndicator Status="MxStatusVariant.Success" Label="Entorno Healthy" />
-        </EndContent>
-    </MachBreadcrumbsPremium>
-
-    <MachToolbarPremium>
-        <StartContent>
-            <MachTextFieldPremium Label="Buscar"
-                                  Value="@Search"
-                                  ValueChanged="@(value => Search = value)"
-                                  Placeholder="Order id, cliente o SKU"
-                                  HelperText="Se aplica en grid y lista" />
-        </StartContent>
-        <FiltersContent>
-            <MachSelectPremium Label="Estado"
-                               Value="@Filter"
-                               ValueChanged="@(value => Filter = value)"
-                               Options="@FilterOptions"
-                               Placeholder="Todos" />
-        </FiltersContent>
-        <EndContent>
-            <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small" OnClick="(() => IsDialogOpen = true)">Nueva configuración</MxButton>
-        </EndContent>
-    </MachToolbarPremium>
-
-    <MachTabsPremium Items="@Tabs" ActiveValue="@ActiveTab" ActiveValueChanged="OnTabChanged" AriaLabel="Secciones premium">
-        <ActiveTemplate Context="tab">
-            <MachCardPremium Title="@tab.Text"
-                             Description="@tab.Hint"
-                             Tone="MachPremiumTone.Brand"
-                             State="MachPremiumSurfaceState.Default">
-                <ActionsTemplate>
-                    <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Acción rápida</MxButton>
-                </ActionsTemplate>
-                <ChildContent>
-                    <p class="ms-text-sm">Tab activo: <strong>@tab.Text</strong>. Esta sección cambia por teclado o click para validar accesibilidad.</p>
-                </ChildContent>
-                <FooterTemplate>
-                    <MxBadge Variant="MxBadgeVariant.Neutral" Text=@($"Badge {tab.Badge}") />
-                </FooterTemplate>
-            </MachCardPremium>
-        </ActiveTemplate>
-    </MachTabsPremium>
+    <section class="ms-premium-showcase-nav">
+        <MachBreadcrumbsPremium Items="@Breadcrumbs">
+            <EndContent>
+                <MxStatusIndicator Status="MxStatusVariant.Success" Label="Healthy" />
+            </EndContent>
+        </MachBreadcrumbsPremium>
+        <div class="ms-premium-showcase-nav__chips" role="navigation" aria-label="Secciones premium">
+            <a href="#premium-layout">Layout</a>
+            <a href="#premium-forms">Forms</a>
+            <a href="#premium-data">Data</a>
+            <a href="#premium-feedback">Feedback</a>
+        </div>
+    </section>
 
     <div class="ms-grid ms-grid--3">
         <MachStatCardPremium Title="Orders" Value="12,481" SupportingText="Últimas 24h" TrendText="+5.2%" Tone="MachPremiumTone.Success" Icon="📦" />
@@ -69,67 +39,146 @@
         <MachStatCardPremium Title="SLA" Value="99.1%" SupportingText="Despacho puntual" TrendText="+0.7%" Tone="MachPremiumTone.Brand" Icon="✅" />
     </div>
 
-    <MachSectionPanelPremium Title="Formularios premium"
-                             Description="Campos enriquecidos para filtros enterprise con estados, ayuda contextual y validación.">
+    <MachSectionPanelPremium Title="Layout, navegación y superficies"
+                             Eyebrow="PREMIUM LAYOUT"
+                             Tone="MachPremiumTone.Brand"
+                             Description="Toolbar de trabajo, tabs navegables y cards de contexto con énfasis enterprise."
+                             >
+        <Actions>
+            <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Refresh</MxButton>
+        </Actions>
         <ChildContent>
-            <div class="ms-grid ms-grid--2">
-                <MachTextFieldPremium Label="Nombre de vista"
-                                      Value="@ViewName"
-                                      ValueChanged="@(value => ViewName = value)"
-                                      Placeholder="Night Shift - Critical Orders"
-                                      Required="true"
-                                      ErrorText="@ViewNameError" />
+            <div id="premium-layout" class="ms-stack-md">
+                <MachToolbarPremium Title="Operational toolbar"
+                                    Description="Búsqueda, filtros y acciones rápidas para operación diaria.">
+                    <ContextInfo>
+                        <MxBadge Variant="MxBadgeVariant.Neutral" Text="Turno nocturno" />
+                        <MxBadge Variant="MxBadgeVariant.Brand" Text="Warehouse EMEA" />
+                    </ContextInfo>
+                    <StartContent>
+                        <MachTextFieldPremium Label="Buscar"
+                                              Value="@Search"
+                                              ValueChanged="@(value => Search = value)"
+                                              Placeholder="Order id, cliente o SKU"
+                                              HelperText="Impacta grid y lista" />
+                    </StartContent>
+                    <FiltersContent>
+                        <MachSelectPremium Label="Estado"
+                                           Value="@Filter"
+                                           ValueChanged="@(value => Filter = value)"
+                                           Options="@FilterOptions"
+                                           Placeholder="Todos" />
+                    </FiltersContent>
+                    <EndContent>
+                        <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Aplicar</MxButton>
+                    </EndContent>
+                </MachToolbarPremium>
 
-                <MachDatePickerPremium Label="Fecha de corte"
-                                       Value="@CutDate"
-                                       ValueChanged="@(value => CutDate = value)"
-                                       HelperText="Se usa para recálculo de KPIs." />
+                <MachTabsPremium Items="@Tabs" ActiveValue="@ActiveTab" ActiveValueChanged="OnTabChanged" AriaLabel="Secciones premium">
+                    <ActiveTemplate Context="tab">
+                        <MachCardPremium Title="@tab.Text"
+                                         Description="@tab.Hint"
+                                         Tone="MachPremiumTone.Brand"
+                                         State="MachPremiumSurfaceState.Default">
+                            <ActionsTemplate>
+                                <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Acción rápida</MxButton>
+                            </ActionsTemplate>
+                            <ChildContent>
+                                <p class="ms-text-sm">Vista activa: <strong>@tab.Text</strong>. Soporta navegación teclado y cambio de panel en caliente.</p>
+                            </ChildContent>
+                            <FooterTemplate>
+                                <MxBadge Variant="MxBadgeVariant.Neutral" Text=@($"Badge {tab.Badge}") />
+                            </FooterTemplate>
+                        </MachCardPremium>
+                    </ActiveTemplate>
+                </MachTabsPremium>
             </div>
-
-            <div class="ms-grid ms-grid--2">
-                <MachSelectPremium Label="Prioridad"
-                                   Value="@Priority"
-                                   ValueChanged="@(value => Priority = value)"
-                                   Options="@PriorityOptions"
-                                   Placeholder="Selecciona prioridad" />
-
-                <MachRadioGroupPremium Label="Estrategia de despacho"
-                                       Value="@Strategy"
-                                       ValueChanged="@(value => Strategy = value)"
-                                       Options="@Strategies"
-                                       Description="Selecciona cómo priorizar la cola de órdenes." />
-            </div>
-
-            <div class="ms-grid ms-grid--2">
-                <MachCheckboxPremium Label="Solo órdenes con incidencia"
-                                     Description="Oculta órdenes sin alertas activas."
-                                     Checked="@OnlyWithIncidents"
-                                     CheckedChanged="@(value => OnlyWithIncidents = value)" />
-
-                <MachSwitchPremium Label="Activar modo aprobación"
-                                   HelperText="Obliga revisión supervisor antes de publicar cambios."
-                                   Checked="@ApprovalMode"
-                                   CheckedChanged="@(value => ApprovalMode = value)" />
-            </div>
-
-            <MachUploadPremium Label="Adjuntos de evidencia"
-                               Accept=".pdf,.png,.jpg,.csv"
-                               Multiple="true"
-                               FilesChanged="OnFilesChanged"
-                               HelperText="Sube evidencia documental de la configuración." />
         </ChildContent>
     </MachSectionPanelPremium>
 
-    <div class="ms-grid ms-grid--2">
+    <section id="premium-forms" class="ms-grid ms-grid--2">
+        <MachSectionPanelPremium Title="Formularios premium"
+                                 Eyebrow="ENTERPRISE FORMS"
+                                 Tone="MachPremiumTone.Neutral"
+                                 Description="Inputs enriquecidos con mensajes, selección, toggles y carga de archivos.">
+            <ChildContent>
+                <div class="ms-grid ms-grid--2">
+                    <MachTextFieldPremium Label="Nombre de vista"
+                                          Value="@ViewName"
+                                          ValueChanged="@(value => ViewName = value)"
+                                          Placeholder="Night Shift - Critical Orders"
+                                          Required="true"
+                                          ErrorText="@ViewNameError" />
+
+                    <MachDatePickerPremium Label="Fecha de corte"
+                                           Value="@CutDate"
+                                           ValueChanged="@(value => CutDate = value)"
+                                           HelperText="Base para recálculo de KPIs." />
+                </div>
+
+                <div class="ms-grid ms-grid--2">
+                    <MachSelectPremium Label="Prioridad"
+                                       Value="@Priority"
+                                       ValueChanged="@(value => Priority = value)"
+                                       Options="@PriorityOptions"
+                                       Placeholder="Selecciona prioridad" />
+
+                    <MachRadioGroupPremium Label="Estrategia de despacho"
+                                           Value="@Strategy"
+                                           ValueChanged="@(value => Strategy = value)"
+                                           Options="@Strategies"
+                                           Description="Selecciona cómo priorizar la cola de órdenes." />
+                </div>
+
+                <div class="ms-grid ms-grid--2">
+                    <MachCheckboxPremium Label="Solo órdenes con incidencia"
+                                         Description="Oculta órdenes sin alertas activas."
+                                         Checked="@OnlyWithIncidents"
+                                         CheckedChanged="@(value => OnlyWithIncidents = value)" />
+
+                    <MachSwitchPremium Label="Activar modo aprobación"
+                                       HelperText="Obliga revisión supervisor antes de publicar cambios."
+                                       Checked="@ApprovalMode"
+                                       CheckedChanged="@(value => ApprovalMode = value)" />
+                </div>
+
+                <MachUploadPremium Label="Adjuntos de evidencia"
+                                   Accept=".pdf,.png,.jpg,.csv"
+                                   Multiple="true"
+                                   FilesChanged="OnFilesChanged"
+                                   HelperText="Sube evidencia documental de la configuración." />
+            </ChildContent>
+        </MachSectionPanelPremium>
+
+        <MachCardPremium Title="Resumen de configuración"
+                         Description="Validación de composición real con datos del formulario."
+                         Tone="MachPremiumTone.Success"
+                         State="MachPremiumSurfaceState.Default">
+            <ChildContent>
+                <ul class="ms-premium-summary-list">
+                    <li><strong>Vista:</strong> @(string.IsNullOrWhiteSpace(ViewName) ? "(pendiente)" : ViewName)</li>
+                    <li><strong>Fecha corte:</strong> @(CutDate?.ToString("yyyy-MM-dd") ?? "-")</li>
+                    <li><strong>Prioridad:</strong> @Priority</li>
+                    <li><strong>Estrategia:</strong> @Strategy</li>
+                    <li><strong>Con incidencias:</strong> @(OnlyWithIncidents ? "Sí" : "No")</li>
+                    <li><strong>Aprobación:</strong> @(ApprovalMode ? "Activa" : "Inactiva")</li>
+                    <li><strong>Archivos:</strong> @(UploadedFiles.Count == 0 ? "Sin adjuntos" : string.Join(", ", UploadedFiles))</li>
+                </ul>
+            </ChildContent>
+        </MachCardPremium>
+    </section>
+
+    <section id="premium-data" class="ms-grid ms-grid--2">
         <MachDataGridPremium TItem="OrderRow"
                              Title="Data grid premium"
-                             Description="Visión tabular de órdenes con acciones operativas"
+                             Description="Visión tabular con densidad operativa y encabezado contextual"
                              Items="@Orders"
                              Columns="@OrderColumns"
                              EmptyText="No hay órdenes para los filtros activos."
-                             AriaLabel="Órdenes premium">
+                             AriaLabel="Órdenes premium"
+                             IsLoading="@IsGridLoading">
             <ToolbarContent>
-                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Actualizar</MxButton>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small" OnClick="ToggleGridLoading">Simular carga</MxButton>
             </ToolbarContent>
             <EmptyTemplate>
                 <MachEmptyStatePremium Title="Sin datos"
@@ -155,16 +204,23 @@
                 </article>
             </ItemTemplate>
         </MachListPremium>
-    </div>
+    </section>
 
-    <MachEmptyStatePremium Title="Estado vacío premium"
-                           Description="Este bloque valida la semántica de empty state para escenarios sin resultados."
-                           Icon="🧭">
-        <Actions>
-            <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Limpiar filtros</MxButton>
-            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Crear consulta</MxButton>
-        </Actions>
-    </MachEmptyStatePremium>
+    <section id="premium-feedback" class="ms-stack-md">
+        <MachEmptyStatePremium Title="Estado vacío premium"
+                               Description="Valida visualmente escenarios empty con acciones de recuperación."
+                               Icon="🧭">
+            <Actions>
+                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Limpiar filtros</MxButton>
+                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Crear consulta</MxButton>
+            </Actions>
+        </MachEmptyStatePremium>
+
+        <div class="ms-premium-overlay-actions">
+            <MxButton Variant="MxButtonVariant.Secondary" OnClick="(() => IsDialogOpen = true)">Abrir diálogo</MxButton>
+            <MxButton Variant="MxButtonVariant.Primary" OnClick="(() => IsToastVisible = true)">Mostrar toast</MxButton>
+        </div>
+    </section>
 
     <MachDialogPremium Open="@IsDialogOpen" OpenChanged="OnDialogChanged" Title="Crear configuración premium" Description="Completa datos para guardar una vista operativa.">
         <ChildContent>
@@ -183,8 +239,7 @@
                       VisibleChanged="OnToastVisibleChanged"
                       Title="Cambios aplicados"
                       Message="La configuración premium se guardó correctamente."
-                      Tone="MachPremiumTone.Success"
-                      DurationMs="3000" />
+                      Tone="MachPremiumTone.Success" />
 </div>
 
 @code {
@@ -196,8 +251,9 @@
     private DateOnly? CutDate { get; set; } = DateOnly.FromDateTime(DateTime.Today);
     private bool OnlyWithIncidents { get; set; }
     private bool ApprovalMode { get; set; } = true;
-    private bool IsDialogOpen { get; set; }
-    private bool IsToastVisible { get; set; }
+    private bool IsDialogOpen { get; set; } = true;
+    private bool IsToastVisible { get; set; } = true;
+    private bool IsGridLoading { get; set; }
     private string? NewConfigName { get; set; }
     private string ActiveTab { get; set; } = "overview";
     private List<string> UploadedFiles { get; } = [];
@@ -209,6 +265,13 @@
         new("Inicio", "/"),
         new("Showcase", "/showcase"),
         new("Premium", "/premium-showcase", true)
+    ];
+
+    private IReadOnlyList<MachTabsPremiumItem> Tabs { get; } =
+    [
+        new("overview", "Overview", "KPIs y tendencias", "3"),
+        new("alerts", "Alerts", "Alertas y excepciones", "12"),
+        new("workload", "Workload", "Distribución por equipo", "7")
     ];
 
     private IReadOnlyList<MachTabsPremiumItem> Tabs { get; } =
@@ -291,6 +354,9 @@
         IsDialogOpen = false;
         IsToastVisible = true;
     }
+
+    private void ToggleGridLoading()
+        => IsGridLoading = !IsGridLoading;
 
     private sealed record OrderRow(string OrderId, string Site, string Priority, string Status);
     private sealed record AlertItem(string Title, string Description, string Severity, MxBadgeVariant BadgeVariant);

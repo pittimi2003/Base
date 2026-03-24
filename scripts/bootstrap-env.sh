@@ -1,14 +1,10 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-SOLUTION_FILE="${1:-MachSoft.Template.sln}"
-E2E_DIR="${2:-tests/e2e}"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+E2E_DIR="$ROOT_DIR/tests/e2e"
 
-if command -v sudo >/dev/null 2>&1; then
-  SUDO="sudo"
-else
-  SUDO=""
-fi
+echo "[bootstrap] Repo root: $ROOT_DIR"
 
 echo "=============================="
 echo "OS info"
@@ -44,100 +40,30 @@ echo "=============================="
 echo "Installing .NET SDK 8 if missing"
 echo "=============================="
 if ! command -v dotnet >/dev/null 2>&1; then
-  . /etc/os-release
-
-  if [[ "${ID:-}" != "ubuntu" && "${ID_LIKE:-}" != *"ubuntu"* ]]; then
-    echo "ERROR: This script expects an Ubuntu-compatible image for apt-based .NET installation."
-    echo "Detected distro: ID=${ID:-unknown}, VERSION_ID=${VERSION_ID:-unknown}"
+  echo "[bootstrap] ERROR: dotnet no está instalado" >&2
     exit 1
   fi
 
-  UBUNTU_VERSION="${VERSION_ID}"
+echo "[bootstrap] dotnet: $(dotnet --version)"
 
-  wget "https://packages.microsoft.com/config/ubuntu/${UBUNTU_VERSION}/packages-microsoft-prod.deb" -O /tmp/packages-microsoft-prod.deb
-  $SUDO dpkg -i /tmp/packages-microsoft-prod.deb
-  rm /tmp/packages-microsoft-prod.deb
-
-  $SUDO apt-get update
-  $SUDO apt-get install -y dotnet-sdk-8.0
-else
-  echo "dotnet already installed"
+if ! command -v node >/dev/null 2>&1; then
+  echo "[bootstrap] ERROR: node no está instalado" >&2
+  exit 1
 fi
 
-echo "=============================="
-echo "Verifying .NET"
-echo "=============================="
-command -v dotnet
-dotnet --info
-dotnet --list-sdks
-dotnet --list-runtimes
+echo "[bootstrap] node: $(node --version)"
+echo "[bootstrap] npm: $(npm --version)"
 
-echo "=============================="
-echo "Checking workloads"
-echo "=============================="
-dotnet workload list || true
-
-echo "=============================="
-echo "NuGet sources"
-echo "=============================="
-dotnet nuget list source || true
-
-echo "=============================="
-echo "Verifying Node/NPM"
-echo "=============================="
-node --version
-npm --version
-
-echo "=============================="
-echo "Installing browser/system dependencies"
-echo "=============================="
-$SUDO apt-get install -y \
-  libnss3 \
-  libnspr4 \
-  libatk-bridge2.0-0 \
-  libcups2 \
-  libdrm2 \
-  libdbus-1-3 \
-  libxkbcommon0 \
-  libxcomposite1 \
-  libxdamage1 \
-  libxfixes3 \
-  libxrandr2 \
-  libgbm1 \
-  libasound2 \
-  libatspi2.0-0 \
-  libxshmfence1 \
-  libgtk-3-0 \
-  libx11-xcb1 \
-  fonts-liberation \
-  libu2f-udev \
-  libvulkan1 || true
-
-if [ -f "$SOLUTION_FILE" ]; then
-  echo "=============================="
-  echo "Restoring solution: $SOLUTION_FILE"
-  echo "=============================="
-  dotnet restore "$SOLUTION_FILE"
-
-  echo "=============================="
-  echo "Building solution: $SOLUTION_FILE"
-  echo "=============================="
-  dotnet build "$SOLUTION_FILE" --no-restore -c Release
-else
-  echo "=============================="
-  echo "Solution file not found: $SOLUTION_FILE"
-  echo "Skipping restore/build"
-  echo "=============================="
+if ! command -v xvfb-run >/dev/null 2>&1; then
+  if command -v apt-get >/dev/null 2>&1; then
+    echo "[bootstrap] Instalando xvfb..."
+    sudo apt-get update -y || apt-get update -y
+    sudo apt-get install -y xvfb || apt-get install -y xvfb
+  fi
 fi
 
-if [ -d "$E2E_DIR" ]; then
-  echo "=============================="
-  echo "Preparing E2E environment in: $E2E_DIR"
-  echo "=============================="
-
-  pushd "$E2E_DIR" >/dev/null
-
-  if [ -f package-lock.json ]; then
+cd "$E2E_DIR"
+echo "[bootstrap] npm ci en tests/e2e"
     npm ci
   else
     npm install
@@ -155,12 +81,7 @@ else
   echo "=============================="
 fi
 
-echo "=============================="
-echo "Recommended environment variables"
-echo "=============================="
-echo "PLAYWRIGHT_BROWSERS_PATH=${PLAYWRIGHT_BROWSERS_PATH:-<not set>}"
-echo "CI=${CI:-<not set>}"
+echo "[bootstrap] Instalando Chromium de Playwright"
+npx playwright install --with-deps chromium
 
-echo "=============================="
-echo "Bootstrap completed"
-echo "=============================="
+echo "[bootstrap] Entorno listo"

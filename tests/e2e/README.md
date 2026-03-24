@@ -102,3 +102,21 @@ npm run test:ci
 ## Causa de inestabilidad mobile resuelta
 - La señal previa (`negotiate` + primer frame websocket) podía llegar antes de que el shell quedara listo para interacción efectiva en mobile.
 - Ahora la suite espera además `data-ms-shell-interactive="true"` + hamburguesa visible/habilitada para reducir fallos por timing prematuro.
+
+## Premium visual preview (SampleApp)
+
+Para validación visual reproducible de `MachSoft.Template.CorePremium`:
+
+```bash
+./scripts/bootstrap-env.sh
+./scripts/run-premium-preview-check.sh
+```
+
+Esto ejecuta Playwright sobre `samples/MachSoft.Template.SampleApp`, abre `/premium-showcase` y genera screenshots en:
+
+- `artifacts/ui-preview/premium-01-landing.png`
+- `artifacts/ui-preview/premium-02-forms.png`
+- `artifacts/ui-preview/premium-03-data.png`
+- `artifacts/ui-preview/premium-04-overlays.png`
+
+La verificación falla si no se generan evidencias visuales (`*.png`).

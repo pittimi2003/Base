@@ -13,15 +13,31 @@
                 <p>@Description</p>
             }
         </div>
+        <div class="ms-premium-data-grid__actions">
+            @if (ShowCounter)
+            {
+                <span class="ms-premium-data-grid__counter">@Items.Count registro(s)</span>
+            }
         @if (ToolbarContent is not null)
         {
-            <div class="ms-premium-data-grid__actions">@ToolbarContent</div>
+                @ToolbarContent
         }
     </div>
+    </div>
 
-    @if (IsLoading && LoadingTemplate is not null)
+    @if (IsLoading)
+    {
+        <div class="ms-premium-data-grid__loading" role="status" aria-live="polite">
+            @if (LoadingTemplate is not null)
     {
         @LoadingTemplate
+    }
+    else
+    {
+                <span class="ms-premium-spinner" aria-hidden="true"></span>
+                <span>Cargando datos...</span>
+            }
+        </div>
     }
     else
     {
@@ -47,6 +63,7 @@
     [Parameter] public string EmptyText { get; set; } = "No hay registros disponibles.";
     [Parameter] public bool IsCompact { get; set; }
     [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public bool ShowCounter { get; set; } = true;
     [Parameter] public string AriaLabel { get; set; } = "Data grid premium";
     [Parameter] public RenderFragment? ToolbarContent { get; set; }
     [Parameter] public RenderFragment? LoadingTemplate { get; set; }

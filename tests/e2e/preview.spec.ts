@@ -1,45 +1,48 @@
 import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
+import { test, expect, type Page } from '@playwright/test';
 
-const baseUrl = process.env.BASE_URL ?? 'http://127.0.0.1:52922';
-const artifactsDir = process.env.ARTIFACTS_DIR ?? 'artifacts/ui-preview';
+const outputDir = path.resolve(__dirname, '../../artifacts/ui-preview');
 
-function ensureArtifactsDir() {
-  fs.mkdirSync(artifactsDir, { recursive: true });
+async function shot(page: Page, name: string) {
+  await fs.promises.mkdir(outputDir, { recursive: true });
+  const filePath = path.join(outputDir, `${name}.png`);
+  await page.screenshot({ path: filePath, fullPage: true });
 }
 
-test.describe('MachSoft Premium Preview', () => {
-  test('premium showcase should render and produce screenshots', async ({ page }) => {
-    ensureArtifactsDir();
+test.describe('Premium visual preview evidence', () => {
+  test('captures reproducible screenshots for /premium-showcase', async ({ page }) => {
+    await page.goto('/premium-showcase', { waitUntil: 'networkidle' });
 
-    await page.goto(`${baseUrl}/premium-showcase`, { waitUntil: 'networkidle' });
+    const coreCss = await page.request.get('/_content/MachSoft.Template.Core/css/machsoft-template-core.css');
+    const premiumCss = await page.request.get('/_content/MachSoft.Template.CorePremium/css/machsoft-template-corepremium.css');
+    expect(coreCss.ok()).toBeTruthy();
+    expect(premiumCss.ok()).toBeTruthy();
 
-    await expect(page).toHaveURL(/premium-showcase/);
-    await expect(page.locator('body')).toBeVisible();
+    await expect(page.locator('.ms-premium-page-header')).toBeVisible();
+    await expect(page.locator('.ms-premium-breadcrumbs')).toBeVisible();
+    await expect(page.locator('.ms-premium-tabs')).toBeVisible();
+    await expect(page.locator('.ms-premium-toolbar-shell')).toBeVisible();
 
-    await page.setViewportSize({ width: 1600, height: 2400 });
+    await shot(page, 'premium-01-landing');
 
-    await page.screenshot({
-      path: path.join(artifactsDir, 'premium-showcase-full.png'),
-      fullPage: true
-    });
+    await page.locator('#premium-forms').scrollIntoViewIfNeeded();
+    await expect(page.locator('text=Formularios premium')).toBeVisible();
+    await expect(page.locator('text=Estrategia de despacho')).toBeVisible();
+    await expect(page.locator('text=Adjuntos de evidencia')).toBeVisible();
+    await shot(page, 'premium-02-forms');
 
-    await expect(page.locator('body')).toContainText('Premium');
-  });
+    await page.locator('#premium-data').scrollIntoViewIfNeeded();
+    await expect(page.locator('text=Data grid premium')).toBeVisible();
+    await expect(page.locator('text=Lista premium de alertas')).toBeVisible();
+    await shot(page, 'premium-03-data');
 
-  test('home should render and produce screenshots', async ({ page }) => {
-    ensureArtifactsDir();
+    await expect(page.getByRole('dialog')).toBeVisible();
+    await expect(page.locator('.ms-premium-toast')).toBeVisible();
+    await shot(page, 'premium-04-overlays');
 
-    await page.goto(`${baseUrl}/`, { waitUntil: 'networkidle' });
-
-    await expect(page.locator('body')).toBeVisible();
-
-    await page.setViewportSize({ width: 1600, height: 1400 });
-
-    await page.screenshot({
-      path: path.join(artifactsDir, 'home-full.png'),
-      fullPage: true
-    });
+    const files = fs.readdirSync(outputDir).filter(file => file.endsWith('.png'));
+    expect(files.length).toBeGreaterThanOrEqual(4);
   });
 });

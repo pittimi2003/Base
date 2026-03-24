@@ -1,46 +1,33 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -euo pipefail
 
-APP_PROJECT="${1:-samples/MachSoft.Template.SampleApp/MachSoft.Template.SampleApp.csproj}"
-BASE_URL="${2:-http://127.0.0.1:52922}"
-PREVIEW_ROUTE="${3:-/premium-showcase}"
-E2E_DIR="${4:-tests/e2e}"
-ARTIFACTS_DIR="${5:-artifacts/ui-preview}"
+ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+ARTIFACT_DIR="$ROOT_DIR/artifacts/ui-preview"
 
-mkdir -p "$ARTIFACTS_DIR"
+mkdir -p "$ARTIFACT_DIR"
+rm -f "$ARTIFACT_DIR"/*.png
 
-dotnet run --project "$APP_PROJECT" --urls "$BASE_URL" > "$ARTIFACTS_DIR/sampleapp.log" 2>&1 &
-APP_PID=$!
+export E2E_PREVIEW=1
+export E2E_PORT="${E2E_PORT:-5310}"
 
-cleanup() {
-  kill "$APP_PID" >/dev/null 2>&1 || true
-}
-trap cleanup EXIT
+pushd "$ROOT_DIR/tests/e2e" >/dev/null
 
-READY=0
-for i in {1..90}; do
-  if curl -fsS "${BASE_URL}${PREVIEW_ROUTE}" >/dev/null 2>&1; then
-    READY=1
-    break
+if command -v xvfb-run >/dev/null 2>&1; then
+  echo "[preview-check] Ejecutando Playwright con xvfb-run"
+  xvfb-run -a npm run preview
+else
+  echo "[preview-check] Ejecutando Playwright sin xvfb-run"
+  npm run preview
   fi
   sleep 2
 done
 
-if [ "$READY" -ne 1 ]; then
-  echo "ERROR: Sample app did not become ready at ${BASE_URL}${PREVIEW_ROUTE}"
-  exit 1
-fi
-
-if [ ! -d "$E2E_DIR" ]; then
-  echo "ERROR: E2E directory not found: $E2E_DIR"
-  exit 1
-fi
-
-pushd "$E2E_DIR" >/dev/null
-
-export BASE_URL
-export ARTIFACTS_DIR
-
-xvfb-run -a npx playwright test preview.spec.ts --reporter=line
-
 popd >/dev/null
+
+count=$(find "$ARTIFACT_DIR" -maxdepth 1 -type f -name '*.png' | wc -l | tr -d ' ')
+if [[ "$count" -lt 3 ]]; then
+  echo "[preview-check] ERROR: evidencia visual insuficiente ($count screenshots)" >&2
+  exit 1
+fi
+
+echo "[preview-check] OK: $count screenshots generados en $ARTIFACT_DIR"
