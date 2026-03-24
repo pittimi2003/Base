@@ -1,0 +1,15 @@
+@namespace MachSoft.Template.CorePremium.Components.Navigation
+
+<nav class="ms-premium-breadcrumbs" aria-label="@AriaLabel">
+    <MxBreadcrumb Items="Items" />
+    @if (EndContent is not null)
+    {
+        <div class="ms-premium-breadcrumbs__end">@EndContent</div>
+    }
+</nav>
+
+@code {
+    [Parameter] public IReadOnlyList<MxBreadcrumbItem> Items { get; set; } = [];
+    [Parameter] public string AriaLabel { get; set; } = "Ruta de navegación premium";
+    [Parameter] public RenderFragment? EndContent { get; set; }
+}

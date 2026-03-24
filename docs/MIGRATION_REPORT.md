@@ -28,3 +28,10 @@ The repository now includes a dedicated .NET 8 productization layout for MachSof
 - `MachSoft.Template.Core` mantiene su rol foundation sin dependencias hacia Premium.
 - Se agrega `samples/MachSoft.Template.SampleApp` para validación visual de `Core + CorePremium` en la ruta `/premium-showcase`.
 - Se agrega flujo de empaquetado `build/scripts/Pack-CorePremium.ps1` y su integración en `Pack-All.ps1`.
+
+## CorePremium catalog expansion (2026-03-24)
+
+- Expanded `MachSoft.Template.CorePremium` to include a first complete enterprise catalog for layout/surfaces, navigation, forms, data/list, feedback, and overlays.
+- Added premium wrappers that reuse foundation components from `MachSoft.Template.Core` to avoid duplication and preserve optional adoption.
+- Updated `MachSoft.Template.SampleApp` with a complete visual preview page in `/premium-showcase`, plus shell compatibility routes `/demo` and `/wasm-demo`.
+- Added bUnit baseline tests for breadcrumbs, radio group interaction, premium data grid rendering, tabs, dialog semantics, and page header rendering.

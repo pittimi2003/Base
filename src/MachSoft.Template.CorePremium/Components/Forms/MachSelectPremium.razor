@@ -1,0 +1,30 @@
+@namespace MachSoft.Template.CorePremium.Components.Forms
+
+<div class="ms-premium-field">
+    <MxSelect Label="@Label"
+              Value="@Value"
+              ValueChanged="ValueChanged"
+              Options="@Options"
+              Placeholder="@Placeholder"
+              Disabled="@Disabled"
+              Required="@Required"
+              HelperText="@HelperText"
+              ErrorText="@ErrorText"
+              IsCompact="@IsCompact"
+              Id="@Id" />
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<string?>>? ValueExpression { get; set; }
+    [Parameter] public IReadOnlyList<MxSelectOption> Options { get; set; } = [];
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public string? Id { get; set; }
+}
