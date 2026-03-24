@@ -10,9 +10,9 @@
     <Version>$(VersionPrefix)-$(VersionSuffix)</Version>
     <InformationalVersion>$(Version)</InformationalVersion>
 
-    <Authors>YOUR_AUTHORS_PLACEHOLDER</Authors>
-    <Company>YOUR_COMPANY_PLACEHOLDER</Company>
-    <RepositoryUrl>https://your-repository-url</RepositoryUrl>
+    <Authors>MachSoft</Authors>
+    <Company>MachSoft</Company>
+    <RepositoryUrl>https://github.com/MachSoft/MachSoft.Template</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
 
     <GeneratePackageOnBuild Condition="'$(GeneratePackageOnBuild)' == ''">false</GeneratePackageOnBuild>
