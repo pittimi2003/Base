@@ -5,4 +5,31 @@
 
 .mx-control-host {
   color: var(--mx-color-text-primary, var(--ms-color-text, #11233d));
+  background: var(--mx-color-bg-canvas, var(--ms-color-surface, #ffffff));
+}
+
+.mx-control-surface {
+  background: var(--mx-color-bg-surface, var(--ms-color-surface, #ffffff));
+  color: var(--mx-color-text-primary, var(--ms-color-text, #11233d));
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  border-radius: var(--mx-radius-md, 10px);
+  box-shadow: var(--mx-shadow-1, none);
+}
+
+.mx-control-surface--muted {
+  background: var(--mx-color-bg-surface-muted, var(--mx-color-bg-surface, #ffffff));
+}
+
+.mx-control-surface--raised {
+  background: var(--mx-color-bg-surface-raised, var(--mx-color-bg-surface, #ffffff));
+  box-shadow: var(--mx-shadow-2, var(--mx-shadow-1, none));
+}
+
+.mx-control-surface--outlined {
+  box-shadow: none;
+}
+
+.mx-control-focusable:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3f72de));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
 }

@@ -2,11 +2,17 @@
 
 <PageTitle>Familias del catálogo</PageTitle>
 
-<MxPageHeader Title="Roadmap oficial de familias premium"
-              Description="Base preparada para implementar iterativamente DataGrid, inputs avanzados, overlays, feedback y más.">
+<ShowcasePageTemplate Eyebrow="Catalog · Families"
+                      Title="Familias del catálogo MachSoft"
+                      Description="Base preparada para que cada familia crezca con ejemplos básicos, variantes, estados y notas técnicas.">
     <Metadata>
         <MxBadge Variant="MxBadgeVariant.Brand" Text="Roadmap" />
+        <MxBadge Variant="MxBadgeVariant.Neutral" Text="Scalable structure" />
     </Metadata>
-</MxPageHeader>
-
-<MxControlCatalogRoadmap />
+    <ChildContent>
+        <ShowcaseSection Title="Cobertura mínima preparada"
+                         Description="Categorías priorizadas para consolidar la validación visual y funcional del catálogo.">
+            <MxControlCatalogRoadmap />
+        </ShowcaseSection>
+    </ChildContent>
+</ShowcasePageTemplate>

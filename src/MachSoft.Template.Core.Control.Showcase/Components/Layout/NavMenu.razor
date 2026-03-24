@@ -2,16 +2,28 @@
     <div>
         <p class="ms-showcase-nav__eyebrow">MachSoft</p>
         <h1>Core.Control Showcase</h1>
-        <p class="ms-showcase-nav__description">Validación visual y funcional del catálogo oficial Mx* desacoplado del paquete NuGet distribuible.</p>
+        <p class="ms-showcase-nav__description">Host oficial para validación visual y funcional del catálogo Mx* desacoplado del paquete NuGet distribuible.</p>
     </div>
 
-    <nav>
+    <nav aria-label="Navegación principal del showcase">
         <ul>
-            <li><NavLink href="/" Match="NavLinkMatch.All">Home del catálogo</NavLink></li>
-            <li><NavLink href="/foundations">Fundamentos visuales</NavLink></li>
-            <li><NavLink href="/families">Familias de controles</NavLink></li>
+            <li><NavLink href="/" Match="NavLinkMatch.All">Home</NavLink></li>
+            <li><NavLink href="/foundations">Foundations</NavLink></li>
+            <li><NavLink href="/families">Families</NavLink></li>
         </ul>
     </nav>
+
+    <section class="ms-showcase-nav__families" aria-label="Accesos por familia">
+        <h2>Familias</h2>
+        <ul>
+            @foreach (var family in ControlCatalogRegistry.Families)
+            {
+                <li>
+                    <NavLink href="@family.Route">@family.Name</NavLink>
+                </li>
+            }
+        </ul>
+    </section>
 
     <MxButton Variant="MxButtonVariant.Secondary" OnClick="OnToggleTheme">
         Tema actual: @CurrentThemeLabel

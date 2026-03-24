@@ -1,0 +1,79 @@
+@page "/families/{FamilyKey}"
+
+<PageTitle>@PageTitleValue</PageTitle>
+
+@if (CurrentFamily is null)
+{
+    <ShowcasePageTemplate Eyebrow="Catalog · Families"
+                          Title="Familia no encontrada"
+                          Description="La familia solicitada no existe en el registro actual del catálogo.">
+        <ChildContent>
+            <MxCard Title="Siguiente paso" Variant="SurfaceVariant.Outlined">
+                <ChildContent>
+                    <p>Vuelve a la vista de familias para continuar con la validación por categorías.</p>
+                    <MxButton Variant="MxButtonVariant.Secondary" Href="/families">Volver a familias</MxButton>
+                </ChildContent>
+            </MxCard>
+        </ChildContent>
+    </ShowcasePageTemplate>
+}
+else
+{
+    <ShowcasePageTemplate Eyebrow="Catalog · Families"
+                          Title="@CurrentFamily.Name"
+                          Description="@CurrentFamily.Description">
+        <Metadata>
+            <MxBadge Variant="MxBadgeVariant.Brand" Text="@CurrentFamily.Status" />
+            <MxBadge Variant="MxBadgeVariant.Neutral" Text="@CurrentFamily.Scope" />
+            <MxBadge Variant="MxBadgeVariant.Success" Text="Template ready" />
+        </Metadata>
+        <ChildContent>
+            <ShowcaseSection Title="Ejemplo base"
+                             Description="Espacio estándar para renderizar el caso principal de la familia.">
+                <ShowcasePreviewBlock Title="Escenario básico"
+                                      Caption="Usa este bloque para validar markup, espaciado y comportamiento principal.">
+                    <p>Área reservada para el primer ejemplo funcional de la familia <strong>@CurrentFamily.Name</strong>.</p>
+                </ShowcasePreviewBlock>
+            </ShowcaseSection>
+
+            <ShowcaseSection Title="Variantes"
+                             Description="Bloque preparado para comparar variantes oficiales sin improvisar estructura.">
+                <ShowcasePreviewBlock Title="Comparativa de variantes"
+                                      Caption="Mantiene la misma superficie en light/dark para validar contraste y jerarquía."
+                                      IsCompact="true">
+                    <p>Reserva para variantes visuales del componente.</p>
+                </ShowcasePreviewBlock>
+            </ShowcaseSection>
+
+            <ShowcaseSection Title="Estados"
+                             Description="Bloque dedicado a estados interactivos y de sistema.">
+                <ShowcasePreviewBlock Title="Estados operativos"
+                                      Caption="Default, hover, focus-visible, disabled, invalid/error según aplique.">
+                    <p>Reserva para escenarios de estado y pruebas funcionales.</p>
+                </ShowcasePreviewBlock>
+            </ShowcaseSection>
+
+            <ShowcaseSection Title="Notas técnicas y visuales"
+                             Description="Checklist de adopción para mantener consistencia en futuras iteraciones.">
+                <ShowcasePreviewBlock Title="Checklist"
+                                      Caption="Esta nota acompaña a cada familia y reduce decisiones ad-hoc.">
+                    <ul class="ms-showcase-notes-list">
+                        <li>Validar contraste en light y dark con tokens semánticos.</li>
+                        <li>Mantener API pública Mx* simple y estable.</li>
+                        <li>Registrar limitaciones reales antes de ampliar el alcance.</li>
+                    </ul>
+                </ShowcasePreviewBlock>
+            </ShowcaseSection>
+        </ChildContent>
+    </ShowcasePageTemplate>
+}
+
+@code {
+    [Parameter] public string? FamilyKey { get; set; }
+
+    private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
+
+    private string PageTitleValue => CurrentFamily is null
+        ? "Familia no encontrada"
+        : $"{CurrentFamily.Name} · Showcase";
+}

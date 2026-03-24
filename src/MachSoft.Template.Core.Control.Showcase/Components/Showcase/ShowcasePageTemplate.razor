@@ -1,0 +1,34 @@
+<section class="ms-showcase-page">
+    <header class="ms-showcase-page__header">
+        <div>
+            <p class="ms-showcase-page__eyebrow">@Eyebrow</p>
+            <h1>@Title</h1>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p class="ms-showcase-page__description">@Description</p>
+            }
+        </div>
+
+        @if (Metadata is not null)
+        {
+            <div class="ms-showcase-page__metadata">
+                @Metadata
+            </div>
+        }
+    </header>
+
+    @if (ChildContent is not null)
+    {
+        <div class="ms-showcase-page__content">
+            @ChildContent
+        </div>
+    }
+</section>
+
+@code {
+    [Parameter] public string Eyebrow { get; set; } = "MachSoft Showcase";
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? Metadata { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}
