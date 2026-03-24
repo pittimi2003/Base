@@ -1,0 +1,31 @@
+@page "/"
+@inject IConfiguration Configuration
+
+<PageTitle>Home</PageTitle>
+
+<BrandHero Eyebrow="MachSoft official server template"
+           Heading="Start from a server-ready corporate baseline"
+           Description="This template gives teams a clean .NET 8 Blazor server host that already consumes MachSoft.Template.Core from NuGet.">
+    <Actions>
+        <a class="page-action-link" href="packages">Review dependencies</a>
+    </Actions>
+</BrandHero>
+
+<div class="page-grid">
+    <TemplateFeatureCard Title="Reusable package"
+                         BadgeText="NuGet"
+                         Description="The application consumes MachSoft.Template.Core as a package, keeping shared UX assets outside the app repository." />
+    <TemplateFeatureCard Title="Private feed ready"
+                         BadgeText="Internal"
+                         Description="A placeholder NuGet.config is generated so teams can point the app to the approved internal feed without embedded secrets." />
+    <TemplateFeatureCard Title="Server hosting"
+                         BadgeText=".NET 8"
+                         Description="The host uses interactive server rendering for conservative, infrastructure-friendly enterprise rollout." />
+</div>
+
+<section class="page-panel">
+    <h2>Configuration baseline</h2>
+    <p><strong>Company:</strong> @Configuration["MachSoft:CompanyName"]</p>
+    <p><strong>Support:</strong> @Configuration["MachSoft:SupportEmail"]</p>
+    <p><strong>Documentation:</strong> @Configuration["MachSoft:DocumentationUrl"]</p>
+</section>

@@ -1,0 +1,76 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "YOUR_AUTHORS_PLACEHOLDER",
+  "classifications": [
+    "Web",
+    "Blazor",
+    "Razor Components",
+    "Interactive Server",
+    "MachSoft"
+  ],
+  "identity": "MachSoft.Template.Official.Server",
+  "name": "MachSoft Official Server Template",
+  "shortName": "machsoft-server",
+  "sourceName": "MachSoft.Template.Official.ServerHost",
+  "preferNameDirectory": true,
+  "symbols": {
+    "CompanyName": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "TemplateCompanyName",
+      "description": "Company label used in configuration defaults.",
+      "replaces": "TemplateCompanyName"
+    },
+    "RootNamespace": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "",
+      "description": "Optional root namespace override. If empty, the generated project name is used."
+    },
+    "EffectiveRootNamespace": {
+      "type": "generated",
+      "generator": "coalesce",
+      "parameters": {
+        "sourceVariableName": "RootNamespace",
+        "fallbackVariableName": "name"
+      },
+      "replaces": "TemplateRootNamespace"
+    },
+    "CorePackageVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "1.0.0-internal",
+      "description": "MachSoft.Template.Core package version to restore.",
+      "replaces": "0.0.0-core-version"
+    },
+    "PrivateFeedUrl": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "https://your-private-feed/v3/index.json",
+      "description": "Private NuGet feed that hosts MachSoft packages.",
+      "replaces": "https://your-private-feed/v3/index.json"
+    }
+  },
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  },
+  "primaryOutputs": [
+    {
+      "path": "MachSoft.Template.Official.ServerHost.csproj"
+    }
+  ],
+  "sources": [
+    {
+      "modifiers": [
+        {
+          "exclude": [
+            "**/[Bb]in/**",
+            "**/[Oo]bj/**",
+            ".template.config/**"
+          ]
+        }
+      ]
+    }
+  ]
+}

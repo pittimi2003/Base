@@ -1,0 +1,28 @@
+<article class="ms-feature-card">
+    <div class="ms-feature-card__header">
+        <h2>@Title</h2>
+        @if (!string.IsNullOrWhiteSpace(BadgeText))
+        {
+            <span class="ms-feature-card__badge">@BadgeText</span>
+        }
+    </div>
+
+    <p class="ms-feature-card__description">@Description</p>
+
+    @if (!string.IsNullOrWhiteSpace(Href))
+    {
+        <a class="ms-feature-card__link" href="@Href">@LinkText</a>
+    }
+</article>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+
+    [Parameter, EditorRequired] public string Description { get; set; } = string.Empty;
+
+    [Parameter] public string? BadgeText { get; set; }
+
+    [Parameter] public string? Href { get; set; }
+
+    [Parameter] public string LinkText { get; set; } = "Learn more";
+}
