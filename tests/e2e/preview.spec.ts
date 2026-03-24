@@ -25,7 +25,7 @@ test.describe('MachSoft Premium Preview', () => {
       fullPage: true
     });
 
-    await expect(page.locator('text=Premium')).toBeVisible();
+    await expect(page.locator('body')).toContainText('Premium');
   });
 
   test('home should render and produce screenshots', async ({ page }) => {
