@@ -15,9 +15,12 @@ Checklist ejecutable para declarar una release interna de la plataforma MachSoft
 
 ### 1.2 Paquete NuGet
 - [ ] `dotnet pack src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o <output>`
+- [ ] `dotnet pack src/MachSoft.Template.CorePremium/MachSoft.Template.CorePremium.csproj -c Release -o <output>`
 - [ ] Verificar generación de:
   - [ ] `MachSoft.Template.Core.<version>.nupkg`
   - [ ] `MachSoft.Template.Core.<version>.snupkg`
+  - [ ] `MachSoft.Template.CorePremium.<version>.nupkg`
+  - [ ] `MachSoft.Template.CorePremium.<version>.snupkg`
 
 ### 1.3 Template oficial
 - [ ] `dotnet pack template/MachSoft.Template.Official.Pack/MachSoft.Template.Official.Pack.csproj -c Release -o ./artifacts/templates`

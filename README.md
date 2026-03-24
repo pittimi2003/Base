@@ -5,6 +5,7 @@ Repositorio de productización en .NET 8 para el ecosistema corporativo de templ
 ## Componentes
 
 - `MachSoft.Template.Core`: paquete NuGet reusable (Razor Class Library).
+- `MachSoft.Template.CorePremium`: paquete NuGet opcional con controles enterprise avanzados (Razor Class Library).
 - `MachSoft.Template.Official.Server`: template oficial `dotnet new` para **Blazor Web App** con **Razor Components + Interactive Server rendering**.
 - `MachSoft.Template.Official.Wasm`: template oficial `dotnet new` para **Blazor WebAssembly**.
 
@@ -17,9 +18,12 @@ Repositorio de productización en .NET 8 para el ecosistema corporativo de templ
 ├── docs/
 ├── src/
 │   ├── MachSoft.Template.Core/
+│   ├── MachSoft.Template.CorePremium/
 │   ├── MachSoft.Template.Official.Server/
 │   │   └── template-content/
 │   └── MachSoft.Template.Official.Wasm/
+├── samples/
+│   └── MachSoft.Template.SampleApp/
 │       └── template-content/
 ├── Directory.Build.props
 ├── Directory.Packages.props
@@ -52,6 +56,12 @@ dotnet build MachSoft.Templates.sln -c Release --no-restore
 
 ```powershell
 dotnet pack ./src/MachSoft.Template.Core/MachSoft.Template.Core.csproj -c Release -o ./artifacts/packages
+```
+
+### Pack CorePremium
+
+```powershell
+dotnet pack ./src/MachSoft.Template.CorePremium/MachSoft.Template.CorePremium.csproj -c Release -o ./artifacts/packages
 ```
 
 ### Pack Server Template
@@ -117,3 +127,11 @@ https://your-private-feed/v3/index.json
 ```
 
 No incluir credenciales ni secretos en el repositorio.
+
+## Premium showcase local
+
+```powershell
+dotnet run --project ./samples/MachSoft.Template.SampleApp/MachSoft.Template.SampleApp.csproj
+```
+
+Abrir `https://localhost:xxxx/premium-showcase` para inspeccionar todos los controles de `MachSoft.Template.CorePremium`.

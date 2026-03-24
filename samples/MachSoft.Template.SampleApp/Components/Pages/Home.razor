@@ -1,0 +1,15 @@
+@page "/"
+
+<div class="ms-page-container">
+    <MxPageHeader Title="MachSoft SampleApp" Description="Host de referencia para validar Core + CorePremium.">
+        <Actions>
+            <MxButton Variant="MxButtonVariant.Primary" OnClick="NavigateToPremiumShowcase">Abrir Premium Showcase</MxButton>
+        </Actions>
+    </MxPageHeader>
+</div>
+
+@code {
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+
+    private void NavigateToPremiumShowcase() => Nav.NavigateTo("/premium-showcase");
+}

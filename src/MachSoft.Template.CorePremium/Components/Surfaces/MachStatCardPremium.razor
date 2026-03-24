@@ -1,0 +1,31 @@
+@namespace MachSoft.Template.CorePremium.Components.Surfaces
+
+<article class="ms-premium-stat-card" data-tone="@ToneName">
+    <header>
+        <p class="ms-premium-stat-card__label">@Title</p>
+        @if (!string.IsNullOrWhiteSpace(Icon))
+        {
+            <span aria-hidden="true">@Icon</span>
+        }
+    </header>
+    <p class="ms-premium-stat-card__value">@Value</p>
+    @if (!string.IsNullOrWhiteSpace(SupportingText))
+    {
+        <p class="ms-premium-stat-card__support">@SupportingText</p>
+    }
+    @if (!string.IsNullOrWhiteSpace(TrendText))
+    {
+        <p class="ms-premium-stat-card__trend">@TrendText</p>
+    }
+</article>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Value { get; set; } = string.Empty;
+    [Parameter] public string? SupportingText { get; set; }
+    [Parameter] public string? TrendText { get; set; }
+    [Parameter] public string? Icon { get; set; }
+    [Parameter] public MachPremiumTone Tone { get; set; } = MachPremiumTone.Neutral;
+
+    private string ToneName => Tone.ToString().ToLowerInvariant();
+}

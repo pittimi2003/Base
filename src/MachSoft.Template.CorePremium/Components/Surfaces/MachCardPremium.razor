@@ -1,0 +1,48 @@
+@namespace MachSoft.Template.CorePremium.Components.Surfaces
+
+<article class="@CardClass" aria-busy="@(State == MachPremiumSurfaceState.Loading)" aria-disabled="@(State == MachPremiumSurfaceState.Disabled)">
+    @if (HasHeader)
+    {
+        <header class="ms-premium-card__header">
+            <div>
+                @if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    <h3>@Title</h3>
+                }
+                @if (!string.IsNullOrWhiteSpace(Description))
+                {
+                    <p>@Description</p>
+                }
+                @if (HeaderTemplate is not null)
+                {
+                    @HeaderTemplate
+                }
+            </div>
+            @if (ActionsTemplate is not null)
+            {
+                <div class="ms-premium-card__actions">@ActionsTemplate</div>
+            }
+        </header>
+    }
+
+    <div class="ms-premium-card__body">@ChildContent</div>
+
+    @if (FooterTemplate is not null)
+    {
+        <footer class="ms-premium-card__footer">@FooterTemplate</footer>
+    }
+</article>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public MachPremiumTone Tone { get; set; }
+    [Parameter] public MachPremiumSurfaceState State { get; set; }
+    [Parameter] public RenderFragment? HeaderTemplate { get; set; }
+    [Parameter] public RenderFragment? ActionsTemplate { get; set; }
+    [Parameter] public RenderFragment? FooterTemplate { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private bool HasHeader => !string.IsNullOrWhiteSpace(Title) || !string.IsNullOrWhiteSpace(Description) || HeaderTemplate is not null || ActionsTemplate is not null;
+    private string CardClass => $"ms-premium-card ms-premium-card--tone-{Tone.ToString().ToLowerInvariant()} ms-premium-card--state-{State.ToString().ToLowerInvariant()}";
+}

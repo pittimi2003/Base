@@ -1,0 +1,51 @@
+@namespace MachSoft.Template.CorePremium.Components.Feedback
+
+@if (Visible)
+{
+    <section class="@ToastClass" role="status" aria-live="polite" aria-atomic="true">
+        <div>
+            <strong>@Title</strong>
+            @if (!string.IsNullOrWhiteSpace(Message))
+            {
+                <p>@Message</p>
+            }
+        </div>
+        <div class="ms-premium-toast__actions">
+            @if (ActionTemplate is not null)
+            {
+                @ActionTemplate
+            }
+            @if (Dismissible)
+            {
+                <MxIconButton Icon="✕" AriaLabel="Cerrar toast premium" Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small" OnClick="DismissAsync" />
+            }
+        </div>
+    </section>
+}
+
+@code {
+    [Parameter] public bool Visible { get; set; }
+    [Parameter] public EventCallback<bool> VisibleChanged { get; set; }
+    [Parameter] public MachPremiumTone Tone { get; set; } = MachPremiumTone.Neutral;
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public int? DurationMs { get; set; }
+    [Parameter] public bool Dismissible { get; set; } = true;
+    [Parameter] public RenderFragment? ActionTemplate { get; set; }
+
+    private string ToastClass => $"ms-premium-toast ms-premium-toast--{Tone.ToString().ToLowerInvariant()}";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Visible && DurationMs is > 0)
+        {
+            await Task.Delay(DurationMs.Value);
+            if (Visible)
+            {
+                await VisibleChanged.InvokeAsync(false);
+            }
+        }
+    }
+
+    private Task DismissAsync() => VisibleChanged.InvokeAsync(false);
+}

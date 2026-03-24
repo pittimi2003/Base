@@ -1,0 +1,47 @@
+@namespace MachSoft.Template.CorePremium.Components.Layout
+
+<header class="ms-premium-page-header" data-state="@StateName">
+    <div class="ms-premium-page-header__main">
+        <div class="ms-premium-page-header__eyebrow-row">
+            @if (!string.IsNullOrWhiteSpace(Eyebrow))
+            {
+                <p class="ms-premium-page-header__eyebrow">@Eyebrow</p>
+            }
+
+            @if (Metadata is not null)
+            {
+                <div class="ms-premium-page-header__metadata">@Metadata</div>
+            }
+        </div>
+
+        <h1>@Title</h1>
+
+        @if (!string.IsNullOrWhiteSpace(Subtitle))
+        {
+            <p class="ms-premium-page-header__subtitle">@Subtitle</p>
+        }
+    </div>
+
+    <div class="ms-premium-page-header__actions" aria-label="Page actions">
+        @if (SecondaryActions is not null)
+        {
+            <div class="ms-premium-page-header__actions-secondary">@SecondaryActions</div>
+        }
+        @if (PrimaryActions is not null)
+        {
+            <div class="ms-premium-page-header__actions-primary">@PrimaryActions</div>
+        }
+    </div>
+</header>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Eyebrow { get; set; }
+    [Parameter] public string? Subtitle { get; set; }
+    [Parameter] public MachPremiumSurfaceState State { get; set; } = MachPremiumSurfaceState.Default;
+    [Parameter] public RenderFragment? Metadata { get; set; }
+    [Parameter] public RenderFragment? SecondaryActions { get; set; }
+    [Parameter] public RenderFragment? PrimaryActions { get; set; }
+
+    private string StateName => State.ToString().ToLowerInvariant();
+}

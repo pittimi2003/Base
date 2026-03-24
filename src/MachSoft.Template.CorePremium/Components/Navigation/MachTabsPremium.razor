@@ -1,0 +1,74 @@
+@namespace MachSoft.Template.CorePremium.Components.Navigation
+
+<div class="ms-premium-tabs" role="tablist" aria-label="@AriaLabel" @onkeydown="HandleKeyboardAsync">
+    @foreach (var item in EnabledItems)
+    {
+        var active = item.Value == ActiveValue;
+        <button type="button"
+                role="tab"
+                id="@GetTabId(item.Value)"
+                aria-controls="@GetPanelId(item.Value)"
+                aria-selected="@active"
+                tabindex="@(active ? 0 : -1)"
+                class="@(active ? "ms-premium-tabs__tab is-active" : "ms-premium-tabs__tab")"
+                @onclick="() => SetActiveAsync(item.Value)">
+            <span>@item.Text</span>
+            @if (!string.IsNullOrWhiteSpace(item.Badge))
+            {
+                <MxBadge Variant="MxBadgeVariant.Neutral" Text="@item.Badge" Size="MxBadgeSize.Small" />
+            }
+        </button>
+    }
+</div>
+
+<section id="@GetPanelId(ActiveValue)" role="tabpanel" class="ms-premium-tabs__panel" aria-labelledby="@GetTabId(ActiveValue)">
+    @if (ActiveTemplate is not null)
+    {
+        @ActiveTemplate(GetActiveItem())
+    }
+</section>
+
+@code {
+    [Parameter] public IReadOnlyList<MachTabsPremiumItem> Items { get; set; } = [];
+    [Parameter, EditorRequired] public string ActiveValue { get; set; } = string.Empty;
+    [Parameter] public EventCallback<string> ActiveValueChanged { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Premium tabs";
+    [Parameter] public RenderFragment<MachTabsPremiumItem>? ActiveTemplate { get; set; }
+
+    private IReadOnlyList<MachTabsPremiumItem> EnabledItems => Items.Where(x => !x.Disabled).ToList();
+
+    private async Task HandleKeyboardAsync(KeyboardEventArgs args)
+    {
+        if (args.Key is not ("ArrowRight" or "ArrowLeft" or "Home" or "End") || EnabledItems.Count == 0)
+        {
+            return;
+        }
+
+        var currentIndex = EnabledItems.ToList().FindIndex(x => x.Value == ActiveValue);
+        if (currentIndex < 0)
+        {
+            currentIndex = 0;
+        }
+
+        var nextIndex = args.Key switch
+        {
+            "ArrowRight" => (currentIndex + 1) % EnabledItems.Count,
+            "ArrowLeft" => (currentIndex - 1 + EnabledItems.Count) % EnabledItems.Count,
+            "Home" => 0,
+            "End" => EnabledItems.Count - 1,
+            _ => currentIndex
+        };
+
+        await SetActiveAsync(EnabledItems[nextIndex].Value);
+    }
+
+    private Task SetActiveAsync(string value)
+    {
+        ActiveValue = value;
+        return ActiveValueChanged.InvokeAsync(value);
+    }
+
+    private MachTabsPremiumItem GetActiveItem() => Items.FirstOrDefault(x => x.Value == ActiveValue) ?? Items.First();
+    private static string GetTabId(string value) => $"ms-premium-tab-{value.ToLowerInvariant()}";
+    private static string GetPanelId(string value) => $"ms-premium-panel-{value.ToLowerInvariant()}";
+}

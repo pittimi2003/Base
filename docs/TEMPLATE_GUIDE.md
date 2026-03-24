@@ -59,3 +59,11 @@ dotnet new uninstall MachSoft.Template.Official.Wasm
 - `RootNamespace`: namespace raíz opcional.
 - `CorePackageVersion`: versión de `MachSoft.Template.Core`.
 - `PrivateFeedUrl`: URL del feed privado para `NuGet.config`.
+
+
+## Actualización v1.0.0-internal (CorePremium)
+
+- Se incorpora `src/MachSoft.Template.CorePremium` como RCL opcional para controles enterprise avanzados.
+- `MachSoft.Template.Core` mantiene su rol foundation sin dependencias hacia Premium.
+- Se agrega `samples/MachSoft.Template.SampleApp` para validación visual de `Core + CorePremium` en la ruta `/premium-showcase`.
+- Se agrega flujo de empaquetado `build/scripts/Pack-CorePremium.ps1` y su integración en `Pack-All.ps1`.

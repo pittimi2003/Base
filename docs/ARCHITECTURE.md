@@ -69,3 +69,11 @@ No credentials are stored in source control. Teams are expected to inject creden
 - Server and Wasm remain separate official templates.
 - The shared reusable package remains `MachSoft.Template.Core`.
 - No Docker, CI/CD workflow, authentication, database, or business features are added to generated apps.
+
+
+## Actualización v1.0.0-internal (CorePremium)
+
+- Se incorpora `src/MachSoft.Template.CorePremium` como RCL opcional para controles enterprise avanzados.
+- `MachSoft.Template.Core` mantiene su rol foundation sin dependencias hacia Premium.
+- Se agrega `samples/MachSoft.Template.SampleApp` para validación visual de `Core + CorePremium` en la ruta `/premium-showcase`.
+- Se agrega flujo de empaquetado `build/scripts/Pack-CorePremium.ps1` y su integración en `Pack-All.ps1`.

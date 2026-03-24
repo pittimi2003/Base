@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Razor">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <IsPackable>true</IsPackable>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+    <PackageId>MachSoft.Template.CorePremium</PackageId>
+    <Description>Premium enterprise controls for MachSoft Blazor ecosystem (advanced layout, navigation, overlays and feedback) built as an optional extension over MachSoft.Template.Core.</Description>
+    <PackageTags>machsoft;template;blazor;premium;enterprise;razor-class-library</PackageTags>
+    <PackageReadmeFile>NUGET_README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MachSoft.Template.Core\MachSoft.Template.Core.csproj" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="NUGET_README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+</Project>

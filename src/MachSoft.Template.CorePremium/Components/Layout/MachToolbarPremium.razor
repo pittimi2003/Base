@@ -1,0 +1,17 @@
+@namespace MachSoft.Template.CorePremium.Components.Layout
+
+<div class="ms-premium-toolbar @(IsDense ? "ms-premium-toolbar--dense" : string.Empty)" role="region" aria-label="Toolbar">
+    <div class="ms-premium-toolbar__start">@StartContent</div>
+    @if (FiltersContent is not null)
+    {
+        <div class="ms-premium-toolbar__filters">@FiltersContent</div>
+    }
+    <div class="ms-premium-toolbar__end">@EndContent</div>
+</div>
+
+@code {
+    [Parameter] public bool IsDense { get; set; }
+    [Parameter] public RenderFragment? StartContent { get; set; }
+    [Parameter] public RenderFragment? FiltersContent { get; set; }
+    [Parameter] public RenderFragment? EndContent { get; set; }
+}
