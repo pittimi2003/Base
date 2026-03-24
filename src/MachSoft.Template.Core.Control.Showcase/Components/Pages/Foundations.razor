@@ -2,25 +2,40 @@
 
 <PageTitle>Fundamentos visuales</PageTitle>
 
-<MxPageHeader Title="Fundamentos visuales"
-              Description="Vista de validación para tokens, superficies y tipografía base aplicada al catálogo.">
+<ShowcasePageTemplate Eyebrow="Catalog · Foundations"
+                      Title="Fundamentos visuales"
+                      Description="Vista de validación para tokens, superficies y contraste aplicado al catálogo oficial.">
     <Metadata>
         <MxBadge Variant="MxBadgeVariant.Neutral" Text="Light/Dark" />
+        <MxBadge Variant="MxBadgeVariant.Brand" Text="Token driven" />
     </Metadata>
-</MxPageHeader>
+    <ChildContent>
+        <ShowcaseSection Title="Superficies base"
+                         Description="Verifica contraste entre canvas, surface y borde en ambos temas.">
+            <div class="ms-showcase-foundations-grid">
+                <ShowcasePreviewBlock Title="Color y superficie"
+                                      Caption="Gradiente de marca sobre surface tokenizada para evaluar legibilidad.">
+                    <div class="ms-showcase-swatch"></div>
+                </ShowcasePreviewBlock>
 
-<div class="ms-showcase-foundations-grid">
-    <MxCard Title="Color y superficie" Variant="SurfaceVariant.Outlined">
-        <ChildContent>
-            <p>Validar contraste de fondo, borde y texto en ambos temas.</p>
-            <div class="ms-showcase-swatch"></div>
-        </ChildContent>
-    </MxCard>
+                <ShowcasePreviewBlock Title="Capas de surface"
+                                      Caption="Muting y elevated para confirmar jerarquía visual consistente.">
+                    <div class="ms-showcase-surface-stack">
+                        <div class="ms-showcase-surface-sample">Surface</div>
+                        <div class="ms-showcase-surface-sample ms-showcase-surface-sample--muted">Muted</div>
+                        <div class="ms-showcase-surface-sample ms-showcase-surface-sample--raised">Raised</div>
+                    </div>
+                </ShowcasePreviewBlock>
+            </div>
+        </ShowcaseSection>
 
-    <MxCard Title="Spacing y densidad" Variant="SurfaceVariant.Outlined">
-        <ChildContent>
-            <p>Escala de espacios tokenizada para composición consistente.</p>
-            <div class="ms-showcase-spacing"></div>
-        </ChildContent>
-    </MxCard>
-</div>
+        <ShowcaseSection Title="Ritmo y densidad"
+                         Description="Valida escala de spacing para evitar composiciones inconsistentes.">
+            <ShowcasePreviewBlock Title="Spacing tokenizado"
+                                  Caption="La guía visual ayuda a comparar ritmo entre secciones y bloques."
+                                  IsCompact="true">
+                <div class="ms-showcase-spacing"></div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </ChildContent>
+</ShowcasePageTemplate>

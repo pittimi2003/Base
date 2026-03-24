@@ -17,24 +17,41 @@ Definir el catálogo oficial `Mx*` como paquete NuGet distribuible y host de val
 - `wwwroot/css/machsoft-template-core-control.css`
 
 ## Roadmap de familias preparado
-- DataGrid / Tabla
-- Select / ComboBox / Autocomplete / MultiSelect
-- Button / IconButton
-- DatePicker / DateRangePicker
-- TimePicker
-- Scheduler
-- List / ListBox
-- Dialog / Popup
-- Snackbar / Toast
-- Alert
-- Progress
-- Avatar
-- Chip
-- Tooltip
+- Actions
+- Inputs
+- Selection
+- DateTime
+- Feedback
+- Display
+- Data
 - Upload
+- Scheduling
+
+## Consolidación del Showcase (iteración actual)
+- Shell estable con navegación persistente, encabezado de contexto y área de contenido uniforme.
+- Toggle light/dark aplicado en `ms-control-shell` mediante `data-mx-theme` para validar tokens semánticos sin acoplarse al host.
+- Patrón reusable para páginas por familia con estructura fija:
+  - encabezado (título + descripción + metadata),
+  - sección de ejemplo base,
+  - sección de variantes,
+  - sección de estados,
+  - sección de notas técnicas/visuales.
+- Bloques de preview estándar (`ShowcasePreviewBlock`) para evitar páginas improvisadas y sostener consistencia de spacing/surfaces.
+
+## Endurecimiento visual y de theming
+- `Core.Control` expone utilidades base reutilizables (`mx-control-host`, `mx-control-surface`, `mx-control-focusable`) para asegurar superficies y foco visibles con tokens semánticos en cualquier host.
+- Showcase concentra alias CSS locales para spacing/radius/border/focus/elevation, reduciendo duplicación y sobreespecificación.
+- Navegación y bloques de preview incluyen `hover`/`active`/`focus-visible` consistentes para validación real de accesibilidad visual en light/dark.
+
+Tokens consolidados para la base visual:
+- Superficies: `--mx-color-bg-canvas`, `--mx-color-bg-surface`, `--mx-color-bg-surface-muted`, `--mx-color-bg-surface-raised`.
+- Texto: `--mx-color-text-primary`, `--mx-color-text-secondary`, `--mx-color-text-muted`.
+- Bordes/foco: `--mx-color-border-subtle`, `--mx-color-border-default`, `--mx-color-border-focus`, `--mx-focus-ring-width`, `--mx-focus-ring-offset`.
+- Espaciado y forma: `--mx-space-semantic-*`, `--mx-radius-*`.
+- Elevación/movimiento: `--mx-shadow-1`, `--mx-shadow-2`, `--mx-motion-duration-fast`, `--mx-motion-ease-standard`.
 
 ## Validación en Showcase
-- Home del catálogo
-- Foundations visuales (`/foundations`)
-- Familias por roadmap
-- Toggle de tema light/dark
+- Home del catálogo.
+- Foundations visuales (`/foundations`).
+- Families (`/families`) con acceso a plantillas por categoría (`/families/{key}`).
+- Toggle de tema light/dark con superficies de comparación explícitas.

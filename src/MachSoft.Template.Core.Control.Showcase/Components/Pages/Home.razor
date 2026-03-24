@@ -2,21 +2,45 @@
 
 <PageTitle>Core.Control Showcase</PageTitle>
 
-<MxPageHeader Title="MachSoft.Template.Core.Control"
-              Description="Host oficial para validar visual y funcionalmente el catálogo de controles Mx* sobre la base de design system MachSoft.">
+<ShowcasePageTemplate Eyebrow="Catalog Home"
+                      Title="MachSoft.Template.Core.Control"
+                      Description="Host oficial para validar visual y funcionalmente el catálogo Mx* sobre el design system MachSoft.">
     <Metadata>
         <MxBadge Variant="MxBadgeVariant.Brand" Text="RCL NuGet-ready" />
         <MxBadge Variant="MxBadgeVariant.Neutral" Text="Cross-hosting" />
-        <MxBadge Variant="MxBadgeVariant.Success" Text="Showcase desacoplado" />
+        <MxBadge Variant="MxBadgeVariant.Success" Text="Showcase hardened" />
     </Metadata>
-</MxPageHeader>
-
-<MxCard Title="Objetivo de esta iteración" Variant="SurfaceVariant.Outlined">
     <ChildContent>
-        <ul class="ms-stack-sm">
-            <li>Separar responsabilidades entre base técnica (`Core`), catálogo distribuible (`Core.Control`) y host de validación (`Core.Control.Showcase`).</li>
-            <li>Preparar una base mantenible para evolucionar familias premium sin romper contratos.</li>
-            <li>Mantener validación visual de light/dark y del lenguaje Mx*.</li>
-        </ul>
+        <ShowcaseSection Title="Objetivo de esta iteración"
+                         Description="Consolidar el Showcase como plataforma de validación visual y funcional antes de crecer por familias.">
+            <MxCard Title="Criterios de consolidación" Variant="SurfaceVariant.Outlined">
+                <ChildContent>
+                    <ul class="ms-showcase-notes-list">
+                        <li>Separación estricta entre paquete distribuible y host de validación.</li>
+                        <li>Patrón reusable para páginas de familias con ejemplos, variantes, estados y notas.</li>
+                        <li>Consistencia de superficies en light/dark con tokens oficiales.</li>
+                    </ul>
+                </ChildContent>
+            </MxCard>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="Acceso rápido"
+                         Description="Entrada directa a foundations y mapa de familias preparadas.">
+            <div class="ms-showcase-action-grid">
+                <MxCard Title="Foundations" Variant="SurfaceVariant.Outlined">
+                    <ChildContent>
+                        <p>Inspección de tokens, superficies y densidad visual.</p>
+                        <MxButton Variant="MxButtonVariant.Secondary" Href="/foundations">Abrir foundations</MxButton>
+                    </ChildContent>
+                </MxCard>
+
+                <MxCard Title="Families" Variant="SurfaceVariant.Outlined">
+                    <ChildContent>
+                        <p>Registro de categorías listas para crecimiento incremental.</p>
+                        <MxButton Variant="MxButtonVariant.Secondary" Href="/families">Abrir families</MxButton>
+                    </ChildContent>
+                </MxCard>
+            </div>
+        </ShowcaseSection>
     </ChildContent>
-</MxCard>
+</ShowcasePageTemplate>

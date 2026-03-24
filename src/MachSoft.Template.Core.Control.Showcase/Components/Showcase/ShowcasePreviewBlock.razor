@@ -1,0 +1,28 @@
+<article class="ms-showcase-preview-block">
+    <header class="ms-showcase-preview-block__header">
+        <h3>@Title</h3>
+        @if (!string.IsNullOrWhiteSpace(Caption))
+        {
+            <p>@Caption</p>
+        }
+    </header>
+
+    <div class="mx-control-surface mx-control-surface--raised ms-showcase-preview-block__surface @(IsCompact ? "ms-showcase-preview-block__surface--compact" : null)">
+        @ChildContent
+    </div>
+
+    @if (Notes is not null)
+    {
+        <footer class="ms-showcase-preview-block__notes">
+            @Notes
+        </footer>
+    }
+</article>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Caption { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public RenderFragment? Notes { get; set; }
+}
