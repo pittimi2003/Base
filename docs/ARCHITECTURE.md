@@ -2,11 +2,13 @@
 
 ## Overview
 
-The repository is structured as a .NET 8 productization workspace for three active deliverables and one distribution concern:
+The repository is structured as a .NET 8 productization workspace for five active deliverables and one distribution concern:
 
 - `MachSoft.Template.Core`: reusable Razor Class Library and NuGet package.
 - `MachSoft.Template.Official.Server`: official `dotnet new` template package for Blazor Web App with Razor Components + Interactive Server rendering.
 - `MachSoft.Template.Official.Wasm`: official `dotnet new` template package for Blazor WebAssembly.
+- `MachSoft.Template.Core.Control`: official Mx* control catalog package (RCL) prepared for internal NuGet distribution.
+- `MachSoft.Template.Core.Control.Showcase`: isolated validation host for catalog visual and functional checks.
 - Private feed onboarding: placeholder configuration and operational documentation for internal distribution.
 
 ## Solution boundaries
@@ -46,11 +48,36 @@ Responsibilities:
 
 The generated app is a .NET 8 Blazor WebAssembly host that references `MachSoft.Template.Core` from NuGet.
 
+
+### 4. Official control catalog package
+
+`src/MachSoft.Template.Core.Control` is a distributable Razor Class Library.
+
+Responsibilities:
+
+- expose the official control catalog surface (`Mx*`) as it is implemented incrementally
+- depend on `MachSoft.Template.Core` for design tokens and shared foundation
+- publish static web assets for control-specific styling
+- stay host-agnostic (compatible with Server and WebAssembly)
+- keep showcase-only roadmap/navigation artifacts out of the distributable package
+
+### 5. Showcase host (non-distributable)
+
+`src/MachSoft.Template.Core.Control.Showcase` is an independent host used only to validate the catalog.
+
+Responsibilities:
+
+- visual/functional validation for light and dark themes
+- category-based navigation to grow the catalog by families
+- host roadmap metadata/presentation used only for validation
+- avoid adding package payload into `MachSoft.Template.Core.Control`
+
 ## Packaging strategy
 
-### Core package
+### Core packages
 
-`MachSoft.Template.Core` is packed directly from its SDK-style `.csproj` and can be published to any internal NuGet v3 source.
+- `MachSoft.Template.Core` is packed directly from its SDK-style `.csproj` and can be published to any internal NuGet v3 source.
+- `MachSoft.Template.Core.Control` is packed as a Razor Class Library with symbols/readme and static web assets for catalog styling.
 
 ### Template packages
 

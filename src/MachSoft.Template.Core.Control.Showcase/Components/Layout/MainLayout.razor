@@ -1,0 +1,22 @@
+@inherits LayoutComponentBase
+
+<div class="ms-control-shell" data-mx-theme="@CurrentTheme">
+    <div class="ms-showcase-layout">
+        <aside class="ms-showcase-layout__nav" role="navigation" aria-label="Navegación de catálogo">
+            <NavMenu CurrentTheme="@CurrentTheme" OnToggleTheme="ToggleTheme" />
+        </aside>
+
+        <main class="ms-showcase-layout__content">
+            @Body
+        </main>
+    </div>
+</div>
+
+@code {
+    private string CurrentTheme { get; set; } = "light";
+
+    private void ToggleTheme()
+    {
+        CurrentTheme = CurrentTheme == "light" ? "dark" : "light";
+    }
+}

@@ -1,0 +1,157 @@
+html,
+body {
+  margin: 0;
+  font-family: var(--mx-font-family-base, "Inter", "Segoe UI", sans-serif);
+}
+
+a {
+  color: inherit;
+}
+
+.ms-showcase-layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  min-height: 100vh;
+}
+
+.ms-showcase-layout__nav {
+  border-right: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  background: var(--mx-color-bg-surface, var(--ms-color-surface, #ffffff));
+  padding: var(--ms-space-5, 1.5rem);
+}
+
+.ms-showcase-layout__content {
+  padding: var(--ms-space-5, 1.5rem);
+  display: grid;
+  gap: var(--ms-space-4, 1rem);
+  align-content: start;
+}
+
+.ms-showcase-nav {
+  display: grid;
+  gap: var(--ms-space-4, 1rem);
+}
+
+.ms-showcase-nav h1 {
+  margin: 0;
+  font-size: 1.35rem;
+}
+
+.ms-showcase-nav__eyebrow {
+  margin: 0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ms-color-brand, #204ecf);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+.ms-showcase-nav__description {
+  margin: 0;
+  color: var(--mx-color-text-secondary, var(--ms-color-text-soft, #44506a));
+}
+
+.ms-showcase-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.35rem;
+}
+
+.ms-showcase-nav a {
+  display: block;
+  text-decoration: none;
+  padding: 0.5rem 0.65rem;
+  border-radius: 0.6rem;
+}
+
+.ms-showcase-nav a.active {
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 18%, transparent);
+  color: var(--ms-color-brand, #204ecf);
+  font-weight: 600;
+}
+
+.ms-showcase-foundations-grid {
+  display: grid;
+  gap: var(--ms-space-4, 1rem);
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.ms-showcase-swatch {
+  border-radius: var(--ms-radius-md, 0.85rem);
+  border: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  background: linear-gradient(135deg, color-mix(in srgb, var(--ms-color-brand, #204ecf) 15%, transparent), var(--mx-color-bg-surface, var(--ms-color-surface, #ffffff)));
+  min-height: 64px;
+}
+
+.ms-showcase-spacing {
+  min-height: 64px;
+  border-radius: var(--ms-radius-md, 0.85rem);
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in srgb, var(--ms-color-brand, #204ecf) 24%, transparent) 0,
+    color-mix(in srgb, var(--ms-color-brand, #204ecf) 24%, transparent) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  border: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+}
+
+@media (max-width: 960px) {
+  .ms-showcase-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .ms-showcase-layout__nav {
+    border-right: 0;
+    border-bottom: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  }
+}
+
+
+.ms-control-shell {
+  min-height: 100vh;
+  background-color: var(--mx-color-bg-canvas, var(--ms-color-surface, #ffffff));
+  color: var(--mx-color-text-primary, var(--ms-color-text, #11233d));
+}
+
+.ms-control-catalog-roadmap {
+  display: grid;
+  gap: var(--ms-space-4, 1rem);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+}
+
+.ms-control-catalog-roadmap__item {
+  border: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  border-radius: var(--ms-radius-md, 0.85rem);
+  padding: var(--ms-space-4, 1rem);
+  background: var(--mx-color-bg-surface, var(--ms-color-surface, #ffffff));
+  box-shadow: var(--ms-shadow-sm, 0 12px 32px -24px rgba(0, 0, 0, 0.35));
+}
+
+.ms-control-catalog-roadmap__item > header {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--ms-space-2, 0.5rem);
+  align-items: baseline;
+}
+
+.ms-control-catalog-roadmap__item h3 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.ms-control-catalog-roadmap__item p {
+  margin: var(--ms-space-2, 0.5rem) 0 0;
+  color: var(--mx-color-text-secondary, var(--ms-color-text-soft, #44506a));
+  font-size: 0.9rem;
+}
+
+.ms-control-catalog-roadmap__status {
+  border-radius: 999px;
+  padding: 0.15rem 0.55rem;
+  font-size: 0.75rem;
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 18%, transparent);
+  color: var(--ms-color-brand, #204ecf);
+}

@@ -1,0 +1,22 @@
+@page "/"
+
+<PageTitle>Core.Control Showcase</PageTitle>
+
+<MxPageHeader Title="MachSoft.Template.Core.Control"
+              Description="Host oficial para validar visual y funcionalmente el catálogo de controles Mx* sobre la base de design system MachSoft.">
+    <Metadata>
+        <MxBadge Variant="MxBadgeVariant.Brand" Text="RCL NuGet-ready" />
+        <MxBadge Variant="MxBadgeVariant.Neutral" Text="Cross-hosting" />
+        <MxBadge Variant="MxBadgeVariant.Success" Text="Showcase desacoplado" />
+    </Metadata>
+</MxPageHeader>
+
+<MxCard Title="Objetivo de esta iteración" Variant="SurfaceVariant.Outlined">
+    <ChildContent>
+        <ul class="ms-stack-sm">
+            <li>Separar responsabilidades entre base técnica (`Core`), catálogo distribuible (`Core.Control`) y host de validación (`Core.Control.Showcase`).</li>
+            <li>Preparar una base mantenible para evolucionar familias premium sin romper contratos.</li>
+            <li>Mantener validación visual de light/dark y del lenguaje Mx*.</li>
+        </ul>
+    </ChildContent>
+</MxCard>

@@ -1,0 +1,8 @@
+/*
+  Package-level style entrypoint for MachSoft.Template.Core.Control.
+  Keep only distributable, reusable catalog styles here.
+*/
+
+.mx-control-host {
+  color: var(--mx-color-text-primary, var(--ms-color-text, #11233d));
+}

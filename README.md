@@ -7,6 +7,8 @@ Repositorio de productización en .NET 8 para el ecosistema corporativo de templ
 - `MachSoft.Template.Core`: paquete NuGet reusable (Razor Class Library).
 - `MachSoft.Template.Official.Server`: template oficial `dotnet new` para **Blazor Web App** con **Razor Components + Interactive Server rendering**.
 - `MachSoft.Template.Official.Wasm`: template oficial `dotnet new` para **Blazor WebAssembly**.
+- `MachSoft.Template.Core.Control`: catálogo oficial `Mx*` empaquetable como NuGet (RCL).
+- `MachSoft.Template.Core.Control.Showcase`: host separado para validación visual/funcional del catálogo.
 
 ## Estructura del repositorio
 
@@ -17,6 +19,8 @@ Repositorio de productización en .NET 8 para el ecosistema corporativo de templ
 ├── docs/
 ├── src/
 │   ├── MachSoft.Template.Core/
+│   ├── MachSoft.Template.Core.Control/
+│   ├── MachSoft.Template.Core.Control.Showcase/
 │   ├── MachSoft.Template.Official.Server/
 │   │   └── template-content/
 │   └── MachSoft.Template.Official.Wasm/
@@ -117,3 +121,22 @@ https://your-private-feed/v3/index.json
 ```
 
 No incluir credenciales ni secretos en el repositorio.
+
+
+## Control Catalog (nuevo)
+
+- `MachSoft.Template.Core.Control` referencia `MachSoft.Template.Core` y publica static web assets del catálogo.
+- `MachSoft.Template.Core.Control.Showcase` referencia `MachSoft.Template.Core.Control` y sirve como entorno de validación visual y funcional (light/dark, navegación por familias, fundamentos).
+
+### Pack Core.Control
+
+```powershell
+dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.csproj -c Release -o ./artifacts/packages
+```
+
+
+### Estado actual del catálogo `Core.Control`
+
+- Existe la **base arquitectónica y de empaquetado** (`RCL` + `NuGet`) para `MachSoft.Template.Core.Control`.
+- Existe un **Showcase desacoplado** para validación visual/funcional.
+- La implementación completa de todas las familias premium sigue pendiente para iteraciones posteriores (no está cerrada en esta etapa).
