@@ -10,9 +10,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BaGet.Web" Version="0.4.0-preview2" />
-    <PackageReference Include="BaGet.Database.Sqlite" Version="0.4.0-preview2" />
-    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="8.0.0" />
+    <PackageReference Include="BaGet.Web" />
+    <PackageReference Include="BaGet.Database.Sqlite" />
+    <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" />
   </ItemGroup>
 
   <ItemGroup>
