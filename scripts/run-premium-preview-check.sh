@@ -18,7 +18,9 @@ if command -v xvfb-run >/dev/null 2>&1; then
 else
   echo "[preview-check] Ejecutando Playwright sin xvfb-run"
   npm run preview
-fi
+  fi
+  sleep 2
+done
 
 popd >/dev/null
 

@@ -1,3 +1,4 @@
+import { test, expect } from '@playwright/test';
 import fs from 'fs';
 import path from 'path';
 import { test, expect, type Page } from '@playwright/test';

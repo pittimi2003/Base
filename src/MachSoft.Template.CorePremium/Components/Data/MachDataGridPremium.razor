@@ -18,22 +18,22 @@
             {
                 <span class="ms-premium-data-grid__counter">@Items.Count registro(s)</span>
             }
-            @if (ToolbarContent is not null)
-            {
+        @if (ToolbarContent is not null)
+        {
                 @ToolbarContent
-            }
-        </div>
+        }
+    </div>
     </div>
 
     @if (IsLoading)
     {
         <div class="ms-premium-data-grid__loading" role="status" aria-live="polite">
             @if (LoadingTemplate is not null)
-            {
-                @LoadingTemplate
-            }
-            else
-            {
+    {
+        @LoadingTemplate
+    }
+    else
+    {
                 <span class="ms-premium-spinner" aria-hidden="true"></span>
                 <span>Cargando datos...</span>
             }

@@ -1,4 +1,3 @@
-import path from 'path';
 import { defineConfig } from '@playwright/test';
 
 const PORT = process.env.E2E_PORT ?? '5010';
@@ -14,14 +13,11 @@ export default defineConfig({
   timeout: 60_000,
   globalTimeout: 15 * 60_000,
   expect: {
-    timeout: 20_000
+    timeout: 10000
   },
-  fullyParallel: false,
-  workers: process.env.CI ? 1 : undefined,
-  retries: 0,
-  reporter: process.env.CI ? [['line']] : [['list']],
+  reporter: [['list']],
   use: {
-    baseURL,
+    browserName: 'chromium',
     headless: true,
     trace: 'on-first-retry',
     launchOptions: {
