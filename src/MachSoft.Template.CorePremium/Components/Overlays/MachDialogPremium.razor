@@ -1,0 +1,53 @@
+@namespace MachSoft.Template.CorePremium.Components.Overlays
+
+@if (Open)
+{
+    <div class="ms-premium-overlay" @onclick="CloseFromOverlayAsync">
+        <section class="@DialogClass"
+                 role="dialog"
+                 aria-modal="true"
+                 aria-labelledby="@_titleId"
+                 @onclick:stopPropagation="true"
+                 @onkeydown="HandleKeyDownAsync"
+                 tabindex="0">
+            <header class="ms-premium-dialog__header">
+                <div>
+                    <h3 id="@_titleId">@Title</h3>
+                    @if (!string.IsNullOrWhiteSpace(Description))
+                    {
+                        <p>@Description</p>
+                    }
+                </div>
+                <MxIconButton Icon="✕" AriaLabel="Cerrar diálogo premium" Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small" OnClick="CloseAsync" />
+            </header>
+            <div class="ms-premium-dialog__body">@ChildContent</div>
+            @if (Actions is not null)
+            {
+                <footer class="ms-premium-dialog__footer">@Actions</footer>
+            }
+        </section>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public MachPremiumDialogSize Size { get; set; } = MachPremiumDialogSize.Default;
+    [Parameter] public bool CloseOnOverlay { get; set; } = true;
+    [Parameter] public bool CloseOnEscape { get; set; } = true;
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public RenderFragment? Actions { get; set; }
+
+    private readonly string _titleId = $"ms-premium-dialog-title-{Guid.NewGuid():N}";
+    private string DialogClass => $"ms-premium-dialog ms-premium-dialog--{Size.ToString().ToLowerInvariant()}";
+
+    private Task CloseAsync() => OpenChanged.InvokeAsync(false);
+
+    private Task CloseFromOverlayAsync()
+        => CloseOnOverlay ? CloseAsync() : Task.CompletedTask;
+
+    private Task HandleKeyDownAsync(KeyboardEventArgs args)
+        => CloseOnEscape && args.Key == "Escape" ? CloseAsync() : Task.CompletedTask;
+}

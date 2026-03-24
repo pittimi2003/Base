@@ -1,0 +1,25 @@
+@namespace MachSoft.Template.CorePremium.Components.Surfaces
+
+<section class="ms-premium-section-panel" aria-label="@Title">
+    <header class="ms-premium-section-panel__header">
+        <div>
+            <h2>@Title</h2>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p>@Description</p>
+            }
+        </div>
+        @if (Actions is not null)
+        {
+            <div class="ms-premium-section-panel__actions">@Actions</div>
+        }
+    </header>
+    <div class="ms-premium-section-panel__body">@ChildContent</div>
+</section>
+
+@code {
+    [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? Actions { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+}

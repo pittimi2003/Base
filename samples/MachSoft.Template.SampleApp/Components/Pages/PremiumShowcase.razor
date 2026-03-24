@@ -1,0 +1,128 @@
+@page "/premium-showcase"
+
+<div class="ms-page-container ms-stack-md">
+    <MachPageHeaderPremium Title="Control Center Premium"
+                           Eyebrow="MachSoft.Template.CorePremium"
+                           Subtitle="Conjunto inicial de controles enterprise avanzados para escenarios operativos reales.">
+        <Metadata>
+            <MxBadge Variant="MxBadgeVariant.Brand" Text="v1.0.0-internal" />
+            <MxBadge Variant="MxBadgeVariant.Success" Text="Optional package" />
+        </Metadata>
+        <SecondaryActions>
+            <MxButton Variant="MxButtonVariant.Tertiary">Exportar</MxButton>
+        </SecondaryActions>
+        <PrimaryActions>
+            <MxButton Variant="MxButtonVariant.Primary" OnClick="(() => IsToastVisible = true)">Guardar cambios</MxButton>
+        </PrimaryActions>
+    </MachPageHeaderPremium>
+
+    <MachToolbarPremium>
+        <StartContent>
+            <MxTextField Label="Buscar" Value="@Search" ValueChanged="@(v => Search = v)" Placeholder="Order id o cliente" />
+        </StartContent>
+        <FiltersContent>
+            <MxSelect Label="Estado" Value="@Filter" ValueChanged="@(v => Filter = v)" Options="@FilterOptions" Placeholder="Todos" />
+        </FiltersContent>
+        <EndContent>
+            <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small" OnClick="(() => IsDialogOpen = true)">Nuevo filtro</MxButton>
+        </EndContent>
+    </MachToolbarPremium>
+
+    <div class="ms-grid ms-grid--3">
+        <MachStatCardPremium Title="Orders" Value="12,481" SupportingText="Last 24h" TrendText="+5.2%" Tone="MachPremiumTone.Success" Icon="📦" />
+        <MachStatCardPremium Title="Incidents" Value="23" SupportingText="Open incidents" TrendText="-3" Tone="MachPremiumTone.Warning" Icon="⚠️" />
+        <MachStatCardPremium Title="SLA" Value="99.1%" SupportingText="On-time dispatch" TrendText="+0.7%" Tone="MachPremiumTone.Brand" Icon="✅" />
+    </div>
+
+    <MachSectionPanelPremium Title="Operational overview" Description="Composición avanzada de tabs, cards y estados.">
+        <Actions>
+            <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Refresh</MxButton>
+        </Actions>
+        <ChildContent>
+            <MachTabsPremium Items="@Tabs" ActiveValue="@ActiveTab" ActiveValueChanged="OnTabChanged" AriaLabel="Vistas premium">
+                <ActiveTemplate Context="tab">
+                    <MachCardPremium Title="@tab.Text"
+                                     Description="@tab.Hint"
+                                     Tone="MachPremiumTone.Brand"
+                                     State="MachPremiumSurfaceState.Default">
+                        <ActionsTemplate>
+                            <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Configurar</MxButton>
+                        </ActionsTemplate>
+                        <ChildContent>
+                            <p class="ms-text-sm">Contenido dinámico para <strong>@tab.Text</strong> con contexto enterprise y slots composables.</p>
+                        </ChildContent>
+                        <FooterTemplate>
+                            <MxStatusIndicator Status="MxStatusVariant.Success" Label="Healthy" />
+                        </FooterTemplate>
+                    </MachCardPremium>
+                </ActiveTemplate>
+            </MachTabsPremium>
+        </ChildContent>
+    </MachSectionPanelPremium>
+
+    <MachEmptyStatePremium Title="No existen resultados para el filtro aplicado"
+                           Description="Prueba con otro rango de fechas o limpia filtros para recuperar datos."
+                           Icon="📭">
+        <Actions>
+            <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Limpiar filtros</MxButton>
+            <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Crear consulta</MxButton>
+        </Actions>
+    </MachEmptyStatePremium>
+
+    <MachDialogPremium Open="@IsDialogOpen" OpenChanged="OnDialogChanged" Title="Crear filtro premium" Description="Configura una vista guardada para tu operación.">
+        <ChildContent>
+            <MxFormSection Title="Nuevo filtro" IsCompact="true">
+                <ChildContent>
+                    <MxTextField Label="Nombre" Value="@NewFilterName" ValueChanged="@(v => NewFilterName = v)" Placeholder="Top priority orders" />
+                </ChildContent>
+            </MxFormSection>
+        </ChildContent>
+        <Actions>
+            <MxButton Variant="MxButtonVariant.Secondary" OnClick="(() => IsDialogOpen = false)">Cancelar</MxButton>
+            <MxButton Variant="MxButtonVariant.Primary" OnClick="(() => IsDialogOpen = false)">Guardar</MxButton>
+        </Actions>
+    </MachDialogPremium>
+
+    <MachToastPremium Visible="@IsToastVisible" VisibleChanged="OnToastVisibleChanged" Title="Cambios aplicados" Message="La configuración premium fue guardada correctamente." Tone="MachPremiumTone.Success" DurationMs="3500" />
+</div>
+
+@code {
+    private string? Search { get; set; }
+    private string? Filter { get; set; }
+    private string? NewFilterName { get; set; }
+    private bool IsDialogOpen { get; set; }
+    private bool IsToastVisible { get; set; }
+    private string ActiveTab { get; set; } = "overview";
+
+    private IReadOnlyList<MxSelectOption> FilterOptions { get; } =
+    [
+        new("all", "Todos"),
+        new("critical", "Críticos"),
+        new("blocked", "Bloqueados")
+    ];
+
+    private IReadOnlyList<MachTabsPremiumItem> Tabs { get; } =
+    [
+        new("overview", "Overview", "KPIs y estado general", "3"),
+        new("alerts", "Alerts", "Alertas activas y acciones", "12"),
+        new("workload", "Workload", "Carga de trabajo por equipo", "7")
+    ];
+
+    private Task OnTabChanged(string value)
+    {
+        ActiveTab = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnDialogChanged(bool open)
+    {
+        IsDialogOpen = open;
+        return Task.CompletedTask;
+    }
+
+    private Task OnToastVisibleChanged(bool visible)
+    {
+        IsToastVisible = visible;
+        return Task.CompletedTask;
+    }
+}
