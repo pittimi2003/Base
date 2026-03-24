@@ -1,8 +1,12 @@
 @namespace MachSoft.Template.CorePremium.Components.Surfaces
 
-<section class="ms-premium-section-panel" aria-label="@Title">
+<section class="@PanelClass" aria-label="@Title">
     <header class="ms-premium-section-panel__header">
         <div>
+            @if (!string.IsNullOrWhiteSpace(Eyebrow))
+            {
+                <p class="ms-premium-section-panel__eyebrow">@Eyebrow</p>
+            }
             <h2>@Title</h2>
             @if (!string.IsNullOrWhiteSpace(Description))
             {
@@ -19,7 +23,11 @@
 
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
+    [Parameter] public string? Eyebrow { get; set; }
     [Parameter] public string? Description { get; set; }
+    [Parameter] public MachPremiumTone Tone { get; set; } = MachPremiumTone.Neutral;
     [Parameter] public RenderFragment? Actions { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private string PanelClass => $"ms-premium-section-panel ms-premium-section-panel--{Tone.ToString().ToLowerInvariant()}";
 }

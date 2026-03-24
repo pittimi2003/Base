@@ -1,0 +1,71 @@
+@namespace MachSoft.Template.CorePremium.Components.Data
+@typeparam TItem
+
+<section class="ms-premium-data-grid" aria-busy="@IsLoading">
+    <div class="ms-premium-data-grid__toolbar">
+        <div>
+            @if (!string.IsNullOrWhiteSpace(Title))
+            {
+                <h3>@Title</h3>
+            }
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <p>@Description</p>
+            }
+        </div>
+        <div class="ms-premium-data-grid__actions">
+            @if (ShowCounter)
+            {
+                <span class="ms-premium-data-grid__counter">@Items.Count registro(s)</span>
+            }
+            @if (ToolbarContent is not null)
+            {
+                @ToolbarContent
+            }
+        </div>
+    </div>
+
+    @if (IsLoading)
+    {
+        <div class="ms-premium-data-grid__loading" role="status" aria-live="polite">
+            @if (LoadingTemplate is not null)
+            {
+                @LoadingTemplate
+            }
+            else
+            {
+                <span class="ms-premium-spinner" aria-hidden="true"></span>
+                <span>Cargando datos...</span>
+            }
+        </div>
+    }
+    else
+    {
+        <MxDataGrid TItem="TItem"
+                    Items="Items"
+                    Columns="Columns"
+                    EmptyText="@EmptyText"
+                    IsCompact="@IsCompact"
+                    AriaLabel="@AriaLabel" />
+
+        @if (!Items.Any() && EmptyTemplate is not null)
+        {
+            <div class="ms-premium-data-grid__empty-template">@EmptyTemplate</div>
+        }
+    }
+</section>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public IReadOnlyList<TItem> Items { get; set; } = [];
+    [Parameter] public IReadOnlyList<MxDataGridColumn<TItem>> Columns { get; set; } = [];
+    [Parameter] public string EmptyText { get; set; } = "No hay registros disponibles.";
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public bool IsLoading { get; set; }
+    [Parameter] public bool ShowCounter { get; set; } = true;
+    [Parameter] public string AriaLabel { get; set; } = "Data grid premium";
+    [Parameter] public RenderFragment? ToolbarContent { get; set; }
+    [Parameter] public RenderFragment? LoadingTemplate { get; set; }
+    [Parameter] public RenderFragment? EmptyTemplate { get; set; }
+}

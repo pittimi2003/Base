@@ -77,3 +77,12 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `MachSoft.Template.Core` mantiene su rol foundation sin dependencias hacia Premium.
 - Se agrega `samples/MachSoft.Template.SampleApp` para validación visual de `Core + CorePremium` en la ruta `/premium-showcase`.
 - Se agrega flujo de empaquetado `build/scripts/Pack-CorePremium.ps1` y su integración en `Pack-All.ps1`.
+
+## CorePremium boundaries (updated)
+
+`MachSoft.Template.CorePremium` is an optional RCL extension over `MachSoft.Template.Core` and contains only advanced controls (composite forms, richer data/list experiences, premium overlays, and navigation composition). `MachSoft.Template.Core` does not depend on Premium.
+
+Sample validation host:
+- `samples/MachSoft.Template.SampleApp`
+- Main premium route: `/premium-showcase`
+- Core showcase route (via additional assemblies): `/showcase`

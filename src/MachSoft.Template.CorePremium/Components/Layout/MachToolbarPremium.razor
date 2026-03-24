@@ -1,15 +1,40 @@
 @namespace MachSoft.Template.CorePremium.Components.Layout
 
-<div class="ms-premium-toolbar @(IsDense ? "ms-premium-toolbar--dense" : string.Empty)" role="region" aria-label="Toolbar">
-    <div class="ms-premium-toolbar__start">@StartContent</div>
-    @if (FiltersContent is not null)
+<section class="ms-premium-toolbar-shell" role="region" aria-label="Toolbar premium">
+    @if (!string.IsNullOrWhiteSpace(Title) || !string.IsNullOrWhiteSpace(Description) || ContextInfo is not null)
     {
-        <div class="ms-premium-toolbar__filters">@FiltersContent</div>
+        <header class="ms-premium-toolbar-shell__header">
+            <div>
+                @if (!string.IsNullOrWhiteSpace(Title))
+                {
+                    <h2>@Title</h2>
+                }
+                @if (!string.IsNullOrWhiteSpace(Description))
+                {
+                    <p>@Description</p>
+                }
+            </div>
+            @if (ContextInfo is not null)
+            {
+                <div class="ms-premium-toolbar-shell__context">@ContextInfo</div>
+            }
+        </header>
     }
-    <div class="ms-premium-toolbar__end">@EndContent</div>
-</div>
+
+    <div class="ms-premium-toolbar @(IsDense ? "ms-premium-toolbar--dense" : string.Empty)" role="group" aria-label="Toolbar actions">
+        <div class="ms-premium-toolbar__start">@StartContent</div>
+        @if (FiltersContent is not null)
+        {
+            <div class="ms-premium-toolbar__filters">@FiltersContent</div>
+        }
+        <div class="ms-premium-toolbar__end">@EndContent</div>
+    </div>
+</section>
 
 @code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public RenderFragment? ContextInfo { get; set; }
     [Parameter] public bool IsDense { get; set; }
     [Parameter] public RenderFragment? StartContent { get; set; }
     [Parameter] public RenderFragment? FiltersContent { get; set; }

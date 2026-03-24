@@ -1,0 +1,68 @@
+@namespace MachSoft.Template.CorePremium.Components.Forms
+
+<fieldset class="ms-premium-radio-group" disabled="@Disabled" aria-invalid="@(!string.IsNullOrWhiteSpace(ErrorText))">
+    <legend>@Label</legend>
+
+    @if (!string.IsNullOrWhiteSpace(Description))
+    {
+        <p class="ms-premium-radio-group__description">@Description</p>
+    }
+
+    <div class="ms-premium-radio-group__options" role="radiogroup" aria-label="@Label">
+        @foreach (var option in Options)
+        {
+            var optionId = $"{ResolvedId}-{option.Value}";
+            <label class="@(option.Disabled ? "is-disabled" : null)" for="@optionId">
+                <input id="@optionId"
+                       type="radio"
+                       name="@ResolvedId"
+                       value="@option.Value"
+                       checked="@(Value == option.Value)"
+                       disabled="@(Disabled || option.Disabled)"
+                       @onchange="OnChangedAsync" />
+                <span>@option.Label</span>
+                @if (!string.IsNullOrWhiteSpace(option.Description))
+                {
+                    <small>@option.Description</small>
+                }
+            </label>
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <p class="ms-premium-radio-group__helper">@HelperText</p>
+    }
+    @if (!string.IsNullOrWhiteSpace(ErrorText))
+    {
+        <p class="ms-premium-radio-group__error" role="alert">@ErrorText</p>
+    }
+</fieldset>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public Expression<Func<string?>>? ValueExpression { get; set; }
+    [Parameter] public IReadOnlyList<MachRadioOptionPremium> Options { get; set; } = [];
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public string? Id { get; set; }
+
+    private readonly string _fallbackId = $"ms-premium-radio-{Guid.NewGuid():N}";
+    private string ResolvedId => Id ?? _fallbackId;
+
+    private async Task OnChangedAsync(ChangeEventArgs args)
+    {
+        var nextValue = args.Value?.ToString();
+        if (nextValue == Value)
+        {
+            return;
+        }
+
+        Value = nextValue;
+        await ValueChanged.InvokeAsync(nextValue);
+    }
+}

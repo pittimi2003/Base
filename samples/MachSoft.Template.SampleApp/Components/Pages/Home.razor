@@ -1,15 +1,26 @@
 @page "/"
 
-<div class="ms-page-container">
-    <MxPageHeader Title="MachSoft SampleApp" Description="Host de referencia para validar Core + CorePremium.">
+<div class="ms-page-container ms-stack-md">
+    <MxPageHeader Title="MachSoft SampleApp" Description="Host de referencia para validar visualmente Core + CorePremium.">
         <Actions>
             <MxButton Variant="MxButtonVariant.Primary" OnClick="NavigateToPremiumShowcase">Abrir Premium Showcase</MxButton>
+            <MxButton Variant="MxButtonVariant.Secondary" OnClick="NavigateToCoreShowcase">Abrir Core Showcase</MxButton>
         </Actions>
     </MxPageHeader>
+
+    <MxCard Title="Rutas de validación" Variant="SurfaceVariant.Outlined">
+        <ChildContent>
+            <ul class="ms-stack-sm">
+                <li><a href="/premium-showcase">/premium-showcase</a> — catálogo premium completo y escenarios enterprise.</li>
+                <li><a href="/showcase">/showcase</a> — foundation y componentes base de MachSoft.Template.Core.</li>
+            </ul>
+        </ChildContent>
+    </MxCard>
 </div>
 
 @code {
     [Inject] private NavigationManager Nav { get; set; } = default!;
 
     private void NavigateToPremiumShowcase() => Nav.NavigateTo("/premium-showcase");
+    private void NavigateToCoreShowcase() => Nav.NavigateTo("/showcase");
 }

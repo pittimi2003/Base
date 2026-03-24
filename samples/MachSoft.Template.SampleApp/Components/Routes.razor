@@ -1,6 +1,13 @@
-<Router AppAssembly="@typeof(Program).Assembly">
+<Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="_additionalAssemblies">
     <Found Context="routeData">
         <RouteView RouteData="@routeData" DefaultLayout="@typeof(MachSoft.Template.Core.Layout.MainLayout)" />
         <FocusOnNavigate RouteData="@routeData" Selector="h1" />
     </Found>
 </Router>
+
+@code {
+    private static readonly IReadOnlyList<System.Reflection.Assembly> _additionalAssemblies =
+    [
+        typeof(MachSoft.Template.Core.Pages.Showcase).Assembly
+    ];
+}
