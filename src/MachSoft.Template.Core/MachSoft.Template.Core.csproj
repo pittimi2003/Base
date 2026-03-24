@@ -1,23 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk.Razor">
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <ImplicitUsings>enable</ImplicitUsings>
     <IsPackable>true</IsPackable>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PackageId>MachSoft.Template.Core</PackageId>
-    <Authors>MachSoft</Authors>
-    <Company>MachSoft</Company>
-    <Description>MachSoft Design System reusable Blazor runtime with Mx* components, shared layouts, and static web assets for Server and WebAssembly hosts.</Description>
-    <PackageTags>machsoft;blazor;design-system;components;rcl;ui;enterprise</PackageTags>
+    <Description>Reusable MachSoft corporate baseline for Blazor applications, including shared options, UI primitives, and theme assets.</Description>
+    <PackageTags>machsoft;template;blazor;razor-class-library;design-system</PackageTags>
     <PackageReadmeFile>NUGET_README.md</PackageReadmeFile>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="8.0.25" />
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" />
   </ItemGroup>
 
   <ItemGroup>
