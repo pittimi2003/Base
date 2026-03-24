@@ -1,0 +1,46 @@
+@namespace MachSoft.Template.CorePremium.Components.Forms
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="ms-premium-upload">
+    <MxFileUpload Label="@Label"
+                  FilesChanged="OnFilesChangedAsync"
+                  Disabled="@Disabled"
+                  Accept="@Accept"
+                  Multiple="@Multiple"
+                  HelperText="@HelperText"
+                  ErrorText="@ErrorText"
+                  Id="@Id"
+                  IsCompact="@IsCompact" />
+
+    @if (SelectedFilesTemplate is not null)
+    {
+        @SelectedFilesTemplate(SelectedFileNames)
+    }
+    else if (SelectedFileNames.Count > 0)
+    {
+        <p class="ms-premium-upload__summary">@SelectedFileNames.Count archivo(s): @string.Join(", ", SelectedFileNames)</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> FilesChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Accept { get; set; }
+    [Parameter] public bool Multiple { get; set; } = true;
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public RenderFragment<IReadOnlyList<string>>? SelectedFilesTemplate { get; set; }
+
+    private readonly List<string> _selectedFileNames = [];
+    private IReadOnlyList<string> SelectedFileNames => _selectedFileNames;
+
+    private async Task OnFilesChangedAsync(IReadOnlyList<IBrowserFile> files)
+    {
+        _selectedFileNames.Clear();
+        _selectedFileNames.AddRange(files.Select(static file => file.Name));
+        await FilesChanged.InvokeAsync(files);
+    }
+}

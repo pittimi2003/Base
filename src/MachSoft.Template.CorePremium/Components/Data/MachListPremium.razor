@@ -1,0 +1,46 @@
+@namespace MachSoft.Template.CorePremium.Components.Data
+@typeparam TItem
+
+<section class="ms-premium-list" aria-label="@AriaLabel">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <header class="ms-premium-list__header">
+            <h3>@Title</h3>
+            @if (HeaderActions is not null)
+            {
+                <div>@HeaderActions</div>
+            }
+        </header>
+    }
+
+    @if (!Items.Any())
+    {
+        @if (EmptyTemplate is not null)
+        {
+            @EmptyTemplate
+        }
+        else
+        {
+            <p class="ms-premium-list__empty">@EmptyText</p>
+        }
+    }
+    else
+    {
+        <ul>
+            @foreach (var item in Items)
+            {
+                <li>@ItemTemplate(item)</li>
+            }
+        </ul>
+    }
+</section>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string EmptyText { get; set; } = "Sin elementos.";
+    [Parameter] public string AriaLabel { get; set; } = "Lista premium";
+    [Parameter] public IReadOnlyList<TItem> Items { get; set; } = [];
+    [Parameter, EditorRequired] public RenderFragment<TItem> ItemTemplate { get; set; } = default!;
+    [Parameter] public RenderFragment? HeaderActions { get; set; }
+    [Parameter] public RenderFragment? EmptyTemplate { get; set; }
+}

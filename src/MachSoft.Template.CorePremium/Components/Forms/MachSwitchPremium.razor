@@ -1,0 +1,20 @@
+@namespace MachSoft.Template.CorePremium.Components.Forms
+
+<div class="ms-premium-switch">
+    <MxSwitch Label="@Label"
+              Checked="@Checked"
+              CheckedChanged="CheckedChanged"
+              HelperText="@HelperText"
+              Disabled="@Disabled"
+              Id="@Id" />
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public bool Checked { get; set; }
+    [Parameter] public EventCallback<bool> CheckedChanged { get; set; }
+    [Parameter] public Expression<Func<bool>>? ValueExpression { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? Id { get; set; }
+}
