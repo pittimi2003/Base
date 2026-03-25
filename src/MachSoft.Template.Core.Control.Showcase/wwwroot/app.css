@@ -384,3 +384,11 @@ a {
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   align-items: start;
 }
+
+.ms-showcase-row-priority-critical td {
+  font-weight: var(--mx-font-weight-semibold, 600);
+}
+
+.ms-showcase-row-priority-high td:first-child {
+  color: var(--mx-color-brand-primary, #3a67bf);
+}

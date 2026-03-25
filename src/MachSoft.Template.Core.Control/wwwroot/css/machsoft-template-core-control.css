@@ -1139,6 +1139,11 @@
   background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 10%, transparent);
 }
 
+.mx-data-grid :is(a, button, [role="button"], [tabindex]):focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: 2px;
+}
+
 .mx-data-grid--compact thead th,
 .mx-data-grid--compact tbody td {
   padding-top: 0.55rem;
@@ -1166,6 +1171,6 @@
   animation: mx-spin 0.9s linear infinite;
 }
 
-.mx-data-grid-root[data-loading="True"] {
+.mx-data-grid-root[data-loading="true"] {
   opacity: 0.94;
 }

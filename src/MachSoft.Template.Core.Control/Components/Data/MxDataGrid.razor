@@ -1,15 +1,18 @@
 @namespace MachSoft.Template.Core.Control
 @typeparam TItem
 
-<div class="mx-data-grid-root @Class" data-loading="@Loading" aria-busy="@Loading">
-    <div class="mx-data-grid-scroll" role="region" aria-label="@AriaLabel">
-        <table class="@(IsCompact ? "mx-data-grid mx-data-grid--compact" : "mx-data-grid")">
-            <caption class="mx-visually-hidden">@AriaLabel</caption>
+<div class="@RootClass"
+     data-loading="@LoadingAttribute"
+     data-compact="@CompactAttribute"
+     aria-busy="@AriaBusy"
+     @attributes="AdditionalAttributes">
+    <div class="mx-data-grid-scroll" role="region" aria-label="@ResolvedAriaLabel">
+        <table class="@TableClass">
+            <caption class="mx-visually-hidden">@ResolvedCaption</caption>
             <thead>
                 <tr>
-                    @for (var index = 0; index < Columns.Count; index++)
+                    @foreach (var column in SafeColumns)
                     {
-                        var column = Columns[index];
                         <th scope="col"
                             class="@column.HeaderClass"
                             style="@BuildColumnWidthStyle(column)">@column.Header</th>
@@ -23,25 +26,31 @@
                         <td class="mx-data-grid__state" colspan="@ColumnCount">
                             <span class="mx-data-grid__loading" role="status" aria-live="polite">
                                 <span class="mx-data-grid__loading-spinner" aria-hidden="true"></span>
-                                <span>@LoadingText</span>
+                                <span>@ResolvedLoadingText</span>
                             </span>
                         </td>
                     </tr>
                 }
-                else if (Items.Count == 0)
+                else if (SafeColumns.Count == 0)
                 {
                     <tr>
-                        <td class="mx-data-grid__state" colspan="@ColumnCount" role="status" aria-live="polite">@EmptyText</td>
+                        <td class="mx-data-grid__state" colspan="1" role="status" aria-live="polite">@NoColumnsText</td>
+                    </tr>
+                }
+                else if (SafeItems.Count == 0)
+                {
+                    <tr>
+                        <td class="mx-data-grid__state" colspan="@ColumnCount" role="status" aria-live="polite">@ResolvedEmptyText</td>
                     </tr>
                 }
                 else
                 {
-                    @foreach (var item in Items)
+                    @foreach (var item in SafeItems)
                     {
                         <tr class="@BuildRowClass(item)" @key="BuildRowKey(item)">
-                            @foreach (var column in Columns)
+                            @foreach (var column in SafeColumns)
                             {
-                                <td class="@column.CellClass">@column.ValueSelector(item)</td>
+                                <td class="@column.CellClass">@FormatCellValue(column.ValueSelector(item))</td>
                             }
                         </tr>
                     }
@@ -52,18 +61,53 @@
 </div>
 
 @code {
-    [Parameter] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
-    [Parameter] public IReadOnlyList<MxDataGridColumn<TItem>> Columns { get; set; } = Array.Empty<MxDataGridColumn<TItem>>();
+    private const string DefaultAriaLabel = "Data grid";
+    private const string DefaultLoadingText = "Cargando datos...";
+    private const string DefaultEmptyText = "No hay datos para mostrar.";
+    private const string NoColumnsText = "No hay columnas configuradas para renderizar este grid.";
+
+    [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
+    [Parameter] public IReadOnlyList<MxDataGridColumn<TItem>>? Columns { get; set; }
     [Parameter] public bool Loading { get; set; }
-    [Parameter] public string LoadingText { get; set; } = "Cargando datos...";
-    [Parameter] public string EmptyText { get; set; } = "No hay datos para mostrar.";
-    [Parameter] public string AriaLabel { get; set; } = "Data grid";
+    [Parameter] public string? LoadingText { get; set; } = DefaultLoadingText;
+    [Parameter] public string? EmptyText { get; set; } = DefaultEmptyText;
+    [Parameter] public string? AriaLabel { get; set; } = DefaultAriaLabel;
+    [Parameter] public string? Caption { get; set; }
     [Parameter] public bool IsCompact { get; set; }
     [Parameter] public Func<TItem, string?>? RowIdSelector { get; set; }
     [Parameter] public Func<TItem, string?>? RowClassSelector { get; set; }
     [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
-    private int ColumnCount => Columns.Count > 0 ? Columns.Count : 1;
+    private IReadOnlyList<TItem> SafeItems { get; set; } = Array.Empty<TItem>();
+    private IReadOnlyList<MxDataGridColumn<TItem>> SafeColumns { get; set; } = Array.Empty<MxDataGridColumn<TItem>>();
+
+    private int ColumnCount => SafeColumns.Count > 0 ? SafeColumns.Count : 1;
+    private string? AriaBusy => Loading ? "true" : null;
+    private string LoadingAttribute => Loading ? "true" : "false";
+    private string CompactAttribute => IsCompact ? "true" : "false";
+    private string ResolvedAriaLabel => string.IsNullOrWhiteSpace(AriaLabel) ? DefaultAriaLabel : AriaLabel;
+    private string ResolvedCaption => string.IsNullOrWhiteSpace(Caption) ? ResolvedAriaLabel : Caption!;
+    private string ResolvedLoadingText => string.IsNullOrWhiteSpace(LoadingText) ? DefaultLoadingText : LoadingText!;
+    private string ResolvedEmptyText => string.IsNullOrWhiteSpace(EmptyText) ? DefaultEmptyText : EmptyText!;
+
+    private string RootClass => string.Join(' ', new[]
+    {
+        "mx-data-grid-root",
+        Class
+    }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+
+    private string TableClass => string.Join(' ', new[]
+    {
+        "mx-data-grid",
+        IsCompact ? "mx-data-grid--compact" : null
+    }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+
+    protected override void OnParametersSet()
+    {
+        SafeItems = Items ?? Array.Empty<TItem>();
+        SafeColumns = Columns ?? Array.Empty<MxDataGridColumn<TItem>>();
+    }
 
     private static string? BuildColumnWidthStyle(MxDataGridColumn<TItem> column)
         => string.IsNullOrWhiteSpace(column.Width) ? null : $"width:{column.Width}";
@@ -73,4 +117,7 @@
 
     private object BuildRowKey(TItem item)
         => RowIdSelector?.Invoke(item) ?? (object?)item ?? string.Empty;
+
+    private static string FormatCellValue(string? value)
+        => value ?? string.Empty;
 }
