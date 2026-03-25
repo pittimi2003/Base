@@ -170,3 +170,7 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - Sorting enterprise mejora robustez y accesibilidad: headers con etiqueta ARIA de intención de orden, `aria-sort` consistente y fallback al `ValueSelector` cuando `Sortable=true` sin `SortValueSelector`.
 - Se refuerza semántica de filas seleccionadas (`aria-selected`) y se evita summary en empty/loading para no mezclar estados.
 - Showcase `/families/data` añade validación explícita de selección simple + múltiple y se incorpora prueba Playwright dedicada de runtime interactivo (sorting, selección, toolbar, row actions, summary y light/dark).
+
+
+### Actualización catálogo (2026-03-25)
+- `MachSoft.Template.Core.Control` incluye `MxScheduler` base funcional y su validación en `MachSoft.Template.Core.Control.Showcase` (`/families/scheduling`).

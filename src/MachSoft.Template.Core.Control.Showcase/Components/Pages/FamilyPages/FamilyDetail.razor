@@ -62,6 +62,10 @@ else
             {
                 @RenderUploadFamily()
             }
+            else if (string.Equals(CurrentFamily.Key, "scheduling", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderSchedulingFamily()
+            }
             else
             {
                 <ShowcaseSection Title="Ejemplo base"
@@ -113,6 +117,10 @@ else
     private IReadOnlyList<string> _selectedGridRows = Array.Empty<string>();
     private IReadOnlyList<string> _selectedSingleGridRows = Array.Empty<string>();
     private string _lastGridActionMessage = "Sin acciones ejecutadas.";
+    private DateOnly _schedulerCurrentDate = new(2026, 3, 25);
+    private bool _schedulerLoading;
+    private string? _selectedSchedulerEventId;
+    private string _schedulerSelectionMessage = "Sin evento seleccionado.";
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
     [
@@ -164,6 +172,14 @@ else
         new("Prioridad", row => row.Priority, Width: "9rem", Sortable: true, SortValueSelector: row => row.PriorityWeight, Key: "priority"),
         new("Centro", row => row.Site, Sortable: true, SortValueSelector: row => row.Site, Key: "site"),
         new("Actualizada", row => row.UpdatedAtLabel, Width: "15rem", Sortable: true, SortValueSelector: row => row.UpdatedAt, Key: "updated")
+    ];
+
+    private readonly IReadOnlyList<MxSchedulerEvent> _schedulerEvents =
+    [
+        new("ev-1", "Standup de operaciones", new DateTime(2026, 3, 24, 9, 0, 0), Description: "Revisión de bloqueos del turno"),
+        new("ev-2", "Ventana de mantenimiento", new DateTime(2026, 3, 25, 14, 0, 0), new DateTime(2026, 3, 25, 16, 0, 0), Description: "Aplicación de hotfix"),
+        new("ev-3", "QA release candidata", new DateTime(2026, 3, 28, 10, 30, 0), Description: "Checklist funcional"),
+        new("ev-4", "Guardia fin de mes", new DateTime(2026, 3, 31, 0, 0, 0), new DateTime(2026, 4, 1, 23, 59, 0), true, "Cobertura cross-team")
     ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
@@ -851,6 +867,58 @@ else
         </ShowcaseSection>
     </text>;
 
+    private RenderFragment RenderSchedulingFamily() => @<text>
+        <ShowcaseSection Title="MxScheduler"
+                         Description="Agenda/calendario base con vista mensual, navegación temporal y selección de eventos lista para evolución. ">
+            <ShowcasePreviewBlock Title="Caso base con eventos reales"
+                                  Caption="Render mensual con eventos operativos, estado selected y callback de selección.">
+                <MxScheduler Events="_schedulerEvents"
+                             CurrentDate="_schedulerCurrentDate"
+                             CurrentDateChanged="OnSchedulerCurrentDateChanged"
+                             SelectedEventId="_selectedSchedulerEventId"
+                             SelectedEventIdChanged="OnSelectedSchedulerEventIdChanged"
+                             EventSelected="OnSchedulerEventSelected"
+                             AriaLabel="Agenda operativa del equipo de plataforma" />
+                <p class="ms-showcase-inline-message">Mes visible: @_schedulerCurrentDate.ToString("MMMM yyyy")</p>
+                <p class="ms-showcase-inline-message">Selección actual: @_schedulerSelectionMessage</p>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Navegación temporal y loading"
+                                  Caption="Se valida navegación por periodo y estado de carga sin lógica de negocio acoplada.">
+                <div class="ms-showcase-stack-sm">
+                    <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleSchedulerLoading">
+                        @(_schedulerLoading ? "Detener loading" : "Activar loading")
+                    </MxButton>
+
+                    <MxScheduler Events="_schedulerEvents"
+                                 CurrentDate="_schedulerCurrentDate"
+                                 CurrentDateChanged="OnSchedulerCurrentDateChanged"
+                                 Loading="_schedulerLoading"
+                                 LoadingText="Cargando agenda del equipo..."
+                                 AriaLabel="Agenda operativa en carga" />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Empty state"
+                                  Caption="Estado vacío explícito para escenarios sin eventos en el periodo.">
+                <MxScheduler Events="Array.Empty<MxSchedulerEvent>()"
+                             CurrentDate="_schedulerCurrentDate"
+                             CurrentDateChanged="OnSchedulerCurrentDateChanged"
+                             EmptyText="No hay eventos programados para este mes operativo."
+                             AriaLabel="Agenda vacía del equipo" />
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Límites conscientes de esta primera iteración"
+                                  Caption="Se declara alcance real para sostener evolución enterprise sin rehacer el control.">
+                <ul class="ms-showcase-notes-list">
+                    <li>La vista pública inicial es mensual y prioriza legibilidad operativa.</li>
+                    <li>Quedan fuera drag &amp; drop, recurrencia avanzada, recursos y virtualización.</li>
+                    <li>La API de eventos mantiene contrato estable para crecer a day/week/actions sin romper consumo actual.</li>
+                </ul>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </text>;
+
     private Task OnToastChanged(bool value)
     {
         _toastVisible = value;
@@ -940,6 +1008,30 @@ else
     private Task OnRemovableChipRemoved()
     {
         _chipRemoved = true;
+        return Task.CompletedTask;
+    }
+
+    private Task OnSchedulerCurrentDateChanged(DateOnly value)
+    {
+        _schedulerCurrentDate = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnSelectedSchedulerEventIdChanged(string? value)
+    {
+        _selectedSchedulerEventId = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnSchedulerEventSelected(MxSchedulerEvent schedulerEvent)
+    {
+        _schedulerSelectionMessage = $"{schedulerEvent.Title} ({schedulerEvent.Start:dd MMM HH:mm})";
+        return Task.CompletedTask;
+    }
+
+    private Task ToggleSchedulerLoading(MouseEventArgs _)
+    {
+        _schedulerLoading = !_schedulerLoading;
         return Task.CompletedTask;
     }
 

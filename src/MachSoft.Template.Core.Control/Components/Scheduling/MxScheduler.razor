@@ -1,0 +1,263 @@
+@namespace MachSoft.Template.Core.Control
+
+<section class="@RootClass" aria-label="@ResolvedAriaLabel" @attributes="AdditionalAttributes">
+    <header class="mx-scheduler__header">
+        <div>
+            <p class="mx-scheduler__eyebrow">@ResolvedViewLabel</p>
+            <h3 class="mx-scheduler__title">@CurrentMonthLabel</h3>
+        </div>
+        <div class="mx-scheduler__actions" role="toolbar" aria-label="Navegación de calendario">
+            <MxIconButton Icon="←" AriaLabel="Periodo anterior" Variant="MxButtonVariant.Outlined" OnClick="GoToPrevious" />
+            <MxButton Variant="MxButtonVariant.Text" OnClick="GoToToday">Hoy</MxButton>
+            <MxIconButton Icon="→" AriaLabel="Periodo siguiente" Variant="MxButtonVariant.Outlined" OnClick="GoToNext" />
+        </div>
+    </header>
+
+    @if (Loading)
+    {
+        <div class="mx-scheduler__state" role="status" aria-live="polite">
+            <span class="mx-scheduler__spinner" aria-hidden="true"></span>
+            <span>@ResolvedLoadingText</span>
+        </div>
+    }
+    else if (VisibleMonthEvents.Count == 0)
+    {
+        <div class="mx-scheduler__state" role="status" aria-live="polite">
+            @ResolvedEmptyText
+        </div>
+    }
+    else
+    {
+        <div class="mx-scheduler__grid" role="grid" aria-readonly="true" aria-label="@ResolvedAriaLabel">
+            @foreach (var dayName in DayHeaders)
+            {
+                <div class="mx-scheduler__day-header" role="columnheader">@dayName</div>
+            }
+
+            @foreach (var dayCell in VisibleDays)
+            {
+                var dayEvents = ResolveDayEvents(dayCell.Date);
+                <article class="@BuildDayClass(dayCell, dayEvents.Count)" role="gridcell" aria-selected="false">
+                    <header class="mx-scheduler__day-top">
+                        <time datetime="@dayCell.Date.ToString(DateFormat)">@dayCell.Date.Day</time>
+                        @if (dayEvents.Count > MaxEventsPerDay)
+                        {
+                            <span class="mx-scheduler__day-more">+@(dayEvents.Count - MaxEventsPerDay)</span>
+                        }
+                    </header>
+
+                    <div class="mx-scheduler__events">
+                        @foreach (var schedulerEvent in dayEvents.Take(MaxEventsPerDay))
+                        {
+                            <button type="button"
+                                    class="@BuildEventClass(schedulerEvent)"
+                                    title="@BuildEventTitle(schedulerEvent)"
+                                    aria-pressed="@IsSelected(schedulerEvent).ToString().ToLowerInvariant()"
+                                    @onclick="() => SelectEventAsync(schedulerEvent)">
+                                @if (EventContent is not null)
+                                {
+                                    @EventContent(schedulerEvent)
+                                }
+                                else
+                                {
+                                    <span class="mx-scheduler__event-time">@FormatEventTime(schedulerEvent)</span>
+                                    <span class="mx-scheduler__event-title">@schedulerEvent.Title</span>
+                                }
+                            </button>
+                        }
+                    </div>
+                </article>
+            }
+        </div>
+    }
+</section>
+
+@code {
+    private const string DateFormat = "yyyy-MM-dd";
+    private const string DefaultAriaLabel = "Scheduler";
+    private const string DefaultEmptyText = "No hay eventos para el periodo seleccionado.";
+    private const string DefaultLoadingText = "Cargando agenda...";
+
+    private IReadOnlyList<MxSchedulerEvent> SafeEvents { get; set; } = Array.Empty<MxSchedulerEvent>();
+    private IReadOnlyList<MxSchedulerEvent> VisibleMonthEvents { get; set; } = Array.Empty<MxSchedulerEvent>();
+    private IReadOnlyList<SchedulerDayCell> VisibleDays { get; set; } = Array.Empty<SchedulerDayCell>();
+
+    [Parameter] public IReadOnlyList<MxSchedulerEvent>? Events { get; set; }
+    [Parameter] public DateOnly? CurrentDate { get; set; }
+    [Parameter] public EventCallback<DateOnly> CurrentDateChanged { get; set; }
+    [Parameter] public int MaxEventsPerDay { get; set; } = 3;
+    [Parameter] public string? AriaLabel { get; set; } = DefaultAriaLabel;
+    [Parameter] public string? EmptyText { get; set; } = DefaultEmptyText;
+    [Parameter] public string? LoadingText { get; set; } = DefaultLoadingText;
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public string? SelectedEventId { get; set; }
+    [Parameter] public EventCallback<string?> SelectedEventIdChanged { get; set; }
+    [Parameter] public EventCallback<MxSchedulerEvent> EventSelected { get; set; }
+    [Parameter] public RenderFragment<MxSchedulerEvent>? EventContent { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private static IReadOnlyList<string> DayHeaders { get; } = ["Lun", "Mar", "Mié", "Jue", "Vie", "Sáb", "Dom"];
+
+    private DateOnly ActiveDate { get; set; }
+    private string ResolvedAriaLabel => string.IsNullOrWhiteSpace(AriaLabel) ? DefaultAriaLabel : AriaLabel!;
+    private string ResolvedEmptyText => string.IsNullOrWhiteSpace(EmptyText) ? DefaultEmptyText : EmptyText!;
+    private string ResolvedLoadingText => string.IsNullOrWhiteSpace(LoadingText) ? DefaultLoadingText : LoadingText!;
+    private string CurrentMonthLabel => ActiveDate.ToDateTime(TimeOnly.MinValue).ToString("MMMM yyyy");
+    private string ResolvedViewLabel => "Vista mensual";
+
+    private string RootClass => string.Join(' ', new[]
+    {
+        "mx-scheduler",
+        Loading ? "mx-scheduler--loading" : null,
+        Class
+    }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+
+    protected override void OnParametersSet()
+    {
+        SafeEvents = Events ?? Array.Empty<MxSchedulerEvent>();
+        ActiveDate = CurrentDate ?? DateOnly.FromDateTime(DateTime.Today);
+
+        var maxEvents = MaxEventsPerDay;
+        if (maxEvents < 1)
+        {
+            MaxEventsPerDay = 1;
+        }
+
+        VisibleDays = BuildVisibleDays(ActiveDate);
+        VisibleMonthEvents = SafeEvents
+            .Where(evt => EventIntersectsMonth(evt, ActiveDate))
+            .OrderBy(evt => evt.Start)
+            .ThenBy(evt => evt.Title, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private IReadOnlyList<SchedulerDayCell> BuildVisibleDays(DateOnly monthDate)
+    {
+        var firstDayOfMonth = new DateOnly(monthDate.Year, monthDate.Month, 1);
+        var startOffset = ((int)firstDayOfMonth.DayOfWeek + 6) % 7;
+        var firstVisibleDay = firstDayOfMonth.AddDays(-startOffset);
+        var days = new List<SchedulerDayCell>(42);
+
+        for (var index = 0; index < 42; index++)
+        {
+            var current = firstVisibleDay.AddDays(index);
+            days.Add(new SchedulerDayCell(
+                current,
+                current.Month == monthDate.Month,
+                current == DateOnly.FromDateTime(DateTime.Today)));
+        }
+
+        return days;
+    }
+
+    private IReadOnlyList<MxSchedulerEvent> ResolveDayEvents(DateOnly day)
+        => VisibleMonthEvents
+            .Where(evt => EventOccursOn(evt, day))
+            .ToArray();
+
+    private static bool EventIntersectsMonth(MxSchedulerEvent schedulerEvent, DateOnly monthDate)
+    {
+        var monthStart = new DateOnly(monthDate.Year, monthDate.Month, 1);
+        var monthEnd = monthStart.AddMonths(1).AddDays(-1);
+        return EventOccursOn(schedulerEvent, monthStart)
+               || EventOccursOn(schedulerEvent, monthEnd)
+               || (DateOnly.FromDateTime(schedulerEvent.Start.Date) > monthStart
+                   && DateOnly.FromDateTime((schedulerEvent.End ?? schedulerEvent.Start).Date) < monthEnd);
+    }
+
+    private static bool EventOccursOn(MxSchedulerEvent schedulerEvent, DateOnly day)
+    {
+        var start = DateOnly.FromDateTime(schedulerEvent.Start.Date);
+        var endDateTime = schedulerEvent.End ?? schedulerEvent.Start;
+        var end = DateOnly.FromDateTime(endDateTime.Date);
+        return day >= start && day <= end;
+    }
+
+    private static string FormatEventTime(MxSchedulerEvent schedulerEvent)
+    {
+        if (schedulerEvent.IsAllDay)
+        {
+            return "Todo el día";
+        }
+
+        return schedulerEvent.Start.ToString("HH:mm");
+    }
+
+    private static string BuildEventTitle(MxSchedulerEvent schedulerEvent)
+        => schedulerEvent.Description is null
+            ? schedulerEvent.Title
+            : $"{schedulerEvent.Title} · {schedulerEvent.Description}";
+
+    private string BuildDayClass(SchedulerDayCell dayCell, int eventsCount)
+        => string.Join(' ', new[]
+        {
+            "mx-scheduler__day",
+            dayCell.IsCurrentMonth ? null : "mx-scheduler__day--adjacent",
+            dayCell.IsToday ? "mx-scheduler__day--today" : null,
+            eventsCount == 0 ? "mx-scheduler__day--empty" : null
+        }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+
+    private string BuildEventClass(MxSchedulerEvent schedulerEvent)
+        => string.Join(' ', new[]
+        {
+            "mx-scheduler__event",
+            IsSelected(schedulerEvent) ? "mx-scheduler__event--selected" : null
+        }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+
+    private bool IsSelected(MxSchedulerEvent schedulerEvent)
+        => !string.IsNullOrWhiteSpace(SelectedEventId)
+           && string.Equals(SelectedEventId, schedulerEvent.Id, StringComparison.Ordinal);
+
+    private async Task SelectEventAsync(MxSchedulerEvent schedulerEvent)
+    {
+        SelectedEventId = schedulerEvent.Id;
+
+        if (SelectedEventIdChanged.HasDelegate)
+        {
+            await SelectedEventIdChanged.InvokeAsync(schedulerEvent.Id);
+        }
+
+        if (EventSelected.HasDelegate)
+        {
+            await EventSelected.InvokeAsync(schedulerEvent);
+        }
+    }
+
+    private async Task GoToPrevious(MouseEventArgs _)
+    {
+        ActiveDate = ActiveDate.AddMonths(-1);
+        await NotifyDateChangedAsync();
+    }
+
+    private async Task GoToNext(MouseEventArgs _)
+    {
+        ActiveDate = ActiveDate.AddMonths(1);
+        await NotifyDateChangedAsync();
+    }
+
+    private async Task GoToToday(MouseEventArgs _)
+    {
+        ActiveDate = DateOnly.FromDateTime(DateTime.Today);
+        await NotifyDateChangedAsync();
+    }
+
+    private async Task NotifyDateChangedAsync()
+    {
+        VisibleDays = BuildVisibleDays(ActiveDate);
+        VisibleMonthEvents = SafeEvents
+            .Where(evt => EventIntersectsMonth(evt, ActiveDate))
+            .OrderBy(evt => evt.Start)
+            .ThenBy(evt => evt.Title, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+
+        if (CurrentDateChanged.HasDelegate)
+        {
+            await CurrentDateChanged.InvokeAsync(ActiveDate);
+        }
+
+        StateHasChanged();
+    }
+
+    private sealed record SchedulerDayCell(DateOnly Date, bool IsCurrentMonth, bool IsToday);
+}

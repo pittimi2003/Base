@@ -231,3 +231,19 @@ Consolidación aplicada:
 Validación runtime:
 - Showcase `/families/data` ahora incluye ejemplos separados de selección múltiple y selección simple.
 - Nueva prueba E2E dedicada (`tests/e2e/tests/families-data-grid.spec.ts` + `playwright.showcase.config.ts`) valida interacción real de sorting, selección, toolbar, row actions, summary, loading y tema light/dark.
+
+
+## Iteración 2026-03-25 — Scheduling (MxScheduler base funcional)
+
+Cobertura implementada en `MachSoft.Template.Core.Control`:
+- Nuevo componente público `MxScheduler` con vista mensual funcional, navegación temporal (`anterior/hoy/siguiente`) y render real de eventos por día.
+- Contrato de eventos mínimo y extensible mediante `MxSchedulerEvent` (`Id`, `Title`, `Start`, `End`, `IsAllDay`, `Description`, `AccentColor`).
+- Estados soportados en esta fase: `default`, `hover`, `focus-visible`, `selected`, `empty` y `loading`.
+
+Consolidación de Showcase:
+- Familia `/families/scheduling` marcada como `Implemented` en el registro oficial.
+- Ejemplos funcionales reales para caso base, navegación temporal, loading y empty state.
+- Validación visual prevista en light/dark reutilizando tokens y superficies del design system.
+
+Límites abiertos:
+- Fuera de alcance en esta fase: drag & drop, recurrencia avanzada, recursos, edición compleja, virtualización e integraciones enterprise.

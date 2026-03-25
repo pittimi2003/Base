@@ -110,3 +110,13 @@ La validación de `/families/actions`, `/families/feedback`, `/families/overlays
 - Para validar `MxDataGrid` enterprise inicial, ejecutar Showcase y abrir `/families/data`.
 - Casos esperados: sorting visible por columna, selección de filas con resumen en toolbar, acciones simples por fila y estados empty/loading.
 - Esta fase no incluye filtros avanzados, inline edit, export ni virtualización real.
+
+
+## Nota de adopción (2026-03-25): MxScheduler
+
+Para escenarios de agenda/calendario inicial en plantillas MachSoft:
+- usar `MxScheduler` desde `MachSoft.Template.Core.Control`,
+- proveer eventos por `IReadOnlyList<MxSchedulerEvent>`,
+- consumir callbacks `CurrentDateChanged` y `EventSelected` para integrar navegación y acciones del host sin lógica de negocio dentro del control.
+
+La iteración actual entrega vista mensual usable y estados base, dejando explícitamente fuera capacidades enterprise avanzadas para evolución posterior.
