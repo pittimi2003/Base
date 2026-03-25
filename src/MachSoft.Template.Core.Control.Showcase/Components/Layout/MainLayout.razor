@@ -3,7 +3,7 @@
 <div class="ms-control-shell mx-control-host" data-mx-theme="@CurrentTheme">
     <div class="ms-showcase-layout">
         <aside class="ms-showcase-layout__nav" role="navigation" aria-label="Navegación de catálogo">
-            <NavMenu CurrentTheme="@CurrentTheme" OnToggleTheme="ToggleTheme" />
+            <NavMenu CurrentTheme="@CurrentTheme" OnThemeChanged="OnThemeChanged" />
         </aside>
 
         <div class="ms-showcase-layout__workspace">
@@ -27,8 +27,9 @@
 
     private string CurrentThemeLabel => CurrentTheme == "light" ? "Light" : "Dark";
 
-    private void ToggleTheme()
+    private Task OnThemeChanged(bool isDarkTheme)
     {
-        CurrentTheme = CurrentTheme == "light" ? "dark" : "light";
+        CurrentTheme = isDarkTheme ? "dark" : "light";
+        return Task.CompletedTask;
     }
 }

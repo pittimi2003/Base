@@ -1,0 +1,143 @@
+@namespace MachSoft.Template.Core.Control
+@using Microsoft.AspNetCore.Components.Forms
+
+<div class="@RootClass">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" for="@ResolvedId">@Label</label>
+    }
+
+    <InputFile id="@ResolvedId"
+               class="mx-input-control mx-input-control--upload"
+               OnChange="HandleFilesChanged"
+               accept="@Accept"
+               multiple="@Multiple"
+               @attributes="InputAttributes" />
+
+    @if (Uploading)
+    {
+        <div class="mx-upload__status" role="status" aria-live="polite">
+            <span class="mx-upload__spinner" aria-hidden="true"></span>
+            <span>@UploadingText</span>
+        </div>
+    }
+
+    @if (_selectedFiles.Count > 0)
+    {
+        <div class="mx-upload__summary">
+            <strong>@SelectedFilesTitle</strong>
+            <ul class="mx-upload__list">
+                @foreach (var file in _selectedFiles)
+                {
+                    <li>
+                        <span class="mx-upload__file-name">@file.Name</span>
+                        <span class="mx-upload__file-size">@FormatSize(file.Size)</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    }
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Accept { get; set; }
+    [Parameter] public bool Multiple { get; set; } = true;
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public bool Uploading { get; set; }
+    [Parameter] public string UploadingText { get; set; } = "Subiendo archivos...";
+    [Parameter] public string SelectedFilesTitle { get; set; } = "Archivos seleccionados";
+    [Parameter] public EventCallback<IReadOnlyList<IBrowserFile>> FilesChanged { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _instanceId = $"mx-upload-{Guid.NewGuid():N}";
+    private readonly List<IBrowserFile> _selectedFiles = [];
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+    private IReadOnlyDictionary<string, object> InputAttributes => BuildInputAttributes();
+
+    private string RootClass =>
+        $"mx-input-root mx-input-root--upload {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {(Uploading ? "mx-input-root--uploading" : string.Empty)} {Class}";
+
+    private async Task HandleFilesChanged(InputFileChangeEventArgs args)
+    {
+        var files = Multiple ? args.GetMultipleFiles() : [args.File];
+        _selectedFiles.Clear();
+        _selectedFiles.AddRange(files);
+
+        await FilesChanged.InvokeAsync(_selectedFiles);
+    }
+
+    private IReadOnlyDictionary<string, object> BuildInputAttributes()
+    {
+        var attributes = new Dictionary<string, object>(StringComparer.Ordinal);
+        if (AdditionalAttributes is not null)
+        {
+            foreach (var entry in AdditionalAttributes)
+            {
+                attributes[entry.Key] = entry.Value;
+            }
+        }
+
+        if (Disabled)
+        {
+            attributes["disabled"] = true;
+        }
+
+        if (Required)
+        {
+            attributes["required"] = true;
+            attributes["aria-required"] = "true";
+        }
+
+        if (!string.IsNullOrWhiteSpace(AriaInvalid))
+        {
+            attributes["aria-invalid"] = AriaInvalid;
+        }
+
+        if (!string.IsNullOrWhiteSpace(DescribedBy))
+        {
+            attributes["aria-describedby"] = DescribedBy;
+        }
+
+        return attributes;
+    }
+
+    private static string FormatSize(long sizeInBytes)
+    {
+        if (sizeInBytes < 1024)
+        {
+            return $"{sizeInBytes} B";
+        }
+
+        if (sizeInBytes < 1024 * 1024)
+        {
+            return $"{sizeInBytes / 1024d:F1} KB";
+        }
+
+        return $"{sizeInBytes / (1024d * 1024d):F1} MB";
+    }
+}
