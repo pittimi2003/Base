@@ -258,3 +258,165 @@
 [data-mx-theme="dark"] .ms-mx-input--readonly {
   background: color-mix(in srgb, var(--mx-color-input-bg, #1b263a) 85%, #94a8cf 15%);
 }
+
+.ms-mx-selection {
+  position: relative;
+}
+
+.ms-mx-selection__control {
+  position: relative;
+}
+
+.ms-mx-selection__input--combo {
+  padding-right: 2.25rem;
+}
+
+.ms-mx-selection__toggle {
+  position: absolute;
+  right: .65rem;
+  top: 50%;
+  width: .7rem;
+  height: .7rem;
+  border: 0;
+  background: transparent;
+  transform: translateY(-60%) rotate(45deg);
+  border-right: 2px solid var(--mx-color-text-muted, var(--ms-color-text-soft));
+  border-bottom: 2px solid var(--mx-color-text-muted, var(--ms-color-text-soft));
+  cursor: pointer;
+}
+
+.ms-mx-selection__toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--mx-focus-ring-width, 3px) color-mix(in srgb, var(--mx-color-border-focus, var(--ms-color-brand)) 30%, transparent);
+  border-radius: .2rem;
+}
+
+.ms-mx-selection__menu {
+  list-style: none;
+  margin: .35rem 0 0;
+  padding: .3rem;
+  border-radius: .65rem;
+  border: 1px solid var(--mx-color-border-default, var(--ms-color-border));
+  background: var(--mx-color-bg-surface, var(--ms-color-surface));
+  box-shadow: 0 10px 28px rgba(13, 30, 56, .14);
+  max-height: 13rem;
+  overflow: auto;
+  position: absolute;
+  width: 100%;
+  z-index: var(--ms-z-overlay, 30);
+}
+
+.ms-mx-selection__option-wrapper {
+  margin: 0;
+}
+
+.ms-mx-selection__option {
+  width: 100%;
+  border: 0;
+  text-align: left;
+  background: transparent;
+  color: var(--mx-color-text-primary, var(--ms-color-text));
+  border-radius: .5rem;
+  padding: .5rem .6rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+}
+
+.ms-mx-selection__option:hover:not(:disabled),
+.ms-mx-selection__option--active:not(:disabled) {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, var(--ms-color-brand)) 12%, transparent);
+}
+
+.ms-mx-selection__option:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 var(--mx-focus-ring-width, 3px) color-mix(in srgb, var(--mx-color-border-focus, var(--ms-color-brand)) 30%, transparent);
+}
+
+.ms-mx-selection__option:disabled {
+  opacity: .58;
+  cursor: not-allowed;
+}
+
+.ms-mx-selection__status {
+  padding: .45rem .6rem;
+  color: var(--mx-color-text-muted, var(--ms-color-text-soft));
+  font-size: .83rem;
+}
+
+.ms-mx-multiselect {
+  min-height: var(--mx-density-comfortable-control-height, 40px);
+  display: flex;
+  align-items: center;
+  gap: .4rem;
+  flex-wrap: wrap;
+  padding: .3rem .45rem;
+  cursor: text;
+}
+
+.ms-mx-multiselect:focus-within {
+  border-color: var(--mx-color-border-focus, var(--ms-color-brand));
+  box-shadow: 0 0 0 var(--mx-focus-ring-width, 3px) color-mix(in srgb, var(--mx-color-border-focus, var(--ms-color-brand)) 28%, transparent);
+}
+
+.ms-mx-multiselect--disabled {
+  cursor: not-allowed;
+}
+
+.ms-mx-multiselect__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .3rem;
+  align-items: center;
+}
+
+.ms-mx-multiselect__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  padding: .15rem .4rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--mx-color-brand-primary, var(--ms-color-brand)) 14%, transparent);
+  color: var(--mx-color-text-primary, var(--ms-color-text));
+  font-size: .78rem;
+}
+
+.ms-mx-multiselect__chip-remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  font-size: .95rem;
+  line-height: 1;
+}
+
+.ms-mx-multiselect__search {
+  border: 0;
+  outline: none;
+  min-width: 8rem;
+  flex: 1 1 8rem;
+  padding: .15rem .2rem;
+  background: transparent;
+  color: var(--mx-color-text-primary, var(--ms-color-text));
+}
+
+.ms-mx-multiselect__search:disabled {
+  cursor: not-allowed;
+}
+
+.ms-mx-multiselect__placeholder {
+  color: var(--mx-color-text-muted, var(--ms-color-text-soft));
+  font-size: .88rem;
+}
+
+.ms-mx-selection__check {
+  width: 1rem;
+  text-align: center;
+  color: var(--mx-color-brand-primary, var(--ms-color-brand));
+  font-weight: 700;
+}
+
+[data-mx-theme="dark"] .ms-mx-selection__menu {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .42);
+}

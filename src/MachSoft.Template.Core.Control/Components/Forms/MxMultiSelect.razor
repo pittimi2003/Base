@@ -1,0 +1,249 @@
+@namespace MachSoft.Template.Core.Control.Components.Forms
+
+<MxFieldGroup Label="@Label"
+              FieldId="@ResolvedId"
+              Required="@Required"
+              HelperText="@HelperText"
+              ErrorText="@ErrorText"
+              IsCompact="@IsCompact">
+    <div class="ms-mx-selection" @onfocusout="OnFocusOut">
+        <div class="@SelectorClass"
+             role="combobox"
+             aria-expanded="@IsOpen"
+             aria-controls="@ListboxId"
+             aria-disabled="@Disabled"
+             @onclick="OpenFromContainer">
+            <div class="ms-mx-multiselect__chips">
+                @if (SelectedOptions.Count == 0)
+                {
+                    <span class="ms-mx-multiselect__placeholder">@Placeholder</span>
+                }
+                else
+                {
+                    @foreach (var selected in SelectedOptions)
+                    {
+                        <span class="ms-mx-multiselect__chip">
+                            @selected.Text
+                            <button type="button"
+                                    class="ms-mx-multiselect__chip-remove"
+                                    disabled="@Disabled"
+                                    aria-label=$"Remove {selected.Text}"
+                                    @onclick:stopPropagation
+                                    @onclick="() => RemoveValue(selected.Value)">
+                                ×
+                            </button>
+                        </span>
+                    }
+                }
+            </div>
+
+            <input id="@ResolvedId"
+                   type="text"
+                   class="ms-mx-multiselect__search"
+                   value="@SearchText"
+                   disabled="@Disabled"
+                   autocomplete="off"
+                   aria-label="@AriaLabel"
+                   aria-describedby="@DescribedBy"
+                   aria-controls="@ListboxId"
+                   @attributes="AdditionalAttributes"
+                   @onfocus="OpenFromInput"
+                   @oninput="OnSearchChanged"
+                   @onkeydown="OnInputKeyDown" />
+        </div>
+
+        @if (IsOpen)
+        {
+            <ul id="@ListboxId" class="ms-mx-selection__menu" role="listbox" aria-multiselectable="true">
+                @if (Loading)
+                {
+                    <li class="ms-mx-selection__status" role="status">@LoadingText</li>
+                }
+                else if (FilteredOptions.Count == 0)
+                {
+                    <li class="ms-mx-selection__status">@NoResultsText</li>
+                }
+                else
+                {
+                    @for (var index = 0; index < FilteredOptions.Count; index++)
+                    {
+                        var option = FilteredOptions[index];
+                        var isSelected = SelectedValues.Contains(option.Value);
+                        var isActive = index == ActiveIndex;
+                        <li id="@GetOptionId(index)"
+                            role="option"
+                            aria-selected="@isSelected"
+                            class="ms-mx-selection__option-wrapper">
+                            <button type="button"
+                                    class="@GetOptionClass(isActive)"
+                                    disabled="@option.Disabled"
+                                    @onmousedown:preventDefault
+                                    @onclick="() => ToggleOption(option)">
+                                <span class="ms-mx-selection__check">@(isSelected ? "✓" : string.Empty)</span>
+                                <span>@option.Text</span>
+                            </button>
+                        </li>
+                    }
+                }
+            </ul>
+        }
+    </div>
+</MxFieldGroup>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter] public IReadOnlyList<string> SelectedValues { get; set; } = Array.Empty<string>();
+    [Parameter] public EventCallback<IReadOnlyList<string>> SelectedValuesChanged { get; set; }
+    [Parameter] public IEnumerable<MxSelectOption> Options { get; set; } = Array.Empty<MxSelectOption>();
+    [Parameter] public string? SearchText { get; set; }
+    [Parameter] public EventCallback<string?> SearchTextChanged { get; set; }
+    [Parameter] public string Placeholder { get; set; } = "Select options";
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public string NoResultsText { get; set; } = "No results";
+    [Parameter] public string LoadingText { get; set; } = "Loading...";
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _fallbackId = $"mx-multiselect-{Guid.NewGuid():N}";
+    private IReadOnlyList<MxSelectOption> FilteredOptions { get; set; } = Array.Empty<MxSelectOption>();
+    private bool IsOpen { get; set; }
+    private int ActiveIndex { get; set; } = -1;
+
+    private string ResolvedId => Id ?? _fallbackId;
+    private string ListboxId => $"{ResolvedId}-listbox";
+    private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
+    private string MessageId => $"{ResolvedId}-message";
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? MessageId : null;
+    private IReadOnlyList<MxSelectOption> SelectedOptions => Options.Where(option => SelectedValues.Contains(option.Value)).ToArray();
+    private string SelectorClass => $"ms-mx-input ms-mx-multiselect{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}{(Disabled ? " ms-mx-multiselect--disabled" : string.Empty)}";
+
+    protected override void OnParametersSet()
+    {
+        FilteredOptions = SelectionSearch.Filter(Options, SearchText);
+
+        if (ActiveIndex >= FilteredOptions.Count)
+        {
+            ActiveIndex = -1;
+        }
+    }
+
+    private Task OpenFromContainer()
+    {
+        if (Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        IsOpen = true;
+        return Task.CompletedTask;
+    }
+
+    private Task OpenFromInput(FocusEventArgs _)
+    {
+        if (Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        IsOpen = true;
+        return Task.CompletedTask;
+    }
+
+    private async Task OnSearchChanged(ChangeEventArgs args)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        SearchText = args.Value?.ToString();
+        FilteredOptions = SelectionSearch.Filter(Options, SearchText);
+        ActiveIndex = FilteredOptions.Count > 0 ? 0 : -1;
+        IsOpen = true;
+        await SearchTextChanged.InvokeAsync(SearchText);
+    }
+
+    private async Task OnInputKeyDown(KeyboardEventArgs args)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        switch (args.Key)
+        {
+            case "ArrowDown":
+                IsOpen = true;
+                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, 1);
+                break;
+            case "ArrowUp":
+                IsOpen = true;
+                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, -1);
+                break;
+            case "Enter":
+                if (IsOpen && ActiveIndex >= 0 && ActiveIndex < FilteredOptions.Count)
+                {
+                    await ToggleOption(FilteredOptions[ActiveIndex]);
+                }
+                break;
+            case "Backspace" when string.IsNullOrWhiteSpace(SearchText) && SelectedValues.Count > 0:
+                await RemoveValue(SelectedValues[^1]);
+                break;
+            case "Escape":
+                IsOpen = false;
+                ActiveIndex = -1;
+                break;
+        }
+    }
+
+    private async Task ToggleOption(MxSelectOption option)
+    {
+        if (option.Disabled)
+        {
+            return;
+        }
+
+        var values = SelectedValues.ToList();
+        if (values.Contains(option.Value))
+        {
+            values.Remove(option.Value);
+        }
+        else
+        {
+            values.Add(option.Value);
+        }
+
+        SelectedValues = values;
+        await SelectedValuesChanged.InvokeAsync(values);
+    }
+
+    private async Task RemoveValue(string value)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        var values = SelectedValues.Where(item => item != value).ToArray();
+        SelectedValues = values;
+        await SelectedValuesChanged.InvokeAsync(values);
+    }
+
+    private async Task OnFocusOut(FocusEventArgs _)
+    {
+        await Task.Delay(120);
+        IsOpen = false;
+        ActiveIndex = -1;
+    }
+
+    private string GetOptionId(int index) => $"{ResolvedId}-option-{index}";
+
+    private string GetOptionClass(bool isActive)
+        => $"ms-mx-selection__option ms-mx-selection__option--multiselect{(isActive ? " ms-mx-selection__option--active" : string.Empty)}";
+}

@@ -27,3 +27,20 @@
     grid-template-columns: 1fr;
   }
 }
+
+.showcase-grid--themes {
+  align-items: start;
+}
+
+.showcase-theme-surface {
+  padding: 1rem;
+  border: 1px solid var(--mx-color-border-default, #bdcbdf);
+  border-radius: .75rem;
+  background: var(--mx-color-bg-surface, #fff);
+  display: grid;
+  gap: .9rem;
+}
+
+.showcase-theme-surface h3 {
+  margin: 0;
+}
