@@ -1,4 +1,4 @@
-@namespace MachSoft.Template.Core.Components.Foundation
+@namespace MachSoft.Template.Core.Control.Components.Forms
 
 <MxFieldGroup Label="@Label"
               FieldId="@ResolvedId"
@@ -10,11 +10,15 @@
         <select id="@ResolvedId"
                 class="@SelectClass"
                 value="@Value"
-                disabled="@Disabled"
+                disabled="@IsInteractionDisabled"
                 required="@Required"
+                aria-label="@AriaLabel"
                 aria-required="@Required"
-                aria-invalid="@HasError"
+                aria-disabled="@IsInteractionDisabled"
+                aria-invalid="@AriaInvalid"
+                aria-readonly="@ReadOnly"
                 aria-describedby="@DescribedBy"
+                @attributes="AdditionalAttributes"
                 @onchange="OnValueChanged">
         @if (!string.IsNullOrWhiteSpace(Placeholder))
         {
@@ -37,21 +41,31 @@
     [Parameter] public IEnumerable<MxSelectOption> Options { get; set; } = Array.Empty<MxSelectOption>();
     [Parameter] public string? Placeholder { get; set; }
     [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
     [Parameter] public bool Required { get; set; }
     [Parameter] public string? HelperText { get; set; }
     [Parameter] public string? ErrorText { get; set; }
     [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
     [Parameter] public string? Id { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private readonly string _fallbackId = $"mx-select-{Guid.NewGuid():N}";
     private string ResolvedId => Id ?? _fallbackId;
     private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
+    private bool IsInteractionDisabled => Disabled || ReadOnly;
     private string MessageId => $"{ResolvedId}-message";
     private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? MessageId : null;
-    private string SelectClass => $"ms-mx-input ms-mx-input--select{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+    private string? AriaInvalid => HasError ? "true" : null;
+    private string SelectClass => $"ms-mx-input ms-mx-input--select{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(ReadOnly ? " ms-mx-input--readonly" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
 
     private async Task OnValueChanged(ChangeEventArgs args)
     {
+        if (IsInteractionDisabled)
+        {
+            return;
+        }
+
         var nextValue = args.Value?.ToString();
         if (nextValue == Value)
         {

@@ -1,0 +1,75 @@
+@page "/showcase/inputs"
+
+<div class="ms-page-container">
+    <MxPageHeader Title="Core.Control Inputs Showcase"
+                  Description="Validación visual/semántica de la familia base de inputs públicos en MachSoft.Template.Core.Control." />
+
+    <MxCard Title="Guía rápida de validación" IsCompact="true">
+        <ChildContent>
+            <p class="ms-text-sm">Valida estados default, focus-visible, invalid, readonly y disabled en light/dark. La familia se mantiene baseline y sin capacidades avanzadas de selección en esta iteración.</p>
+        </ChildContent>
+    </MxCard>
+
+    <div class="showcase-grid">
+        <MxTextField Label="MxTextField / Básico" Placeholder="North Hub" Value="@TextValue" ValueChanged="@(v => TextValue = v)" HelperText="Default + helper text." />
+        <MxTextField Label="MxTextField / ReadOnly" Value="Read only value" ReadOnly="true" HelperText="No editable, pero legible." />
+        <MxTextField Label="MxTextField / Disabled" Value="Disabled value" Disabled="true" />
+        <MxTextField Label="MxTextField / Invalid" Value="@InvalidText" ValueChanged="@(v => InvalidText = v)" ErrorText="Campo inválido" Required="true" />
+
+        <MxTextArea Label="MxTextArea / Básico" Value="@AreaValue" ValueChanged="@(v => AreaValue = v)" Placeholder="Describe el proceso" HelperText="Multilínea alineada con TextField." />
+        <MxTextArea Label="MxTextArea / ReadOnly" Value="Sin edición" ReadOnly="true" HelperText="No editable." />
+        <MxTextArea Label="MxTextArea / Disabled" Value="No editable" Disabled="true" />
+        <MxTextArea Label="MxTextArea / Invalid" Value="@InvalidArea" ValueChanged="@(v => InvalidArea = v)" ErrorText="Mínimo 10 caracteres" Required="true" />
+
+        <MxSelect Label="MxSelect / Básico" Value="@Region" ValueChanged="@(v => Region = v)" Options="@Regions" Placeholder="Selecciona región" HelperText="Selección simple baseline." />
+        <MxSelect Label="MxSelect / ReadOnly" Value="na" Options="@Regions" ReadOnly="true" HelperText="Readonly = no interactivo por diseño." />
+        <MxSelect Label="MxSelect / Disabled" Value="latam" Options="@Regions" Disabled="true" />
+        <MxSelect Label="MxSelect / Invalid" Value="@RegionInvalid" ValueChanged="@(v => RegionInvalid = v)" Options="@Regions" ErrorText="Campo obligatorio" Required="true" />
+
+        <MxCheckbox Label="MxCheckbox / Básico" Description="Acepta condiciones" Checked="@Accepted" CheckedChanged="@(v => Accepted = v)" />
+        <MxCheckbox Label="MxCheckbox / Disabled" Description="No disponible" Checked="true" Disabled="true" />
+        <MxCheckbox Label="MxCheckbox / Invalid" Description="Requerido para continuar" Checked="@InvalidCheck" CheckedChanged="@(v => InvalidCheck = v)" Invalid="true" ErrorText="Debes confirmar" Required="true" />
+
+        <fieldset class="showcase-radio-set">
+            <legend>MxRadio / Grupo mínimo por Name</legend>
+            <div class="ms-stack-sm">
+                <MxRadio Name="priority" Label="Alta" Value="high" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Description="Prioridad alta" />
+                <MxRadio Name="priority" Label="Normal" Value="normal" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Description="Prioridad estándar" />
+                <MxRadio Name="priority" Label="Disabled" Value="disabled" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Disabled="true" />
+                <MxRadio Name="priority" Label="Inválido" Value="invalid" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Invalid="true" ErrorText="Selecciona una prioridad válida" />
+            </div>
+            <p class="ms-text-sm">Límite actual: no existe aún componente `MxRadioGroup`; la agrupación se resuelve con `Name`.</p>
+        </fieldset>
+
+        <MxSwitch Label="MxSwitch / Básico" Checked="@Enabled" CheckedChanged="@(v => Enabled = v)" HelperText="Toggle operacional" />
+        <MxSwitch Label="MxSwitch / Disabled" Checked="true" Disabled="true" />
+        <MxSwitch Label="MxSwitch / Invalid" Checked="@InvalidSwitch" CheckedChanged="@(v => InvalidSwitch = v)" Invalid="true" ErrorText="Debes confirmar" HelperText="Requiere confirmación explícita" />
+    </div>
+</div>
+
+@code {
+    private string? TextValue { get; set; }
+    private string? InvalidText { get; set; } = "xx";
+    private string? AreaValue { get; set; }
+    private string? InvalidArea { get; set; } = "corto";
+    private string? Region { get; set; }
+    private string? RegionInvalid { get; set; }
+    private bool Accepted { get; set; }
+    private bool InvalidCheck { get; set; }
+    private string Priority { get; set; } = "normal";
+    private bool Enabled { get; set; }
+    private bool InvalidSwitch { get; set; }
+
+    private IEnumerable<MxSelectOption> Regions { get; } =
+    [
+        new("emea", "EMEA"),
+        new("latam", "LATAM"),
+        new("na", "North America")
+    ];
+
+    private Task OnPriorityChanged(string? value)
+    {
+        Priority = value ?? "normal";
+        return Task.CompletedTask;
+    }
+}
