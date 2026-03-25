@@ -18,6 +18,7 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - Actions: `MxButton`, `MxIconButton`
 - Feedback: `MxAlert`, `MxProgress`, `MxToast`
 - Overlays: `MxTooltip`, `MxDialog`, `MxPopup`
+- Inputs: `MxTextField`, `MxTextArea`, `MxCheckbox`, `MxRadio`, `MxSwitch`, `MxSelect`
 
 ## Alcance y límites actuales
 - `MxDialog` incluye apertura/cierre controlado, cierre por overlay/escape y foco inicial en el shell del diálogo.
@@ -26,4 +27,14 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - `MxToast` es componente reusable con autocierre opcional; no es orquestador enterprise de canales/colas.
 - `MxTooltip` es base simple de texto (hover/focus/open manual), sin motor avanzado de posicionamiento dinámico.
 
+- Inputs base (TextField/TextArea/Checkbox/Radio/Switch/Select) incluyen helper/validation text, estados `disabled`/`invalid` y foco visible tokenizado.
+- `MxSelect` ofrece versión simple de selección única; `ReadOnly` se representa con comportamiento equivalente a `disabled` + `aria-readonly`, porque el `<select>` nativo no soporta readonly real.
+
 Todos los controles consumen tokens del package `MachSoft.Template.Core` y son compatibles con Blazor Server/WebAssembly.
+
+
+## Consolidación de Inputs base (hardening)
+- `MxTextField` y `MxTextArea`: agregan estado `Required`, mensajes helper/error enlazados por `aria-describedby`, y semántica consistente para `readonly`/`disabled`/`invalid`.
+- `MxCheckbox`, `MxRadio` y `MxSwitch`: incorporan `Description` opcional para contexto adicional, `required` opcional y mejoras de foco/estado inválido.
+- `MxRadio` mantiene agrupación mínima por `Name` (sin `RadioGroup` dedicado en esta fase).
+- `MxSelect` mantiene baseline simple: `ReadOnly` se traduce a estado no interactivo (`disabled`) y conserva `aria-readonly` para explicitar intención semántica.

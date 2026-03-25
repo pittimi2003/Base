@@ -1,0 +1,65 @@
+@namespace MachSoft.Template.Core.Control
+
+<div class="@RootClass">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" for="@ResolvedId">@Label</label>
+    }
+
+    <input id="@ResolvedId"
+           class="mx-input-control mx-input-control--text"
+           type="@Type"
+           value="@Value"
+           placeholder="@Placeholder"
+           disabled="@Disabled"
+           readonly="@ReadOnly"
+           required="@Required"
+           aria-invalid="@AriaInvalid"
+           aria-required="@Required"
+           aria-describedby="@DescribedBy"
+           @oninput="HandleInput"
+           @attributes="AdditionalAttributes" />
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string Type { get; set; } = "text";
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _instanceId = $"mx-textfield-{Guid.NewGuid():N}";
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+
+    private string RootClass =>
+        $"mx-input-root {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(ReadOnly ? "mx-input-root--readonly" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+
+    private Task HandleInput(ChangeEventArgs args) => ValueChanged.InvokeAsync(args.Value?.ToString());
+}

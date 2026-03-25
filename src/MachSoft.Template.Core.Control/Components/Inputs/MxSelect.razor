@@ -1,0 +1,80 @@
+@namespace MachSoft.Template.Core.Control
+@using MachSoft.Template.Core.Control.Models
+
+<div class="@RootClass">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" for="@ResolvedId">@Label</label>
+    }
+
+    <div class="mx-select-wrapper">
+        <select id="@ResolvedId"
+                class="mx-input-control mx-input-control--select"
+                value="@Value"
+                disabled="@IsDisabled"
+                required="@Required"
+                aria-invalid="@AriaInvalid"
+                aria-readonly="@AriaReadOnly"
+                aria-disabled="@AriaDisabled"
+                aria-required="@Required"
+                aria-describedby="@DescribedBy"
+                @onchange="HandleChange"
+                @attributes="AdditionalAttributes">
+            @if (!string.IsNullOrWhiteSpace(Placeholder))
+            {
+                <option value="" disabled="@Required">@Placeholder</option>
+            }
+            @foreach (var option in Options)
+            {
+                <option value="@option.Value" disabled="@option.Disabled">@option.Label</option>
+            }
+        </select>
+        <span class="mx-select-icon" aria-hidden="true">▾</span>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public IReadOnlyList<MxSelectOption> Options { get; set; } = Array.Empty<MxSelectOption>();
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _instanceId = $"mx-select-{Guid.NewGuid():N}";
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private bool IsDisabled => Disabled || ReadOnly;
+    private string? AriaReadOnly => ReadOnly ? "true" : null;
+    private string? AriaDisabled => IsDisabled ? "true" : null;
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+
+    private string RootClass =>
+        $"mx-input-root mx-input-root--select {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(IsDisabled ? "mx-input-root--disabled" : string.Empty)} {(ReadOnly ? "mx-input-root--readonly" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+
+    private Task HandleChange(ChangeEventArgs args) => ValueChanged.InvokeAsync(args.Value?.ToString());
+}

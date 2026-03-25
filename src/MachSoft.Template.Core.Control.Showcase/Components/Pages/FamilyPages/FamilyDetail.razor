@@ -38,6 +38,10 @@ else
             {
                 @RenderOverlaysFamily()
             }
+            else if (string.Equals(CurrentFamily.Key, "inputs", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderInputsFamily()
+            }
             else
             {
                 <ShowcaseSection Title="Ejemplo base"
@@ -61,6 +65,21 @@ else
     private bool _toastVisibleSecondary;
     private bool _alertVisible = true;
     private bool _tooltipForcedOpen;
+
+    private string? _textFieldValue = "Valor inicial";
+    private string? _textAreaValue = "Notas iniciales del operador";
+    private bool _checkboxChecked = true;
+    private string? _radioValue = "email";
+    private bool _switchChecked;
+    private string? _selectValue;
+
+    private readonly IReadOnlyList<MxSelectOption> _selectOptions =
+    [
+        new("critical", "Crítico"),
+        new("high", "Alta"),
+        new("medium", "Media"),
+        new("low", "Baja", true)
+    ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
 
@@ -102,6 +121,14 @@ else
                     <MxIconButton Icon="★" AriaLabel="Favorito" Pressed="true" />
                     <MxIconButton Icon="↻" AriaLabel="Cargando" Loading="true" LoadingText="Actualizando" />
                 </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Notas de límites actuales"
+                                  Caption="Se documentan límites reales para sostener evolución limpia hacia Selection avanzada.">
+                <ul class="ms-showcase-notes-list">
+                    <li>Radio: se mantiene agrupación mínima por <code>Name</code>; no hay contenedor <code>RadioGroup</code> dedicado en esta iteración.</li>
+                    <li>Select: <code>ReadOnly</code> se implementa como no interactivo (disabled + <code>aria-readonly</code>) por limitación nativa del elemento <code>select</code>.</li>
+                </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
     </>;
@@ -227,6 +254,87 @@ else
                     <li>Dialog: foco inicial en shell y cierre por Escape/overlay; sin focus trap completo aún.</li>
                     <li>Popup: overlay contextual reusable para acciones simples; no reemplaza un menú enterprise.</li>
                     <li>Tooltip: base simple textual con modo open opcional para QA.</li>
+                </ul>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </>;
+
+
+    private RenderFragment RenderInputsFamily() => @<>
+        <ShowcaseSection Title="Campos textuales"
+                         Description="MxTextField y MxTextArea comparten foundation visual, helper/validation text y estados base.">
+            <ShowcasePreviewBlock Title="MxTextField"
+                                  Caption="Input de texto base con binding directo, placeholder y soporte de readonly/invalid.">
+                <div class="ms-showcase-input-grid">
+                    <MxTextField Label="Nombre" @bind-Value="_textFieldValue" HelperText="Visible en light/dark." Required="true" />
+                    <MxTextField Label="Con placeholder" Placeholder="Escribe tu alias" Value="" />
+                    <MxTextField Label="Deshabilitado" Value="No editable" Disabled="true" />
+                    <MxTextField Label="Solo lectura" Value="Bloqueado para edición" ReadOnly="true" />
+                    <MxTextField Label="Inválido" Value="###" Invalid="true" ValidationText="Solo se permiten letras y números." />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxTextArea"
+                                  Caption="TextArea multilinea con la misma semántica visual de MxTextField.">
+                <div class="ms-showcase-input-grid">
+                    <MxTextArea Label="Descripción" @bind-Value="_textAreaValue" HelperText="Máximo 500 caracteres." Required="true" />
+                    <MxTextArea Label="Placeholder" Placeholder="Escribe un comentario" Value="" Rows="5" />
+                    <MxTextArea Label="Deshabilitado" Value="Bloqueado" Disabled="true" />
+                    <MxTextArea Label="Solo lectura" Value="Contenido de solo lectura" ReadOnly="true" />
+                    <MxTextArea Label="Inválido" Value="Texto" Invalid="true" ValidationText="El comentario es obligatorio." />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="Controles booleanos y selección"
+                         Description="MxCheckbox, MxRadio, MxSwitch y MxSelect con API mínima y extensible para formularios. ">
+            <ShowcasePreviewBlock Title="MxCheckbox y MxSwitch"
+                                  Caption="Estado booleano claro, foco visible e invalidación visual opcional.">
+                <div class="ms-showcase-input-grid">
+                    <MxCheckbox Label="Acepto términos" Description="Debes aceptar para continuar." @bind-Checked="_checkboxChecked" HelperText="Requerido para continuar." Required="true" />
+                    <MxCheckbox Label="Inválido" Checked="false" Invalid="true" ValidationText="Debes aceptar antes de enviar." />
+                    <MxCheckbox Label="Deshabilitado" Checked="true" Disabled="true" />
+
+                    <MxSwitch Label="Notificaciones" Description="Toggle semántico para preferencias operativas." @bind-Checked="_switchChecked" HelperText="Activa avisos por email." />
+                    <MxSwitch Label="Inválido" Checked="false" Invalid="true" ValidationText="Debes escoger una preferencia." />
+                    <MxSwitch Label="Deshabilitado" Checked="true" Disabled="true" />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxRadio y MxSelect"
+                                  Caption="Selección única simple. MxSelect readonly se modela como disabled + aria-readonly.">
+                <div class="ms-showcase-input-grid">
+                    <div class="ms-showcase-stack-sm">
+                        <MxRadio Name="channel" Label="Email" Description="Canal recomendado para auditoría." Value="email" @bind-SelectedValue="_radioValue" Required="true" />
+                        <MxRadio Name="channel" Label="SMS" Value="sms" @bind-SelectedValue="_radioValue" />
+                        <MxRadio Name="channel" Label="Push (deshabilitado)" Value="push" @bind-SelectedValue="_radioValue" Disabled="true" />
+                    </div>
+
+                    <MxSelect Label="Prioridad"
+                              Placeholder="Selecciona prioridad"
+                              Options="_selectOptions"
+                              @bind-Value="_selectValue"
+                              HelperText="Versión base de selección simple." />
+
+                    <MxSelect Label="Estado inválido"
+                              Placeholder="Selecciona estado"
+                              Options="_selectOptions"
+                              Invalid="true"
+                              ValidationText="Este campo es obligatorio." />
+
+                    <MxSelect Label="Readonly (comportamiento HTML equivalente a disabled)"
+                              Value="high"
+                              Options="_selectOptions"
+                              ReadOnly="true"
+                              HelperText="El select nativo no soporta readonly real." />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Límites actuales de inputs base"
+                                  Caption="Se mantienen explícitos para evitar sobrediseño antes de la familia Selection avanzada.">
+                <ul class="ms-showcase-notes-list">
+                    <li>Radio: agrupación mínima por <code>Name</code>; no se agrega `RadioGroup` dedicado en esta fase.</li>
+                    <li>Select: `ReadOnly` se representa como estado no interactivo (disabled + <code>aria-readonly</code>) por limitación nativa de HTML.</li>
                 </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
