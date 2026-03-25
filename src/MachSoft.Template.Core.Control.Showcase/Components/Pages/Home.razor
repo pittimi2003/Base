@@ -6,40 +6,36 @@
                       Title="MachSoft.Template.Core.Control"
                       Description="Host oficial para validar visual y funcionalmente el catálogo Mx* sobre el design system MachSoft.">
     <Metadata>
-        <MxBadge Variant="MxBadgeVariant.Brand" Text="RCL NuGet-ready" />
-        <MxBadge Variant="MxBadgeVariant.Neutral" Text="Cross-hosting" />
-        <MxBadge Variant="MxBadgeVariant.Success" Text="Showcase hardened" />
+        <span class="ms-showcase-chip">RCL NuGet-ready</span>
+        <span class="ms-showcase-chip">Cross-hosting</span>
+        <span class="ms-showcase-chip">Showcase hardened</span>
     </Metadata>
     <ChildContent>
         <ShowcaseSection Title="Objetivo de esta iteración"
-                         Description="Consolidar el Showcase como plataforma de validación visual y funcional antes de crecer por familias.">
-            <MxCard Title="Criterios de consolidación" Variant="SurfaceVariant.Outlined">
-                <ChildContent>
-                    <ul class="ms-showcase-notes-list">
-                        <li>Separación estricta entre paquete distribuible y host de validación.</li>
-                        <li>Patrón reusable para páginas de familias con ejemplos, variantes, estados y notas.</li>
-                        <li>Consistencia de superficies en light/dark con tokens oficiales.</li>
-                    </ul>
-                </ChildContent>
-            </MxCard>
+                         Description="Consolidar el primer lote oficial de Actions, Feedback y Overlays con API pública y ejemplos reales.">
+            <div class="ms-showcase-preview-block">
+                <ul class="ms-showcase-notes-list">
+                    <li>Separación estricta entre paquete distribuible y host de validación.</li>
+                    <li>Componentes públicos Mx* pequeños y extensibles.</li>
+                    <li>Consistencia de superficies en light/dark con tokens oficiales.</li>
+                </ul>
+            </div>
         </ShowcaseSection>
 
         <ShowcaseSection Title="Acceso rápido"
                          Description="Entrada directa a foundations y mapa de familias preparadas.">
             <div class="ms-showcase-action-grid">
-                <MxCard Title="Foundations" Variant="SurfaceVariant.Outlined">
-                    <ChildContent>
-                        <p>Inspección de tokens, superficies y densidad visual.</p>
-                        <MxButton Variant="MxButtonVariant.Secondary" Href="/foundations">Abrir foundations</MxButton>
-                    </ChildContent>
-                </MxCard>
+                <div class="ms-showcase-preview-block">
+                    <h3>Foundations</h3>
+                    <p>Inspección de tokens, superficies y densidad visual.</p>
+                    <MxButton Variant="MxButtonVariant.Outlined" Href="/foundations">Abrir foundations</MxButton>
+                </div>
 
-                <MxCard Title="Families" Variant="SurfaceVariant.Outlined">
-                    <ChildContent>
-                        <p>Registro de categorías listas para crecimiento incremental.</p>
-                        <MxButton Variant="MxButtonVariant.Secondary" Href="/families">Abrir families</MxButton>
-                    </ChildContent>
-                </MxCard>
+                <div class="ms-showcase-preview-block">
+                    <h3>Families</h3>
+                    <p>Registro de categorías listas para crecimiento incremental.</p>
+                    <MxButton Variant="MxButtonVariant.Outlined" Href="/families">Abrir families</MxButton>
+                </div>
             </div>
         </ShowcaseSection>
     </ChildContent>

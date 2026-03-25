@@ -352,3 +352,28 @@ a {
     border-bottom: var(--ms-showcase-border-subtle);
   }
 }
+
+.ms-showcase-chip {
+  border-radius: var(--mx-radius-pill, 999px);
+  padding: 0.2rem 0.6rem;
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  border: var(--ms-showcase-border-default);
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
+  color: var(--mx-color-brand-primary, #3a67bf);
+}
+
+.ms-showcase-inline-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ms-showcase-space-sm);
+  align-items: center;
+}
+
+.ms-showcase-stack-sm {
+  display: grid;
+  gap: var(--ms-showcase-space-sm);
+}
+
+.ms-showcase-inline-message {
+  margin: 0;
+}

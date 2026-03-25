@@ -1,7 +1,4 @@
-/*
-  Package-level style entrypoint for MachSoft.Template.Core.Control.
-  Keep only distributable, reusable catalog styles here.
-*/
+/* Package-level style entrypoint for MachSoft.Template.Core.Control */
 
 .mx-control-host {
   color: var(--mx-color-text-primary, var(--ms-color-text, #11233d));
@@ -16,20 +13,377 @@
   box-shadow: var(--mx-shadow-1, none);
 }
 
-.mx-control-surface--muted {
-  background: var(--mx-color-bg-surface-muted, var(--mx-color-bg-surface, #ffffff));
-}
-
-.mx-control-surface--raised {
-  background: var(--mx-color-bg-surface-raised, var(--mx-color-bg-surface, #ffffff));
-  box-shadow: var(--mx-shadow-2, var(--mx-shadow-1, none));
-}
-
-.mx-control-surface--outlined {
-  box-shadow: none;
-}
-
 .mx-control-focusable:focus-visible {
   outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3f72de));
   outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+.mx-btn,
+.mx-icon-btn {
+  --mx-btn-bg: var(--mx-color-brand-primary, #3a67bf);
+  --mx-btn-fg: #fff;
+  --mx-btn-border: transparent;
+  --mx-btn-hover-bg: color-mix(in srgb, var(--mx-btn-bg) 86%, #000);
+
+  font: inherit;
+  border-radius: var(--mx-radius-sm, 6px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-btn-border);
+  background: var(--mx-btn-bg);
+  color: var(--mx-btn-fg);
+  transition: background-color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease),
+    border-color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease),
+    box-shadow var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease),
+    opacity var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease);
+}
+
+.mx-btn {
+  min-height: 2.5rem;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  text-decoration: none;
+  line-height: 1;
+}
+
+.mx-btn:hover,
+.mx-icon-btn:hover {
+  background: var(--mx-btn-hover-bg);
+}
+
+.mx-btn:focus-visible,
+.mx-icon-btn:focus-visible,
+.mx-tooltip__target:focus-visible,
+.mx-dialog-shell:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-btn[disabled],
+.mx-btn[aria-disabled="true"],
+.mx-icon-btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.mx-btn[aria-busy="true"],
+.mx-icon-btn[aria-busy="true"] {
+  cursor: progress;
+}
+
+.mx-btn--outlined,
+.mx-icon-btn--outlined {
+  --mx-btn-bg: transparent;
+  --mx-btn-fg: var(--mx-color-brand-primary, #3a67bf);
+  --mx-btn-border: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 35%, transparent);
+  --mx-btn-hover-bg: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
+}
+
+.mx-btn--text,
+.mx-icon-btn--text {
+  --mx-btn-bg: transparent;
+  --mx-btn-fg: var(--mx-color-brand-primary, #3a67bf);
+  --mx-btn-border: transparent;
+  --mx-btn-hover-bg: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 14%, transparent);
+}
+
+.mx-btn--fab,
+.mx-icon-btn--fab {
+  border-radius: var(--mx-radius-pill, 999px);
+  box-shadow: var(--mx-shadow-2, var(--mx-shadow-1, none));
+}
+
+.mx-btn--small {
+  min-height: 2rem;
+  padding: 0 0.75rem;
+  font-size: 0.875rem;
+}
+
+.mx-btn--large {
+  min-height: 2.9rem;
+  padding: 0 1.2rem;
+  font-size: 1rem;
+}
+
+.mx-btn__loader,
+.mx-icon-btn__loader {
+  width: 0.95rem;
+  height: 0.95rem;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-top-color: currentColor;
+  animation: mx-spin 0.9s linear infinite;
+  flex: 0 0 auto;
+}
+
+.mx-icon-btn {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.mx-icon-btn--small {
+  width: 2rem;
+  height: 2rem;
+}
+
+.mx-icon-btn--large {
+  width: 2.9rem;
+  height: 2.9rem;
+}
+
+.mx-alert,
+.mx-toast {
+  border-radius: var(--mx-radius-md, 10px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  background: var(--mx-color-bg-surface, #fff);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+}
+
+.mx-alert__title,
+.mx-toast__title {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.mx-alert__message,
+.mx-toast__message {
+  margin: 0.35rem 0 0;
+  color: var(--mx-color-text-secondary, #40556f);
+}
+
+.mx-alert--neutral,
+.mx-toast--neutral {
+  border-color: var(--mx-color-border-subtle, #d6dcea);
+}
+
+.mx-alert--info,
+.mx-toast--info {
+  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 45%, transparent);
+}
+
+.mx-alert--success,
+.mx-toast--success {
+  border-color: color-mix(in srgb, #2f9c5e 50%, transparent);
+}
+
+.mx-alert--warning,
+.mx-toast--warning {
+  border-color: color-mix(in srgb, #d68b1a 58%, transparent);
+}
+
+.mx-alert--danger,
+.mx-toast--danger {
+  border-color: color-mix(in srgb, #c53c3c 58%, transparent);
+}
+
+.mx-progress {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.mx-progress__track {
+  border-radius: var(--mx-radius-pill, 999px);
+  background: color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 55%, transparent);
+  overflow: hidden;
+  min-height: 0.6rem;
+}
+
+.mx-progress__bar {
+  display: block;
+  background: var(--mx-color-brand-primary, #3a67bf);
+  min-height: 0.6rem;
+  transition: width var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease);
+}
+
+.mx-progress--success .mx-progress__bar { background: #2f9c5e; }
+.mx-progress--warning .mx-progress__bar { background: #d68b1a; }
+.mx-progress--danger .mx-progress__bar { background: #c53c3c; }
+.mx-progress--neutral .mx-progress__bar { background: #64748b; }
+
+.mx-progress--indeterminate .mx-progress__bar {
+  width: 40% !important;
+  animation: mx-progress-indeterminate 1.1s ease-in-out infinite;
+}
+
+.mx-progress__label {
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-secondary, #40556f);
+}
+
+.mx-tooltip {
+  position: relative;
+  display: inline-flex;
+}
+
+.mx-tooltip__target {
+  display: inline-flex;
+}
+
+.mx-tooltip__bubble {
+  position: absolute;
+  max-width: 220px;
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  line-height: 1.3;
+  color: #fff;
+  background: color-mix(in srgb, var(--mx-color-bg-surface-raised, #1f2f45) 90%, #000);
+  border-radius: var(--mx-radius-sm, 6px);
+  padding: 0.35rem 0.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity var(--mx-motion-duration-fast, 120ms) ease, transform var(--mx-motion-duration-fast, 120ms) ease;
+  z-index: 1300;
+  pointer-events: none;
+}
+
+.mx-tooltip:hover .mx-tooltip__bubble,
+.mx-tooltip:focus-within .mx-tooltip__bubble,
+.mx-tooltip--open .mx-tooltip__bubble {
+  opacity: 1;
+  visibility: visible;
+}
+
+.mx-tooltip--top .mx-tooltip__bubble { left: 50%; bottom: calc(100% + 0.4rem); transform: translateX(-50%) translateY(0); }
+.mx-tooltip--bottom .mx-tooltip__bubble { left: 50%; top: calc(100% + 0.4rem); transform: translateX(-50%) translateY(0); }
+.mx-tooltip--left .mx-tooltip__bubble { right: calc(100% + 0.4rem); top: 50%; transform: translateY(-50%); }
+.mx-tooltip--right .mx-tooltip__bubble { left: calc(100% + 0.4rem); top: 50%; transform: translateY(-50%); }
+
+.mx-dialog-layer,
+.mx-popup-scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+}
+
+.mx-dialog-backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, #08101f 45%, transparent);
+}
+
+.mx-dialog-shell {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  z-index: 1201;
+}
+
+.mx-dialog {
+  width: min(100%, 640px);
+  max-height: min(92vh, 860px);
+  overflow: auto;
+  border-radius: var(--mx-radius-md, 10px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  background: var(--mx-color-bg-surface, #fff);
+  box-shadow: var(--mx-shadow-2, 0 12px 34px rgba(13, 30, 59, 0.18));
+  display: grid;
+}
+
+.mx-dialog--small { max-width: 420px; }
+.mx-dialog--large { max-width: 860px; }
+.mx-dialog--fullscreen { width: min(100%, 96vw); height: min(100%, 90vh); }
+
+.mx-dialog__header,
+.mx-dialog__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  padding: 0.9rem 1rem;
+  border-bottom: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+}
+
+.mx-dialog__header h3 {
+  margin: 0;
+  font-size: var(--mx-font-size-h3, 1.125rem);
+}
+
+.mx-dialog__footer {
+  border-bottom: 0;
+  border-top: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.mx-dialog__body {
+  padding: 1rem;
+  color: var(--mx-color-text-secondary, #40556f);
+}
+
+.mx-popup-host {
+  position: relative;
+  display: inline-flex;
+}
+
+.mx-popup-host__trigger {
+  display: inline-flex;
+}
+
+.mx-popup-scrim {
+  background: color-mix(in srgb, #08101f 16%, transparent);
+}
+
+.mx-popup {
+  position: absolute;
+  min-width: 220px;
+  border-radius: var(--mx-radius-md, 10px);
+  background: var(--mx-color-bg-surface, #fff);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  box-shadow: var(--mx-shadow-2, 0 12px 34px rgba(13, 30, 59, 0.18));
+  z-index: 1202;
+  padding: 0.75rem;
+}
+
+.mx-popup--bottomstart { top: calc(100% + 0.4rem); left: 0; }
+.mx-popup--bottomend { top: calc(100% + 0.4rem); right: 0; }
+.mx-popup--topstart { bottom: calc(100% + 0.4rem); left: 0; }
+.mx-popup--topend { bottom: calc(100% + 0.4rem); right: 0; }
+
+@media (max-width: 768px) {
+  .mx-dialog-shell {
+    align-items: end;
+    padding: 0.5rem;
+  }
+
+  .mx-dialog,
+  .mx-dialog--small,
+  .mx-dialog--large {
+    width: 100%;
+    max-width: 100%;
+    max-height: 88vh;
+  }
+}
+
+@keyframes mx-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes mx-progress-indeterminate {
+  0% { transform: translateX(-80%); }
+  100% { transform: translateX(260%); }
 }

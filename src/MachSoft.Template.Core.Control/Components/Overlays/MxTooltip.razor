@@ -1,0 +1,24 @@
+@namespace MachSoft.Template.Core.Control
+
+<span class="@HostClass">
+    <span class="mx-tooltip__target"
+          tabindex="@(Focusable ? 0 : null)"
+          aria-describedby="@TooltipId">
+        @ChildContent
+    </span>
+    <span id="@TooltipId" class="mx-tooltip__bubble" role="tooltip">@Text</span>
+</span>
+
+@code {
+    [Parameter, EditorRequired] public string Text { get; set; } = string.Empty;
+    [Parameter] public MxTooltipPlacement Placement { get; set; } = MxTooltipPlacement.Top;
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public bool Focusable { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private readonly string TooltipId = $"mx-tooltip-{Guid.NewGuid():N}";
+
+    private string HostClass =>
+        $"mx-tooltip mx-tooltip--{Placement.ToString().ToLowerInvariant()} {(Open ? "mx-tooltip--open" : string.Empty)} {Class}";
+}

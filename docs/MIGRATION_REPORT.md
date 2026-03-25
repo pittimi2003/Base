@@ -36,3 +36,13 @@ The repository now includes a dedicated .NET 8 productization layout for MachSof
 - Renamed Showcase route/page from `/fundations` to `/foundations` for consistent naming.
 - Moved roadmap model/service/component out of `MachSoft.Template.Core.Control` into `MachSoft.Template.Core.Control.Showcase` to keep NuGet payload focused on distributable assets/contracts.
 - Kept package and showcase separation explicit before starting new control-family implementations.
+
+
+## Registro 2026-03-24 — adopción Core.Control lote 1
+- Se introduce primera implementación oficial de controles públicos en `MachSoft.Template.Core.Control`.
+- Se mantiene separación entre paquete distribuible (RCL) y host de demostración (Showcase).
+- No se añadieron dependencias externas; la implementación se apoya en Blazor + CSS tokenizado.
+
+## Registro 2026-03-25 — hardening lote 1
+- Se corrigieron debilidades de accesibilidad/estado en Actions, Feedback y Overlays.
+- Se documentaron límites reales de overlays para evitar sobreventa funcional antes de avanzar a nuevas familias.

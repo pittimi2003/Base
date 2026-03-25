@@ -1,0 +1,114 @@
+@namespace MachSoft.Template.Core.Control
+
+@if (Open)
+{
+    <div class="mx-dialog-layer" role="presentation">
+        <div class="mx-dialog-backdrop" @onclick="HandleOverlayClickAsync"></div>
+        <section class="mx-dialog-shell" @onkeydown="HandleKeyDown" tabindex="-1" @ref="_dialogShellRef">
+            <article class="@DialogClass"
+                     role="dialog"
+                     aria-modal="true"
+                     aria-label="@ResolvedAriaLabel"
+                     aria-labelledby="@TitleElementId"
+                     aria-describedby="@DescriptionElementId">
+                @if (!string.IsNullOrWhiteSpace(Title) || HeaderContent is not null || ShowCloseButton)
+                {
+                    <header class="mx-dialog__header">
+                        @if (HeaderContent is not null)
+                        {
+                            @HeaderContent
+                        }
+                        else if (!string.IsNullOrWhiteSpace(Title))
+                        {
+                            <h3 id="@TitleElementId">@Title</h3>
+                        }
+
+                        @if (ShowCloseButton)
+                        {
+                            <MxIconButton Icon="✕"
+                                          AriaLabel="Cerrar diálogo"
+                                          Variant="MxButtonVariant.Text"
+                                          Size="MxButtonSize.Small"
+                                          OnClick="CloseAsync" />
+                        }
+                    </header>
+                }
+
+                <div id="@DescriptionElementId" class="mx-dialog__body">
+                    @ChildContent
+                </div>
+
+                @if (Actions is not null)
+                {
+                    <footer class="mx-dialog__footer">
+                        @Actions
+                    </footer>
+                }
+            </article>
+        </section>
+    </div>
+}
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public bool ShowCloseButton { get; set; } = true;
+    [Parameter] public bool CloseOnOverlayClick { get; set; } = true;
+    [Parameter] public bool CloseOnEscape { get; set; } = true;
+    [Parameter] public MxDialogSize Size { get; set; } = MxDialogSize.Medium;
+    [Parameter] public RenderFragment? HeaderContent { get; set; }
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+    [Parameter] public RenderFragment? Actions { get; set; }
+
+    private readonly string _instanceId = Guid.NewGuid().ToString("N");
+    private ElementReference _dialogShellRef;
+    private bool _focusPending;
+
+    private string DialogClass => $"mx-dialog mx-dialog--{Size.ToString().ToLowerInvariant()}";
+    private string TitleElementId => string.IsNullOrWhiteSpace(Title) || HeaderContent is not null ? string.Empty : $"mx-dialog-title-{_instanceId}";
+    private string DescriptionElementId => $"mx-dialog-body-{_instanceId}";
+    private string? ResolvedAriaLabel => string.IsNullOrWhiteSpace(TitleElementId) ? AriaLabel ?? "Dialog" : null;
+
+    protected override void OnParametersSet()
+    {
+        if (Open)
+        {
+            _focusPending = true;
+        }
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (_focusPending && Open)
+        {
+            _focusPending = false;
+            await _dialogShellRef.FocusAsync();
+        }
+
+        await base.OnAfterRenderAsync(firstRender);
+    }
+
+    private Task CloseAsync(MouseEventArgs _) => OpenChanged.InvokeAsync(false);
+
+    private Task HandleOverlayClickAsync()
+    {
+        if (!CloseOnOverlayClick)
+        {
+            return Task.CompletedTask;
+        }
+
+        return OpenChanged.InvokeAsync(false);
+    }
+
+    private Task HandleKeyDown(KeyboardEventArgs args)
+    {
+        if (CloseOnEscape && string.Equals(args.Key, "Escape", StringComparison.Ordinal))
+        {
+            return OpenChanged.InvokeAsync(false);
+        }
+
+        return Task.CompletedTask;
+    }
+}

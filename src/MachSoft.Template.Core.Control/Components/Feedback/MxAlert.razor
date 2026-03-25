@@ -1,0 +1,49 @@
+@namespace MachSoft.Template.Core.Control
+
+<section class="@CssClassValue" role="@ResolvedRole" aria-live="@AriaLive">
+    <div class="mx-alert__content">
+        @if (!string.IsNullOrWhiteSpace(Title))
+        {
+            <h4 class="mx-alert__title">@Title</h4>
+        }
+
+        @if (ChildContent is not null)
+        {
+            @ChildContent
+        }
+        else if (!string.IsNullOrWhiteSpace(Message))
+        {
+            <p class="mx-alert__message">@Message</p>
+        }
+    </div>
+
+    @if (Dismissible)
+    {
+        <MxIconButton Icon="✕"
+                      AriaLabel="Cerrar alerta"
+                      Variant="MxButtonVariant.Text"
+                      Size="MxButtonSize.Small"
+                      OnClick="DismissAsync" />
+    }
+</section>
+
+@code {
+    [Parameter] public MxAlertVariant Variant { get; set; } = MxAlertVariant.Info;
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public bool Dismissible { get; set; }
+    [Parameter] public string? Role { get; set; }
+    [Parameter] public string AriaLive { get; set; } = "polite";
+    [Parameter] public EventCallback OnDismiss { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string CssClassValue => $"mx-alert mx-alert--{Variant.ToString().ToLowerInvariant()}";
+
+    private string ResolvedRole => !string.IsNullOrWhiteSpace(Role)
+        ? Role
+        : Variant is MxAlertVariant.Danger or MxAlertVariant.Warning
+            ? "alert"
+            : "status";
+
+    private Task DismissAsync(MouseEventArgs _) => OnDismiss.InvokeAsync();
+}
