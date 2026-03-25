@@ -31,6 +31,8 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - Inputs base (TextField/TextArea/Checkbox/Radio/Switch/Select) incluyen helper/validation text, estados `disabled`/`invalid` y foco visible tokenizado.
 - `MxSelect` ofrece versión simple de selección única; `ReadOnly` se representa con comportamiento equivalente a `disabled` + `aria-readonly`, porque el `<select>` nativo no soporta readonly real.
 - Selection avanzada (Autocomplete/MultiSelect/ComboBox) incluye búsqueda local básica, estado `loading`, estado `empty/no-results`, soporte de teclado base (`ArrowUp/ArrowDown`, `Enter`, `Escape`) y contratos listos para evolucionar a providers async/remotos sin romper API.
+- `MxAutocomplete` y `MxComboBox` sincronizan texto visible/valor seleccionado incluso sin binding externo de `SearchText`, y exponen atributos ARIA de estado (`aria-busy`, `aria-activedescendant`).
+- `MxMultiSelect` incorpora navegación activa por teclado, selección por `Enter`, limpieza de filtro tras seleccionar y eliminación del último chip con `Backspace` cuando el filtro está vacío.
 
 Todos los controles consumen tokens del package `MachSoft.Template.Core` y son compatibles con Blazor Server/WebAssembly.
 
