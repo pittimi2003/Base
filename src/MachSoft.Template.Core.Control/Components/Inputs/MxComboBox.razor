@@ -1,0 +1,257 @@
+@namespace MachSoft.Template.Core.Control
+@using MachSoft.Template.Core.Control.Models
+
+<div class="@RootClass" @onfocusout="HandleFocusOut">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" for="@ResolvedId">@Label</label>
+    }
+
+    <div class="mx-adv-select">
+        <div class="mx-combobox__control">
+            <input id="@ResolvedId"
+                   class="mx-input-control mx-input-control--text mx-adv-select__input"
+                   type="text"
+                   value="@CurrentSearchText"
+                   placeholder="@Placeholder"
+                   disabled="@Disabled"
+                   required="@Required"
+                   role="combobox"
+                   aria-expanded="@DropdownOpen"
+                   aria-controls="@ListboxId"
+                   aria-autocomplete="list"
+                   aria-activedescendant="@ActiveDescendantId"
+                   aria-invalid="@AriaInvalid"
+                   aria-required="@Required"
+                   aria-describedby="@DescribedBy"
+                   @oninput="HandleInput"
+                   @onkeydown="HandleInputKeyDown"
+                   @onfocus="OpenDropdown" />
+
+            <button type="button"
+                    class="mx-combobox__toggle"
+                    disabled="@Disabled"
+                    aria-label="Mostrar opciones"
+                    aria-controls="@ListboxId"
+                    aria-expanded="@DropdownOpen"
+                    @onmousedown:preventDefault="true"
+                    @onclick="ToggleDropdown">
+                ▾
+            </button>
+        </div>
+
+        @if (DropdownOpen)
+        {
+            <ul id="@ListboxId" class="mx-adv-select__list" role="listbox">
+                @if (Loading)
+                {
+                    <li class="mx-adv-select__state" role="status">@LoadingText</li>
+                }
+                else if (FilteredItems.Count == 0)
+                {
+                    <li class="mx-adv-select__state">@NoResultsText</li>
+                }
+                else
+                {
+                    @for (var index = 0; index < FilteredItems.Count; index++)
+                    {
+                        var option = FilteredItems[index];
+                        var optionId = $"{ListboxId}-option-{index}";
+                        var isActive = index == ActiveIndex;
+                        var isSelected = string.Equals(Value, option.Value, StringComparison.Ordinal);
+                        <li id="@optionId"
+                            class="@GetOptionClass(isActive, option.Disabled, isSelected)"
+                            role="option"
+                            aria-selected="@isSelected"
+                            aria-disabled="@option.Disabled">
+                            <button type="button"
+                                    class="mx-adv-select__option-button"
+                                    disabled="@option.Disabled"
+                                    @onmousedown:preventDefault="true"
+                                    @onclick="() => SelectOptionAsync(option)">
+                                @option.Text
+                            </button>
+                        </li>
+                    }
+                }
+            </ul>
+        }
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public string? SearchText { get; set; }
+    [Parameter] public EventCallback<string?> SearchTextChanged { get; set; }
+    [Parameter] public IReadOnlyList<MxInputOption> Items { get; set; } = Array.Empty<MxInputOption>();
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public string LoadingText { get; set; } = "Cargando opciones...";
+    [Parameter] public string NoResultsText { get; set; } = "Sin resultados.";
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    private readonly string _instanceId = $"mx-combobox-{Guid.NewGuid():N}";
+    private List<MxInputOption> FilteredItems { get; set; } = [];
+    private bool DropdownOpen { get; set; }
+    private int ActiveIndex { get; set; } = -1;
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string ListboxId => $"{ResolvedId}-listbox";
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+    private string? ActiveDescendantId => ActiveIndex >= 0 && ActiveIndex < FilteredItems.Count
+        ? $"{ListboxId}-option-{ActiveIndex}"
+        : null;
+    private string CurrentSearchText => SearchText ?? ResolveTextByValue();
+
+    private string RootClass =>
+        $"mx-input-root mx-adv-select-root {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(Loading ? "mx-adv-select-root--loading" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+
+    protected override void OnParametersSet()
+    {
+        FilterItems(CurrentSearchText);
+    }
+
+    private string ResolveTextByValue()
+    {
+        if (string.IsNullOrWhiteSpace(Value))
+        {
+            return string.Empty;
+        }
+
+        return Items.FirstOrDefault(option => option.Value == Value)?.Text ?? string.Empty;
+    }
+
+    private void FilterItems(string? term)
+    {
+        var normalized = term?.Trim();
+        FilteredItems = string.IsNullOrWhiteSpace(normalized)
+            ? Items.ToList()
+            : Items.Where(item => item.Text.Contains(normalized, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        if (ActiveIndex >= FilteredItems.Count)
+        {
+            ActiveIndex = -1;
+        }
+    }
+
+    private Task OpenDropdown(FocusEventArgs _)
+    {
+        if (Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        DropdownOpen = true;
+        return Task.CompletedTask;
+    }
+
+    private Task ToggleDropdown(MouseEventArgs _)
+    {
+        if (Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        DropdownOpen = !DropdownOpen;
+        return Task.CompletedTask;
+    }
+
+    private async Task HandleInput(ChangeEventArgs args)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        var nextText = args.Value?.ToString();
+        await SearchTextChanged.InvokeAsync(nextText);
+        await ValueChanged.InvokeAsync(null);
+
+        FilterItems(nextText);
+        ActiveIndex = FilteredItems.Count > 0 ? 0 : -1;
+        DropdownOpen = true;
+    }
+
+    private async Task HandleInputKeyDown(KeyboardEventArgs args)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        if (args.Key == "ArrowDown")
+        {
+            DropdownOpen = true;
+            if (FilteredItems.Count > 0)
+            {
+                ActiveIndex = Math.Min(ActiveIndex + 1, FilteredItems.Count - 1);
+            }
+        }
+        else if (args.Key == "ArrowUp")
+        {
+            if (FilteredItems.Count > 0)
+            {
+                ActiveIndex = Math.Max(ActiveIndex - 1, 0);
+            }
+        }
+        else if (args.Key == "Enter" && ActiveIndex >= 0 && ActiveIndex < FilteredItems.Count)
+        {
+            await SelectOptionAsync(FilteredItems[ActiveIndex]);
+        }
+        else if (args.Key == "Escape")
+        {
+            DropdownOpen = false;
+        }
+    }
+
+    private async Task SelectOptionAsync(MxInputOption option)
+    {
+        if (option.Disabled)
+        {
+            return;
+        }
+
+        await SearchTextChanged.InvokeAsync(option.Text);
+        await ValueChanged.InvokeAsync(option.Value);
+
+        FilterItems(option.Text);
+        DropdownOpen = false;
+        ActiveIndex = -1;
+    }
+
+    private async Task HandleFocusOut(FocusEventArgs _)
+    {
+        await Task.Delay(120);
+        DropdownOpen = false;
+        ActiveIndex = -1;
+    }
+
+    private static string GetOptionClass(bool isActive, bool isDisabled, bool isSelected)
+    {
+        return $"mx-adv-select__option {(isActive ? "is-active" : string.Empty)} {(isDisabled ? "is-disabled" : string.Empty)} {(isSelected ? "is-selected" : string.Empty)}";
+    }
+}

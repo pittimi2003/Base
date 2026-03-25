@@ -42,6 +42,10 @@ else
             {
                 @RenderInputsFamily()
             }
+            else if (string.Equals(CurrentFamily.Key, "selection", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderSelectionFamily()
+            }
             else
             {
                 <ShowcaseSection Title="Ejemplo base"
@@ -72,6 +76,12 @@ else
     private string? _radioValue = "email";
     private bool _switchChecked;
     private string? _selectValue;
+    private string? _autocompleteValue;
+    private string? _autocompleteText;
+    private string? _comboValue;
+    private string? _comboText;
+    private string _multiSearch = string.Empty;
+    private IReadOnlyList<string> _multiSelected = ["alpha", "gamma"];
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
     [
@@ -79,6 +89,17 @@ else
         new("high", "Alta"),
         new("medium", "Media"),
         new("low", "Baja", true)
+    ];
+
+    private readonly IReadOnlyList<MxInputOption> _selectionOptions =
+    [
+        new("alpha", "Alpha"),
+        new("beta", "Beta"),
+        new("gamma", "Gamma"),
+        new("delta", "Delta"),
+        new("epsilon", "Epsilon", true),
+        new("zeta", "Zeta"),
+        new("theta", "Theta")
     ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
@@ -336,6 +357,114 @@ else
                     <li>Radio: agrupación mínima por <code>Name</code>; no se agrega `RadioGroup` dedicado en esta fase.</li>
                     <li>Select: `ReadOnly` se representa como estado no interactivo (disabled + <code>aria-readonly</code>) por limitación nativa de HTML.</li>
                 </ul>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </>;
+
+    private RenderFragment RenderSelectionFamily() => @<>
+        <ShowcaseSection Title="MxAutocomplete"
+                         Description="Búsqueda local asistida con sugerencias visibles, loading y estado sin resultados.">
+            <ShowcasePreviewBlock Title="Básico y estados"
+                                  Caption="API mínima: Value/SearchText + Items locales, con disabled/invalid y empty state.">
+                <div class="ms-showcase-input-grid">
+                    <MxAutocomplete Label="Cliente"
+                                    Placeholder="Buscar cliente"
+                                    Items="_selectionOptions"
+                                    @bind-SearchText="_autocompleteText"
+                                    @bind-Value="_autocompleteValue"
+                                    HelperText="Selecciona una opción de la lista." />
+
+                    <MxAutocomplete Label="Sin resultados"
+                                    Placeholder="Escribe: omega"
+                                    Items="_selectionOptions"
+                                    SearchText="omega"
+                                    NoResultsText="No se encontraron coincidencias." />
+
+                    <MxAutocomplete Label="Cargando"
+                                    Placeholder="Cargando..."
+                                    Items="Array.Empty<MxInputOption>()"
+                                    Loading="true"
+                                    LoadingText="Consultando catálogo..." />
+
+                    <MxAutocomplete Label="Deshabilitado"
+                                    Placeholder="No editable"
+                                    Items="_selectionOptions"
+                                    Disabled="true"
+                                    SearchText="Alpha" />
+
+                    <MxAutocomplete Label="Inválido"
+                                    Placeholder="Selecciona una opción"
+                                    Items="_selectionOptions"
+                                    Invalid="true"
+                                    ValidationText="Debes escoger un elemento válido." />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxMultiSelect"
+                         Description="Selección múltiple real con chips, filtro local y estado vacío/sin resultados.">
+            <ShowcasePreviewBlock Title="Básico y selección múltiple"
+                                  Caption="Lista multiselección sin select multiple nativo, preparada para evolución futura.">
+                <div class="ms-showcase-input-grid">
+                    <MxMultiSelect Label="Etiquetas"
+                                   Options="_selectionOptions"
+                                   @bind-SelectedValues="_multiSelected"
+                                   @bind-SearchText="_multiSearch"
+                                   HelperText="Puedes seleccionar varias opciones." />
+
+                    <MxMultiSelect Label="Estado vacío"
+                                   Options="_selectionOptions"
+                                   SelectedValues="Array.Empty<string>()"
+                                   Placeholder="Sin selección inicial" />
+
+                    <MxMultiSelect Label="Sin resultados"
+                                   Options="_selectionOptions"
+                                   SearchText="inexistente"
+                                   NoResultsText="No hay opciones para ese filtro." />
+
+                    <MxMultiSelect Label="Deshabilitado"
+                                   Options="_selectionOptions"
+                                   SelectedValues="_multiSelected"
+                                   Disabled="true" />
+
+                    <MxMultiSelect Label="Inválido"
+                                   Options="_selectionOptions"
+                                   Invalid="true"
+                                   ValidationText="Selecciona al menos una opción." />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxComboBox"
+                         Description="Input + selector controlable para búsqueda y selección simple local.">
+            <ShowcasePreviewBlock Title="Básico y búsqueda"
+                                  Caption="Apertura/cierre por teclado o botón; pensado como puente entre Input y Select.">
+                <div class="ms-showcase-input-grid">
+                    <MxComboBox Label="Proyecto"
+                                Placeholder="Buscar proyecto"
+                                Items="_selectionOptions"
+                                @bind-SearchText="_comboText"
+                                @bind-Value="_comboValue"
+                                HelperText="Escribe o abre el listado para escoger." />
+
+                    <MxComboBox Label="Búsqueda sin resultados"
+                                Placeholder="Escribe: omega"
+                                Items="_selectionOptions"
+                                SearchText="omega"
+                                NoResultsText="No hay coincidencias disponibles." />
+
+                    <MxComboBox Label="Deshabilitado"
+                                Placeholder="No editable"
+                                Items="_selectionOptions"
+                                Disabled="true"
+                                SearchText="Gamma" />
+
+                    <MxComboBox Label="Inválido"
+                                Placeholder="Selecciona una opción"
+                                Items="_selectionOptions"
+                                Invalid="true"
+                                ValidationText="Debes seleccionar un valor válido." />
+                </div>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
     </>;

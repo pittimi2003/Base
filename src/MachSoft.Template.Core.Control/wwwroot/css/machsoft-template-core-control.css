@@ -630,3 +630,162 @@
 .mx-input-root--readonly .mx-select-icon {
   color: var(--mx-color-text-muted, #6a7d96);
 }
+
+/* Advanced Selection family (Autocomplete, MultiSelect, ComboBox) */
+.mx-adv-select {
+  position: relative;
+}
+
+.mx-adv-select__icon {
+  position: absolute;
+  right: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--mx-color-text-secondary, #40556f);
+  pointer-events: none;
+}
+
+.mx-adv-select__list {
+  list-style: none;
+  margin: 0.35rem 0 0;
+  padding: 0.35rem;
+  border-radius: var(--mx-radius-sm, 6px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-default, #bdcbdf);
+  background: var(--mx-color-bg-surface, #fff);
+  box-shadow: var(--mx-shadow-2, 0 10px 30px rgba(16, 31, 53, 0.14));
+  max-height: 14rem;
+  overflow: auto;
+  position: absolute;
+  width: 100%;
+  z-index: 1200;
+}
+
+.mx-adv-select__option {
+  border-radius: var(--mx-radius-sm, 6px);
+}
+
+.mx-adv-select__option-button {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  padding: 0.55rem 0.6rem;
+  border-radius: inherit;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mx-adv-select__option-button:hover,
+.mx-adv-select__option.is-active .mx-adv-select__option-button {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
+}
+
+.mx-adv-select__option.is-selected .mx-adv-select__option-button {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 18%, transparent);
+  font-weight: 600;
+}
+
+.mx-adv-select__option.is-disabled {
+  opacity: 0.6;
+}
+
+.mx-adv-select__option-button:focus-visible,
+.mx-combobox__toggle:focus-visible,
+.mx-multiselect__chip-remove:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-adv-select__state {
+  color: var(--mx-color-text-secondary, #40556f);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  padding: 0.6rem;
+}
+
+.mx-adv-select-root--loading .mx-input-control {
+  background-image: linear-gradient(90deg,
+    color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 40%, transparent),
+    transparent 40%);
+}
+
+.mx-combobox__control {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 0.35rem;
+}
+
+.mx-combobox__toggle {
+  min-width: 2.25rem;
+  border-radius: var(--mx-radius-sm, 6px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-default, #bdcbdf);
+  background: var(--mx-color-bg-surface, #fff);
+  color: var(--mx-color-text-primary, #132033);
+}
+
+.mx-multiselect__control {
+  display: grid;
+  gap: 0.4rem;
+  border-radius: var(--mx-radius-sm, 6px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-default, #bdcbdf);
+  background: var(--mx-color-bg-surface, #fff);
+  padding: 0.5rem;
+}
+
+.mx-multiselect__control:has(.mx-multiselect__input:focus-visible) {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-multiselect__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.mx-multiselect__chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  border-radius: var(--mx-radius-pill, 999px);
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 14%, transparent);
+  color: var(--mx-color-text-primary, #132033);
+  padding: 0.15rem 0.55rem;
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+}
+
+.mx-multiselect__chip-remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  padding: 0;
+  cursor: pointer;
+}
+
+.mx-multiselect__input {
+  border: 0;
+  min-height: 1.7rem;
+  padding: 0;
+}
+
+.mx-multiselect__input:focus-visible {
+  outline: none;
+}
+
+.mx-multiselect__check {
+  width: 1rem;
+  color: var(--mx-color-brand-primary, #3a67bf);
+}
+
+.mx-multiselect__placeholder {
+  color: var(--mx-color-text-muted, #6a7d96);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+}
+
+.mx-input-root--disabled .mx-combobox__toggle,
+.mx-input-root--disabled .mx-multiselect__control {
+  background: color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 84%, var(--mx-color-bg-surface, #fff));
+}
