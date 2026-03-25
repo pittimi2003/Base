@@ -758,7 +758,9 @@ else
                             Columns="_dataGridColumns"
                             Items="_dataGridRows"
                             RowIdSelector="row => row.OrderCode"
-                            AriaLabel="Órdenes operativas del turno" />
+                            RowClassSelector="ResolveGridRowClass"
+                            AriaLabel="Órdenes operativas del turno"
+                            Caption="Listado de órdenes operativas del turno actual" />
             </ShowcasePreviewBlock>
 
             <ShowcasePreviewBlock Title="Estado vacío"
@@ -767,7 +769,8 @@ else
                             Columns="_dataGridColumns"
                             Items="Array.Empty<ShowcaseGridRow>()"
                             EmptyText="No hay órdenes pendientes para el filtro actual."
-                            AriaLabel="Resultado vacío de órdenes" />
+                            AriaLabel="Resultado vacío de órdenes"
+                            Caption="Tabla sin resultados para el filtro actual" />
             </ShowcasePreviewBlock>
 
             <ShowcasePreviewBlock Title="Estado loading"
@@ -781,7 +784,9 @@ else
                                 Items="_dataGridRows"
                                 Loading="_dataGridLoading"
                                 LoadingText="Consultando órdenes del turno..."
-                                AriaLabel="Grid en estado de carga" />
+                                IsCompact="true"
+                                AriaLabel="Grid en estado de carga"
+                                Caption="Tabla de órdenes en carga remota" />
                 </div>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
@@ -884,6 +889,14 @@ else
         _dataGridLoading = !_dataGridLoading;
         return Task.CompletedTask;
     }
+
+    private static string? ResolveGridRowClass(ShowcaseGridRow row)
+        => row.Priority switch
+        {
+            "Crítica" => "ms-showcase-row-priority-critical",
+            "Alta" => "ms-showcase-row-priority-high",
+            _ => null
+        };
 
     private sealed record ShowcaseGridRow(
         string OrderCode,
