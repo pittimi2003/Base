@@ -1,4 +1,5 @@
 @namespace MachSoft.Template.Core.Control
+@using System.Globalization
 
 <div class="@RootClass">
     @if (!string.IsNullOrWhiteSpace(Label))
@@ -11,15 +12,17 @@
                class="mx-input-control mx-input-control--date"
                type="date"
                value="@StartFormatted"
-               min="@MinFormatted"
-               max="@MaxFormatted"
+               min="@StartMinFormatted"
+               max="@StartMaxFormatted"
                disabled="@Disabled"
                readonly="@ReadOnly"
                required="@Required"
                aria-label="Fecha inicial"
                aria-invalid="@AriaInvalid"
+               aria-readonly="@AriaReadOnly"
+               aria-describedby="@DescribedBy"
                @onchange="HandleStartChanged"
-               @attributes="AdditionalAttributes" />
+               @attributes="StartInputAttributes" />
 
         <span class="mx-date-range__separator" aria-hidden="true">→</span>
 
@@ -27,14 +30,17 @@
                class="mx-input-control mx-input-control--date"
                type="date"
                value="@EndFormatted"
-               min="@MinFormatted"
-               max="@MaxFormatted"
+               min="@EndMinFormatted"
+               max="@EndMaxFormatted"
                disabled="@Disabled"
                readonly="@ReadOnly"
                required="@Required"
                aria-label="Fecha final"
                aria-invalid="@AriaInvalid"
-               @onchange="HandleEndChanged" />
+               aria-readonly="@AriaReadOnly"
+               aria-describedby="@DescribedBy"
+               @onchange="HandleEndChanged"
+               @attributes="EndInputAttributes" />
     </div>
 
     @if (!string.IsNullOrWhiteSpace(ValidationText))
@@ -73,11 +79,14 @@
     private string LabelId => $"{ResolvedId}-label";
     private string HelperId => $"{ResolvedId}-helper";
     private string ValidationId => $"{ResolvedId}-validation";
-    private string StartFormatted => StartValue?.ToString("yyyy-MM-dd") ?? string.Empty;
-    private string EndFormatted => EndValue?.ToString("yyyy-MM-dd") ?? string.Empty;
-    private string? MinFormatted => Min?.ToString("yyyy-MM-dd");
-    private string? MaxFormatted => Max?.ToString("yyyy-MM-dd");
+    private string StartFormatted => StartValue?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? string.Empty;
+    private string EndFormatted => EndValue?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture) ?? string.Empty;
+    private string? StartMinFormatted => Min?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    private string? EndMaxFormatted => Max?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    private string? StartMaxFormatted => ResolveStartMax()?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
+    private string? EndMinFormatted => ResolveEndMin()?.ToString("yyyy-MM-dd", CultureInfo.InvariantCulture);
     private string? AriaInvalid => Invalid ? "true" : null;
+    private string? AriaReadOnly => ReadOnly ? "true" : null;
     private string? AriaLabelledBy => !string.IsNullOrWhiteSpace(Label) ? LabelId : null;
     private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
         ? ValidationId
@@ -85,12 +94,98 @@
             ? HelperId
             : null;
 
-    private string RootClass =>
-        $"mx-input-root mx-input-root--date-range {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(ReadOnly ? "mx-input-root--readonly" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+    private IReadOnlyDictionary<string, object> StartInputAttributes => BuildInputAttributes("start");
+    private IReadOnlyDictionary<string, object> EndInputAttributes => BuildInputAttributes("end");
 
-    private Task HandleStartChanged(ChangeEventArgs args) => StartValueChanged.InvokeAsync(ParseDate(args.Value?.ToString()));
+    private string RootClass => string.Join(' ', new[]
+    {
+        "mx-input-root",
+        "mx-input-root--date-range",
+        Invalid ? "mx-input-root--invalid" : null,
+        Disabled ? "mx-input-root--disabled" : null,
+        ReadOnly ? "mx-input-root--readonly" : null,
+        Required ? "mx-input-root--required" : null,
+        HasInconsistentRange ? "mx-input-root--range-conflict" : null,
+        Class
+    }.Where(static value => !string.IsNullOrWhiteSpace(value)));
 
-    private Task HandleEndChanged(ChangeEventArgs args) => EndValueChanged.InvokeAsync(ParseDate(args.Value?.ToString()));
+    private bool HasInconsistentRange => StartValue.HasValue && EndValue.HasValue && StartValue > EndValue;
+
+    private Task HandleStartChanged(ChangeEventArgs args)
+    {
+        if (ReadOnly || Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        return StartValueChanged.InvokeAsync(ParseDate(args.Value?.ToString()));
+    }
+
+    private Task HandleEndChanged(ChangeEventArgs args)
+    {
+        if (ReadOnly || Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
+        return EndValueChanged.InvokeAsync(ParseDate(args.Value?.ToString()));
+    }
+
+    private DateOnly? ResolveStartMax()
+    {
+        if (!EndValue.HasValue)
+        {
+            return Max;
+        }
+
+        if (!Max.HasValue)
+        {
+            return EndValue;
+        }
+
+        return EndValue < Max ? EndValue : Max;
+    }
+
+    private DateOnly? ResolveEndMin()
+    {
+        if (!StartValue.HasValue)
+        {
+            return Min;
+        }
+
+        if (!Min.HasValue)
+        {
+            return StartValue;
+        }
+
+        return StartValue > Min ? StartValue : Min;
+    }
+
+    private IReadOnlyDictionary<string, object> BuildInputAttributes(string slot)
+    {
+        var attributes = new Dictionary<string, object>(StringComparer.Ordinal);
+        if (AdditionalAttributes is null)
+        {
+            return attributes;
+        }
+
+        foreach (var entry in AdditionalAttributes)
+        {
+            if (string.Equals(entry.Key, "id", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(entry.Key, "aria-label", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(entry.Key, "min", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(entry.Key, "max", StringComparison.OrdinalIgnoreCase) ||
+                string.Equals(entry.Key, "value", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
+            attributes[entry.Key] = entry.Value;
+        }
+
+        attributes["data-mx-range-slot"] = slot;
+        return attributes;
+    }
 
     private static DateOnly? ParseDate(string? rawValue)
     {
@@ -99,7 +194,7 @@
             return null;
         }
 
-        return DateOnly.TryParseExact(rawValue, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var parsed)
+        return DateOnly.TryParseExact(rawValue, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? parsed
             : null;
     }

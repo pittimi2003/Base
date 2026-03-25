@@ -157,3 +157,19 @@ Showcase actualizado:
 - `/families/datetime` ahora contiene ejemplos funcionales reales para `MxDatePicker`, `MxDateRangePicker` y `MxTimePicker` (básico + estados).
 - `/families/upload` incluye flujo funcional de `MxUpload` con estado uploading y notas explícitas de límites actuales.
 - El selector de tema del shell de Showcase deja de usar botón y pasa a `MxSwitch` real del catálogo para validar light/dark usando componentes productivos.
+
+## Iteración 2026-03-25 — Consolidación runtime DateTime + Upload
+
+Ajustes aplicados en `MachSoft.Template.Core.Control`:
+- `MxDatePicker` y `MxTimePicker`: parseo invariante explícito (`DateOnly?` / `TimeOnly?`), `aria-readonly`, y bloqueo de `ValueChanged` cuando el control está `ReadOnly` o `Disabled`.
+- `MxDateRangePicker`: límites cruzados (`start.max = min(EndValue, Max)`, `end.min = max(StartValue, Min)`) para reducir estados inconsistentes en runtime; se mantiene callback independiente por extremo.
+- `MxUpload`: selección robusta con `GetMultipleFiles(1)` cuando `Multiple=false`, resumen con `aria-live`, y deshabilitación automática del input cuando `Uploading=true` para evitar selecciones concurrentes.
+- `MxSwitch`: normalización del parseo de `ChangeEventArgs` (`bool` o `string`) para evitar desincronización en hosts con diferencias de serialización.
+
+Validación funcional en Showcase:
+- `/families/datetime`: verificación de render y binding de `MxDatePicker`, `MxDateRangePicker` y `MxTimePicker`, incluyendo estados `disabled`, `invalid` y `readonly`.
+- `/families/upload`: verificación de selección single/multiple, visualización de resumen y estado `Uploading` sin errores de host.
+- Selector de tema del shell: `NavMenu` usa `MxSwitch` (`#mx-showcase-theme-switch`) y sincroniza `data-mx-theme` del shell entre `light` y `dark`.
+
+Limitación abierta (documentada):
+- `readonly` en inputs nativos `type="date"`/`type="time"` no es homogéneo entre navegadores. Se conserva `aria-readonly` y se bloquea propagación de cambio para consistencia, pero la UI nativa puede permitir abrir picker según engine.

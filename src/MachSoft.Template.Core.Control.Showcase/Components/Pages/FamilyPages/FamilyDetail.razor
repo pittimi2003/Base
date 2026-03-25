@@ -487,7 +487,7 @@ else
         <ShowcaseSection Title="MxDatePicker y MxDateRangePicker"
                          Description="Primera iteración funcional para fecha y rango con API mínima, estados base y coherencia visual con inputs del catálogo.">
             <ShowcasePreviewBlock Title="MxDatePicker"
-                                  Caption="Selección simple de fecha con estados default/disabled/readonly/invalid.">
+                                  Caption="Selección simple de fecha con estados default/disabled/readonly/invalid y binding real DateOnly?.">
                 <div class="ms-showcase-input-grid">
                     <MxDatePicker Label="Fecha de inicio"
                                   @bind-Value="_selectedDate"
@@ -502,7 +502,7 @@ else
                     <MxDatePicker Label="Solo lectura"
                                   Value="@(new DateOnly(2026, 3, 10))"
                                   ReadOnly="true"
-                                  HelperText="Readonly evita edición sin borrar contexto visual." />
+                                  HelperText="Readonly preserva valor y bloquea callback; en algunos navegadores el picker nativo puede seguir abriendo." />
 
                     <MxDatePicker Label="Inválido"
                                   Invalid="true"
@@ -512,7 +512,7 @@ else
             </ShowcasePreviewBlock>
 
             <ShowcasePreviewBlock Title="MxDateRangePicker"
-                                  Caption="Rango básico por inicio/fin, sin calendario avanzado en esta iteración.">
+                                  Caption="Rango básico por inicio/fin con límites cruzados para evitar inconsistencias Start > End.">
                 <div class="ms-showcase-input-grid">
                     <MxDateRangePicker Label="Rango operativo"
                                        @bind-StartValue="_dateRangeStart"
@@ -537,7 +537,7 @@ else
         <ShowcaseSection Title="MxTimePicker"
                          Description="Selección de hora simple y consistente con la base visual del catálogo.">
             <ShowcasePreviewBlock Title="Estados básicos"
-                                  Caption="Incluye default, disabled, readonly e invalid para validación real en light/dark.">
+                                  Caption="Incluye default, disabled, readonly e invalid con binding TimeOnly? y parseo seguro.">
                 <div class="ms-showcase-input-grid">
                     <MxTimePicker Label="Hora programada"
                                   @bind-Value="_selectedTime"
@@ -557,6 +557,18 @@ else
                                   ValidationText="La hora está fuera de la ventana permitida."
                                   Required="true" />
                 </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="Limitaciones conocidas Date/Time"
+                         Description="Restricciones nativas documentadas para mantener expectativas realistas en Server/WASM.">
+            <ShowcasePreviewBlock Title="Notas técnicas"
+                                  Caption="Alcance actual declarado explícitamente para evitar falsa expectativa de feature completeness.">
+                <ul class="ms-showcase-notes-list">
+                    <li>Los inputs nativos <code>type="date"</code> y <code>type="time"</code> no tienen soporte readonly uniforme entre navegadores.</li>
+                    <li>El componente mantiene <code>aria-readonly</code> y bloquea callback de cambio en readonly para sostener consistencia de estado.</li>
+                    <li>No se implementa timezone ni calendario rico en esta iteración de consolidación.</li>
+                </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
     </text>;
@@ -599,6 +611,7 @@ else
                     <li>Usa <code>InputFile</code> nativo: no incluye drag &amp; drop ni reintentos automáticos en esta fase.</li>
                     <li>El estado <code>Uploading</code> es visual/controlado por consumidor; no implementa transferencia remota.</li>
                     <li>La validación de tipo/tamaño avanzada queda fuera del alcance inicial y se deja para evolución posterior.</li>
+                    <li>Cuando <code>Uploading=true</code>, el input se deshabilita para evitar selecciones concurrentes ambiguas.</li>
                 </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
