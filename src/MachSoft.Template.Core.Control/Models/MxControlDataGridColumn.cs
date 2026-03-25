@@ -1,8 +1,8 @@
 namespace MachSoft.Template.Core.Control.Models;
 
-public sealed record MxDataGridColumn<TItem>
+public sealed record MxControlDataGridColumn<TItem>
 {
-    public MxDataGridColumn(
+    public MxControlDataGridColumn(
         string Header,
         Func<TItem, string?> ValueSelector,
         string? Width = null,

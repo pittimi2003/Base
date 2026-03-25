@@ -158,7 +158,7 @@
     private const string NoColumnsText = "No hay columnas configuradas para renderizar este grid.";
 
     [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
-    [Parameter] public IReadOnlyList<MxDataGridColumn<TItem>>? Columns { get; set; }
+    [Parameter] public IReadOnlyList<MxControlDataGridColumn<TItem>>? Columns { get; set; }
     [Parameter] public bool Loading { get; set; }
     [Parameter] public string? LoadingText { get; set; } = DefaultLoadingText;
     [Parameter] public string? EmptyText { get; set; } = DefaultEmptyText;
@@ -183,7 +183,7 @@
 
     private IReadOnlyList<TItem> SafeItems { get; set; } = Array.Empty<TItem>();
     private IReadOnlyList<TItem> VisibleItems { get; set; } = Array.Empty<TItem>();
-    private IReadOnlyList<MxDataGridColumn<TItem>> SafeColumns { get; set; } = Array.Empty<MxDataGridColumn<TItem>>();
+    private IReadOnlyList<MxControlDataGridColumn<TItem>> SafeColumns { get; set; } = Array.Empty<MxControlDataGridColumn<TItem>>();
     private HashSet<string> SelectedRowIdsInternal { get; } = new(StringComparer.Ordinal);
     private string? CurrentSortColumnKey { get; set; }
     private bool IsSortDescending { get; set; }
@@ -223,7 +223,7 @@
     protected override void OnParametersSet()
     {
         SafeItems = Items ?? Array.Empty<TItem>();
-        SafeColumns = Columns ?? Array.Empty<MxDataGridColumn<TItem>>();
+        SafeColumns = Columns ?? Array.Empty<MxControlDataGridColumn<TItem>>();
         NormalizeSelectionState();
 
         if (!EnableSorting)
@@ -272,10 +272,10 @@
         return sorted.ToArray();
     }
 
-    private static string? BuildColumnWidthStyle(MxDataGridColumn<TItem> column)
+    private static string? BuildColumnWidthStyle(MxControlDataGridColumn<TItem> column)
         => string.IsNullOrWhiteSpace(column.Width) ? null : $"width:{column.Width}";
 
-    private string BuildHeaderClass(MxDataGridColumn<TItem> column)
+    private string BuildHeaderClass(MxControlDataGridColumn<TItem> column)
         => string.Join(' ', new[]
         {
             column.HeaderClass,
@@ -300,10 +300,10 @@
     private static string FormatCellValue(string? value)
         => value ?? string.Empty;
 
-    private bool IsColumnSorted(MxDataGridColumn<TItem> column)
+    private bool IsColumnSorted(MxControlDataGridColumn<TItem> column)
         => EnableSorting && string.Equals(CurrentSortColumnKey, column.Key, StringComparison.Ordinal);
 
-    private string ResolveAriaSort(MxDataGridColumn<TItem> column)
+    private string ResolveAriaSort(MxControlDataGridColumn<TItem> column)
     {
         if (!(EnableSorting && column.Sortable))
         {
@@ -318,7 +318,7 @@
         return IsSortDescending ? "descending" : "ascending";
     }
 
-    private string ResolveSortIndicator(MxDataGridColumn<TItem> column)
+    private string ResolveSortIndicator(MxControlDataGridColumn<TItem> column)
     {
         if (!IsColumnSorted(column))
         {
@@ -328,7 +328,7 @@
         return IsSortDescending ? "↓" : "↑";
     }
 
-    private string BuildSortAriaLabel(MxDataGridColumn<TItem> column)
+    private string BuildSortAriaLabel(MxControlDataGridColumn<TItem> column)
     {
         if (!IsColumnSorted(column))
         {
@@ -340,7 +340,7 @@
             : $"Ordenar por {column.Header} descendente";
     }
 
-    private void ToggleSort(MxDataGridColumn<TItem> column)
+    private void ToggleSort(MxControlDataGridColumn<TItem> column)
     {
         if (!(EnableSorting && column.Sortable))
         {

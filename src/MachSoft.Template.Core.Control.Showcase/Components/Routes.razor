@@ -3,4 +3,14 @@
         <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
+    <NotFound>
+        <LayoutView Layout="typeof(Layout.MainLayout)">
+            <PageTitle>Ruta no encontrada</PageTitle>
+            <div class="ms-showcase-empty-state">
+                <h1>Ruta no encontrada</h1>
+                <p>La ruta solicitada no existe en este showcase.</p>
+                <MxButton Variant="MxControlButtonVariant.Outlined" Href="/">Volver al inicio</MxButton>
+            </div>
+        </LayoutView>
+    </NotFound>
 </Router>

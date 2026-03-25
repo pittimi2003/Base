@@ -124,3 +124,10 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `MachSoft.Template.Core.Control` incorpora `MxScheduler` como control público de agenda/calendario en fase base funcional.
 - La estructura de datos se define en `MxSchedulerEvent` para desacoplar el contrato UI de cualquier dominio de negocio.
 - La validación funcional se centraliza en `MachSoft.Template.Core.Control.Showcase` bajo la ruta `/families/scheduling`, manteniendo separación limpia entre paquete distribuible y host de demo.
+
+## Actualización 2026-03-25 — saneamiento final de contratos Core/Core.Control
+- Se delimitó la gobernanza de tipos Mx* para eliminar colisiones semánticas entre paquetes.
+- Contratos compartidos pasan a consumirse directamente desde `MachSoft.Template.Core.Models` (`MxButtonSize`, `MxDialogSize`, `MxProgressVariant`, `MxToastVariant`, `MxInputOption`, `MxSelectOption`).
+- `MachSoft.Template.Core.Control` conserva tipos exclusivos renombrados (`MxControlButtonVariant`, `MxControlDataGridColumn<TItem>`) para evitar ambigüedad pública con tipos homónimos de Core.
+- Se mantiene compatibilidad arquitectónica Server/WASM y separación limpia paquete/showcase.
+

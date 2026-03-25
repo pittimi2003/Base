@@ -50,6 +50,7 @@
     private const string OverlayId = "ms-shell-overlay";
 
     private bool _isInteractive;
+    private bool _themeInteropAvailable = true;
     private bool IsMenuOpen { get; set; }
     private ThemeMode CurrentTheme { get; set; } = ThemeMode.Light;
 
@@ -59,9 +60,17 @@
         {
             _isInteractive = true;
 
-            var preferredTheme = await JSRuntime.InvokeAsync<string>("machsoftTheme.getPreferredTheme");
-            CurrentTheme = preferredTheme == "dark" ? ThemeMode.Dark : ThemeMode.Light;
-            await ApplyThemeAsync();
+            try
+            {
+                var preferredTheme = await JSRuntime.InvokeAsync<string>("machsoftTheme.getPreferredTheme");
+                CurrentTheme = preferredTheme == "dark" ? ThemeMode.Dark : ThemeMode.Light;
+                await ApplyThemeAsync();
+            }
+            catch (JSException)
+            {
+                _themeInteropAvailable = false;
+                CurrentTheme = ThemeMode.Light;
+            }
 
             StateHasChanged();
         }
@@ -76,11 +85,25 @@
     private async Task ToggleThemeAsync()
     {
         CurrentTheme = CurrentTheme is ThemeMode.Dark ? ThemeMode.Light : ThemeMode.Dark;
-        await ApplyThemeAsync();
+
+        try
+        {
+            await ApplyThemeAsync();
+        }
+        catch (JSException)
+        {
+            _themeInteropAvailable = false;
+            CurrentTheme = ThemeMode.Light;
+        }
     }
 
     private ValueTask ApplyThemeAsync()
     {
+        if (!_themeInteropAvailable)
+        {
+            return ValueTask.CompletedTask;
+        }
+
         var theme = CurrentTheme is ThemeMode.Dark ? "dark" : "light";
         return JSRuntime.InvokeVoidAsync("machsoftTheme.setTheme", theme);
     }

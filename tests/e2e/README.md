@@ -24,6 +24,7 @@ npm run install:browsers
 > - `test:desktop`: 5111
 > - `test:showcase:data`: 5135 (levanta `MachSoft.Template.Core.Control.Showcase` para validar `/families/data`)
 > - `test:showcase:scheduling`: 5136 (levanta `MachSoft.Template.Core.Control.Showcase` para validar `/families/scheduling`)
+> - `test:showcase:smoke`: 5137 (malla smoke transversal mínima por familias implementadas)
 > - `test:ci`: 5120
 > - todos ejecutan `cleanup:hosts` (`scripts/cleanup-hosts.sh`) antes de iniciar para limpiar procesos previos.
 
@@ -47,6 +48,7 @@ npm run test:mobile
 npm run test:desktop
 npm run test:showcase:data
 npm run test:showcase:scheduling
+npm run test:showcase:smoke
 
 # modos de depuración
 npm run test:headed

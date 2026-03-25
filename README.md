@@ -127,6 +127,7 @@ No incluir credenciales ni secretos en el repositorio.
 
 - `MachSoft.Template.Core.Control` referencia `MachSoft.Template.Core` y publica static web assets del catálogo.
 - `MachSoft.Template.Core.Control.Showcase` referencia `MachSoft.Template.Core.Control` y sirve como entorno de validación visual y funcional (light/dark, navegación por familias, fundamentos).
+- Integración requerida para theming del shell Core: incluir `_content/MachSoft.Template.Core/js/theme.js` además del CSS cuando se use `AppShell`.
 
 ### Pack Core.Control
 

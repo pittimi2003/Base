@@ -51,3 +51,22 @@ Todos los controles consumen tokens del package `MachSoft.Template.Core` y son c
 - `MxCheckbox`, `MxRadio` y `MxSwitch`: incorporan `Description` opcional para contexto adicional, `required` opcional y mejoras de foco/estado inválido.
 - `MxRadio` mantiene agrupación mínima por `Name` (sin `RadioGroup` dedicado en esta fase).
 - `MxSelect` mantiene baseline simple: `ReadOnly` se traduce a estado no interactivo (`disabled`) y conserva `aria-readonly` para explicitar intención semántica.
+
+## Saneamiento de contratos públicos (2026-03-25)
+
+Para evitar ambigüedades entre `MachSoft.Template.Core` y `MachSoft.Template.Core.Control`, se aplicó una delimitación explícita:
+
+- **Compartidos desde Core**: `MxButtonSize`, `MxDialogSize`, `MxProgressVariant`, `MxToastVariant`, `MxInputOption`, `MxSelectOption`.
+- **Exclusivos de Core.Control**: `MxControlButtonVariant`, `MxControlDataGridColumn<TItem>`, `MxAlertVariant`, `MxPopupPlacement`, `MxTooltipPlacement`, `MxAvatar*`, `MxChipVariant`.
+
+### Breaking changes declarados
+
+- `MxButtonVariant` (Core.Control) fue reemplazado por `MxControlButtonVariant`.
+- `MxDataGridColumn<TItem>` (Core.Control) fue reemplazado por `MxControlDataGridColumn<TItem>`.
+- `MxSelectOption` y `MxInputOption` propios de Core.Control se retiraron para usar los contratos compartidos de Core.
+
+### Naming consistency
+
+- Se mantiene `MxTextArea` en Core.Control para evitar una migración disruptiva en consumidores actuales.
+- La convergencia a `MxTextarea` queda pendiente para una versión mayor con plan de deprecación explícito.
+

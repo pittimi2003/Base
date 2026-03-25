@@ -21,7 +21,7 @@
 @code {
     [Parameter, EditorRequired] public string Icon { get; set; } = string.Empty;
     [Parameter, EditorRequired] public string AriaLabel { get; set; } = string.Empty;
-    [Parameter] public MxButtonVariant Variant { get; set; } = MxButtonVariant.Text;
+    [Parameter] public MxControlButtonVariant Variant { get; set; } = MxControlButtonVariant.Text;
     [Parameter] public MxButtonSize Size { get; set; } = MxButtonSize.Medium;
     [Parameter] public string Type { get; set; } = "button";
     [Parameter] public bool? Pressed { get; set; }
