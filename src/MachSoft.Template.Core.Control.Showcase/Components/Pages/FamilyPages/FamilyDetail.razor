@@ -110,6 +110,8 @@ else
     private bool _uploading;
     private IReadOnlyList<string> _uploadedFileNames = Array.Empty<string>();
     private bool _dataGridLoading;
+    private IReadOnlyList<string> _selectedGridRows = Array.Empty<string>();
+    private string _lastGridActionMessage = "Sin acciones ejecutadas.";
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
     [
@@ -148,19 +150,19 @@ else
 
     private readonly IReadOnlyList<ShowcaseGridRow> _dataGridRows =
     [
-        new("ORD-1042", "En preparación", "Alta", "Centro Norte", "Mar 25, 2026 · 08:40"),
-        new("ORD-1043", "En revisión", "Media", "Centro Sur", "Mar 25, 2026 · 09:15"),
-        new("ORD-1044", "Despachada", "Crítica", "Centro Andino", "Mar 25, 2026 · 09:58"),
-        new("ORD-1045", "Completada", "Baja", "Centro Pacífico", "Mar 25, 2026 · 10:22")
+        new("ORD-1042", "En preparación", "Alta", "Centro Norte", new DateTime(2026, 3, 25, 8, 40, 0)),
+        new("ORD-1043", "En revisión", "Media", "Centro Sur", new DateTime(2026, 3, 25, 9, 15, 0)),
+        new("ORD-1044", "Despachada", "Crítica", "Centro Andino", new DateTime(2026, 3, 25, 9, 58, 0)),
+        new("ORD-1045", "Completada", "Baja", "Centro Pacífico", new DateTime(2026, 3, 25, 10, 22, 0))
     ];
 
     private readonly IReadOnlyList<MxDataGridColumn<ShowcaseGridRow>> _dataGridColumns =
     [
-        new("Orden", row => row.OrderCode, Width: "12rem"),
-        new("Estado", row => row.Status, Width: "11rem"),
-        new("Prioridad", row => row.Priority, Width: "9rem"),
-        new("Centro", row => row.Site),
-        new("Actualizada", row => row.UpdatedAt, Width: "15rem")
+        new("Orden", row => row.OrderCode, Width: "12rem", Sortable: true, SortValueSelector: row => row.OrderCode, Key: "order"),
+        new("Estado", row => row.Status, Width: "11rem", Sortable: true, SortValueSelector: row => row.Status, Key: "status"),
+        new("Prioridad", row => row.Priority, Width: "9rem", Sortable: true, SortValueSelector: row => row.PriorityWeight, Key: "priority"),
+        new("Centro", row => row.Site, Sortable: true, SortValueSelector: row => row.Site, Key: "site"),
+        new("Actualizada", row => row.UpdatedAtLabel, Width: "15rem", Sortable: true, SortValueSelector: row => row.UpdatedAt, Key: "updated")
     ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
@@ -751,34 +753,75 @@ else
 
     private RenderFragment RenderDataFamily() => @<text>
         <ShowcaseSection Title="MxDataGrid"
-                         Description="Base tabular real con columnas configurables, filas dinámicas y estados empty/loading para evolución enterprise.">
-            <ShowcasePreviewBlock Title="Caso básico"
-                                  Caption="Dataset real simple con encabezados claros, filas consistentes y ancho por columna configurable.">
+                         Description="Evolución enterprise controlada con sorting, selección, toolbar y acciones por fila sin inflar API.">
+            <ShowcasePreviewBlock Title="Caso enterprise base (sorting + toolbar + acciones)"
+                                  Caption="Sorting por columna con indicadores claros y toolbar ligera preparada para crecimiento a filtros/export.">
                 <MxDataGrid TItem="ShowcaseGridRow"
                             Columns="_dataGridColumns"
                             Items="_dataGridRows"
                             RowIdSelector="row => row.OrderCode"
                             RowClassSelector="ResolveGridRowClass"
+                            EnableSorting="true"
+                            InitialSortColumnKey="updated"
+                            InitialSortDescending="true"
                             AriaLabel="Órdenes operativas del turno"
-                            Caption="Listado de órdenes operativas del turno actual" />
+                            Caption="Listado enterprise base de órdenes operativas">
+                    <Toolbar>
+                        <div class="ms-showcase-inline-wrap">
+                            <MxButton Variant="MxButtonVariant.Outlined" Size="MxButtonSize.Small">Actualizar</MxButton>
+                            <MxButton Variant="MxButtonVariant.Text" Size="MxButtonSize.Small">Exportar (próximamente)</MxButton>
+                        </div>
+                    </Toolbar>
+                    <RowActionsTemplate Context="row">
+                        <div class="ms-showcase-inline-wrap">
+                            <MxIconButton Icon="👁" AriaLabel="Ver detalle" Size="MxButtonSize.Small" OnClick="args => OnPreviewGridRow(row, args)" />
+                            <MxIconButton Icon="✔" AriaLabel="Marcar como completada" Size="MxButtonSize.Small" Variant="MxButtonVariant.Outlined" OnClick="args => OnCompleteGridRow(row, args)" />
+                        </div>
+                    </RowActionsTemplate>
+                    <SummaryTemplate Context="items">
+                        <strong>Total visible: @items.Count filas</strong>
+                    </SummaryTemplate>
+                </MxDataGrid>
+                <p class="ms-showcase-inline-message">Última acción de fila: @_lastGridActionMessage</p>
             </ShowcasePreviewBlock>
 
-            <ShowcasePreviewBlock Title="Estado vacío"
-                                  Caption="Sin placeholders: empty state explícito cuando no hay filas disponibles.">
+            <ShowcasePreviewBlock Title="Selección múltiple"
+                                  Caption="Selección simple y coherente con estado selected, resumen en toolbar y callback de IDs seleccionados.">
                 <MxDataGrid TItem="ShowcaseGridRow"
                             Columns="_dataGridColumns"
-                            Items="Array.Empty<ShowcaseGridRow>()"
-                            EmptyText="No hay órdenes pendientes para el filtro actual."
-                            AriaLabel="Resultado vacío de órdenes"
-                            Caption="Tabla sin resultados para el filtro actual" />
+                            Items="_dataGridRows"
+                            RowIdSelector="row => row.OrderCode"
+                            SelectionMode="MxDataGridSelectionMode.Multiple"
+                            SelectedRowIds="_selectedGridRows"
+                            SelectedRowIdsChanged="OnSelectedGridRowsChanged"
+                            EnableSorting="true"
+                            AriaLabel="Grid con selección de órdenes"
+                            Caption="Selección múltiple de órdenes">
+                    <Toolbar>
+                        <MxButton Variant="MxButtonVariant.Text"
+                                  Size="MxButtonSize.Small"
+                                  Disabled="@(_selectedGridRows.Count == 0)">
+                            Procesar seleccionadas
+                        </MxButton>
+                    </Toolbar>
+                </MxDataGrid>
+                <p class="ms-showcase-inline-message">IDs seleccionados: @(_selectedGridRows.Count == 0 ? "ninguno" : string.Join(", ", _selectedGridRows))</p>
             </ShowcasePreviewBlock>
 
-            <ShowcasePreviewBlock Title="Estado loading"
-                                  Caption="Estado controlado por consumidor para sincronizar con fetch remoto en Server/WASM.">
+            <ShowcasePreviewBlock Title="Estados empty/loading"
+                                  Caption="Se mantiene la base consolidada con estados explícitos y robustos para runtime Server/WASM.">
                 <div class="ms-showcase-stack-sm">
+                    <MxDataGrid TItem="ShowcaseGridRow"
+                                Columns="_dataGridColumns"
+                                Items="Array.Empty<ShowcaseGridRow>()"
+                                EmptyText="No hay órdenes pendientes para el filtro actual."
+                                AriaLabel="Resultado vacío de órdenes"
+                                Caption="Tabla sin resultados para el filtro actual" />
+
                     <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleDataLoading">
                         @(_dataGridLoading ? "Detener loading" : "Activar loading")
                     </MxButton>
+
                     <MxDataGrid TItem="ShowcaseGridRow"
                                 Columns="_dataGridColumns"
                                 Items="_dataGridRows"
@@ -890,6 +933,24 @@ else
         return Task.CompletedTask;
     }
 
+    private Task OnSelectedGridRowsChanged(IReadOnlyList<string> selectedRows)
+    {
+        _selectedGridRows = selectedRows;
+        return Task.CompletedTask;
+    }
+
+    private Task OnPreviewGridRow(ShowcaseGridRow row, MouseEventArgs _)
+    {
+        _lastGridActionMessage = $"Vista previa de {row.OrderCode}";
+        return Task.CompletedTask;
+    }
+
+    private Task OnCompleteGridRow(ShowcaseGridRow row, MouseEventArgs _)
+    {
+        _lastGridActionMessage = $"Orden {row.OrderCode} marcada para cierre operativo.";
+        return Task.CompletedTask;
+    }
+
     private static string? ResolveGridRowClass(ShowcaseGridRow row)
         => row.Priority switch
         {
@@ -903,5 +964,16 @@ else
         string Status,
         string Priority,
         string Site,
-        string UpdatedAt);
+        DateTime UpdatedAt)
+    {
+        public string UpdatedAtLabel => UpdatedAt.ToString("MMM dd, yyyy · HH:mm");
+
+        public int PriorityWeight => Priority switch
+        {
+            "Crítica" => 4,
+            "Alta" => 3,
+            "Media" => 2,
+            _ => 1
+        };
+    }
 }

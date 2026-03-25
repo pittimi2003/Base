@@ -23,6 +23,7 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - DateTime: `MxDatePicker`, `MxDateRangePicker`, `MxTimePicker`
 - Upload: `MxUpload`
 - Lists: `MxList`, `MxListBox`, `MxAvatar`, `MxChip`
+- Data: `MxDataGrid` (sorting/selección/toolbar/actions/summaries base)
 
 ## Alcance y límites actuales
 - `MxDialog` incluye apertura/cierre controlado, cierre por overlay/escape y foco inicial en el shell del diálogo.
@@ -39,6 +40,8 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - DateTime base (DatePicker/DateRangePicker/TimePicker) usa inputs HTML nativos (`date`/`time`) con contratos mínimos (`Value/ValueChanged` y variantes start/end), más estados `disabled`/`readonly`/`invalid`.
 - `MxUpload` usa `InputFile` nativo con selección simple o múltiple, resumen visual de archivos seleccionados y estado `Uploading` controlado por consumidor.
 - Lists: `MxList` y `MxListBox` cubren visualización/selección ligera con estados base y teclado mínimo; `MxAvatar` y `MxChip` cubren identidad compacta, tags interactivos y remoción simple.
+- `MxDataGrid` ofrece fase enterprise controlada: sorting básico por columna, selección simple/múltiple, toolbar opcional, acciones por fila y summary template ligero.
+- `MxDataGrid` no incorpora en esta fase filtros avanzados, edición inline completa, export ni virtualización.
 
 Todos los controles consumen tokens del package `MachSoft.Template.Core` y son compatibles con Blazor Server/WebAssembly.
 

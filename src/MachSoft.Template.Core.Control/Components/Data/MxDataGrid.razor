@@ -6,16 +6,69 @@
      data-compact="@CompactAttribute"
      aria-busy="@AriaBusy"
      @attributes="AdditionalAttributes">
+    @if (HasToolbar)
+    {
+        <div class="mx-data-grid__toolbar" role="toolbar" aria-label="@ResolvedToolbarAriaLabel">
+            <div class="mx-data-grid__toolbar-slot">
+                @Toolbar
+            </div>
+            @if (SelectionMode != MxDataGridSelectionMode.None)
+            {
+                <span class="mx-data-grid__selection-summary" role="status" aria-live="polite">
+                    @SelectionSummaryText
+                </span>
+            }
+        </div>
+    }
+
     <div class="mx-data-grid-scroll" role="region" aria-label="@ResolvedAriaLabel">
         <table class="@TableClass">
             <caption class="mx-visually-hidden">@ResolvedCaption</caption>
             <thead>
                 <tr>
+                    @if (SelectionMode == MxDataGridSelectionMode.Multiple)
+                    {
+                        <th scope="col" class="mx-data-grid__selection-header">
+                            <input type="checkbox"
+                                   class="mx-data-grid__select-input"
+                                   aria-label="Seleccionar todas las filas"
+                                   checked="@AreAllRowsSelected"
+                                   @onchange="ToggleAllRowsSelection"
+                                   disabled="@(!CanSelectRows)" />
+                        </th>
+                    }
+                    else if (SelectionMode == MxDataGridSelectionMode.Single)
+                    {
+                        <th scope="col" class="mx-data-grid__selection-header">
+                            <span class="mx-visually-hidden">Selección</span>
+                        </th>
+                    }
+
                     @foreach (var column in SafeColumns)
                     {
                         <th scope="col"
-                            class="@column.HeaderClass"
-                            style="@BuildColumnWidthStyle(column)">@column.Header</th>
+                            class="@BuildHeaderClass(column)"
+                            style="@BuildColumnWidthStyle(column)"
+                            aria-sort="@ResolveAriaSort(column)">
+                            @if (EnableSorting && column.Sortable)
+                            {
+                                <button type="button"
+                                        class="mx-data-grid__sort-button"
+                                        @onclick="() => ToggleSort(column)">
+                                    <span>@column.Header</span>
+                                    <span class="mx-data-grid__sort-indicator" aria-hidden="true">@ResolveSortIndicator(column)</span>
+                                </button>
+                            }
+                            else
+                            {
+                                @column.Header
+                            }
+                        </th>
+                    }
+
+                    @if (HasRowActions)
+                    {
+                        <th scope="col" class="mx-data-grid__actions-header">@ResolvedActionsHeaderText</th>
                     }
                 </tr>
             </thead>
@@ -23,7 +76,7 @@
                 @if (Loading)
                 {
                     <tr>
-                        <td class="mx-data-grid__state" colspan="@ColumnCount">
+                        <td class="mx-data-grid__state" colspan="@VisibleColumnCount">
                             <span class="mx-data-grid__loading" role="status" aria-live="polite">
                                 <span class="mx-data-grid__loading-spinner" aria-hidden="true"></span>
                                 <span>@ResolvedLoadingText</span>
@@ -37,25 +90,57 @@
                         <td class="mx-data-grid__state" colspan="1" role="status" aria-live="polite">@NoColumnsText</td>
                     </tr>
                 }
-                else if (SafeItems.Count == 0)
+                else if (VisibleItems.Count == 0)
                 {
                     <tr>
-                        <td class="mx-data-grid__state" colspan="@ColumnCount" role="status" aria-live="polite">@ResolvedEmptyText</td>
+                        <td class="mx-data-grid__state" colspan="@VisibleColumnCount" role="status" aria-live="polite">@ResolvedEmptyText</td>
                     </tr>
                 }
                 else
                 {
-                    @foreach (var item in SafeItems)
+                    @foreach (var item in VisibleItems)
                     {
-                        <tr class="@BuildRowClass(item)" @key="BuildRowKey(item)">
+                        var rowId = ResolveRowId(item);
+                        var isSelected = SelectedRowIdsInternal.Contains(rowId);
+
+                        <tr class="@BuildRowClass(item, isSelected)" @key="BuildRowKey(item)">
+                            @if (SelectionMode != MxDataGridSelectionMode.None)
+                            {
+                                <td class="mx-data-grid__selection-cell">
+                                    <input type="@(SelectionMode == MxDataGridSelectionMode.Single ? "radio" : "checkbox")"
+                                           name="@SelectionGroupName"
+                                           class="mx-data-grid__select-input"
+                                           aria-label="Seleccionar fila @rowId"
+                                           checked="@isSelected"
+                                           @onchange="args => ToggleRowSelection(item, args.Value)">
+                                </td>
+                            }
+
                             @foreach (var column in SafeColumns)
                             {
                                 <td class="@column.CellClass">@FormatCellValue(column.ValueSelector(item))</td>
+                            }
+
+                            @if (HasRowActions)
+                            {
+                                <td class="mx-data-grid__actions-cell">
+                                    @RowActionsTemplate!(item)
+                                </td>
                             }
                         </tr>
                     }
                 }
             </tbody>
+            @if (ShowSummary)
+            {
+                <tfoot>
+                    <tr>
+                        <td colspan="@VisibleColumnCount" class="mx-data-grid__summary">
+                            @SummaryTemplate!(VisibleItems)
+                        </td>
+                    </tr>
+                </tfoot>
+            }
         </table>
     </div>
 </div>
@@ -64,6 +149,8 @@
     private const string DefaultAriaLabel = "Data grid";
     private const string DefaultLoadingText = "Cargando datos...";
     private const string DefaultEmptyText = "No hay datos para mostrar.";
+    private const string DefaultActionsHeaderText = "Acciones";
+    private const string DefaultToolbarAriaLabel = "Barra de herramientas del grid";
     private const string NoColumnsText = "No hay columnas configuradas para renderizar este grid.";
 
     [Parameter] public IReadOnlyList<TItem>? Items { get; set; }
@@ -76,13 +163,34 @@
     [Parameter] public bool IsCompact { get; set; }
     [Parameter] public Func<TItem, string?>? RowIdSelector { get; set; }
     [Parameter] public Func<TItem, string?>? RowClassSelector { get; set; }
+    [Parameter] public bool EnableSorting { get; set; }
+    [Parameter] public string? InitialSortColumnKey { get; set; }
+    [Parameter] public bool InitialSortDescending { get; set; }
+    [Parameter] public MxDataGridSelectionMode SelectionMode { get; set; }
+    [Parameter] public IReadOnlyList<string>? SelectedRowIds { get; set; }
+    [Parameter] public EventCallback<IReadOnlyList<string>> SelectedRowIdsChanged { get; set; }
+    [Parameter] public RenderFragment? Toolbar { get; set; }
+    [Parameter] public string? ToolbarAriaLabel { get; set; } = DefaultToolbarAriaLabel;
+    [Parameter] public RenderFragment<TItem>? RowActionsTemplate { get; set; }
+    [Parameter] public string? RowActionsHeaderText { get; set; } = DefaultActionsHeaderText;
+    [Parameter] public RenderFragment<IReadOnlyList<TItem>>? SummaryTemplate { get; set; }
     [Parameter] public string? Class { get; set; }
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private IReadOnlyList<TItem> SafeItems { get; set; } = Array.Empty<TItem>();
+    private IReadOnlyList<TItem> VisibleItems { get; set; } = Array.Empty<TItem>();
     private IReadOnlyList<MxDataGridColumn<TItem>> SafeColumns { get; set; } = Array.Empty<MxDataGridColumn<TItem>>();
+    private HashSet<string> SelectedRowIdsInternal { get; } = new(StringComparer.Ordinal);
+    private string? CurrentSortColumnKey { get; set; }
+    private bool IsSortDescending { get; set; }
+    private string SelectionGroupName { get; } = $"mx-grid-selection-{Guid.NewGuid():N}";
 
-    private int ColumnCount => SafeColumns.Count > 0 ? SafeColumns.Count : 1;
+    private bool HasRowActions => RowActionsTemplate is not null;
+    private bool HasToolbar => Toolbar is not null || SelectionMode != MxDataGridSelectionMode.None;
+    private bool ShowSummary => SummaryTemplate is not null && !Loading && SafeColumns.Count > 0;
+    private bool CanSelectRows => VisibleItems.Count > 0;
+    private bool AreAllRowsSelected => CanSelectRows && VisibleItems.All(item => SelectedRowIdsInternal.Contains(ResolveRowId(item)));
+    private int VisibleColumnCount => SafeColumns.Count + (SelectionMode == MxDataGridSelectionMode.None ? 0 : 1) + (HasRowActions ? 1 : 0);
     private string? AriaBusy => Loading ? "true" : null;
     private string LoadingAttribute => Loading ? "true" : "false";
     private string CompactAttribute => IsCompact ? "true" : "false";
@@ -90,10 +198,15 @@
     private string ResolvedCaption => string.IsNullOrWhiteSpace(Caption) ? ResolvedAriaLabel : Caption!;
     private string ResolvedLoadingText => string.IsNullOrWhiteSpace(LoadingText) ? DefaultLoadingText : LoadingText!;
     private string ResolvedEmptyText => string.IsNullOrWhiteSpace(EmptyText) ? DefaultEmptyText : EmptyText!;
+    private string ResolvedActionsHeaderText => string.IsNullOrWhiteSpace(RowActionsHeaderText) ? DefaultActionsHeaderText : RowActionsHeaderText!;
+    private string ResolvedToolbarAriaLabel => string.IsNullOrWhiteSpace(ToolbarAriaLabel) ? DefaultToolbarAriaLabel : ToolbarAriaLabel!;
+    private string SelectionSummaryText => $"{SelectedRowIdsInternal.Count} seleccionada(s)";
 
     private string RootClass => string.Join(' ', new[]
     {
         "mx-data-grid-root",
+        SelectionMode != MxDataGridSelectionMode.None ? "mx-data-grid-root--selectable" : null,
+        EnableSorting ? "mx-data-grid-root--sortable" : null,
         Class
     }.Where(static value => !string.IsNullOrWhiteSpace(value)));
 
@@ -107,17 +220,198 @@
     {
         SafeItems = Items ?? Array.Empty<TItem>();
         SafeColumns = Columns ?? Array.Empty<MxDataGridColumn<TItem>>();
+
+        SelectedRowIdsInternal.Clear();
+
+        if (SelectedRowIds is not null)
+        {
+            foreach (var rowId in SelectedRowIds.Where(static value => !string.IsNullOrWhiteSpace(value)))
+            {
+                SelectedRowIdsInternal.Add(rowId);
+            }
+        }
+
+        if (!EnableSorting)
+        {
+            CurrentSortColumnKey = null;
+            IsSortDescending = false;
+            VisibleItems = SafeItems;
+            return;
+        }
+
+        if (CurrentSortColumnKey is null && !string.IsNullOrWhiteSpace(InitialSortColumnKey))
+        {
+            CurrentSortColumnKey = InitialSortColumnKey;
+            IsSortDescending = InitialSortDescending;
+        }
+
+        VisibleItems = ResolveSortedItems();
+    }
+
+    private IReadOnlyList<TItem> ResolveSortedItems()
+    {
+        if (string.IsNullOrWhiteSpace(CurrentSortColumnKey))
+        {
+            return SafeItems;
+        }
+
+        var targetColumn = SafeColumns.FirstOrDefault(column =>
+            string.Equals(column.Key, CurrentSortColumnKey, StringComparison.Ordinal));
+
+        if (targetColumn is null || !targetColumn.Sortable)
+        {
+            return SafeItems;
+        }
+
+        var selector = targetColumn.SortValueSelector;
+
+        if (selector is null)
+        {
+            return SafeItems;
+        }
+
+        var sorted = IsSortDescending
+            ? SafeItems.OrderByDescending(selector, Comparer<IComparable?>.Default)
+            : SafeItems.OrderBy(selector, Comparer<IComparable?>.Default);
+
+        return sorted.ToArray();
     }
 
     private static string? BuildColumnWidthStyle(MxDataGridColumn<TItem> column)
         => string.IsNullOrWhiteSpace(column.Width) ? null : $"width:{column.Width}";
 
-    private string? BuildRowClass(TItem item)
-        => RowClassSelector?.Invoke(item);
+    private string BuildHeaderClass(MxDataGridColumn<TItem> column)
+        => string.Join(' ', new[]
+        {
+            column.HeaderClass,
+            IsColumnSorted(column) ? "is-sorted" : null
+        }.Where(static value => !string.IsNullOrWhiteSpace(value)));
+
+    private string? BuildRowClass(TItem item, bool isSelected)
+        => string.Join(' ', new[]
+        {
+            RowClassSelector?.Invoke(item),
+            isSelected ? "is-selected" : null
+        }.Where(static value => !string.IsNullOrWhiteSpace(value)));
 
     private object BuildRowKey(TItem item)
         => RowIdSelector?.Invoke(item) ?? (object?)item ?? string.Empty;
 
+    private string ResolveRowId(TItem item)
+        => RowIdSelector?.Invoke(item)
+           ?? (item?.GetHashCode().ToString(System.Globalization.CultureInfo.InvariantCulture)
+               ?? string.Empty);
+
     private static string FormatCellValue(string? value)
         => value ?? string.Empty;
+
+    private bool IsColumnSorted(MxDataGridColumn<TItem> column)
+        => EnableSorting && string.Equals(CurrentSortColumnKey, column.Key, StringComparison.Ordinal);
+
+    private string ResolveAriaSort(MxDataGridColumn<TItem> column)
+    {
+        if (!(EnableSorting && column.Sortable))
+        {
+            return "none";
+        }
+
+        if (!IsColumnSorted(column))
+        {
+            return "none";
+        }
+
+        return IsSortDescending ? "descending" : "ascending";
+    }
+
+    private string ResolveSortIndicator(MxDataGridColumn<TItem> column)
+    {
+        if (!IsColumnSorted(column))
+        {
+            return "↕";
+        }
+
+        return IsSortDescending ? "↓" : "↑";
+    }
+
+    private void ToggleSort(MxDataGridColumn<TItem> column)
+    {
+        if (!(EnableSorting && column.Sortable && column.SortValueSelector is not null))
+        {
+            return;
+        }
+
+        if (!string.Equals(CurrentSortColumnKey, column.Key, StringComparison.Ordinal))
+        {
+            CurrentSortColumnKey = column.Key;
+            IsSortDescending = false;
+        }
+        else if (!IsSortDescending)
+        {
+            IsSortDescending = true;
+        }
+        else
+        {
+            CurrentSortColumnKey = null;
+            IsSortDescending = false;
+        }
+
+        VisibleItems = ResolveSortedItems();
+    }
+
+    private async Task ToggleRowSelection(TItem item, object? value)
+    {
+        if (SelectionMode == MxDataGridSelectionMode.None)
+        {
+            return;
+        }
+
+        var rowId = ResolveRowId(item);
+        var isChecked = value as bool? ?? false;
+
+        if (SelectionMode == MxDataGridSelectionMode.Single)
+        {
+            SelectedRowIdsInternal.Clear();
+
+            if (isChecked)
+            {
+                SelectedRowIdsInternal.Add(rowId);
+            }
+        }
+        else if (isChecked)
+        {
+            SelectedRowIdsInternal.Add(rowId);
+        }
+        else
+        {
+            SelectedRowIdsInternal.Remove(rowId);
+        }
+
+        await EmitSelectionChangedAsync();
+    }
+
+    private async Task ToggleAllRowsSelection(ChangeEventArgs args)
+    {
+        if (SelectionMode != MxDataGridSelectionMode.Multiple)
+        {
+            return;
+        }
+
+        var shouldSelect = args.Value as bool? ?? false;
+        SelectedRowIdsInternal.Clear();
+
+        if (shouldSelect)
+        {
+            foreach (var item in VisibleItems)
+            {
+                SelectedRowIdsInternal.Add(ResolveRowId(item));
+            }
+        }
+
+        await EmitSelectionChangedAsync();
+    }
+
+    private Task EmitSelectionChangedAsync()
+        => SelectedRowIdsChanged.HasDelegate
+            ? SelectedRowIdsChanged.InvokeAsync(SelectedRowIdsInternal.ToArray())
+            : Task.CompletedTask;
 }

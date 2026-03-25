@@ -111,3 +111,9 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `MachSoft.Template.Core.Control` extiende su superficie pública con `MxList`, `MxListBox`, `MxAvatar` y `MxChip` bajo una API mínima y evolutiva.
 - La familia reutiliza tokens/theming de `MachSoft.Template.Core` sin introducir dependencias externas ni acoplamiento de host.
 - `MachSoft.Template.Core.Control.Showcase` incorpora `/families/listing` para validación visual/funcional en light y dark con estados interactivos reales.
+
+## Actualización 2026-03-25 — DataGrid enterprise controlado
+
+- `MachSoft.Template.Core.Control` mantiene a `MxDataGrid` como control data base reusable cross-host (Server/WASM) y agrega capacidades enterprise mínimas sin bifurcar hosting.
+- `MxDataGridColumn` evoluciona con metadatos de sort (`Sortable`, `SortValueSelector`, `Key`) y se incorpora `MxDataGridSelectionMode` para selección controlada.
+- La capa Showcase valida la iteración en `/families/data` sin mezclar assets de demo dentro del paquete distribuible.

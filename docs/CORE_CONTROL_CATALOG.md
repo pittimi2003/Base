@@ -197,20 +197,25 @@ Límites abiertos (declarados):
 - `MxChip` no incorpora aún navegación de roving-tabindex para grupos complejos de filtros.
 - `MxAvatar` no implementa providers remotos avanzados (solo `ImageUrl` + fallback local robusto).
 
-## Iteración 2026-03-25 — Data (MxDataGrid base consolidado)
+## Iteración 2026-03-25 — Data (MxDataGrid enterprise controlado, fase inicial)
 
 Cobertura implementada en `MachSoft.Template.Core.Control`:
-- `MxDataGrid<TItem>` como control público funcional para escenarios tabulares base.
-- Columnas configurables mediante `MxDataGridColumn<TItem>` (`Header`, `ValueSelector`, `Width`, `HeaderClass`, `CellClass`) con validación defensiva en constructor.
-- Render real de filas desde `Items`, encabezados claros por `th scope="col"`, estado vacío (`EmptyText`) y estado de carga (`Loading` + `LoadingText`).
-- API preparada para crecimiento sin sobrecarga temprana: `RowIdSelector`, `RowClassSelector`, `IsCompact`, `AriaLabel`, `Caption` y `Class`.
+- `MxDataGrid<TItem>` evoluciona con **sorting básico usable** por columna (`EnableSorting` + `MxDataGridColumn.Sortable/SortValueSelector/Key`).
+- Selección de filas controlada y sin sobrecarga (`SelectionMode: None|Single|Multiple`, `SelectedRowIds`, `SelectedRowIdsChanged`) con estados visuales `selected`.
+- Toolbar base opcional (`Toolbar`) con resumen de selección integrado cuando aplica.
+- Acciones por fila opcionales (`RowActionsTemplate` + `RowActionsHeaderText`) sin acoplar lógica de negocio.
+- Resumen básico opcional (`SummaryTemplate`) para métricas ligeras sin bloquear evolución futura.
+
+Evolución de API pública (limpia y contenida):
+- `MxDataGridColumn<TItem>` agrega: `Sortable`, `SortValueSelector`, `Key` (sin romper el contrato previo).
+- Nuevo enum `MxDataGridSelectionMode` para evitar flags ambiguos y dejar base clara para futuros escenarios de selección avanzada.
+- `MxDataGrid<TItem>` mantiene estados base (`basic`, `empty`, `loading`, `hover`, `focus-visible`) y agrega estados enterprise mínimos: `sorted`, `selected`, `toolbar visible`, `row actions`.
 
 Consolidación aplicada en la misma iteración:
-- Estilos tokenizados y coherentes con la base MachSoft (light/dark) en el CSS del paquete distribuible.
-- Tabla con semántica accesible base (`table`, `thead`, `tbody`, `caption` oculto para SR, `aria-busy` en loading y estados `aria-live` para empty/loading).
-- Null-handling defensivo para `Items`/`Columns` y estado explícito cuando no hay columnas configuradas.
-- Showcase funcional en `/families/data` con casos reales: básico, empty y loading interactivo.
+- Semántica accesible reforzada: `aria-sort` en headers ordenables, toolbar con `role=toolbar`, selección con controles nativos y foco visible tokenizado.
+- Estilos tokenizados en light/dark para sorting, selección, toolbar, summary y acciones.
+- Showcase funcional en `/families/data` con ejemplos reales: sorting + toolbar + row actions, selección múltiple y estados empty/loading.
 
 Límites abiertos (explícitos):
-- No incluye todavía sorting, filtros enterprise, edición inline, export, grouping ni virtualización.
-- Selección de filas no se incluye en esta iteración para no comprometer la estabilidad de la base inicial.
+- Quedan fuera en esta fase: filtros avanzados, edición inline completa, export (Excel/PDF), grouping, virtualización real y drag & drop.
+- `SummaryTemplate` es deliberadamente básico; no hay agregaciones automáticas ni engine de summaries enterprise todavía.

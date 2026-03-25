@@ -51,3 +51,8 @@ The repository now includes a dedicated .NET 8 productization layout for MachSof
 - Se implementó en `MachSoft.Template.Core.Control` la familia inicial de listas e identidad compacta: `MxList`, `MxListBox`, `MxAvatar`, `MxChip`.
 - Se añadieron modelos de apoyo (`MxListItem`, `MxListBoxOption`) y variantes (`MxAvatarSize`, `MxAvatarShape`, `MxChipVariant`) manteniendo API pública mínima.
 - `MachSoft.Template.Core.Control.Showcase` incorpora la ruta `/families/listing` con ejemplos funcionales (default, selected, disabled, invalid, interactive, removable) para validación runtime/light-dark.
+
+## Registro 2026-03-25 — DataGrid enterprise controlado (fase inicial)
+- `MxDataGrid` incorpora sorting básico, selección de filas, toolbar base, row actions y summary template sin inflar la API pública.
+- `MxDataGridColumn` agrega metadatos mínimos para sort; se incorpora `MxDataGridSelectionMode` para mantener semántica clara de selección.
+- Showcase `MachSoft.Template.Core.Control.Showcase` consolida `/families/data` como host runtime de validación funcional/visual de la nueva iteración.

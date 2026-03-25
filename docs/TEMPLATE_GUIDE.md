@@ -104,3 +104,9 @@ Estas páginas cubren variantes y estados base de los controles del lote 1.
 
 ## Nota de consolidación (2026-03-25)
 La validación de `/families/actions`, `/families/feedback`, `/families/overlays` y `/families/listing` incluye estados endurecidos y ejemplos funcionales reales por familia.
+
+## Nota de consolidación (2026-03-25) — Data family
+
+- Para validar `MxDataGrid` enterprise inicial, ejecutar Showcase y abrir `/families/data`.
+- Casos esperados: sorting visible por columna, selección de filas con resumen en toolbar, acciones simples por fila y estados empty/loading.
+- Esta fase no incluye filtros avanzados, inline edit, export ni virtualización real.
