@@ -111,6 +111,7 @@ else
     private IReadOnlyList<string> _uploadedFileNames = Array.Empty<string>();
     private bool _dataGridLoading;
     private IReadOnlyList<string> _selectedGridRows = Array.Empty<string>();
+    private IReadOnlyList<string> _selectedSingleGridRows = Array.Empty<string>();
     private string _lastGridActionMessage = "Sin acciones ejecutadas.";
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
@@ -808,6 +809,21 @@ else
                 <p class="ms-showcase-inline-message">IDs seleccionados: @(_selectedGridRows.Count == 0 ? "ninguno" : string.Join(", ", _selectedGridRows))</p>
             </ShowcasePreviewBlock>
 
+            <ShowcasePreviewBlock Title="Selección simple"
+                                  Caption="Single selection mantiene un único ID activo y conserva coherencia al ordenar columnas.">
+                <MxDataGrid TItem="ShowcaseGridRow"
+                            Columns="_dataGridColumns"
+                            Items="_dataGridRows"
+                            RowIdSelector="row => row.OrderCode"
+                            SelectionMode="MxDataGridSelectionMode.Single"
+                            SelectedRowIds="_selectedSingleGridRows"
+                            SelectedRowIdsChanged="OnSelectedSingleGridRowsChanged"
+                            EnableSorting="true"
+                            AriaLabel="Grid con selección simple de órdenes"
+                            Caption="Selección simple de órdenes por radio" />
+                <p class="ms-showcase-inline-message">ID seleccionado: @(_selectedSingleGridRows.Count == 0 ? "ninguno" : _selectedSingleGridRows[0])</p>
+            </ShowcasePreviewBlock>
+
             <ShowcasePreviewBlock Title="Estados empty/loading"
                                   Caption="Se mantiene la base consolidada con estados explícitos y robustos para runtime Server/WASM.">
                 <div class="ms-showcase-stack-sm">
@@ -936,6 +952,12 @@ else
     private Task OnSelectedGridRowsChanged(IReadOnlyList<string> selectedRows)
     {
         _selectedGridRows = selectedRows;
+        return Task.CompletedTask;
+    }
+
+    private Task OnSelectedSingleGridRowsChanged(IReadOnlyList<string> selectedRows)
+    {
+        _selectedSingleGridRows = selectedRows;
         return Task.CompletedTask;
     }
 

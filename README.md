@@ -163,3 +163,10 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - `MxDataGridColumn` agrega `Sortable`, `SortValueSelector` y `Key` para habilitar ordenamiento explícito sin romper el contrato previo.
 - Showcase `/families/data` se consolida con ejemplos runtime de sorting/selección/toolbar/actions + estados empty/loading.
 - Se mantiene alcance controlado: sin filtros avanzados, edición inline completa, export ni virtualización en esta fase.
+
+## Actualización 2026-03-25 — MxDataGrid enterprise (consolidación runtime interactiva)
+
+- `MxDataGrid` corrige consistencia de estado interno/externo de selección: ya no pierde selección en modo no controlado tras re-render y normaliza IDs inválidos en cambios de datos.
+- Sorting enterprise mejora robustez y accesibilidad: headers con etiqueta ARIA de intención de orden, `aria-sort` consistente y fallback al `ValueSelector` cuando `Sortable=true` sin `SortValueSelector`.
+- Se refuerza semántica de filas seleccionadas (`aria-selected`) y se evita summary en empty/loading para no mezclar estados.
+- Showcase `/families/data` añade validación explícita de selección simple + múltiple y se incorpora prueba Playwright dedicada de runtime interactivo (sorting, selección, toolbar, row actions, summary y light/dark).

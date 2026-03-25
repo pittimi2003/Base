@@ -54,6 +54,7 @@
                             {
                                 <button type="button"
                                         class="mx-data-grid__sort-button"
+                                        aria-label="@BuildSortAriaLabel(column)"
                                         @onclick="() => ToggleSort(column)">
                                     <span>@column.Header</span>
                                     <span class="mx-data-grid__sort-indicator" aria-hidden="true">@ResolveSortIndicator(column)</span>
@@ -103,7 +104,9 @@
                         var rowId = ResolveRowId(item);
                         var isSelected = SelectedRowIdsInternal.Contains(rowId);
 
-                        <tr class="@BuildRowClass(item, isSelected)" @key="BuildRowKey(item)">
+                        <tr class="@BuildRowClass(item, isSelected)"
+                            aria-selected="@ResolveRowAriaSelected(isSelected)"
+                            @key="BuildRowKey(item)">
                             @if (SelectionMode != MxDataGridSelectionMode.None)
                             {
                                 <td class="mx-data-grid__selection-cell">
@@ -112,7 +115,8 @@
                                            class="mx-data-grid__select-input"
                                            aria-label="Seleccionar fila @rowId"
                                            checked="@isSelected"
-                                           @onchange="args => ToggleRowSelection(item, args.Value)">
+                                           @onchange="args => ToggleRowSelection(item, args.Value)"
+                                           disabled="@(!CanSelectRows)">
                                 </td>
                             }
 
@@ -187,7 +191,7 @@
 
     private bool HasRowActions => RowActionsTemplate is not null;
     private bool HasToolbar => Toolbar is not null || SelectionMode != MxDataGridSelectionMode.None;
-    private bool ShowSummary => SummaryTemplate is not null && !Loading && SafeColumns.Count > 0;
+    private bool ShowSummary => SummaryTemplate is not null && !Loading && SafeColumns.Count > 0 && VisibleItems.Count > 0;
     private bool CanSelectRows => VisibleItems.Count > 0;
     private bool AreAllRowsSelected => CanSelectRows && VisibleItems.All(item => SelectedRowIdsInternal.Contains(ResolveRowId(item)));
     private int VisibleColumnCount => SafeColumns.Count + (SelectionMode == MxDataGridSelectionMode.None ? 0 : 1) + (HasRowActions ? 1 : 0);
@@ -220,16 +224,7 @@
     {
         SafeItems = Items ?? Array.Empty<TItem>();
         SafeColumns = Columns ?? Array.Empty<MxDataGridColumn<TItem>>();
-
-        SelectedRowIdsInternal.Clear();
-
-        if (SelectedRowIds is not null)
-        {
-            foreach (var rowId in SelectedRowIds.Where(static value => !string.IsNullOrWhiteSpace(value)))
-            {
-                SelectedRowIdsInternal.Add(rowId);
-            }
-        }
+        NormalizeSelectionState();
 
         if (!EnableSorting)
         {
@@ -267,7 +262,7 @@
 
         if (selector is null)
         {
-            return SafeItems;
+            selector = item => targetColumn.ValueSelector(item);
         }
 
         var sorted = IsSortDescending
@@ -333,9 +328,21 @@
         return IsSortDescending ? "↓" : "↑";
     }
 
+    private string BuildSortAriaLabel(MxDataGridColumn<TItem> column)
+    {
+        if (!IsColumnSorted(column))
+        {
+            return $"Ordenar por {column.Header} ascendente";
+        }
+
+        return IsSortDescending
+            ? $"Ordenar por {column.Header} ascendente"
+            : $"Ordenar por {column.Header} descendente";
+    }
+
     private void ToggleSort(MxDataGridColumn<TItem> column)
     {
-        if (!(EnableSorting && column.Sortable && column.SortValueSelector is not null))
+        if (!(EnableSorting && column.Sortable))
         {
             return;
         }
@@ -358,6 +365,16 @@
         VisibleItems = ResolveSortedItems();
     }
 
+    private static bool ResolveBool(object? value)
+        => value switch
+        {
+            bool boolValue => boolValue,
+            string stringValue when bool.TryParse(stringValue, out var parsed) => parsed,
+            string stringValue when string.Equals(stringValue, "on", StringComparison.OrdinalIgnoreCase) => true,
+            string stringValue when string.Equals(stringValue, "1", StringComparison.Ordinal) => true,
+            _ => false
+        };
+
     private async Task ToggleRowSelection(TItem item, object? value)
     {
         if (SelectionMode == MxDataGridSelectionMode.None)
@@ -366,7 +383,7 @@
         }
 
         var rowId = ResolveRowId(item);
-        var isChecked = value as bool? ?? false;
+        var isChecked = ResolveBool(value);
 
         if (SelectionMode == MxDataGridSelectionMode.Single)
         {
@@ -396,7 +413,7 @@
             return;
         }
 
-        var shouldSelect = args.Value as bool? ?? false;
+        var shouldSelect = ResolveBool(args.Value);
         SelectedRowIdsInternal.Clear();
 
         if (shouldSelect)
@@ -414,4 +431,44 @@
         => SelectedRowIdsChanged.HasDelegate
             ? SelectedRowIdsChanged.InvokeAsync(SelectedRowIdsInternal.ToArray())
             : Task.CompletedTask;
+
+    private string? ResolveRowAriaSelected(bool isSelected)
+        => SelectionMode == MxDataGridSelectionMode.None ? null : isSelected ? "true" : "false";
+
+    private void NormalizeSelectionState()
+    {
+        if (SelectedRowIds is not null)
+        {
+            SelectedRowIdsInternal.Clear();
+
+            foreach (var rowId in SelectedRowIds.Where(static value => !string.IsNullOrWhiteSpace(value)))
+            {
+                SelectedRowIdsInternal.Add(rowId);
+            }
+        }
+
+        if (SelectedRowIdsInternal.Count == 0)
+        {
+            return;
+        }
+
+        var visibleIds = new HashSet<string>(SafeItems.Select(ResolveRowId), StringComparer.Ordinal);
+        SelectedRowIdsInternal.RemoveWhere(rowId => !visibleIds.Contains(rowId));
+
+        if (SelectionMode != MxDataGridSelectionMode.Single || SelectedRowIdsInternal.Count <= 1)
+        {
+            return;
+        }
+
+        var firstVisibleSelectedId = SafeItems
+            .Select(ResolveRowId)
+            .FirstOrDefault(SelectedRowIdsInternal.Contains);
+
+        SelectedRowIdsInternal.Clear();
+
+        if (!string.IsNullOrWhiteSpace(firstVisibleSelectedId))
+        {
+            SelectedRowIdsInternal.Add(firstVisibleSelectedId);
+        }
+    }
 }

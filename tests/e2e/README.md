@@ -22,6 +22,7 @@ npm run install:browsers
 > - `test`: 5010
 > - `test:mobile`: 5110
 > - `test:desktop`: 5111
+> - `test:showcase:data`: 5135 (levanta `MachSoft.Template.Core.Control.Showcase` para validar `/families/data`)
 > - `test:ci`: 5120
 > - todos ejecutan `cleanup:hosts` (`scripts/cleanup-hosts.sh`) antes de iniciar para limpiar procesos previos.
 
@@ -43,6 +44,7 @@ npm test
 # subset por dispositivo
 npm run test:mobile
 npm run test:desktop
+npm run test:showcase:data
 
 # modos de depuración
 npm run test:headed
