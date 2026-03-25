@@ -219,3 +219,15 @@ Consolidación aplicada en la misma iteración:
 Límites abiertos (explícitos):
 - Quedan fuera en esta fase: filtros avanzados, edición inline completa, export (Excel/PDF), grouping, virtualización real y drag & drop.
 - `SummaryTemplate` es deliberadamente básico; no hay agregaciones automáticas ni engine de summaries enterprise todavía.
+
+## Iteración 2026-03-25 — Data (MxDataGrid enterprise consolidación runtime)
+
+Consolidación aplicada:
+- Selección robusta en runtime: se normalizan IDs al cambiar `Items`, se evita pérdida de selección no controlada y `Single` conserva solo un ID válido.
+- Accesibilidad refinada: botón de sort con etiqueta ARIA contextual y filas seleccionables con `aria-selected`.
+- Sorting más consistente: si columna `Sortable=true` y no define `SortValueSelector`, el grid usa `ValueSelector` como fallback explícito.
+- Summary condicionado a datos visibles para no mezclarse con estados `empty/loading`.
+
+Validación runtime:
+- Showcase `/families/data` ahora incluye ejemplos separados de selección múltiple y selección simple.
+- Nueva prueba E2E dedicada (`tests/e2e/tests/families-data-grid.spec.ts` + `playwright.showcase.config.ts`) valida interacción real de sorting, selección, toolbar, row actions, summary, loading y tema light/dark.
