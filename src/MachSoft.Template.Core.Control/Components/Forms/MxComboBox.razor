@@ -20,6 +20,8 @@
                    aria-label="@AriaLabel"
                    aria-required="@Required"
                    aria-expanded="@IsOpen"
+                   aria-haspopup="listbox"
+                   aria-autocomplete="list"
                    aria-controls="@ListboxId"
                    aria-activedescendant="@ActiveDescendant"
                    aria-invalid="@AriaInvalid"
@@ -96,6 +98,7 @@
     [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private readonly string _fallbackId = $"mx-combobox-{Guid.NewGuid():N}";
+    private string? _syncedValue;
     private IReadOnlyList<MxSelectOption> FilteredOptions { get; set; } = Array.Empty<MxSelectOption>();
     private bool IsOpen { get; set; }
     private int ActiveIndex { get; set; } = -1;
@@ -111,16 +114,24 @@
 
     protected override void OnParametersSet()
     {
-        if (string.IsNullOrWhiteSpace(SearchText) && !string.IsNullOrWhiteSpace(Value))
+        if (!string.Equals(_syncedValue, Value, StringComparison.Ordinal))
         {
-            SearchText = Options.FirstOrDefault(option => option.Value == Value)?.Text;
+            _syncedValue = Value;
+            if (string.IsNullOrWhiteSpace(Value))
+            {
+                SearchText = null;
+            }
+            else
+            {
+                SearchText = Options.FirstOrDefault(option => option.Value == Value)?.Text;
+            }
         }
 
         FilteredOptions = SelectionSearch.Filter(Options, SearchText);
 
-        if (ActiveIndex >= FilteredOptions.Count)
+        if (ActiveIndex >= FilteredOptions.Count || (ActiveIndex >= 0 && FilteredOptions[ActiveIndex].Disabled))
         {
-            ActiveIndex = -1;
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
         }
     }
 
@@ -161,11 +172,11 @@
         {
             case "ArrowDown":
                 OpenMenu();
-                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, 1);
+                ActiveIndex = SelectionSearch.MoveActiveEnabledIndex(FilteredOptions, ActiveIndex, 1);
                 break;
             case "ArrowUp":
                 OpenMenu();
-                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, -1);
+                ActiveIndex = SelectionSearch.MoveActiveEnabledIndex(FilteredOptions, ActiveIndex, -1);
                 break;
             case "Enter":
                 if (IsOpen && ActiveIndex >= 0 && ActiveIndex < FilteredOptions.Count)
@@ -174,6 +185,10 @@
                 }
                 break;
             case "Escape":
+                await RestoreFromValue();
+                CloseMenu();
+                break;
+            case "Tab":
                 await RestoreFromValue();
                 CloseMenu();
                 break;
@@ -212,7 +227,7 @@
         if (IsOpen)
         {
             FilteredOptions = SelectionSearch.Filter(Options, SearchText);
-            ActiveIndex = FilteredOptions.Count > 0 ? 0 : -1;
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
         }
 
         await Task.CompletedTask;
@@ -245,7 +260,7 @@
         IsOpen = true;
         if (ActiveIndex < 0 && FilteredOptions.Count > 0)
         {
-            ActiveIndex = 0;
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
         }
     }
 

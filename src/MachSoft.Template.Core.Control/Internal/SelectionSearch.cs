@@ -42,4 +42,45 @@ internal static class SelectionSearch
 
         return next;
     }
+
+    public static int MoveActiveEnabledIndex(IReadOnlyList<MxSelectOption> options, int currentIndex, int direction)
+    {
+        if (options.Count == 0)
+        {
+            return -1;
+        }
+
+        if (options.All(option => option.Disabled))
+        {
+            return -1;
+        }
+
+        var next = currentIndex;
+        for (var step = 0; step < options.Count; step++)
+        {
+            next = MoveActiveIndex(next, options.Count, direction);
+            if (!options[next].Disabled)
+            {
+                return next;
+            }
+        }
+
+        return -1;
+    }
+
+    public static int FirstEnabledIndex(IReadOnlyList<MxSelectOption> options)
+        => options.FindIndex(option => !option.Disabled);
+
+    private static int FindIndex(this IReadOnlyList<MxSelectOption> options, Func<MxSelectOption, bool> predicate)
+    {
+        for (var index = 0; index < options.Count; index++)
+        {
+            if (predicate(options[index]))
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
 }

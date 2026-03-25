@@ -19,6 +19,8 @@
                aria-label="@AriaLabel"
                aria-required="@Required"
                aria-expanded="@IsOpen"
+               aria-haspopup="listbox"
+               aria-autocomplete="list"
                aria-controls="@ListboxId"
                aria-activedescendant="@ActiveDescendant"
                aria-invalid="@AriaInvalid"
@@ -102,9 +104,9 @@
     {
         FilteredOptions = SelectionSearch.Filter(Options, SearchText);
 
-        if (ActiveIndex >= FilteredOptions.Count)
+        if (ActiveIndex >= FilteredOptions.Count || (ActiveIndex >= 0 && FilteredOptions[ActiveIndex].Disabled))
         {
-            ActiveIndex = -1;
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
         }
     }
 
@@ -145,11 +147,11 @@
         {
             case "ArrowDown":
                 OpenMenu();
-                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, 1);
+                ActiveIndex = SelectionSearch.MoveActiveEnabledIndex(FilteredOptions, ActiveIndex, 1);
                 break;
             case "ArrowUp":
                 OpenMenu();
-                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, -1);
+                ActiveIndex = SelectionSearch.MoveActiveEnabledIndex(FilteredOptions, ActiveIndex, -1);
                 break;
             case "Enter":
                 if (IsOpen && ActiveIndex >= 0 && ActiveIndex < FilteredOptions.Count)
@@ -158,6 +160,9 @@
                 }
                 break;
             case "Escape":
+                CloseMenu();
+                break;
+            case "Tab":
                 CloseMenu();
                 break;
         }
@@ -190,18 +195,11 @@
 
     private void OpenMenu()
     {
-        if (Loading || FilteredOptions.Count > 0)
-        {
-            IsOpen = true;
-        }
-        else
-        {
-            IsOpen = true;
-        }
+        IsOpen = true;
 
         if (ActiveIndex < 0 && FilteredOptions.Count > 0)
         {
-            ActiveIndex = 0;
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
         }
     }
 
