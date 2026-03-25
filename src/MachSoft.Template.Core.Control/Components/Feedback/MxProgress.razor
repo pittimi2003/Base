@@ -1,0 +1,37 @@
+@namespace MachSoft.Template.Core.Control
+
+<div class="@CssClassValue"
+     role="progressbar"
+     aria-label="@AriaLabel"
+     aria-valuemin="0"
+     aria-valuemax="@ResolvedMax"
+     aria-valuenow="@(Indeterminate ? null : ClampedValue)"
+     aria-valuetext="@AriaValueText">
+    <div class="mx-progress__track">
+        <span class="mx-progress__bar" style="@BarStyle"></span>
+    </div>
+
+    @if (ShowLabel && !Indeterminate)
+    {
+        <span class="mx-progress__label">@PercentLabel</span>
+    }
+</div>
+
+@code {
+    [Parameter] public double Value { get; set; }
+    [Parameter] public double Max { get; set; } = 100;
+    [Parameter] public bool Indeterminate { get; set; }
+    [Parameter] public bool ShowLabel { get; set; } = true;
+    [Parameter] public string AriaLabel { get; set; } = "Progreso";
+    [Parameter] public string? ValueText { get; set; }
+    [Parameter] public MxProgressVariant Variant { get; set; } = MxProgressVariant.Brand;
+    [Parameter] public string? Class { get; set; }
+
+    private double ResolvedMax => Max <= 0 ? 100 : Max;
+    private double ClampedValue => Math.Clamp(Value, 0, ResolvedMax);
+    private double Percent => (ClampedValue / ResolvedMax) * 100;
+    private string PercentLabel => $"{Math.Round(Percent)}%";
+    private string AriaValueText => Indeterminate ? "Cargando" : ValueText ?? PercentLabel;
+    private string CssClassValue => $"mx-progress mx-progress--{Variant.ToString().ToLowerInvariant()} {(Indeterminate ? "mx-progress--indeterminate" : string.Empty)} {Class}";
+    private string BarStyle => Indeterminate ? string.Empty : $"width:{Percent.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture)}%;";
+}

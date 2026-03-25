@@ -55,3 +55,17 @@ Tokens consolidados para la base visual:
 - Foundations visuales (`/foundations`).
 - Families (`/families`) con acceso a plantillas por categoría (`/families/{key}`).
 - Toggle de tema light/dark con superficies de comparación explícitas.
+
+## Consolidación 2026-03-25 — lote público Actions/Feedback/Overlays
+
+Ajustes de endurecimiento aplicados:
+- Accesibilidad reforzada en botones (`aria-busy`, loading text para lector, `aria-pressed` en icon button).
+- `MxDialog` con foco inicial en shell al abrir, `aria-labelledby`/`aria-describedby` y comportamiento responsive mejorado.
+- `MxToast` con `OnDismiss`, rol semántico por severidad y uso explícito en stack simple de Showcase.
+- `MxTooltip` con `aria-describedby`, modo `Open` opcional para QA y preservación de API simple.
+- `MxPopup` aclarado como popup liviano público + base reusable para overlays contextuales simples.
+
+Límites conocidos (vigentes):
+- `MxDialog` aún no implementa focus trap completo ni restore de foco al invocador.
+- `MxToast` no implementa orquestador enterprise (canales/colas globales).
+- `MxTooltip` no incluye motor avanzado de posicionamiento dinámico.

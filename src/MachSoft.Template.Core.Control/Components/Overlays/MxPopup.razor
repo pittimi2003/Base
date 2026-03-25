@@ -1,0 +1,85 @@
+@namespace MachSoft.Template.Core.Control
+
+<div class="mx-popup-host @Class" @onkeydown="HandleKeyDown" @onfocusout="HandleFocusOut">
+    <div class="mx-popup-host__trigger" @onclick="TogglePopupAsync">
+        @TriggerContent
+    </div>
+
+    @if (ResolvedOpen)
+    {
+        @if (ShowBackdrop)
+        {
+            <div class="mx-popup-scrim" @onclick="CloseFromBackdropAsync"></div>
+        }
+
+        <section class="@PopupClass" role="dialog" aria-label="@AriaLabel" tabindex="-1">
+            @ChildContent
+        </section>
+    }
+</div>
+
+@code {
+    [Parameter] public bool Open { get; set; }
+    [Parameter] public EventCallback<bool> OpenChanged { get; set; }
+    [Parameter] public bool Controlled { get; set; }
+    [Parameter] public bool CloseOnOverlayClick { get; set; } = true;
+    [Parameter] public bool CloseOnEscape { get; set; } = true;
+    [Parameter] public bool CloseOnFocusOut { get; set; }
+    [Parameter] public bool ShowBackdrop { get; set; }
+    [Parameter] public string AriaLabel { get; set; } = "Popup";
+    [Parameter] public MxPopupPlacement Placement { get; set; } = MxPopupPlacement.BottomStart;
+    [Parameter] public string? Class { get; set; }
+    [Parameter, EditorRequired] public RenderFragment TriggerContent { get; set; } = default!;
+    [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
+
+    private bool _open;
+    private bool ResolvedOpen => Controlled ? Open : _open;
+
+    private string PopupClass => $"mx-popup mx-popup--{Placement.ToString().ToLowerInvariant()}";
+
+    private async Task TogglePopupAsync()
+    {
+        await SetOpenAsync(!ResolvedOpen);
+    }
+
+    private async Task CloseFromBackdropAsync()
+    {
+        if (!CloseOnOverlayClick)
+        {
+            return;
+        }
+
+        await SetOpenAsync(false);
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs args)
+    {
+        if (!ResolvedOpen || !CloseOnEscape)
+        {
+            return;
+        }
+
+        if (string.Equals(args.Key, "Escape", StringComparison.Ordinal))
+        {
+            await SetOpenAsync(false);
+        }
+    }
+
+    private async Task HandleFocusOut(FocusEventArgs _)
+    {
+        if (ResolvedOpen && CloseOnFocusOut)
+        {
+            await SetOpenAsync(false);
+        }
+    }
+
+    private async Task SetOpenAsync(bool value)
+    {
+        if (!Controlled)
+        {
+            _open = value;
+        }
+
+        await OpenChanged.InvokeAsync(value);
+    }
+}

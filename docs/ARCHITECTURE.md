@@ -96,3 +96,13 @@ No credentials are stored in source control. Teams are expected to inject creden
 - Server and Wasm remain separate official templates.
 - The shared reusable package remains `MachSoft.Template.Core`.
 - No Docker, CI/CD workflow, authentication, database, or business features are added to generated apps.
+
+
+## Actualización 2026-03-24 — Core.Control catálogo público (lote 1)
+- `MachSoft.Template.Core.Control` consolida los primeros controles públicos en las familias Actions, Feedback y Overlays.
+- Los estilos distribuibles viven en `src/MachSoft.Template.Core.Control/wwwroot/css/machsoft-template-core-control.css` y consumen tokens de `MachSoft.Template.Core`.
+- `MachSoft.Template.Core.Control.Showcase` valida los componentes de forma cross-hosting sin lógica de negocio.
+
+## Actualización 2026-03-25 — hardening lote 1 Core.Control
+- Se consolidó la primera familia pública (`MxButton`, `MxIconButton`, `MxAlert`, `MxProgress`, `MxTooltip`, `MxDialog`, `MxToast`, `MxPopup`) corrigiendo estados, semántica ARIA y consistencia visual.
+- El hardening se mantuvo dentro de `MachSoft.Template.Core.Control` y `Core.Control.Showcase`, preservando la separación con `MachSoft.Template.Core`.

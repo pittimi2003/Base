@@ -8,12 +8,10 @@
                           Title="Familia no encontrada"
                           Description="La familia solicitada no existe en el registro actual del catálogo.">
         <ChildContent>
-            <MxCard Title="Siguiente paso" Variant="SurfaceVariant.Outlined">
-                <ChildContent>
-                    <p>Vuelve a la vista de familias para continuar con la validación por categorías.</p>
-                    <MxButton Variant="MxButtonVariant.Secondary" Href="/families">Volver a familias</MxButton>
-                </ChildContent>
-            </MxCard>
+            <div class="ms-showcase-preview-block">
+                <p>Vuelve a la vista de familias para continuar con la validación por categorías.</p>
+                <MxButton Variant="MxButtonVariant.Outlined" Href="/families">Volver a familias</MxButton>
+            </div>
         </ChildContent>
     </ShowcasePageTemplate>
 }
@@ -23,47 +21,33 @@ else
                           Title="@CurrentFamily.Name"
                           Description="@CurrentFamily.Description">
         <Metadata>
-            <MxBadge Variant="MxBadgeVariant.Brand" Text="@CurrentFamily.Status" />
-            <MxBadge Variant="MxBadgeVariant.Neutral" Text="@CurrentFamily.Scope" />
-            <MxBadge Variant="MxBadgeVariant.Success" Text="Template ready" />
+            <span class="ms-showcase-chip">@CurrentFamily.Status</span>
+            <span class="ms-showcase-chip">@CurrentFamily.Scope</span>
+            <span class="ms-showcase-chip">Template ready</span>
         </Metadata>
         <ChildContent>
-            <ShowcaseSection Title="Ejemplo base"
-                             Description="Espacio estándar para renderizar el caso principal de la familia.">
-                <ShowcasePreviewBlock Title="Escenario básico"
-                                      Caption="Usa este bloque para validar markup, espaciado y comportamiento principal.">
-                    <p>Área reservada para el primer ejemplo funcional de la familia <strong>@CurrentFamily.Name</strong>.</p>
-                </ShowcasePreviewBlock>
-            </ShowcaseSection>
-
-            <ShowcaseSection Title="Variantes"
-                             Description="Bloque preparado para comparar variantes oficiales sin improvisar estructura.">
-                <ShowcasePreviewBlock Title="Comparativa de variantes"
-                                      Caption="Mantiene la misma superficie en light/dark para validar contraste y jerarquía."
-                                      IsCompact="true">
-                    <p>Reserva para variantes visuales del componente.</p>
-                </ShowcasePreviewBlock>
-            </ShowcaseSection>
-
-            <ShowcaseSection Title="Estados"
-                             Description="Bloque dedicado a estados interactivos y de sistema.">
-                <ShowcasePreviewBlock Title="Estados operativos"
-                                      Caption="Default, hover, focus-visible, disabled, invalid/error según aplique.">
-                    <p>Reserva para escenarios de estado y pruebas funcionales.</p>
-                </ShowcasePreviewBlock>
-            </ShowcaseSection>
-
-            <ShowcaseSection Title="Notas técnicas y visuales"
-                             Description="Checklist de adopción para mantener consistencia en futuras iteraciones.">
-                <ShowcasePreviewBlock Title="Checklist"
-                                      Caption="Esta nota acompaña a cada familia y reduce decisiones ad-hoc.">
-                    <ul class="ms-showcase-notes-list">
-                        <li>Validar contraste en light y dark con tokens semánticos.</li>
-                        <li>Mantener API pública Mx* simple y estable.</li>
-                        <li>Registrar limitaciones reales antes de ampliar el alcance.</li>
-                    </ul>
-                </ShowcasePreviewBlock>
-            </ShowcaseSection>
+            @if (string.Equals(CurrentFamily.Key, "actions", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderActionsFamily()
+            }
+            else if (string.Equals(CurrentFamily.Key, "feedback", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderFeedbackFamily()
+            }
+            else if (string.Equals(CurrentFamily.Key, "overlays", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderOverlaysFamily()
+            }
+            else
+            {
+                <ShowcaseSection Title="Ejemplo base"
+                                 Description="Espacio estándar para renderizar el caso principal de la familia.">
+                    <ShowcasePreviewBlock Title="Escenario básico"
+                                          Caption="Usa este bloque para validar markup, espaciado y comportamiento principal.">
+                        <p>Área reservada para el primer ejemplo funcional de la familia <strong>@CurrentFamily.Name</strong>.</p>
+                    </ShowcasePreviewBlock>
+                </ShowcaseSection>
+            }
         </ChildContent>
     </ShowcasePageTemplate>
 }
@@ -71,9 +55,240 @@ else
 @code {
     [Parameter] public string? FamilyKey { get; set; }
 
+    private bool _dialogOpen;
+    private bool _popupOpen;
+    private bool _toastVisible;
+    private bool _toastVisibleSecondary;
+    private bool _alertVisible = true;
+    private bool _tooltipForcedOpen;
+
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
 
     private string PageTitleValue => CurrentFamily is null
         ? "Familia no encontrada"
         : $"{CurrentFamily.Name} · Showcase";
+
+    private RenderFragment RenderActionsFamily() => @<>
+        <ShowcaseSection Title="MxButton"
+                         Description="Botones oficiales con variantes, estados disabled/loading y soporte de iconografía ligera.">
+            <ShowcasePreviewBlock Title="Variantes principales"
+                                  Caption="Filled, outlined, text y fab con una API unificada.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxButton>Filled</MxButton>
+                    <MxButton Variant="MxButtonVariant.Outlined">Outlined</MxButton>
+                    <MxButton Variant="MxButtonVariant.Text">Text</MxButton>
+                    <MxButton Variant="MxButtonVariant.Fab" LeadingIcon="＋">Nuevo</MxButton>
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Estados"
+                                  Caption="Disabled, loading, feedback accesible y soporte de íconos al inicio/fin.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxButton Disabled="true">Disabled</MxButton>
+                    <MxButton Loading="true" LoadingText="Guardando cambios">Guardando</MxButton>
+                    <MxButton LeadingIcon="🛈" TrailingIcon="→">Con iconos</MxButton>
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxIconButton"
+                         Description="Acción icon-only con etiqueta accesible y estados consistentes.">
+            <ShowcasePreviewBlock Title="Básico y estados"
+                                  Caption="El aria-label es obligatorio; soporta estado pressed para toggles.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxIconButton Icon="✎" AriaLabel="Editar" />
+                    <MxIconButton Icon="🗑" AriaLabel="Eliminar" Variant="MxButtonVariant.Outlined" />
+                    <MxIconButton Icon="⚙" AriaLabel="Configuración" Disabled="true" />
+                    <MxIconButton Icon="★" AriaLabel="Favorito" Pressed="true" />
+                    <MxIconButton Icon="↻" AriaLabel="Cargando" Loading="true" LoadingText="Actualizando" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </>;
+
+    private RenderFragment RenderFeedbackFamily() => @<>
+        <ShowcaseSection Title="MxAlert"
+                         Description="Alertas con severidad y contenido flexible listo para integrarse con validaciones.">
+            <ShowcasePreviewBlock Title="Severidades"
+                                  Caption="Variantes info/success/warning/danger con rol adaptativo según criticidad.">
+                <div class="ms-showcase-stack-sm">
+                    @if (_alertVisible)
+                    {
+                        <MxAlert Variant="MxAlertVariant.Info" Title="Información" Message="Tu configuración fue sincronizada." Dismissible="true" OnDismiss="OnDismissAlert" />
+                    }
+                    <MxAlert Variant="MxAlertVariant.Success" Title="Éxito">
+                        <p class="ms-showcase-inline-message">Despliegue completado sin errores.</p>
+                    </MxAlert>
+                    <MxAlert Variant="MxAlertVariant.Warning" Title="Atención" Message="Hay cambios sin publicar." />
+                    <MxAlert Variant="MxAlertVariant.Danger" Title="Error" Message="No se pudo procesar la solicitud." />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxProgress y MxToast"
+                         Description="Base de feedback operativa para procesos y notificaciones.">
+            <ShowcasePreviewBlock Title="MxProgress"
+                                  Caption="Incluye aria-valuetext y modo indeterminado para tareas largas.">
+                <div class="ms-showcase-stack-sm">
+                    <MxProgress Value="42" ValueText="42 por ciento completado" />
+                    <MxProgress Value="76" Variant="MxProgressVariant.Success" />
+                    <MxProgress Indeterminate="true" ShowLabel="false" Variant="MxProgressVariant.Warning" />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxToast"
+                                  Caption="Notificaciones reutilizables, autocierre opcional y visualización en stack simple.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxButton Variant="MxButtonVariant.Outlined" OnClick="ShowToast">Mostrar toast éxito</MxButton>
+                    <MxButton Variant="MxButtonVariant.Text" OnClick="ShowSecondaryToast">Mostrar toast warning</MxButton>
+                </div>
+                <div class="ms-showcase-stack-sm">
+                    <MxToast Visible="_toastVisible"
+                             VisibleChanged="OnToastChanged"
+                             Variant="MxToastVariant.Success"
+                             Title="Operación completada"
+                             Message="El registro se actualizó correctamente."
+                             DurationMs="4500" />
+                    <MxToast Visible="_toastVisibleSecondary"
+                             VisibleChanged="OnSecondaryToastChanged"
+                             Variant="MxToastVariant.Warning"
+                             Title="Pendiente de confirmación"
+                             Message="Todavía faltan aprobadores."
+                             DurationMs="0" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </>;
+
+    private RenderFragment RenderOverlaysFamily() => @<>
+        <ShowcaseSection Title="MxTooltip"
+                         Description="Implementación base sólida para hover/focus con activación manual opcional.">
+            <ShowcasePreviewBlock Title="Interacción tooltip"
+                                  Caption="Disponible para texto breve; preparado para evolucionar a plantillas enriquecidas.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxTooltip Text="Guardar cambios" Placement="MxTooltipPlacement.Top">
+                        <MxIconButton Icon="💾" AriaLabel="Guardar" Variant="MxButtonVariant.Outlined" />
+                    </MxTooltip>
+
+                    <MxTooltip Text="Exportación programada" Placement="MxTooltipPlacement.Right">
+                        <MxButton Variant="MxButtonVariant.Text">Hover/Foco</MxButton>
+                    </MxTooltip>
+
+                    <MxTooltip Text="Tooltip forzado para QA" Open="_tooltipForcedOpen" Placement="MxTooltipPlacement.Bottom">
+                        <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleTooltipOpen">Toggle Open</MxButton>
+                    </MxTooltip>
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxDialog y MxPopup"
+                         Description="Base de overlays controlables y compatibles cross-hosting.">
+            <ShowcasePreviewBlock Title="MxDialog"
+                                  Caption="Foco inicial en shell, cierre por Escape/overlay y slots de header/body/actions.">
+                <MxButton OnClick="OpenDialog">Abrir dialog</MxButton>
+                <MxDialog Open="_dialogOpen"
+                          OpenChanged="OnDialogChanged"
+                          Title="Aprobar publicación"
+                          Size="MxDialogSize.Medium">
+                    <ChildContent>
+                        <p class="ms-showcase-inline-message">Confirma la publicación del lote en producción.</p>
+                    </ChildContent>
+                    <Actions>
+                        <MxButton Variant="MxButtonVariant.Text" OnClick="CloseDialog">Cancelar</MxButton>
+                        <MxButton OnClick="CloseDialog">Confirmar</MxButton>
+                    </Actions>
+                </MxDialog>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxPopup"
+                                  Caption="Popup liviano público y base reusable para overlays contextuales simples.">
+                <MxPopup Open="_popupOpen"
+                         OpenChanged="OnPopupChanged"
+                         Controlled="true"
+                         CloseOnEscape="true"
+                         ShowBackdrop="true"
+                         Placement="MxPopupPlacement.BottomStart">
+                    <TriggerContent>
+                        <MxButton Variant="MxButtonVariant.Outlined">Abrir popup</MxButton>
+                    </TriggerContent>
+                    <ChildContent>
+                        <div class="ms-showcase-stack-sm">
+                            <strong>Acciones rápidas</strong>
+                            <MxButton Variant="MxButtonVariant.Text">Duplicar</MxButton>
+                            <MxButton Variant="MxButtonVariant.Text">Archivar</MxButton>
+                        </div>
+                    </ChildContent>
+                </MxPopup>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Límites actuales de overlays"
+                                  Caption="Se documentan explícitamente para evitar sobreventa funcional en esta iteración.">
+                <ul class="ms-showcase-notes-list">
+                    <li>Dialog: foco inicial en shell y cierre por Escape/overlay; sin focus trap completo aún.</li>
+                    <li>Popup: overlay contextual reusable para acciones simples; no reemplaza un menú enterprise.</li>
+                    <li>Tooltip: base simple textual con modo open opcional para QA.</li>
+                </ul>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </>;
+
+    private Task OnToastChanged(bool value)
+    {
+        _toastVisible = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnSecondaryToastChanged(bool value)
+    {
+        _toastVisibleSecondary = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnDialogChanged(bool value)
+    {
+        _dialogOpen = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnPopupChanged(bool value)
+    {
+        _popupOpen = value;
+        return Task.CompletedTask;
+    }
+
+    private Task OnDismissAlert()
+    {
+        _alertVisible = false;
+        return Task.CompletedTask;
+    }
+
+    private Task OpenDialog(MouseEventArgs _)
+    {
+        _dialogOpen = true;
+        return Task.CompletedTask;
+    }
+
+    private Task CloseDialog(MouseEventArgs _)
+    {
+        _dialogOpen = false;
+        return Task.CompletedTask;
+    }
+
+    private Task ShowToast(MouseEventArgs _)
+    {
+        _toastVisible = true;
+        return Task.CompletedTask;
+    }
+
+    private Task ShowSecondaryToast(MouseEventArgs _)
+    {
+        _toastVisibleSecondary = true;
+        return Task.CompletedTask;
+    }
+
+    private Task ToggleTooltipOpen(MouseEventArgs _)
+    {
+        _tooltipForcedOpen = !_tooltipForcedOpen;
+        return Task.CompletedTask;
+    }
 }

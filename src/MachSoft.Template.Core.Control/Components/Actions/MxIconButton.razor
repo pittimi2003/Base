@@ -1,0 +1,48 @@
+@namespace MachSoft.Template.Core.Control
+
+<button type="@Type"
+        class="@CssClassValue"
+        disabled="@IsDisabledOrLoading"
+        aria-label="@AriaLabel"
+        aria-pressed="@Pressed"
+        aria-busy="@Loading"
+        @onclick="HandleClickAsync">
+    @if (Loading)
+    {
+        <span class="mx-icon-btn__loader" aria-hidden="true"></span>
+        <span class="mx-visually-hidden">@LoadingText</span>
+    }
+    else
+    {
+        <span class="mx-icon-btn__icon" aria-hidden="true">@Icon</span>
+    }
+</button>
+
+@code {
+    [Parameter, EditorRequired] public string Icon { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string AriaLabel { get; set; } = string.Empty;
+    [Parameter] public MxButtonVariant Variant { get; set; } = MxButtonVariant.Text;
+    [Parameter] public MxButtonSize Size { get; set; } = MxButtonSize.Medium;
+    [Parameter] public string Type { get; set; } = "button";
+    [Parameter] public bool? Pressed { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public string LoadingText { get; set; } = "Cargando";
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
+
+    private bool IsDisabledOrLoading => Disabled || Loading;
+
+    private string CssClassValue =>
+        $"mx-icon-btn mx-icon-btn--{Variant.ToString().ToLowerInvariant()} mx-icon-btn--{Size.ToString().ToLowerInvariant()} {(Loading ? "mx-icon-btn--loading" : string.Empty)} {Class}";
+
+    private async Task HandleClickAsync(MouseEventArgs args)
+    {
+        if (IsDisabledOrLoading)
+        {
+            return;
+        }
+
+        await OnClick.InvokeAsync(args);
+    }
+}

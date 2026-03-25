@@ -140,3 +140,12 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - Existe la **base arquitectónica y de empaquetado** (`RCL` + `NuGet`) para `MachSoft.Template.Core.Control`.
 - Existe un **Showcase desacoplado** para validación visual/funcional.
 - La implementación completa de todas las familias premium sigue pendiente para iteraciones posteriores (no está cerrada en esta etapa).
+
+
+## Actualización 2026-03-24 — Core.Control lote 1
+- `MachSoft.Template.Core.Control` incluye primera familia pública (`MxButton`, `MxIconButton`, `MxAlert`, `MxProgress`, `MxTooltip`, `MxDialog`, `MxToast`, `MxPopup`) con ejemplos en `Core.Control.Showcase`.
+- El Showcase ahora expone validación por familias `Actions`, `Feedback` y `Overlays` con estados base (default, disabled, loading e interacción).
+
+## Actualización 2026-03-25 — hardening lote 1 Core.Control
+- Se consolidó la primera familia pública (`Actions`, `Feedback`, `Overlays`) con mejoras de accesibilidad, estados y consistencia visual.
+- Se documentaron límites reales actuales de overlays (`dialog`, `toast`, `tooltip`, `popup`) antes de avanzar a nuevas familias.

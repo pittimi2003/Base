@@ -91,3 +91,15 @@ Abrir `https://localhost:<puerto>/` y validar:
 ### Nota de alcance actual
 
 `MachSoft.Template.Core.Control` está listo como base distribuible, pero **no contiene todavía la implementación completa de todas las familias premium**. El Showcase valida la infraestructura base (navegación, theming, rutas y separación de responsabilidades).
+
+
+## Nota de adopción (2026-03-24)
+Para validar catálogo público inicial, ejecutar `MachSoft.Template.Core.Control.Showcase` y revisar rutas:
+- `/families/actions`
+- `/families/feedback`
+- `/families/overlays`
+
+Estas páginas cubren variantes y estados base de los controles del lote 1.
+
+## Nota de consolidación (2026-03-25)
+La validación de `/families/actions`, `/families/feedback` y `/families/overlays` ahora incluye estados endurecidos (loading accesible, roles semánticos, foco inicial en dialog y límites explícitos de overlays).
