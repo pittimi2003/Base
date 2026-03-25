@@ -68,7 +68,13 @@
 
     private Task HandleChange(ChangeEventArgs args)
     {
-        var value = args.Value is bool checkedValue && checkedValue;
+        var value = args.Value switch
+        {
+            bool checkedValue => checkedValue,
+            string raw when bool.TryParse(raw, out var parsed) => parsed,
+            _ => false
+        };
+
         return CheckedChanged.InvokeAsync(value);
     }
 }

@@ -558,6 +558,11 @@
   font-weight: 600;
 }
 
+
+.mx-input-root--range-conflict .mx-date-range__separator {
+  color: #c53c3c;
+}
+
 .mx-select-icon {
   position: absolute;
   right: 0.75rem;

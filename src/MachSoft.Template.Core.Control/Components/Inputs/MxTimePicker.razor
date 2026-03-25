@@ -1,4 +1,5 @@
 @namespace MachSoft.Template.Core.Control
+@using System.Globalization
 
 <div class="@RootClass">
     @if (!string.IsNullOrWhiteSpace(Label))
@@ -18,6 +19,7 @@
            required="@Required"
            aria-invalid="@AriaInvalid"
            aria-required="@Required"
+           aria-readonly="@AriaReadOnly"
            aria-describedby="@DescribedBy"
            @onchange="HandleChange"
            @attributes="AdditionalAttributes" />
@@ -54,26 +56,40 @@
     private string ResolvedId => Id ?? _instanceId;
     private string HelperId => $"{ResolvedId}-helper";
     private string ValidationId => $"{ResolvedId}-validation";
-    private string FormattedValue => Value?.ToString("HH\\:mm") ?? string.Empty;
+    private string FormattedValue => Value?.ToString("HH\\:mm", CultureInfo.InvariantCulture) ?? string.Empty;
     private string? AriaInvalid => Invalid ? "true" : null;
+    private string? AriaReadOnly => ReadOnly ? "true" : null;
     private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
         ? ValidationId
         : !string.IsNullOrWhiteSpace(HelperText)
             ? HelperId
             : null;
 
-    private string RootClass =>
-        $"mx-input-root mx-input-root--time {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(ReadOnly ? "mx-input-root--readonly" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+    private string RootClass => string.Join(' ', new[]
+    {
+        "mx-input-root",
+        "mx-input-root--time",
+        Invalid ? "mx-input-root--invalid" : null,
+        Disabled ? "mx-input-root--disabled" : null,
+        ReadOnly ? "mx-input-root--readonly" : null,
+        Required ? "mx-input-root--required" : null,
+        Class
+    }.Where(static value => !string.IsNullOrWhiteSpace(value)));
 
     private Task HandleChange(ChangeEventArgs args)
     {
+        if (ReadOnly || Disabled)
+        {
+            return Task.CompletedTask;
+        }
+
         var rawValue = args.Value?.ToString();
         if (string.IsNullOrWhiteSpace(rawValue))
         {
             return ValueChanged.InvokeAsync(null);
         }
 
-        return TimeOnly.TryParse(rawValue, out var parsed)
+        return TimeOnly.TryParseExact(rawValue, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var parsed)
             ? ValueChanged.InvokeAsync(parsed)
             : ValueChanged.InvokeAsync(null);
     }

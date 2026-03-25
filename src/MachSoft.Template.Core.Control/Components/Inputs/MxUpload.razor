@@ -1,7 +1,7 @@
 @namespace MachSoft.Template.Core.Control
 @using Microsoft.AspNetCore.Components.Forms
 
-<div class="@RootClass">
+<div class="@RootClass" aria-busy="@AriaBusy">
     @if (!string.IsNullOrWhiteSpace(Label))
     {
         <label class="mx-input-label" for="@ResolvedId">@Label</label>
@@ -24,7 +24,7 @@
 
     @if (_selectedFiles.Count > 0)
     {
-        <div class="mx-upload__summary">
+        <div class="mx-upload__summary" role="status" aria-live="polite">
             <strong>@SelectedFilesTitle</strong>
             <ul class="mx-upload__list">
                 @foreach (var file in _selectedFiles)
@@ -72,6 +72,7 @@
     private string HelperId => $"{ResolvedId}-helper";
     private string ValidationId => $"{ResolvedId}-validation";
     private string? AriaInvalid => Invalid ? "true" : null;
+    private string? AriaBusy => Uploading ? "true" : null;
     private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
         ? ValidationId
         : !string.IsNullOrWhiteSpace(HelperText)
@@ -79,12 +80,28 @@
             : null;
     private IReadOnlyDictionary<string, object> InputAttributes => BuildInputAttributes();
 
-    private string RootClass =>
-        $"mx-input-root mx-input-root--upload {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {(Uploading ? "mx-input-root--uploading" : string.Empty)} {Class}";
+    private string RootClass => string.Join(' ', new[]
+    {
+        "mx-input-root",
+        "mx-input-root--upload",
+        Invalid ? "mx-input-root--invalid" : null,
+        Disabled ? "mx-input-root--disabled" : null,
+        Required ? "mx-input-root--required" : null,
+        Uploading ? "mx-input-root--uploading" : null,
+        Class
+    }.Where(static value => !string.IsNullOrWhiteSpace(value)));
 
     private async Task HandleFilesChanged(InputFileChangeEventArgs args)
     {
-        var files = Multiple ? args.GetMultipleFiles() : [args.File];
+        if (Disabled || Uploading)
+        {
+            return;
+        }
+
+        var files = Multiple
+            ? args.GetMultipleFiles()
+            : args.GetMultipleFiles(1);
+
         _selectedFiles.Clear();
         _selectedFiles.AddRange(files);
 
@@ -102,7 +119,7 @@
             }
         }
 
-        if (Disabled)
+        if (Disabled || Uploading)
         {
             attributes["disabled"] = true;
         }
