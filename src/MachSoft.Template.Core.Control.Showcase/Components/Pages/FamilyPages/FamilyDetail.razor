@@ -108,7 +108,7 @@ else
         ? "Familia no encontrada"
         : $"{CurrentFamily.Name} · Showcase";
 
-    private RenderFragment RenderActionsFamily() => @<>
+    private RenderFragment RenderActionsFamily() => @<text>
         <ShowcaseSection Title="MxButton"
                          Description="Botones oficiales con variantes, estados disabled/loading y soporte de iconografía ligera.">
             <ShowcasePreviewBlock Title="Variantes principales"
@@ -152,9 +152,9 @@ else
                 </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
-    </>;
+    </text>;
 
-    private RenderFragment RenderFeedbackFamily() => @<>
+    private RenderFragment RenderFeedbackFamily() => @<text>
         <ShowcaseSection Title="MxAlert"
                          Description="Alertas con severidad y contenido flexible listo para integrarse con validaciones.">
             <ShowcasePreviewBlock Title="Severidades"
@@ -206,9 +206,9 @@ else
                 </div>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
-    </>;
+    </text>;
 
-    private RenderFragment RenderOverlaysFamily() => @<>
+    private RenderFragment RenderOverlaysFamily() => @<text>
         <ShowcaseSection Title="MxTooltip"
                          Description="Implementación base sólida para hover/focus con activación manual opcional.">
             <ShowcasePreviewBlock Title="Interacción tooltip"
@@ -278,10 +278,10 @@ else
                 </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
-    </>;
+    </text>;
 
 
-    private RenderFragment RenderInputsFamily() => @<>
+    private RenderFragment RenderInputsFamily() => @<text>
         <ShowcaseSection Title="Campos textuales"
                          Description="MxTextField y MxTextArea comparten foundation visual, helper/validation text y estados base.">
             <ShowcasePreviewBlock Title="MxTextField"
@@ -359,9 +359,9 @@ else
                 </ul>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
-    </>;
+    </text>;
 
-    private RenderFragment RenderSelectionFamily() => @<>
+    private RenderFragment RenderSelectionFamily() => @<text>
         <ShowcaseSection Title="MxAutocomplete"
                          Description="Búsqueda local asistida con sugerencias visibles, loading y estado sin resultados.">
             <ShowcasePreviewBlock Title="Básico y estados"
@@ -467,7 +467,7 @@ else
                 </div>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
-    </>;
+    </text>;
 
     private Task OnToastChanged(bool value)
     {
