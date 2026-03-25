@@ -156,3 +156,10 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - `Core.Control.Showcase` agrega la ruta `/families/listing` con ejemplos reales (básico, selected, disabled, invalid, interactive/removable) y validación light/dark.
 - La iteración mantiene API mínima y extensible, sin dependencias externas ni acoplamiento por host.
 
+
+## Actualización 2026-03-25 — MxDataGrid enterprise controlado (fase inicial)
+
+- `MxDataGrid` evoluciona con sorting por columna, selección de filas (single/multiple), toolbar base, acciones por fila y summary template ligero.
+- `MxDataGridColumn` agrega `Sortable`, `SortValueSelector` y `Key` para habilitar ordenamiento explícito sin romper el contrato previo.
+- Showcase `/families/data` se consolida con ejemplos runtime de sorting/selección/toolbar/actions + estados empty/loading.
+- Se mantiene alcance controlado: sin filtros avanzados, edición inline completa, export ni virtualización en esta fase.

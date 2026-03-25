@@ -1095,6 +1095,29 @@
   background: var(--mx-color-bg-surface, #fff);
 }
 
+.mx-data-grid__toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  border-bottom: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 75%, transparent);
+  background: color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 40%, transparent);
+}
+
+.mx-data-grid__toolbar-slot {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mx-data-grid__selection-summary {
+  color: var(--mx-color-text-secondary, #40556f);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  font-weight: var(--mx-font-weight-semibold, 600);
+}
+
 .mx-data-grid-scroll {
   overflow: auto;
 }
@@ -1119,6 +1142,47 @@
   z-index: 1;
 }
 
+.mx-data-grid thead th.is-sorted {
+  color: var(--mx-color-brand-primary, #3a67bf);
+}
+
+.mx-data-grid__sort-button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem;
+  cursor: pointer;
+  padding: 0;
+}
+
+.mx-data-grid__sort-indicator {
+  font-size: 0.85em;
+}
+
+.mx-data-grid__selection-header,
+.mx-data-grid__selection-cell,
+.mx-data-grid__actions-header,
+.mx-data-grid__actions-cell {
+  width: 3.2rem;
+  text-align: center;
+}
+
+.mx-data-grid__actions-cell,
+.mx-data-grid__actions-header {
+  width: 7rem;
+}
+
+.mx-data-grid__select-input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--mx-color-brand-primary, #3a67bf);
+}
+
 .mx-data-grid tbody td {
   padding: 0.8rem 0.85rem;
   border-bottom: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 65%, transparent);
@@ -1133,19 +1197,32 @@
   background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 7%, transparent);
 }
 
+.mx-data-grid tbody tr.is-selected td {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 14%, transparent);
+}
+
 .mx-data-grid tbody tr:focus-within td,
 .mx-data-grid tbody tr:has(button:focus-visible) td,
-.mx-data-grid tbody tr:has(a:focus-visible) td {
+.mx-data-grid tbody tr:has(a:focus-visible) td,
+.mx-data-grid tbody tr:has(input:focus-visible) td {
   background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 10%, transparent);
 }
 
-.mx-data-grid :is(a, button, [role="button"], [tabindex]):focus-visible {
+.mx-data-grid :is(a, button, input, [role="button"], [tabindex]):focus-visible {
   outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
   outline-offset: 2px;
 }
 
+.mx-data-grid tfoot td.mx-data-grid__summary {
+  padding: 0.75rem 0.85rem;
+  border-top: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 70%, transparent);
+  color: var(--mx-color-text-secondary, #40556f);
+  background: color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 58%, transparent);
+}
+
 .mx-data-grid--compact thead th,
-.mx-data-grid--compact tbody td {
+.mx-data-grid--compact tbody td,
+.mx-data-grid--compact tfoot td.mx-data-grid__summary {
   padding-top: 0.55rem;
   padding-bottom: 0.55rem;
 }

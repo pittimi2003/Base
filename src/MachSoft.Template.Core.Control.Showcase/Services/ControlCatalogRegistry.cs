@@ -14,7 +14,7 @@ public static class ControlCatalogRegistry
         new("datetime", "DateTime", "Fecha, rango y hora con foco en consistencia y accesibilidad.", "Implemented", "DatePicker, DateRange y Time", "/families/datetime"),
         new("listing", "List / ListBox / Avatar / Chip", "Componentes de listado y representación compacta para navegación, selección ligera e identidad visual.", "Implemented", "MxList, MxListBox, MxAvatar y MxChip", "/families/listing"),
         new("display", "Display", "Representación visual de estado, métricas y contenido contextual.", "Planned", "Tag, status, stats y empty states", "/families/display"),
-        new("data", "Data", "Visualización enterprise de datos tabulares, jerárquicos y gráficos.", "Implemented", "MxDataGrid base (empty/loading + columnas configurables)", "/families/data"),
+        new("data", "Data", "Visualización enterprise de datos tabulares, jerárquicos y gráficos.", "Implemented", "MxDataGrid enterprise inicial (sorting, selección y acciones)", "/families/data"),
         new("upload", "Upload", "Carga de archivos reutilizable y compatible cross-host.", "Implemented", "Flujo base de upload", "/families/upload"),
         new("scheduling", "Scheduling", "Planificación operativa y visualización de slots.", "Planned", "Calendario operativo y agenda", "/families/scheduling")
     ];
