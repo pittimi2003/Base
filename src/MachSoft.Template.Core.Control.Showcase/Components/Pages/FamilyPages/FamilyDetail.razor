@@ -176,10 +176,10 @@ else
 
     private readonly IReadOnlyList<MxSchedulerEvent> _schedulerEvents =
     [
-        new("ev-1", "Standup de operaciones", new DateTime(2026, 3, 24, 9, 0, 0), Description: "Revisión de bloqueos del turno"),
-        new("ev-2", "Ventana de mantenimiento", new DateTime(2026, 3, 25, 14, 0, 0), new DateTime(2026, 3, 25, 16, 0, 0), Description: "Aplicación de hotfix"),
-        new("ev-3", "QA release candidata", new DateTime(2026, 3, 28, 10, 30, 0), Description: "Checklist funcional"),
-        new("ev-4", "Guardia fin de mes", new DateTime(2026, 3, 31, 0, 0, 0), new DateTime(2026, 4, 1, 23, 59, 0), true, "Cobertura cross-team")
+        new("ev-1", "Standup de operaciones", new DateTime(2026, 3, 24, 9, 0, 0), Description: "Revisión de bloqueos del turno", AccentColor: "#2463EB"),
+        new("ev-2", "Ventana de mantenimiento", new DateTime(2026, 3, 25, 14, 0, 0), new DateTime(2026, 3, 25, 16, 0, 0), Description: "Aplicación de hotfix", AccentColor: "#0A8A5B"),
+        new("ev-3", "QA release candidata", new DateTime(2026, 3, 28, 10, 30, 0), Description: "Checklist funcional", AccentColor: "#A15A00"),
+        new("ev-4", "Guardia fin de mes", new DateTime(2026, 3, 31, 0, 0, 0), new DateTime(2026, 4, 1, 23, 59, 0), true, "Cobertura cross-team", "#7E22CE")
     ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
@@ -878,7 +878,8 @@ else
                              SelectedEventId="_selectedSchedulerEventId"
                              SelectedEventIdChanged="OnSelectedSchedulerEventIdChanged"
                              EventSelected="OnSchedulerEventSelected"
-                             AriaLabel="Agenda operativa del equipo de plataforma" />
+                             AriaLabel="Agenda operativa del equipo de plataforma"
+                             data-testid="scheduler-base" />
                 <p class="ms-showcase-inline-message">Mes visible: @_schedulerCurrentDate.ToString("MMMM yyyy")</p>
                 <p class="ms-showcase-inline-message">Selección actual: @_schedulerSelectionMessage</p>
             </ShowcasePreviewBlock>
@@ -895,7 +896,8 @@ else
                                  CurrentDateChanged="OnSchedulerCurrentDateChanged"
                                  Loading="_schedulerLoading"
                                  LoadingText="Cargando agenda del equipo..."
-                                 AriaLabel="Agenda operativa en carga" />
+                                 AriaLabel="Agenda operativa en carga"
+                                 data-testid="scheduler-loading" />
                 </div>
             </ShowcasePreviewBlock>
 
@@ -905,7 +907,8 @@ else
                              CurrentDate="_schedulerCurrentDate"
                              CurrentDateChanged="OnSchedulerCurrentDateChanged"
                              EmptyText="No hay eventos programados para este mes operativo."
-                             AriaLabel="Agenda vacía del equipo" />
+                             AriaLabel="Agenda vacía del equipo"
+                             data-testid="scheduler-empty" />
             </ShowcasePreviewBlock>
 
             <ShowcasePreviewBlock Title="Límites conscientes de esta primera iteración"

@@ -7,4 +7,9 @@ public sealed record MxSchedulerEvent(
     DateTime? End = null,
     bool IsAllDay = false,
     string? Description = null,
-    string? AccentColor = null);
+    string? AccentColor = null)
+{
+    public DateTime EffectiveEnd => End is null || End.Value < Start
+        ? Start
+        : End.Value;
+}

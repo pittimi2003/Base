@@ -1286,6 +1286,32 @@
   gap: 0.4rem;
 }
 
+.mx-scheduler__nav-btn,
+.mx-scheduler__today-btn {
+  border-radius: var(--mx-radius-sm, 6px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  background: var(--mx-color-bg-surface, #fff);
+  color: var(--mx-color-text-primary, #132033);
+  padding: 0.3rem 0.55rem;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mx-scheduler__today-btn {
+  border-color: transparent;
+}
+
+.mx-scheduler__nav-btn:hover,
+.mx-scheduler__today-btn:hover {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 10%, var(--mx-color-bg-surface, #fff));
+}
+
+.mx-scheduler__nav-btn:focus-visible,
+.mx-scheduler__today-btn:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
 .mx-scheduler__grid {
   display: grid;
   grid-template-columns: repeat(7, minmax(0, 1fr));
@@ -1347,20 +1373,22 @@
 }
 
 .mx-scheduler__event {
+  --mx-scheduler-event-accent: var(--mx-color-brand-primary, #3a67bf);
   width: 100%;
   text-align: left;
-  border: var(--mx-border-width-1, 1px) solid transparent;
+  border: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-scheduler-event-accent) 28%, transparent);
   border-radius: var(--mx-radius-sm, 6px);
-  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
+  background: color-mix(in srgb, var(--mx-scheduler-event-accent) 12%, transparent);
   color: var(--mx-color-text-primary, #132033);
   padding: 0.3rem 0.35rem;
   display: grid;
   gap: 0.15rem;
   cursor: pointer;
+  border-inline-start-width: 0.22rem;
 }
 
 .mx-scheduler__event:hover {
-  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 19%, transparent);
+  background: color-mix(in srgb, var(--mx-scheduler-event-accent) 19%, transparent);
 }
 
 .mx-scheduler__event:focus-visible {
@@ -1369,8 +1397,8 @@
 }
 
 .mx-scheduler__event--selected {
-  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 65%, transparent);
-  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 26%, transparent);
+  border-color: color-mix(in srgb, var(--mx-scheduler-event-accent) 65%, transparent);
+  background: color-mix(in srgb, var(--mx-scheduler-event-accent) 26%, transparent);
 }
 
 .mx-scheduler__event-time {
