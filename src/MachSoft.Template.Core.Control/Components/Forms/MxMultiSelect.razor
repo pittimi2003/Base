@@ -10,8 +10,10 @@
         <div class="@SelectorClass"
              role="combobox"
              aria-expanded="@IsOpen"
+             aria-haspopup="listbox"
              aria-controls="@ListboxId"
              aria-disabled="@Disabled"
+             aria-invalid="@AriaInvalid"
              @onclick="OpenFromContainer">
             <div class="ms-mx-multiselect__chips">
                 @if (SelectedOptions.Count == 0)
@@ -46,6 +48,8 @@
                    aria-label="@AriaLabel"
                    aria-describedby="@DescribedBy"
                    aria-controls="@ListboxId"
+                   aria-activedescendant="@ActiveDescendant"
+                   aria-autocomplete="list"
                    @attributes="AdditionalAttributes"
                    @onfocus="OpenFromInput"
                    @oninput="OnSearchChanged"
@@ -120,6 +124,8 @@
     private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
     private string MessageId => $"{ResolvedId}-message";
     private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? MessageId : null;
+    private string? AriaInvalid => HasError ? "true" : null;
+    private string? ActiveDescendant => ActiveIndex >= 0 ? GetOptionId(ActiveIndex) : null;
     private IReadOnlyList<MxSelectOption> SelectedOptions => Options.Where(option => SelectedValues.Contains(option.Value)).ToArray();
     private string SelectorClass => $"ms-mx-input ms-mx-multiselect{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}{(Disabled ? " ms-mx-multiselect--disabled" : string.Empty)}";
 
@@ -127,9 +133,9 @@
     {
         FilteredOptions = SelectionSearch.Filter(Options, SearchText);
 
-        if (ActiveIndex >= FilteredOptions.Count)
+        if (ActiveIndex >= FilteredOptions.Count || (ActiveIndex >= 0 && FilteredOptions[ActiveIndex].Disabled))
         {
-            ActiveIndex = -1;
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
         }
     }
 
@@ -141,6 +147,10 @@
         }
 
         IsOpen = true;
+        if (ActiveIndex < 0)
+        {
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
+        }
         return Task.CompletedTask;
     }
 
@@ -152,6 +162,10 @@
         }
 
         IsOpen = true;
+        if (ActiveIndex < 0)
+        {
+            ActiveIndex = SelectionSearch.FirstEnabledIndex(FilteredOptions);
+        }
         return Task.CompletedTask;
     }
 
@@ -180,11 +194,11 @@
         {
             case "ArrowDown":
                 IsOpen = true;
-                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, 1);
+                ActiveIndex = SelectionSearch.MoveActiveEnabledIndex(FilteredOptions, ActiveIndex, 1);
                 break;
             case "ArrowUp":
                 IsOpen = true;
-                ActiveIndex = SelectionSearch.MoveActiveIndex(ActiveIndex, FilteredOptions.Count, -1);
+                ActiveIndex = SelectionSearch.MoveActiveEnabledIndex(FilteredOptions, ActiveIndex, -1);
                 break;
             case "Enter":
                 if (IsOpen && ActiveIndex >= 0 && ActiveIndex < FilteredOptions.Count)
@@ -196,6 +210,10 @@
                 await RemoveValue(SelectedValues[^1]);
                 break;
             case "Escape":
+                IsOpen = false;
+                ActiveIndex = -1;
+                break;
+            case "Tab":
                 IsOpen = false;
                 ActiveIndex = -1;
                 break;
@@ -221,6 +239,10 @@
 
         SelectedValues = values;
         await SelectedValuesChanged.InvokeAsync(values);
+        if (!IsOpen)
+        {
+            IsOpen = true;
+        }
     }
 
     private async Task RemoveValue(string value)
