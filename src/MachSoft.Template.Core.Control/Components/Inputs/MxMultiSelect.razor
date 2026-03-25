@@ -38,19 +38,22 @@
             <input id="@ResolvedId"
                    class="mx-input-control mx-input-control--text mx-multiselect__input"
                    type="text"
-                   value="@SearchText"
+                   value="@CurrentSearchText"
                    placeholder="@SearchPlaceholder"
                    disabled="@Disabled"
                    role="combobox"
                    aria-expanded="@DropdownOpen"
                    aria-controls="@ListboxId"
                    aria-autocomplete="list"
+                   aria-activedescendant="@ActiveDescendantId"
                    aria-invalid="@AriaInvalid"
+                   aria-busy="@AriaBusy"
                    aria-required="@Required"
                    aria-describedby="@DescribedBy"
                    @oninput="HandleInput"
                    @onkeydown="HandleKeyDown"
-                   @onfocus="OpenDropdownFromFocus" />
+                   @onfocus="OpenDropdownFromFocus"
+                   @attributes="AdditionalAttributes" />
         </div>
 
         @if (DropdownOpen)
@@ -66,10 +69,14 @@
                 }
                 else
                 {
-                    @foreach (var option in FilteredOptions)
+                    @for (var index = 0; index < FilteredOptions.Count; index++)
                     {
+                        var option = FilteredOptions[index];
                         var isSelected = SelectedValues.Contains(option.Value);
-                        <li class="@GetOptionClass(option.Disabled, isSelected)"
+                        var isActive = index == ActiveIndex;
+                        var optionId = $"{ListboxId}-option-{index}";
+                        <li id="@optionId"
+                            class="@GetOptionClass(option.Disabled, isSelected, isActive)"
                             role="option"
                             aria-selected="@isSelected"
                             aria-disabled="@option.Disabled">
@@ -117,15 +124,22 @@
     [Parameter] public string? HelperText { get; set; }
     [Parameter] public string? ValidationText { get; set; }
     [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private readonly string _instanceId = $"mx-multiselect-{Guid.NewGuid():N}";
+    private string _searchTextInternal = string.Empty;
     private bool DropdownOpen { get; set; }
+    private int ActiveIndex { get; set; } = -1;
 
     private string ResolvedId => Id ?? _instanceId;
     private string ListboxId => $"{ResolvedId}-listbox";
     private string HelperId => $"{ResolvedId}-helper";
     private string ValidationId => $"{ResolvedId}-validation";
     private string? AriaInvalid => Invalid ? "true" : null;
+    private string? AriaBusy => Loading ? "true" : null;
+    private string? ActiveDescendantId => ActiveIndex >= 0 && ActiveIndex < FilteredOptions.Count
+        ? $"{ListboxId}-option-{ActiveIndex}"
+        : null;
     private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
         ? ValidationId
         : !string.IsNullOrWhiteSpace(HelperText)
@@ -135,11 +149,18 @@
     private string RootClass =>
         $"mx-input-root mx-adv-select-root {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(Loading ? "mx-adv-select-root--loading" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
 
-    private IReadOnlyList<MxInputOption> FilteredOptions => string.IsNullOrWhiteSpace(SearchText)
+    private IReadOnlyList<MxInputOption> FilteredOptions => string.IsNullOrWhiteSpace(CurrentSearchText)
         ? Options
-        : Options.Where(option => option.Text.Contains(SearchText.Trim(), StringComparison.OrdinalIgnoreCase)).ToArray();
+        : Options.Where(option => option.Text.Contains(CurrentSearchText.Trim(), StringComparison.OrdinalIgnoreCase)).ToArray();
+    private string CurrentSearchText => _searchTextInternal;
 
     private IReadOnlyList<MxInputOption> SelectedItems => Options.Where(option => SelectedValues.Contains(option.Value)).ToArray();
+
+    protected override void OnParametersSet()
+    {
+        _searchTextInternal = SearchText;
+        NormalizeActiveIndex();
+    }
 
     private Task OpenDropdown()
     {
@@ -149,6 +170,7 @@
         }
 
         DropdownOpen = true;
+        NormalizeActiveIndex();
         return Task.CompletedTask;
     }
 
@@ -162,27 +184,41 @@
         }
 
         var nextText = args.Value?.ToString() ?? string.Empty;
+        _searchTextInternal = nextText;
         await SearchTextChanged.InvokeAsync(nextText);
+        NormalizeActiveIndex();
         DropdownOpen = true;
     }
 
-    private Task HandleKeyDown(KeyboardEventArgs args)
+    private async Task HandleKeyDown(KeyboardEventArgs args)
     {
         if (Disabled)
         {
-            return Task.CompletedTask;
+            return;
         }
 
         if (args.Key == "Escape")
         {
             DropdownOpen = false;
         }
-        else if (args.Key == "ArrowDown" || args.Key == "Enter")
+        else if (args.Key == "ArrowDown")
         {
             DropdownOpen = true;
+            ActiveIndex = FindNextEnabledIndex(ActiveIndex, 1);
         }
-
-        return Task.CompletedTask;
+        else if (args.Key == "ArrowUp")
+        {
+            DropdownOpen = true;
+            ActiveIndex = FindNextEnabledIndex(ActiveIndex, -1);
+        }
+        else if (args.Key == "Enter" && ActiveIndex >= 0 && ActiveIndex < FilteredOptions.Count)
+        {
+            await ToggleOptionAsync(FilteredOptions[ActiveIndex].Value);
+        }
+        else if (args.Key == "Backspace" && string.IsNullOrWhiteSpace(CurrentSearchText) && SelectedValues.Count > 0)
+        {
+            await RemoveSelectionAsync(SelectedValues[^1]);
+        }
     }
 
     private async Task ToggleOptionAsync(string value)
@@ -200,6 +236,9 @@
         }
 
         await SelectedValuesChanged.InvokeAsync(next);
+        _searchTextInternal = string.Empty;
+        await SearchTextChanged.InvokeAsync(string.Empty);
+        NormalizeActiveIndex();
     }
 
     private async Task RemoveSelectionAsync(string value)
@@ -219,8 +258,42 @@
         DropdownOpen = false;
     }
 
-    private static string GetOptionClass(bool isDisabled, bool isSelected)
+    private static string GetOptionClass(bool isDisabled, bool isSelected, bool isActive)
     {
-        return $"mx-adv-select__option {(isDisabled ? "is-disabled" : string.Empty)} {(isSelected ? "is-selected" : string.Empty)}";
+        return $"mx-adv-select__option {(isDisabled ? "is-disabled" : string.Empty)} {(isSelected ? "is-selected" : string.Empty)} {(isActive ? "is-active" : string.Empty)}";
+    }
+
+    private void NormalizeActiveIndex()
+    {
+        if (FilteredOptions.Count == 0)
+        {
+            ActiveIndex = -1;
+            return;
+        }
+
+        if (ActiveIndex < 0 || ActiveIndex >= FilteredOptions.Count || FilteredOptions[ActiveIndex].Disabled)
+        {
+            ActiveIndex = FindNextEnabledIndex(-1, 1);
+        }
+    }
+
+    private int FindNextEnabledIndex(int startIndex, int direction)
+    {
+        if (FilteredOptions.Count == 0)
+        {
+            return -1;
+        }
+
+        var index = startIndex;
+        for (var attempt = 0; attempt < FilteredOptions.Count; attempt++)
+        {
+            index = (index + direction + FilteredOptions.Count) % FilteredOptions.Count;
+            if (!FilteredOptions[index].Disabled)
+            {
+                return index;
+            }
+        }
+
+        return -1;
     }
 }

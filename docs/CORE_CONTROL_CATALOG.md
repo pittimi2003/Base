@@ -123,3 +123,19 @@ Showcase actualizado:
   - disabled / invalid,
   - loading (cuando aplica),
   - verificación light/dark en el mismo host desacoplado.
+
+## Consolidación 2026-03-25 — hardening de Selection + Showcase
+
+Correcciones aplicadas sobre `MxAutocomplete`, `MxComboBox` y `MxMultiSelect`:
+- Se normalizó el comportamiento de texto visible y valor seleccionado para evitar desincronización cuando `SearchText` no está bindeado externamente.
+- Se reforzó la navegación por teclado base (`ArrowUp`, `ArrowDown`, `Enter`, `Escape`) con salto de opciones deshabilitadas.
+- Se mejoró la semántica accesible de estados dinámicos con `aria-busy` y `aria-activedescendant` en la familia avanzada.
+- `MxMultiSelect` incorpora navegación activa de opciones, selección por teclado y eliminación rápida del último chip con `Backspace` cuando el filtro está vacío.
+
+Correcciones de Showcase:
+- Se mantuvo `Selection` como familia independiente y visible en `/families/selection`, separada de `Inputs` base para evitar mezclar niveles de madurez.
+- Se verificó que `/families/selection` y `/families/inputs` renderizan ejemplos funcionales reales (sin bloque placeholder) para familias implementadas.
+
+Corrección de static assets:
+- El host `MachSoft.Template.Core.Control.Showcase` eliminó la referencia a `MachSoft.Template.Core.Control.Showcase.styles.css` porque el proyecto no usa CSS isolation (`*.razor.css`) y por tanto ese asset no se genera.
+- Con esto se elimina el 404 real de estilos en runtime sin introducir workarounds frágiles.
