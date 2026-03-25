@@ -46,6 +46,14 @@ else
             {
                 @RenderSelectionFamily()
             }
+            else if (string.Equals(CurrentFamily.Key, "datetime", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderDateTimeFamily()
+            }
+            else if (string.Equals(CurrentFamily.Key, "upload", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderUploadFamily()
+            }
             else
             {
                 <ShowcaseSection Title="Ejemplo base"
@@ -82,6 +90,12 @@ else
     private string? _comboText;
     private string _multiSearch = string.Empty;
     private IReadOnlyList<string> _multiSelected = ["alpha", "gamma"];
+    private DateOnly? _selectedDate = new(2026, 3, 25);
+    private DateOnly? _dateRangeStart = new(2026, 3, 24);
+    private DateOnly? _dateRangeEnd = new(2026, 3, 28);
+    private TimeOnly? _selectedTime = new(9, 30);
+    private bool _uploading;
+    private IReadOnlyList<string> _uploadedFileNames = Array.Empty<string>();
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
     [
@@ -469,6 +483,127 @@ else
         </ShowcaseSection>
     </text>;
 
+    private RenderFragment RenderDateTimeFamily() => @<text>
+        <ShowcaseSection Title="MxDatePicker y MxDateRangePicker"
+                         Description="Primera iteración funcional para fecha y rango con API mínima, estados base y coherencia visual con inputs del catálogo.">
+            <ShowcasePreviewBlock Title="MxDatePicker"
+                                  Caption="Selección simple de fecha con estados default/disabled/readonly/invalid.">
+                <div class="ms-showcase-input-grid">
+                    <MxDatePicker Label="Fecha de inicio"
+                                  @bind-Value="_selectedDate"
+                                  HelperText="Base preparada para evolución de formato/cultura."
+                                  Min="@(new DateOnly(2026, 1, 1))"
+                                  Max="@(new DateOnly(2026, 12, 31))" />
+
+                    <MxDatePicker Label="Deshabilitado"
+                                  Value="@(new DateOnly(2026, 3, 12))"
+                                  Disabled="true" />
+
+                    <MxDatePicker Label="Solo lectura"
+                                  Value="@(new DateOnly(2026, 3, 10))"
+                                  ReadOnly="true"
+                                  HelperText="Readonly evita edición sin borrar contexto visual." />
+
+                    <MxDatePicker Label="Inválido"
+                                  Invalid="true"
+                                  ValidationText="Selecciona una fecha válida para continuar."
+                                  Required="true" />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxDateRangePicker"
+                                  Caption="Rango básico por inicio/fin, sin calendario avanzado en esta iteración.">
+                <div class="ms-showcase-input-grid">
+                    <MxDateRangePicker Label="Rango operativo"
+                                       @bind-StartValue="_dateRangeStart"
+                                       @bind-EndValue="_dateRangeEnd"
+                                       HelperText="Define ventana de ejecución base."
+                                       Min="@(new DateOnly(2026, 1, 1))"
+                                       Max="@(new DateOnly(2026, 12, 31))" />
+
+                    <MxDateRangePicker Label="Deshabilitado"
+                                       StartValue="@(new DateOnly(2026, 3, 1))"
+                                       EndValue="@(new DateOnly(2026, 3, 5))"
+                                       Disabled="true" />
+
+                    <MxDateRangePicker Label="Inválido"
+                                       Invalid="true"
+                                       ValidationText="La fecha final debe ser mayor o igual a la inicial."
+                                       Required="true" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxTimePicker"
+                         Description="Selección de hora simple y consistente con la base visual del catálogo.">
+            <ShowcasePreviewBlock Title="Estados básicos"
+                                  Caption="Incluye default, disabled, readonly e invalid para validación real en light/dark.">
+                <div class="ms-showcase-input-grid">
+                    <MxTimePicker Label="Hora programada"
+                                  @bind-Value="_selectedTime"
+                                  HelperText="Formato nativo del host, preparado para evolución futura."
+                                  Step="900" />
+
+                    <MxTimePicker Label="Deshabilitado"
+                                  Value="@(new TimeOnly(18, 30))"
+                                  Disabled="true" />
+
+                    <MxTimePicker Label="Solo lectura"
+                                  Value="@(new TimeOnly(7, 45))"
+                                  ReadOnly="true" />
+
+                    <MxTimePicker Label="Inválido"
+                                  Invalid="true"
+                                  ValidationText="La hora está fuera de la ventana permitida."
+                                  Required="true" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </text>;
+
+    private RenderFragment RenderUploadFamily() => @<text>
+        <ShowcaseSection Title="MxUpload"
+                         Description="Carga de archivos base con selección usable, estado uploading y resumen de archivos.">
+            <ShowcasePreviewBlock Title="Carga base y estados"
+                                  Caption="Primera iteración lista para Server/WASM sin dependencias externas ni lógica de backend.">
+                <div class="ms-showcase-input-grid">
+                    <MxUpload Label="Adjuntos"
+                              HelperText="Selecciona uno o varios archivos locales."
+                              Accept=".pdf,.png,.jpg,.txt"
+                              Multiple="true"
+                              Uploading="_uploading"
+                              FilesChanged="HandleUploadFilesChanged" />
+
+                    <MxUpload Label="Deshabilitado"
+                              Disabled="true"
+                              HelperText="No disponible en este estado operativo." />
+
+                    <MxUpload Label="Inválido"
+                              Invalid="true"
+                              ValidationText="Debes cargar al menos un archivo."
+                              Required="true"
+                              Multiple="false" />
+                </div>
+
+                @if (_uploadedFileNames.Count > 0)
+                {
+                    <p class="ms-showcase-inline-message">
+                        Última selección: @string.Join(", ", _uploadedFileNames)
+                    </p>
+                }
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Límites actuales de upload"
+                                  Caption="Se documentan explícitamente para mantener alcance estable y evolutivo.">
+                <ul class="ms-showcase-notes-list">
+                    <li>Usa <code>InputFile</code> nativo: no incluye drag &amp; drop ni reintentos automáticos en esta fase.</li>
+                    <li>El estado <code>Uploading</code> es visual/controlado por consumidor; no implementa transferencia remota.</li>
+                    <li>La validación de tipo/tamaño avanzada queda fuera del alcance inicial y se deja para evolución posterior.</li>
+                </ul>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </text>;
+
     private Task OnToastChanged(bool value)
     {
         _toastVisible = value;
@@ -527,5 +662,13 @@ else
     {
         _tooltipForcedOpen = !_tooltipForcedOpen;
         return Task.CompletedTask;
+    }
+
+    private async Task HandleUploadFilesChanged(IReadOnlyList<IBrowserFile> files)
+    {
+        _uploading = true;
+        _uploadedFileNames = files.Select(file => file.Name).ToArray();
+        await Task.Delay(450);
+        _uploading = false;
     }
 }

@@ -1,0 +1,106 @@
+@namespace MachSoft.Template.Core.Control
+
+<div class="@RootClass">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" id="@LabelId">@Label</label>
+    }
+
+    <div class="mx-date-range" role="group" aria-labelledby="@AriaLabelledBy" aria-describedby="@DescribedBy">
+        <input id="@StartId"
+               class="mx-input-control mx-input-control--date"
+               type="date"
+               value="@StartFormatted"
+               min="@MinFormatted"
+               max="@MaxFormatted"
+               disabled="@Disabled"
+               readonly="@ReadOnly"
+               required="@Required"
+               aria-label="Fecha inicial"
+               aria-invalid="@AriaInvalid"
+               @onchange="HandleStartChanged"
+               @attributes="AdditionalAttributes" />
+
+        <span class="mx-date-range__separator" aria-hidden="true">→</span>
+
+        <input id="@EndId"
+               class="mx-input-control mx-input-control--date"
+               type="date"
+               value="@EndFormatted"
+               min="@MinFormatted"
+               max="@MaxFormatted"
+               disabled="@Disabled"
+               readonly="@ReadOnly"
+               required="@Required"
+               aria-label="Fecha final"
+               aria-invalid="@AriaInvalid"
+               @onchange="HandleEndChanged" />
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public DateOnly? StartValue { get; set; }
+    [Parameter] public EventCallback<DateOnly?> StartValueChanged { get; set; }
+    [Parameter] public DateOnly? EndValue { get; set; }
+    [Parameter] public EventCallback<DateOnly?> EndValueChanged { get; set; }
+    [Parameter] public DateOnly? Min { get; set; }
+    [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _instanceId = $"mx-date-range-{Guid.NewGuid():N}";
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string StartId => $"{ResolvedId}-start";
+    private string EndId => $"{ResolvedId}-end";
+    private string LabelId => $"{ResolvedId}-label";
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private string StartFormatted => StartValue?.ToString("yyyy-MM-dd") ?? string.Empty;
+    private string EndFormatted => EndValue?.ToString("yyyy-MM-dd") ?? string.Empty;
+    private string? MinFormatted => Min?.ToString("yyyy-MM-dd");
+    private string? MaxFormatted => Max?.ToString("yyyy-MM-dd");
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? AriaLabelledBy => !string.IsNullOrWhiteSpace(Label) ? LabelId : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+
+    private string RootClass =>
+        $"mx-input-root mx-input-root--date-range {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(ReadOnly ? "mx-input-root--readonly" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+
+    private Task HandleStartChanged(ChangeEventArgs args) => StartValueChanged.InvokeAsync(ParseDate(args.Value?.ToString()));
+
+    private Task HandleEndChanged(ChangeEventArgs args) => EndValueChanged.InvokeAsync(ParseDate(args.Value?.ToString()));
+
+    private static DateOnly? ParseDate(string? rawValue)
+    {
+        if (string.IsNullOrWhiteSpace(rawValue))
+        {
+            return null;
+        }
+
+        return DateOnly.TryParseExact(rawValue, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var parsed)
+            ? parsed
+            : null;
+    }
+}

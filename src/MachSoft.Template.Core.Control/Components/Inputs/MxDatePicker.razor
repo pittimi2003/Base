@@ -1,0 +1,82 @@
+@namespace MachSoft.Template.Core.Control
+
+<div class="@RootClass">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" for="@ResolvedId">@Label</label>
+    }
+
+    <input id="@ResolvedId"
+           class="mx-input-control mx-input-control--date"
+           type="date"
+           value="@FormattedValue"
+           placeholder="@Placeholder"
+           min="@MinFormatted"
+           max="@MaxFormatted"
+           disabled="@Disabled"
+           readonly="@ReadOnly"
+           required="@Required"
+           aria-invalid="@AriaInvalid"
+           aria-required="@Required"
+           aria-describedby="@DescribedBy"
+           @onchange="HandleChange"
+           @attributes="AdditionalAttributes" />
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public DateOnly? Value { get; set; }
+    [Parameter] public EventCallback<DateOnly?> ValueChanged { get; set; }
+    [Parameter] public DateOnly? Min { get; set; }
+    [Parameter] public DateOnly? Max { get; set; }
+    [Parameter] public string? Placeholder { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool ReadOnly { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _instanceId = $"mx-date-{Guid.NewGuid():N}";
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private string FormattedValue => Value?.ToString("yyyy-MM-dd") ?? string.Empty;
+    private string? MinFormatted => Min?.ToString("yyyy-MM-dd");
+    private string? MaxFormatted => Max?.ToString("yyyy-MM-dd");
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+
+    private string RootClass =>
+        $"mx-input-root mx-input-root--date {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(ReadOnly ? "mx-input-root--readonly" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+
+    private Task HandleChange(ChangeEventArgs args)
+    {
+        var rawValue = args.Value?.ToString();
+        if (string.IsNullOrWhiteSpace(rawValue))
+        {
+            return ValueChanged.InvokeAsync(null);
+        }
+
+        return DateOnly.TryParseExact(rawValue, "yyyy-MM-dd", null, System.Globalization.DateTimeStyles.None, out var parsed)
+            ? ValueChanged.InvokeAsync(parsed)
+            : ValueChanged.InvokeAsync(null);
+    }
+}

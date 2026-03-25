@@ -25,14 +25,15 @@
         </ul>
     </section>
 
-    <MxButton Variant="MxButtonVariant.Outlined" OnClick="OnToggleTheme">
-        Tema actual: @CurrentThemeLabel
-    </MxButton>
+    <MxSwitch Label="Tema oscuro"
+              Description="Usa el control real del catálogo para alternar light/dark."
+              Checked="@IsDarkTheme"
+              CheckedChanged="OnThemeChanged" />
 </div>
 
 @code {
     [Parameter] public string CurrentTheme { get; set; } = "light";
-    [Parameter] public EventCallback OnToggleTheme { get; set; }
+    [Parameter] public EventCallback<bool> OnThemeChanged { get; set; }
 
-    private string CurrentThemeLabel => CurrentTheme == "light" ? "Light" : "Dark";
+    private bool IsDarkTheme => string.Equals(CurrentTheme, "dark", StringComparison.OrdinalIgnoreCase);
 }

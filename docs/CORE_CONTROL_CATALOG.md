@@ -139,3 +139,21 @@ Correcciones de Showcase:
 Corrección de static assets:
 - El host `MachSoft.Template.Core.Control.Showcase` eliminó la referencia a `MachSoft.Template.Core.Control.Showcase.styles.css` porque el proyecto no usa CSS isolation (`*.razor.css`) y por tanto ese asset no se genera.
 - Con esto se elimina el 404 real de estilos en runtime sin introducir workarounds frágiles.
+
+## Iteración 2026-03-25 — DateTime + Upload (base funcional)
+
+Cobertura implementada en `MachSoft.Template.Core.Control`:
+- `MxDatePicker`: selección simple de fecha con `DateOnly?` (`Value/ValueChanged`), límites opcionales (`Min/Max`) y estados `disabled`, `readonly`, `invalid`, `required`.
+- `MxDateRangePicker`: rango básico por `StartValue/EndValue` (`DateOnly?`) con callbacks separados (`StartValueChanged`, `EndValueChanged`) y semántica de grupo accesible.
+- `MxTimePicker`: selección simple de hora con `TimeOnly?`, `Step` configurable y estados base homogéneos con inputs del catálogo.
+- `MxUpload`: carga de archivos sobre `InputFile` nativo con `FilesChanged`, soporte `Multiple`, `Accept`, estado visual `Uploading` y resumen de archivos seleccionados.
+
+Decisiones de alcance:
+- Se priorizó compatibilidad cross-hosting (Server/WASM) con HTML + Blazor nativo, sin dependencias externas ni JS interop obligatorio.
+- Se evita cerrar diseño con features enterprise prematuras (timezone complejo, calendarios ricos, drag & drop avanzado, validación remota de archivos).
+- APIs públicas se mantienen mínimas y evolutivas, reutilizando patrones ya establecidos en inputs (`Label`, helper/error text, `invalid/disabled/readonly`).
+
+Showcase actualizado:
+- `/families/datetime` ahora contiene ejemplos funcionales reales para `MxDatePicker`, `MxDateRangePicker` y `MxTimePicker` (básico + estados).
+- `/families/upload` incluye flujo funcional de `MxUpload` con estado uploading y notas explícitas de límites actuales.
+- El selector de tema del shell de Showcase deja de usar botón y pasa a `MxSwitch` real del catálogo para validar light/dark usando componentes productivos.

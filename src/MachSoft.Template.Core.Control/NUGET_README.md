@@ -20,6 +20,8 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - Overlays: `MxTooltip`, `MxDialog`, `MxPopup`
 - Inputs: `MxTextField`, `MxTextArea`, `MxCheckbox`, `MxRadio`, `MxSwitch`, `MxSelect`
 - Selection: `MxAutocomplete`, `MxMultiSelect`, `MxComboBox`
+- DateTime: `MxDatePicker`, `MxDateRangePicker`, `MxTimePicker`
+- Upload: `MxUpload`
 
 ## Alcance y límites actuales
 - `MxDialog` incluye apertura/cierre controlado, cierre por overlay/escape y foco inicial en el shell del diálogo.
@@ -33,6 +35,8 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - Selection avanzada (Autocomplete/MultiSelect/ComboBox) incluye búsqueda local básica, estado `loading`, estado `empty/no-results`, soporte de teclado base (`ArrowUp/ArrowDown`, `Enter`, `Escape`) y contratos listos para evolucionar a providers async/remotos sin romper API.
 - `MxAutocomplete` y `MxComboBox` sincronizan texto visible/valor seleccionado incluso sin binding externo de `SearchText`, y exponen atributos ARIA de estado (`aria-busy`, `aria-activedescendant`).
 - `MxMultiSelect` incorpora navegación activa por teclado, selección por `Enter`, limpieza de filtro tras seleccionar y eliminación del último chip con `Backspace` cuando el filtro está vacío.
+- DateTime base (DatePicker/DateRangePicker/TimePicker) usa inputs HTML nativos (`date`/`time`) con contratos mínimos (`Value/ValueChanged` y variantes start/end), más estados `disabled`/`readonly`/`invalid`.
+- `MxUpload` usa `InputFile` nativo con selección simple o múltiple, resumen visual de archivos seleccionados y estado `Uploading` controlado por consumidor.
 
 Todos los controles consumen tokens del package `MachSoft.Template.Core` y son compatibles con Blazor Server/WebAssembly.
 
