@@ -16,7 +16,7 @@ public static class ControlCatalogRegistry
         new("display", "Display", "Representación visual de estado, métricas y contenido contextual.", "Planned", "Tag, status, stats y empty states", "/families/display"),
         new("data", "Data", "Visualización enterprise de datos tabulares, jerárquicos y gráficos.", "Implemented", "MxDataGrid enterprise inicial (sorting, selección y acciones)", "/families/data"),
         new("upload", "Upload", "Carga de archivos reutilizable y compatible cross-host.", "Implemented", "Flujo base de upload", "/families/upload"),
-        new("scheduling", "Scheduling", "Planificación operativa y visualización de slots.", "Planned", "Calendario operativo y agenda", "/families/scheduling")
+        new("scheduling", "Scheduling", "Planificación operativa y visualización de agenda/calendario.", "Implemented", "MxScheduler base (vista mensual + navegación)", "/families/scheduling")
     ];
 
     public static ControlFamilyDefinition? FindByKey(string? key)

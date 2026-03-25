@@ -56,3 +56,13 @@ The repository now includes a dedicated .NET 8 productization layout for MachSof
 - `MxDataGrid` incorpora sorting básico, selección de filas, toolbar base, row actions y summary template sin inflar la API pública.
 - `MxDataGridColumn` agrega metadatos mínimos para sort; se incorpora `MxDataGridSelectionMode` para mantener semántica clara de selección.
 - Showcase `MachSoft.Template.Core.Control.Showcase` consolida `/families/data` como host runtime de validación funcional/visual de la nueva iteración.
+
+
+## 2026-03-25 — Consolidación de Scheduling
+
+Se incorpora `MxScheduler` en `MachSoft.Template.Core.Control` con contrato público inicial estable y validación funcional en `Core.Control.Showcase` (`/families/scheduling`).
+
+Impacto de migración:
+- no rompe componentes existentes,
+- no introduce dependencias externas,
+- mantiene compatibilidad arquitectónica con Blazor Server y WebAssembly al apoyarse en Razor + CSS tokenizado.

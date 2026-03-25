@@ -1251,3 +1251,165 @@
 .mx-data-grid-root[data-loading="true"] {
   opacity: 0.94;
 }
+
+.mx-scheduler {
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  border-radius: var(--mx-radius-md, 10px);
+  background: var(--mx-color-bg-surface, #fff);
+  padding: var(--mx-space-semantic-md, 1rem);
+  display: grid;
+  gap: var(--mx-space-semantic-sm, 0.75rem);
+}
+
+.mx-scheduler__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--mx-space-semantic-sm, 0.75rem);
+}
+
+.mx-scheduler__eyebrow {
+  margin: 0;
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-muted, #6a7d96);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.mx-scheduler__title {
+  margin: 0.2rem 0 0;
+  font-size: var(--mx-font-size-h3, 1.125rem);
+}
+
+.mx-scheduler__actions {
+  display: inline-flex;
+  gap: 0.4rem;
+}
+
+.mx-scheduler__grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.45rem;
+}
+
+.mx-scheduler__day-header {
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-muted, #6a7d96);
+  text-align: center;
+  padding: 0.2rem;
+}
+
+.mx-scheduler__day {
+  min-height: 8rem;
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  border-radius: var(--mx-radius-sm, 6px);
+  background: var(--mx-color-bg-surface-raised, #fbfdff);
+  padding: 0.45rem;
+  display: grid;
+  align-content: start;
+  gap: 0.35rem;
+  transition: border-color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease),
+    background-color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease);
+}
+
+.mx-scheduler__day:hover {
+  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 35%, var(--mx-color-border-subtle, #d6dcea));
+}
+
+.mx-scheduler__day--adjacent {
+  opacity: 0.75;
+}
+
+.mx-scheduler__day--today {
+  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 48%, transparent);
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 8%, var(--mx-color-bg-surface-raised, #fbfdff));
+}
+
+.mx-scheduler__day--empty {
+  background: var(--mx-color-bg-surface, #fff);
+}
+
+.mx-scheduler__day-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+}
+
+.mx-scheduler__day-more {
+  color: var(--mx-color-text-muted, #6a7d96);
+}
+
+.mx-scheduler__events {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.mx-scheduler__event {
+  width: 100%;
+  text-align: left;
+  border: var(--mx-border-width-1, 1px) solid transparent;
+  border-radius: var(--mx-radius-sm, 6px);
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
+  color: var(--mx-color-text-primary, #132033);
+  padding: 0.3rem 0.35rem;
+  display: grid;
+  gap: 0.15rem;
+  cursor: pointer;
+}
+
+.mx-scheduler__event:hover {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 19%, transparent);
+}
+
+.mx-scheduler__event:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-scheduler__event--selected {
+  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 65%, transparent);
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 26%, transparent);
+}
+
+.mx-scheduler__event-time {
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-secondary, #40556f);
+}
+
+.mx-scheduler__event-title {
+  font-size: var(--mx-font-size-body, 0.9375rem);
+  font-weight: var(--mx-font-weight-semibold, 600);
+}
+
+.mx-scheduler__state {
+  min-height: 9rem;
+  border: var(--mx-border-width-1, 1px) dashed var(--mx-color-border-default, #bdcbdf);
+  border-radius: var(--mx-radius-sm, 6px);
+  display: grid;
+  place-items: center;
+  gap: 0.5rem;
+  text-align: center;
+  color: var(--mx-color-text-secondary, #40556f);
+  padding: var(--mx-space-semantic-md, 1rem);
+}
+
+.mx-scheduler__spinner {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 35%, transparent);
+  border-top-color: var(--mx-color-brand-primary, #3a67bf);
+  animation: mx-spin 0.9s linear infinite;
+}
+
+@media (max-width: 980px) {
+  .mx-scheduler__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mx-scheduler__day-header {
+    display: none;
+  }
+}

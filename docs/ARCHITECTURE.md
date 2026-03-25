@@ -117,3 +117,10 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `MachSoft.Template.Core.Control` mantiene a `MxDataGrid` como control data base reusable cross-host (Server/WASM) y agrega capacidades enterprise mínimas sin bifurcar hosting.
 - `MxDataGridColumn` evoluciona con metadatos de sort (`Sortable`, `SortValueSelector`, `Key`) y se incorpora `MxDataGridSelectionMode` para selección controlada.
 - La capa Showcase valida la iteración en `/families/data` sin mezclar assets de demo dentro del paquete distribuible.
+
+
+## Actualización 2026-03-25 — Familia Scheduling en Core.Control
+
+- `MachSoft.Template.Core.Control` incorpora `MxScheduler` como control público de agenda/calendario en fase base funcional.
+- La estructura de datos se define en `MxSchedulerEvent` para desacoplar el contrato UI de cualquier dominio de negocio.
+- La validación funcional se centraliza en `MachSoft.Template.Core.Control.Showcase` bajo la ruta `/families/scheduling`, manteniendo separación limpia entre paquete distribuible y host de demo.
