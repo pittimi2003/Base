@@ -54,6 +54,10 @@ else
             {
                 @RenderListingFamily()
             }
+            else if (string.Equals(CurrentFamily.Key, "data", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderDataFamily()
+            }
             else if (string.Equals(CurrentFamily.Key, "upload", StringComparison.OrdinalIgnoreCase))
             {
                 @RenderUploadFamily()
@@ -105,6 +109,7 @@ else
     private bool _chipRemoved;
     private bool _uploading;
     private IReadOnlyList<string> _uploadedFileNames = Array.Empty<string>();
+    private bool _dataGridLoading;
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
     [
@@ -139,6 +144,23 @@ else
         new("alpha", "Alpha", "Canal de pruebas", "🧪"),
         new("release", "Release", "Entorno productivo", "🚀"),
         new("legacy", "Legacy", "No disponible", "📦", true)
+    ];
+
+    private readonly IReadOnlyList<ShowcaseGridRow> _dataGridRows =
+    [
+        new("ORD-1042", "En preparación", "Alta", "Centro Norte", "Mar 25, 2026 · 08:40"),
+        new("ORD-1043", "En revisión", "Media", "Centro Sur", "Mar 25, 2026 · 09:15"),
+        new("ORD-1044", "Despachada", "Crítica", "Centro Andino", "Mar 25, 2026 · 09:58"),
+        new("ORD-1045", "Completada", "Baja", "Centro Pacífico", "Mar 25, 2026 · 10:22")
+    ];
+
+    private readonly IReadOnlyList<MxDataGridColumn<ShowcaseGridRow>> _dataGridColumns =
+    [
+        new("Orden", row => row.OrderCode, Width: "12rem"),
+        new("Estado", row => row.Status, Width: "11rem"),
+        new("Prioridad", row => row.Priority, Width: "9rem"),
+        new("Centro", row => row.Site),
+        new("Actualizada", row => row.UpdatedAt, Width: "15rem")
     ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
@@ -727,6 +749,44 @@ else
         </ShowcaseSection>
     </text>;
 
+    private RenderFragment RenderDataFamily() => @<text>
+        <ShowcaseSection Title="MxDataGrid"
+                         Description="Base tabular real con columnas configurables, filas dinámicas y estados empty/loading para evolución enterprise.">
+            <ShowcasePreviewBlock Title="Caso básico"
+                                  Caption="Dataset real simple con encabezados claros, filas consistentes y ancho por columna configurable.">
+                <MxDataGrid TItem="ShowcaseGridRow"
+                            Columns="_dataGridColumns"
+                            Items="_dataGridRows"
+                            RowIdSelector="row => row.OrderCode"
+                            AriaLabel="Órdenes operativas del turno" />
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Estado vacío"
+                                  Caption="Sin placeholders: empty state explícito cuando no hay filas disponibles.">
+                <MxDataGrid TItem="ShowcaseGridRow"
+                            Columns="_dataGridColumns"
+                            Items="Array.Empty<ShowcaseGridRow>()"
+                            EmptyText="No hay órdenes pendientes para el filtro actual."
+                            AriaLabel="Resultado vacío de órdenes" />
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Estado loading"
+                                  Caption="Estado controlado por consumidor para sincronizar con fetch remoto en Server/WASM.">
+                <div class="ms-showcase-stack-sm">
+                    <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleDataLoading">
+                        @(_dataGridLoading ? "Detener loading" : "Activar loading")
+                    </MxButton>
+                    <MxDataGrid TItem="ShowcaseGridRow"
+                                Columns="_dataGridColumns"
+                                Items="_dataGridRows"
+                                Loading="_dataGridLoading"
+                                LoadingText="Consultando órdenes del turno..."
+                                AriaLabel="Grid en estado de carga" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </text>;
+
     private Task OnToastChanged(bool value)
     {
         _toastVisible = value;
@@ -818,4 +878,17 @@ else
         _chipRemoved = true;
         return Task.CompletedTask;
     }
+
+    private Task ToggleDataLoading(MouseEventArgs _)
+    {
+        _dataGridLoading = !_dataGridLoading;
+        return Task.CompletedTask;
+    }
+
+    private sealed record ShowcaseGridRow(
+        string OrderCode,
+        string Status,
+        string Priority,
+        string Site,
+        string UpdatedAt);
 }
