@@ -10,7 +10,7 @@
         <ChildContent>
             <div class="ms-showcase-preview-block">
                 <p>Vuelve a la vista de familias para continuar con la validación por categorías.</p>
-                <MxButton Variant="MxButtonVariant.Outlined" Href="/families">Volver a familias</MxButton>
+                <MxButton Variant="MxControlButtonVariant.Outlined" Href="/families">Volver a familias</MxButton>
             </div>
         </ChildContent>
     </ShowcasePageTemplate>
@@ -165,7 +165,7 @@ else
         new("ORD-1045", "Completada", "Baja", "Centro Pacífico", new DateTime(2026, 3, 25, 10, 22, 0))
     ];
 
-    private readonly IReadOnlyList<MxDataGridColumn<ShowcaseGridRow>> _dataGridColumns =
+    private readonly IReadOnlyList<MxControlDataGridColumn<ShowcaseGridRow>> _dataGridColumns =
     [
         new("Orden", row => row.OrderCode, Width: "12rem", Sortable: true, SortValueSelector: row => row.OrderCode, Key: "order"),
         new("Estado", row => row.Status, Width: "11rem", Sortable: true, SortValueSelector: row => row.Status, Key: "status"),
@@ -195,9 +195,9 @@ else
                                   Caption="Filled, outlined, text y fab con una API unificada.">
                 <div class="ms-showcase-inline-wrap">
                     <MxButton>Filled</MxButton>
-                    <MxButton Variant="MxButtonVariant.Outlined">Outlined</MxButton>
-                    <MxButton Variant="MxButtonVariant.Text">Text</MxButton>
-                    <MxButton Variant="MxButtonVariant.Fab" LeadingIcon="＋">Nuevo</MxButton>
+                    <MxButton Variant="MxControlButtonVariant.Outlined">Outlined</MxButton>
+                    <MxButton Variant="MxControlButtonVariant.Text">Text</MxButton>
+                    <MxButton Variant="MxControlButtonVariant.Fab" LeadingIcon="＋">Nuevo</MxButton>
                 </div>
             </ShowcasePreviewBlock>
 
@@ -217,7 +217,7 @@ else
                                   Caption="El aria-label es obligatorio; soporta estado pressed para toggles.">
                 <div class="ms-showcase-inline-wrap">
                     <MxIconButton Icon="✎" AriaLabel="Editar" />
-                    <MxIconButton Icon="🗑" AriaLabel="Eliminar" Variant="MxButtonVariant.Outlined" />
+                    <MxIconButton Icon="🗑" AriaLabel="Eliminar" Variant="MxControlButtonVariant.Outlined" />
                     <MxIconButton Icon="⚙" AriaLabel="Configuración" Disabled="true" />
                     <MxIconButton Icon="★" AriaLabel="Favorito" Pressed="true" />
                     <MxIconButton Icon="↻" AriaLabel="Cargando" Loading="true" LoadingText="Actualizando" />
@@ -267,8 +267,8 @@ else
             <ShowcasePreviewBlock Title="MxToast"
                                   Caption="Notificaciones reutilizables, autocierre opcional y visualización en stack simple.">
                 <div class="ms-showcase-inline-wrap">
-                    <MxButton Variant="MxButtonVariant.Outlined" OnClick="ShowToast">Mostrar toast éxito</MxButton>
-                    <MxButton Variant="MxButtonVariant.Text" OnClick="ShowSecondaryToast">Mostrar toast warning</MxButton>
+                    <MxButton Variant="MxControlButtonVariant.Outlined" OnClick="ShowToast">Mostrar toast éxito</MxButton>
+                    <MxButton Variant="MxControlButtonVariant.Text" OnClick="ShowSecondaryToast">Mostrar toast warning</MxButton>
                 </div>
                 <div class="ms-showcase-stack-sm">
                     <MxToast Visible="_toastVisible"
@@ -295,15 +295,15 @@ else
                                   Caption="Disponible para texto breve; preparado para evolucionar a plantillas enriquecidas.">
                 <div class="ms-showcase-inline-wrap">
                     <MxTooltip Text="Guardar cambios" Placement="MxTooltipPlacement.Top">
-                        <MxIconButton Icon="💾" AriaLabel="Guardar" Variant="MxButtonVariant.Outlined" />
+                        <MxIconButton Icon="💾" AriaLabel="Guardar" Variant="MxControlButtonVariant.Outlined" />
                     </MxTooltip>
 
                     <MxTooltip Text="Exportación programada" Placement="MxTooltipPlacement.Right">
-                        <MxButton Variant="MxButtonVariant.Text">Hover/Foco</MxButton>
+                        <MxButton Variant="MxControlButtonVariant.Text">Hover/Foco</MxButton>
                     </MxTooltip>
 
                     <MxTooltip Text="Tooltip forzado para QA" Open="_tooltipForcedOpen" Placement="MxTooltipPlacement.Bottom">
-                        <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleTooltipOpen">Toggle Open</MxButton>
+                        <MxButton Variant="MxControlButtonVariant.Outlined" OnClick="ToggleTooltipOpen">Toggle Open</MxButton>
                     </MxTooltip>
                 </div>
             </ShowcasePreviewBlock>
@@ -322,7 +322,7 @@ else
                         <p class="ms-showcase-inline-message">Confirma la publicación del lote en producción.</p>
                     </ChildContent>
                     <Actions>
-                        <MxButton Variant="MxButtonVariant.Text" OnClick="CloseDialog">Cancelar</MxButton>
+                        <MxButton Variant="MxControlButtonVariant.Text" OnClick="CloseDialog">Cancelar</MxButton>
                         <MxButton OnClick="CloseDialog">Confirmar</MxButton>
                     </Actions>
                 </MxDialog>
@@ -337,13 +337,13 @@ else
                          ShowBackdrop="true"
                          Placement="MxPopupPlacement.BottomStart">
                     <TriggerContent>
-                        <MxButton Variant="MxButtonVariant.Outlined">Abrir popup</MxButton>
+                        <MxButton Variant="MxControlButtonVariant.Outlined">Abrir popup</MxButton>
                     </TriggerContent>
                     <ChildContent>
                         <div class="ms-showcase-stack-sm">
                             <strong>Acciones rápidas</strong>
-                            <MxButton Variant="MxButtonVariant.Text">Duplicar</MxButton>
-                            <MxButton Variant="MxButtonVariant.Text">Archivar</MxButton>
+                            <MxButton Variant="MxControlButtonVariant.Text">Duplicar</MxButton>
+                            <MxButton Variant="MxControlButtonVariant.Text">Archivar</MxButton>
                         </div>
                     </ChildContent>
                 </MxPopup>
@@ -785,14 +785,14 @@ else
                             Caption="Listado enterprise base de órdenes operativas">
                     <Toolbar>
                         <div class="ms-showcase-inline-wrap">
-                            <MxButton Variant="MxButtonVariant.Outlined" Size="MxButtonSize.Small">Actualizar</MxButton>
-                            <MxButton Variant="MxButtonVariant.Text" Size="MxButtonSize.Small">Exportar (próximamente)</MxButton>
+                            <MxButton Variant="MxControlButtonVariant.Outlined" Size="MxButtonSize.Small">Actualizar</MxButton>
+                            <MxButton Variant="MxControlButtonVariant.Text" Size="MxButtonSize.Small">Exportar (próximamente)</MxButton>
                         </div>
                     </Toolbar>
                     <RowActionsTemplate Context="row">
                         <div class="ms-showcase-inline-wrap">
                             <MxIconButton Icon="👁" AriaLabel="Ver detalle" Size="MxButtonSize.Small" OnClick="args => OnPreviewGridRow(row, args)" />
-                            <MxIconButton Icon="✔" AriaLabel="Marcar como completada" Size="MxButtonSize.Small" Variant="MxButtonVariant.Outlined" OnClick="args => OnCompleteGridRow(row, args)" />
+                            <MxIconButton Icon="✔" AriaLabel="Marcar como completada" Size="MxButtonSize.Small" Variant="MxControlButtonVariant.Outlined" OnClick="args => OnCompleteGridRow(row, args)" />
                         </div>
                     </RowActionsTemplate>
                     <SummaryTemplate Context="items">
@@ -815,7 +815,7 @@ else
                             AriaLabel="Grid con selección de órdenes"
                             Caption="Selección múltiple de órdenes">
                     <Toolbar>
-                        <MxButton Variant="MxButtonVariant.Text"
+                        <MxButton Variant="MxControlButtonVariant.Text"
                                   Size="MxButtonSize.Small"
                                   Disabled="@(_selectedGridRows.Count == 0)">
                             Procesar seleccionadas
@@ -850,7 +850,7 @@ else
                                 AriaLabel="Resultado vacío de órdenes"
                                 Caption="Tabla sin resultados para el filtro actual" />
 
-                    <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleDataLoading">
+                    <MxButton Variant="MxControlButtonVariant.Outlined" OnClick="ToggleDataLoading">
                         @(_dataGridLoading ? "Detener loading" : "Activar loading")
                     </MxButton>
 
@@ -887,7 +887,7 @@ else
             <ShowcasePreviewBlock Title="Navegación temporal y loading"
                                   Caption="Se valida navegación por periodo y estado de carga sin lógica de negocio acoplada.">
                 <div class="ms-showcase-stack-sm">
-                    <MxButton Variant="MxButtonVariant.Outlined" OnClick="ToggleSchedulerLoading">
+                    <MxButton Variant="MxControlButtonVariant.Outlined" OnClick="ToggleSchedulerLoading">
                         @(_schedulerLoading ? "Detener loading" : "Activar loading")
                     </MxButton>
 

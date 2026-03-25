@@ -24,3 +24,14 @@ Reference the theme bundle from the package static assets:
 ```html
 <link rel="stylesheet" href="_content/MachSoft.Template.Core/css/machsoft-template-core.css" />
 ```
+
+### Required theme script for `AppShell`
+
+`AppShell` uses JS interop with `window.machsoftTheme` to persist and toggle light/dark mode.
+Add this script in the host page (`App.razor`, `_Host.cshtml`, or `index.html` depending on the host model):
+
+```html
+<script src="_content/MachSoft.Template.Core/js/theme.js"></script>
+```
+
+If the script is missing, `AppShell` now falls back safely to light mode (without persisted theme toggle) instead of throwing runtime exceptions.

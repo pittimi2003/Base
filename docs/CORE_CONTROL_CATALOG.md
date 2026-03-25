@@ -247,3 +247,10 @@ Consolidación de Showcase:
 
 Límites abiertos:
 - Fuera de alcance en esta fase: drag & drop, recurrencia avanzada, recursos, edición compleja, virtualización e integraciones enterprise.
+
+## Saneamiento transversal 2026-03-25 (API governance)
+- Tipos compartidos con `MachSoft.Template.Core` consumidos directamente desde Core Models: `MxButtonSize`, `MxDialogSize`, `MxProgressVariant`, `MxToastVariant`, `MxInputOption`, `MxSelectOption`.
+- Tipos exclusivos de catálogo en Core.Control: `MxControlButtonVariant`, `MxControlDataGridColumn<TItem>`, `MxAlertVariant`, `MxPopupPlacement`, `MxTooltipPlacement`, `MxAvatarSize`, `MxAvatarShape`, `MxChipVariant`.
+- Se retiran los tipos duplicados `MxButtonVariant` y `MxDataGridColumn<TItem>` de Core.Control para evitar consumo ambiguo en soluciones que referencian ambos paquetes.
+- Se mantiene `MxTextArea` por compatibilidad; la convergencia a `MxTextarea` queda planificada para una versión mayor con deprecación formal.
+

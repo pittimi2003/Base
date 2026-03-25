@@ -66,3 +66,9 @@ Impacto de migración:
 - no rompe componentes existentes,
 - no introduce dependencias externas,
 - mantiene compatibilidad arquitectónica con Blazor Server y WebAssembly al apoyarse en Razor + CSS tokenizado.
+
+## Registro 2026-03-25 — ronda quirúrgica de saneamiento final
+- Se eliminó deuda de contratos Mx* ambiguos entre Core y Core.Control mediante estrategia explícita de tipos compartidos vs exclusivos.
+- Se corrigió integración documental del theming del shell Core (`theme.js` obligatorio para interop de `AppShell`) y se agregó fallback seguro a light mode si el script no está disponible.
+- Se añadió malla E2E smoke transversal mínima por familias implementadas para detectar regresiones de render, interacción primaria, light/dark y errores runtime.
+

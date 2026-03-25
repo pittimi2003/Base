@@ -16,6 +16,7 @@
     "test:desktop": "npm run cleanup:hosts && E2E_PORT=5111 playwright test --project=desktop",
     "test:showcase:data": "npm run cleanup:hosts && E2E_SHOWCASE_PORT=5135 playwright test -c playwright.showcase.config.ts",
     "test:showcase:scheduling": "npm run cleanup:hosts && E2E_SHOWCASE_PORT=5136 playwright test -c playwright.showcase.scheduling.config.ts",
+    "test:showcase:smoke": "npm run cleanup:hosts && E2E_SHOWCASE_PORT=5137 playwright test -c playwright.showcase.smoke.config.ts",
     "test:ci": "npm run cleanup:hosts && E2E_PORT=5120 playwright test --reporter=line",
     "test:ci:prepared": "npm run install:browsers && npm run test:ci"
   },

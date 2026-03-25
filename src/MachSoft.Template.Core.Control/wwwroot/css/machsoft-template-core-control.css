@@ -1,6 +1,14 @@
 /* Package-level style entrypoint for MachSoft.Template.Core.Control */
 
 .mx-control-host {
+  --mx-color-state-success: var(--mx-color-success, #2f9c5e);
+  --mx-color-state-warning: var(--mx-color-warning, #d68b1a);
+  --mx-color-state-danger: var(--mx-color-danger, #c53c3c);
+  --mx-color-state-neutral: var(--mx-color-neutral, #64748b);
+  --mx-color-overlay-backdrop: var(--mx-color-backdrop, #08101f);
+  --mx-color-on-brand: var(--mx-color-text-on-brand, #ffffff);
+  --mx-color-overlay-scrim: var(--mx-color-scrim, #000000);
+
   color: var(--mx-color-text-primary, var(--ms-color-text, #11233d));
   background: var(--mx-color-bg-canvas, var(--ms-color-surface, #ffffff));
 }
@@ -32,9 +40,9 @@
 .mx-btn,
 .mx-icon-btn {
   --mx-btn-bg: var(--mx-color-brand-primary, #3a67bf);
-  --mx-btn-fg: #fff;
+  --mx-btn-fg: var(--mx-color-on-brand);
   --mx-btn-border: transparent;
-  --mx-btn-hover-bg: color-mix(in srgb, var(--mx-btn-bg) 86%, #000);
+  --mx-btn-hover-bg: color-mix(in srgb, var(--mx-btn-bg) 86%, var(--mx-color-overlay-scrim));
 
   font: inherit;
   border-radius: var(--mx-radius-sm, 6px);
@@ -184,17 +192,17 @@
 
 .mx-alert--success,
 .mx-toast--success {
-  border-color: color-mix(in srgb, #2f9c5e 50%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-success) 50%, transparent);
 }
 
 .mx-alert--warning,
 .mx-toast--warning {
-  border-color: color-mix(in srgb, #d68b1a 58%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-warning) 58%, transparent);
 }
 
 .mx-alert--danger,
 .mx-toast--danger {
-  border-color: color-mix(in srgb, #c53c3c 58%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-danger) 58%, transparent);
 }
 
 .mx-progress {
@@ -216,10 +224,10 @@
   transition: width var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease);
 }
 
-.mx-progress--success .mx-progress__bar { background: #2f9c5e; }
-.mx-progress--warning .mx-progress__bar { background: #d68b1a; }
-.mx-progress--danger .mx-progress__bar { background: #c53c3c; }
-.mx-progress--neutral .mx-progress__bar { background: #64748b; }
+.mx-progress--success .mx-progress__bar { background: var(--mx-color-state-success); }
+.mx-progress--warning .mx-progress__bar { background: var(--mx-color-state-warning); }
+.mx-progress--danger .mx-progress__bar { background: var(--mx-color-state-danger); }
+.mx-progress--neutral .mx-progress__bar { background: var(--mx-color-state-neutral); }
 
 .mx-progress--indeterminate .mx-progress__bar {
   width: 40% !important;
@@ -245,8 +253,8 @@
   max-width: 220px;
   font-size: var(--mx-font-size-caption, 0.8125rem);
   line-height: 1.3;
-  color: #fff;
-  background: color-mix(in srgb, var(--mx-color-bg-surface-raised, #1f2f45) 90%, #000);
+  color: var(--mx-color-on-brand);
+  background: color-mix(in srgb, var(--mx-color-bg-surface-raised, #1f2f45) 90%, var(--mx-color-overlay-scrim));
   border-radius: var(--mx-radius-sm, 6px);
   padding: 0.35rem 0.5rem;
   opacity: 0;
@@ -279,7 +287,7 @@
 .mx-dialog-backdrop {
   position: absolute;
   inset: 0;
-  background: color-mix(in srgb, #08101f 45%, transparent);
+  background: color-mix(in srgb, var(--mx-color-overlay-backdrop) 45%, transparent);
 }
 
 .mx-dialog-shell {
@@ -343,7 +351,7 @@
 }
 
 .mx-popup-scrim {
-  background: color-mix(in srgb, #08101f 16%, transparent);
+  background: color-mix(in srgb, var(--mx-color-overlay-backdrop) 16%, transparent);
 }
 
 .mx-popup {
@@ -451,13 +459,13 @@
 }
 
 .mx-input-message--invalid {
-  color: #c53c3c;
+  color: var(--mx-color-state-danger);
 }
 
 .mx-input-root--invalid .mx-input-control,
 .mx-input-root--invalid .mx-choice__control,
 .mx-input-root--invalid .mx-switch__track {
-  border-color: color-mix(in srgb, #c53c3c 72%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-danger) 72%, transparent);
 }
 
 .mx-choice,
@@ -560,7 +568,7 @@
 
 
 .mx-input-root--range-conflict .mx-date-range__separator {
-  color: #c53c3c;
+  color: var(--mx-color-state-danger);
 }
 
 .mx-select-icon {
@@ -585,17 +593,17 @@
 /* Inputs hardening pass */
 .mx-input-root--required .mx-input-label::after {
   content: " *";
-  color: #c53c3c;
+  color: var(--mx-color-state-danger);
 }
 
 .mx-input-root--invalid .mx-input-control:hover:not(:disabled):not([readonly]) {
-  border-color: color-mix(in srgb, #c53c3c 75%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-danger) 75%, transparent);
 }
 
 .mx-input-root--invalid .mx-input-control:focus-visible,
 .mx-input-root--invalid .mx-choice__input:focus-visible + .mx-choice__control,
 .mx-input-root--invalid .mx-switch__input:focus-visible + .mx-switch__track {
-  outline-color: color-mix(in srgb, #c53c3c 70%, var(--mx-color-border-focus, #3a67bf));
+  outline-color: color-mix(in srgb, var(--mx-color-state-danger) 70%, var(--mx-color-border-focus, #3a67bf));
 }
 
 .mx-input-root--readonly .mx-input-control[readonly] {
@@ -1073,15 +1081,15 @@
 }
 
 .mx-chip--success {
-  border-color: color-mix(in srgb, #2f9c5e 54%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-success) 54%, transparent);
 }
 
 .mx-chip--warning {
-  border-color: color-mix(in srgb, #d68b1a 58%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-warning) 58%, transparent);
 }
 
 .mx-chip--danger {
-  border-color: color-mix(in srgb, #c53c3c 58%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-state-danger) 58%, transparent);
 }
 
 .mx-chip.is-disabled {

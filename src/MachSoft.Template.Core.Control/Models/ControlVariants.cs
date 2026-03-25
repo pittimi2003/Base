@@ -1,18 +1,15 @@
 namespace MachSoft.Template.Core.Control.Models;
 
-public enum MxButtonVariant
+/// <summary>
+/// Variantes exclusivas del catálogo Core.Control para acciones.
+/// Se separa de Core para evitar colisión semántica con MxButtonVariant (Primary/Secondary/Tertiary/Danger).
+/// </summary>
+public enum MxControlButtonVariant
 {
     Filled,
     Outlined,
     Text,
     Fab
-}
-
-public enum MxButtonSize
-{
-    Small,
-    Medium,
-    Large
 }
 
 public enum MxAlertVariant
@@ -22,32 +19,6 @@ public enum MxAlertVariant
     Success,
     Warning,
     Danger
-}
-
-public enum MxProgressVariant
-{
-    Brand,
-    Success,
-    Warning,
-    Danger,
-    Neutral
-}
-
-public enum MxToastVariant
-{
-    Info,
-    Success,
-    Warning,
-    Danger,
-    Neutral
-}
-
-public enum MxDialogSize
-{
-    Small,
-    Medium,
-    Large,
-    Fullscreen
 }
 
 public enum MxPopupPlacement
@@ -65,7 +36,6 @@ public enum MxTooltipPlacement
     Left,
     Right
 }
-
 
 public enum MxAvatarSize
 {
