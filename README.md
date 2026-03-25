@@ -117,3 +117,14 @@ https://your-private-feed/v3/index.json
 ```
 
 No incluir credenciales ni secretos en el repositorio.
+
+
+## Design System update (2026-03-25)
+
+Arquitectura corregida para la familia base de inputs:
+
+- `MachSoft.Template.Core`: base compartida (tokens, theming, layout, helpers).
+- `MachSoft.Template.Core.Control`: catálogo público de controles (`MxTextField`, `MxTextArea`, `MxCheckbox`, `MxRadio`, `MxSwitch`, `MxSelect`).
+- `MachSoft.Template.Core.Control.Showcase`: host de validación visual/funcional para la familia de inputs.
+
+El paquete de validación y empaquetado para esta iteración es `MachSoft.Template.Core.Control`.

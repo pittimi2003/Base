@@ -69,3 +69,13 @@ No credentials are stored in source control. Teams are expected to inject creden
 - Server and Wasm remain separate official templates.
 - The shared reusable package remains `MachSoft.Template.Core`.
 - No Docker, CI/CD workflow, authentication, database, or business features are added to generated apps.
+
+## Forms baseline in Core.Control
+
+As of 2026-03-25, the public Forms inputs catalog is owned by `MachSoft.Template.Core.Control`, while `MachSoft.Template.Core` stays as foundational layer.
+
+- `MachSoft.Template.Core`: tokens, shared theming, layout and reusable infrastructure.
+- `MachSoft.Template.Core.Control`: `MxTextField`, `MxTextArea`, `MxCheckbox`, `MxRadio`, `MxSwitch`, `MxSelect`.
+- `MachSoft.Template.Core.Control.Showcase`: dedicated visual/functional validation host for those controls.
+
+This avoids ambiguity and prevents public catalog duplication between base and controls packages.

@@ -1,4 +1,4 @@
-@namespace MachSoft.Template.Core.Components.Foundation
+@namespace MachSoft.Template.Core.Control.Components.Forms
 
 <MxFieldGroup Label="@Label"
               FieldId="@ResolvedId"
@@ -14,9 +14,15 @@
            disabled="@Disabled"
            readonly="@ReadOnly"
            required="@Required"
+           minlength="@MinLength"
+           maxlength="@MaxLength"
+           autocomplete="@AutoComplete"
+           aria-label="@AriaLabel"
            aria-required="@Required"
-           aria-invalid="@HasError"
+           aria-readonly="@ReadOnly"
+           aria-invalid="@AriaInvalid"
            aria-describedby="@DescribedBy"
+           @attributes="AdditionalAttributes"
            @oninput="OnInputChanged" />
 </MxFieldGroup>
 
@@ -32,17 +38,28 @@
     [Parameter] public string? ErrorText { get; set; }
     [Parameter] public bool IsCompact { get; set; }
     [Parameter] public string InputType { get; set; } = "text";
+    [Parameter] public string? AutoComplete { get; set; }
+    [Parameter] public int? MinLength { get; set; }
+    [Parameter] public int? MaxLength { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
     [Parameter] public string? Id { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
 
     private readonly string _fallbackId = $"mx-textfield-{Guid.NewGuid():N}";
     private string ResolvedId => Id ?? _fallbackId;
     private bool HasError => !string.IsNullOrWhiteSpace(ErrorText);
     private string MessageId => $"{ResolvedId}-message";
     private string? DescribedBy => !string.IsNullOrWhiteSpace(HelperText) || HasError ? MessageId : null;
-    private string InputClass => $"ms-mx-input{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
+    private string? AriaInvalid => HasError ? "true" : null;
+    private string InputClass => $"ms-mx-input{(IsCompact ? " ms-mx-input--compact" : string.Empty)}{(ReadOnly ? " ms-mx-input--readonly" : string.Empty)}{(HasError ? " ms-mx-input--error" : string.Empty)}";
 
     private async Task OnInputChanged(ChangeEventArgs args)
     {
+        if (ReadOnly || Disabled)
+        {
+            return;
+        }
+
         var nextValue = args.Value?.ToString();
         if (nextValue == Value)
         {

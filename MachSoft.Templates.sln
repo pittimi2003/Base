@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachSoft.Template.Official.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachSoft.Template.Official.Wasm", "src\MachSoft.Template.Official.Wasm\MachSoft.Template.Official.Wasm.csproj", "{C739C5D0-3F43-4538-B239-B6A133C79E72}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachSoft.Template.Core.Control", "src\MachSoft.Template.Core.Control\MachSoft.Template.Core.Control.csproj", "{141C0229-4E4D-4CC0-A49D-FF3E80D7D0AB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachSoft.Template.Core.Control.Showcase", "src\MachSoft.Template.Core.Control.Showcase\MachSoft.Template.Core.Control.Showcase.csproj", "{4A821037-6B9B-4093-ADA0-DFFA6C9595E9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,10 +36,20 @@ Global
 		{C739C5D0-3F43-4538-B239-B6A133C79E72}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C739C5D0-3F43-4538-B239-B6A133C79E72}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C739C5D0-3F43-4538-B239-B6A133C79E72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{141C0229-4E4D-4CC0-A49D-FF3E80D7D0AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{141C0229-4E4D-4CC0-A49D-FF3E80D7D0AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{141C0229-4E4D-4CC0-A49D-FF3E80D7D0AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{141C0229-4E4D-4CC0-A49D-FF3E80D7D0AB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A821037-6B9B-4093-ADA0-DFFA6C9595E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A821037-6B9B-4093-ADA0-DFFA6C9595E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A821037-6B9B-4093-ADA0-DFFA6C9595E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A821037-6B9B-4093-ADA0-DFFA6C9595E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{E577D12C-100E-4A0F-BE89-8BE07488FDCF} = {95758882-174D-4B9E-976F-261E52FC5152}
 		{B2C1E08E-E6F1-473E-98E6-4917A1599986} = {95758882-174D-4B9E-976F-261E52FC5152}
 		{C739C5D0-3F43-4538-B239-B6A133C79E72} = {95758882-174D-4B9E-976F-261E52FC5152}
+		{141C0229-4E4D-4CC0-A49D-FF3E80D7D0AB} = {95758882-174D-4B9E-976F-261E52FC5152}
+		{4A821037-6B9B-4093-ADA0-DFFA6C9595E9} = {95758882-174D-4B9E-976F-261E52FC5152}
 	EndGlobalSection
 EndGlobal

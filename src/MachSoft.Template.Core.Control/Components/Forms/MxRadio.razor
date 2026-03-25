@@ -1,0 +1,85 @@
+@namespace MachSoft.Template.Core.Control.Components.Forms
+
+<div class="@ContainerClass">
+    <label class="@RadioClass" for="@ResolvedId">
+        <input id="@ResolvedId"
+               type="radio"
+               name="@Name"
+               value="@Value"
+               checked="@IsChecked"
+               disabled="@Disabled"
+               required="@Required"
+               aria-label="@AriaLabel"
+               aria-invalid="@AriaInvalid"
+               aria-describedby="@DescribedBy"
+               @attributes="AdditionalAttributes"
+               @onchange="OnChanged" />
+        <span class="ms-mx-radio__control" aria-hidden="true"></span>
+        <span class="ms-mx-radio__label-block">
+            <span class="ms-mx-radio__label">@Label</span>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <span id="@DescriptionId" class="ms-mx-radio__description">@Description</span>
+            }
+        </span>
+    </label>
+
+    @if (HasError)
+    {
+        <p id="@ErrorId" class="ms-mx-radio__message ms-mx-radio__message--error">@ErrorText</p>
+    }
+</div>
+
+@code {
+    [Parameter, EditorRequired] public string Label { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Name { get; set; } = string.Empty;
+    [Parameter, EditorRequired] public string Value { get; set; } = string.Empty;
+    [Parameter] public string? SelectedValue { get; set; }
+    [Parameter] public EventCallback<string?> SelectedValueChanged { get; set; }
+    [Parameter] public string? Description { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Id { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private readonly string _fallbackId = $"mx-radio-{Guid.NewGuid():N}";
+    private string ResolvedId => Id ?? _fallbackId;
+    private bool IsChecked => string.Equals(SelectedValue, Value, StringComparison.Ordinal);
+    private string DescriptionId => $"{ResolvedId}-description";
+    private string ErrorId => $"{ResolvedId}-error";
+    private bool HasError => Invalid || !string.IsNullOrWhiteSpace(ErrorText);
+    private string? DescribedBy
+    {
+        get
+        {
+            var ids = new List<string>(2);
+            if (!string.IsNullOrWhiteSpace(Description)) ids.Add(DescriptionId);
+            if (HasError) ids.Add(ErrorId);
+            return ids.Count > 0 ? string.Join(' ', ids) : null;
+        }
+    }
+
+    private string? AriaInvalid => HasError ? "true" : null;
+    private string ContainerClass => $"ms-mx-radio-group{(HasError ? " ms-mx-radio-group--invalid" : string.Empty)}";
+    private string RadioClass => $"ms-mx-radio{(Disabled ? " ms-mx-radio--disabled" : string.Empty)}";
+
+    private async Task OnChanged(ChangeEventArgs args)
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        var nextValue = args.Value?.ToString() ?? Value;
+        if (string.Equals(nextValue, SelectedValue, StringComparison.Ordinal))
+        {
+            return;
+        }
+
+        SelectedValue = nextValue;
+        await SelectedValueChanged.InvokeAsync(nextValue);
+    }
+}
