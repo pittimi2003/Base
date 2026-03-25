@@ -9,7 +9,7 @@ public static class ControlCatalogRegistry
         new("actions", "Actions", "Acciones primarias, secundarias y contextuales del lenguaje Mx*.", "Implemented", "Botones públicos y acciones rápidas", "/families/actions"),
         new("feedback", "Feedback", "Estados operativos y mensajería contextual de la interfaz.", "Implemented", "Alert, progress y toast", "/families/feedback"),
         new("overlays", "Overlays", "Componentes de superposición para interacción contextual y modal.", "Implemented", "Tooltip, popup y dialog", "/families/overlays"),
-        new("inputs", "Inputs", "Entradas base para captura de texto y estructura de formulario.", "Ready for hardening", "Campos base y contratos de validación", "/families/inputs"),
+        new("inputs", "Inputs", "Entradas base para captura de texto y estructura de formulario.", "Implemented", "TextField, TextArea, Checkbox, Radio, Switch y Select", "/families/inputs"),
         new("selection", "Selection", "Selecciones simples y múltiples con comportamiento consistente.", "In progress", "Select, autocomplete y multiselección", "/families/selection"),
         new("datetime", "DateTime", "Fecha, rango y hora con foco en consistencia y accesibilidad.", "In progress", "DatePicker, DateRange y Time", "/families/datetime"),
         new("display", "Display", "Representación visual de estado, métricas y contenido contextual.", "Planned", "Tag, status, stats y empty states", "/families/display"),

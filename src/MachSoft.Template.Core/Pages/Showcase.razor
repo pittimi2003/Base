@@ -45,19 +45,12 @@
 
         <h3 class="ms-showcase-group__title">Form components</h3>
 
-        <MxFormSection Title="MxFormSection + MxFieldGroup"
-                       Description="Base enterprise de formularios con contratos Mx*, estados y mensajes de ayuda/error.">
-            <Actions>
-                <MxButton Variant="MxButtonVariant.Secondary" Size="MxButtonSize.Small">Cancelar</MxButton>
-                <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Guardar</MxButton>
-            </Actions>
+        <MxCard Title="Inputs base reubicados" Variant="SurfaceVariant.Outlined">
             <ChildContent>
-                <div class="ms-grid ms-grid--2">
-                    <MxTextField Label="Nombre del almacén" Placeholder="North Hub" Value="@WarehouseName" ValueChanged="@(v => WarehouseName = v)" HelperText="Usa un nombre corto y descriptivo." />
-                    <MxSelect Label="Región" Value="@Region" ValueChanged="@(v => Region = v)" Options="@RegionOptions" Placeholder="Selecciona una región" Required="true" ErrorText="@(string.IsNullOrWhiteSpace(Region) ? "Campo obligatorio" : null)" />
-                </div>
+                <p class="ms-text-sm">La familia pública de inputs base (`MxTextField`, `MxTextArea`, `MxCheckbox`, `MxRadio`, `MxSwitch`, `MxSelect`) se valida oficialmente en <strong>MachSoft.Template.Core.Control.Showcase</strong> dentro de <code>/families/inputs</code>.</p>
+                <p class="ms-text-sm">`MachSoft.Template.Core` conserva únicamente foundation visual y utilidades compartidas, evitando duplicación de catálogo público.</p>
             </ChildContent>
-        </MxFormSection>
+        </MxCard>
     </section>
 
     <section class="ms-showcase-group">
@@ -91,8 +84,7 @@
             <ChildContent>
                 <MxFormSection IsCompact="true" Title="Scope">
                     <ChildContent>
-                        <MxCheckbox Label="Solo pendientes" Checked="@OnlyPending" CheckedChanged="@(v => OnlyPending = v)" />
-                        <MxSwitch Label="Modo detallado" Checked="@DetailedMode" CheckedChanged="@(v => DetailedMode = v)" />
+                        <p class="ms-text-sm">El catálogo público de inputs se gestiona desde Core.Control Showcase.</p>
                     </ChildContent>
                 </MxFormSection>
             </ChildContent>
@@ -247,20 +239,16 @@
                 <MxButton Variant="MxButtonVariant.Primary" Size="MxButtonSize.Small">Buscar</MxButton>
             </Actions>
             <ChildContent>
-                <div class="ms-grid ms-grid--2">
-                    <MxTextField Label="ID de orden" Placeholder="SO-13002" Value="@PatternOrderId" ValueChanged="@(v => PatternOrderId = v)" />
-                    <MxSelect Label="Prioridad" Value="@PatternPriority" ValueChanged="@(v => PatternPriority = v)" Options="@PatternPriorityOptions" Placeholder="Selecciona prioridad" />
-                </div>
+                <p class="ms-text-sm">Los inputs públicos del catálogo (TextField/Select) se validan en <code>MachSoft.Template.Core.Control.Showcase</code> para preservar frontera arquitectónica.</p>
             </ChildContent>
         </MxSearchPanel>
 
         <MxFilterBar IsCompact="true">
             <Filters>
-                <MxSwitch Label="Solo críticas" Checked="@PatternOnlyCritical" CheckedChanged="@(v => PatternOnlyCritical = v)" />
-                <MxCheckbox Label="Con incidencia" Checked="@PatternWithIncident" CheckedChanged="@(v => PatternWithIncident = v)" />
+                <MxBadge Variant="MxBadgeVariant.Neutral" Text="Filtro visual" />
             </Filters>
             <Summary>
-                <p class="ms-text-sm">@(PatternOnlyCritical ? "Mostrando solo órdenes críticas" : "Mostrando todas las prioridades")</p>
+                <p class="ms-text-sm">La interacción de inputs de filtro se valida en Core.Control Showcase.</p>
             </Summary>
             <Actions>
                 <MxButton Variant="MxButtonVariant.Tertiary" Size="MxButtonSize.Small">Aplicar</MxButton>
@@ -296,8 +284,7 @@
             <Sections>
                 <MxFormSection IsCompact="true" Title="Ajustes de notificación">
                     <ChildContent>
-                        <MxSwitch Label="Alertas por correo" Checked="@PatternEmailAlerts" CheckedChanged="@(v => PatternEmailAlerts = v)" />
-                        <MxSwitch Label="Alertas por SMS" Checked="@PatternSmsAlerts" CheckedChanged="@(v => PatternSmsAlerts = v)" />
+                        <p class="ms-text-sm">Switches y controles de formularios se ejercitan oficialmente en Core.Control Showcase.</p>
                     </ChildContent>
                 </MxFormSection>
             </Sections>
@@ -312,12 +299,9 @@
 
 @code {
     private string? WarehouseName { get; set; }
-    private string? Region { get; set; }
     private bool IsDialogOpen { get; set; }
     private bool IsDrawerOpen { get; set; }
     private bool IsToastVisible { get; set; }
-    private bool OnlyPending { get; set; }
-    private bool DetailedMode { get; set; }
     private string ActiveTab { get; set; } = "overview";
 
     private string ActiveTabMessage => ActiveTab switch
@@ -326,13 +310,6 @@
         "alerts" => "Panel de alertas y excepciones activas.",
         _ => "Vista general de operación logística y KPIs del turno."
     };
-
-    private IEnumerable<MxSelectOption> RegionOptions { get; } =
-    [
-        new("emea", "EMEA"),
-        new("latam", "LATAM"),
-        new("na", "North America")
-    ];
 
     private IEnumerable<MxTabItem> TabsItems { get; } =
     [
@@ -441,21 +418,8 @@
     private IReadOnlyList<MxChartSeries> ChartSeries { get; } = [new("Orders/hour", [85, 92, 88, 97, 104])];
     private IReadOnlyList<MxChartSeries> ErrorSeries { get; } = [new("Errors", [7, 5, 6, 4, 3])];
 
-    private string? PatternOrderId { get; set; }
-    private string? PatternPriority { get; set; }
-    private bool PatternOnlyCritical { get; set; }
-    private bool PatternWithIncident { get; set; }
     private string PatternSelectedOrderId { get; set; } = "SO-13002";
-    private bool PatternEmailAlerts { get; set; } = true;
-    private bool PatternSmsAlerts { get; set; }
     private string PatternSettingsTab { get; set; } = "notifications";
-
-    private IEnumerable<MxSelectOption> PatternPriorityOptions { get; } =
-    [
-        new("critical", "Crítica"),
-        new("high", "Alta"),
-        new("normal", "Normal")
-    ];
 
     private IEnumerable<MxTabItem> PatternSettingsTabs { get; } =
     [

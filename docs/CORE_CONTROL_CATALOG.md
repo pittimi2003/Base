@@ -69,3 +69,30 @@ Límites conocidos (vigentes):
 - `MxDialog` aún no implementa focus trap completo ni restore de foco al invocador.
 - `MxToast` no implementa orquestador enterprise (canales/colas globales).
 - `MxTooltip` no incluye motor avanzado de posicionamiento dinámico.
+
+
+## Consolidación 2026-03-25 — inputs base públicos
+
+Cobertura implementada en `MachSoft.Template.Core.Control`:
+- `MxTextField` y `MxTextArea`: binding por `Value/ValueChanged`, soporte de `Label`, `Placeholder`, `HelperText`, `ValidationText`, estados `disabled`, `readonly` e `invalid`.
+- `MxCheckbox` y `MxSwitch`: contrato booleano (`Checked/CheckedChanged`) con foco visible y estado `invalid` visual opcional.
+- `MxRadio`: selección única simple por `Name`, `Value`, `SelectedValue/SelectedValueChanged` (sin orquestador de grupos complejo en esta iteración).
+- `MxSelect`: selección simple por `Options` (`MxSelectOption`), `Value/ValueChanged`, placeholder y estado `invalid`; `ReadOnly` se mapea a deshabilitado + `aria-readonly` por limitación nativa de HTML.
+
+Alcance deliberadamente fuera en esta iteración:
+- Multiselección avanzada, búsqueda/autocompletado, providers remotos/async, plantillas complejas y composición con DataGrid.
+
+Showcase actualizado (`/families/inputs`) con ejemplos base, variantes y estados para validar light/dark en un solo host desacoplado.
+
+
+### Frontera arquitectónica aplicada (corrección)
+- `MachSoft.Template.Core` mantiene foundation, tokens y utilidades; sus implementaciones históricas de forms `Mx*` quedan explícitamente como compatibilidad legacy interna.
+- `MachSoft.Template.Core.Control` concentra la familia pública oficial de inputs base y su API estable de catálogo.
+- `MachSoft.Template.Core.Control.Showcase` es el host oficial para validar esta familia (`/families/inputs`).
+
+
+## Hardening 2026-03-25 — inputs base
+- Se alinearon estados y semántica de accesibilidad en los seis controles base (`disabled`, `readonly`, `invalid`, `required`, `focus-visible`).
+- `Checkbox/Radio/Switch` incorporan `Description` opcional para contexto sin inflar la API.
+- `Radio` mantiene agrupación mínima por `Name`; limitación documentada para evitar pseudo-abstracciones tempranas.
+- `Select` mantiene alcance baseline y documenta explícitamente que `ReadOnly` se implementa como estado no interactivo por limitación HTML nativa.

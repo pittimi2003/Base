@@ -377,3 +377,10 @@ a {
 .ms-showcase-inline-message {
   margin: 0;
 }
+
+.ms-showcase-input-grid {
+  display: grid;
+  gap: var(--ms-showcase-space-sm);
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  align-items: start;
+}
