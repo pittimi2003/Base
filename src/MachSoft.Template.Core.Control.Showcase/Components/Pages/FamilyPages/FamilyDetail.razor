@@ -50,6 +50,10 @@ else
             {
                 @RenderDateTimeFamily()
             }
+            else if (string.Equals(CurrentFamily.Key, "listing", StringComparison.OrdinalIgnoreCase))
+            {
+                @RenderListingFamily()
+            }
             else if (string.Equals(CurrentFamily.Key, "upload", StringComparison.OrdinalIgnoreCase))
             {
                 @RenderUploadFamily()
@@ -94,6 +98,11 @@ else
     private DateOnly? _dateRangeStart = new(2026, 3, 24);
     private DateOnly? _dateRangeEnd = new(2026, 3, 28);
     private TimeOnly? _selectedTime = new(9, 30);
+    private string? _listboxSingle = "ops";
+    private IReadOnlyList<string> _listboxMultiple = ["alpha", "release"];
+    private bool _filterChipSelected = true;
+    private bool _segmentChipSelected;
+    private bool _chipRemoved;
     private bool _uploading;
     private IReadOnlyList<string> _uploadedFileNames = Array.Empty<string>();
 
@@ -114,6 +123,22 @@ else
         new("epsilon", "Epsilon", true),
         new("zeta", "Zeta"),
         new("theta", "Theta")
+    ];
+
+    private readonly IReadOnlyList<MxListItem> _listItems =
+    [
+        new("overview", "Resumen diario", "Última sincronización hace 4 minutos", "📊"),
+        new("alerts", "Alertas activas", "3 incidentes en revisión", "🚨"),
+        new("approvals", "Aprobaciones", "2 solicitudes pendientes", "✅"),
+        new("archive", "Histórico", "Solo lectura", "🗄", true)
+    ];
+
+    private readonly IReadOnlyList<MxListBoxOption> _listBoxOptions =
+    [
+        new("ops", "Operaciones", "Vista principal", "⚙"),
+        new("alpha", "Alpha", "Canal de pruebas", "🧪"),
+        new("release", "Release", "Entorno productivo", "🚀"),
+        new("legacy", "Legacy", "No disponible", "📦", true)
     ];
 
     private ControlFamilyDefinition? CurrentFamily => ControlCatalogRegistry.FindByKey(FamilyKey);
@@ -573,6 +598,91 @@ else
         </ShowcaseSection>
     </text>;
 
+    private RenderFragment RenderListingFamily() => @<text>
+        <ShowcaseSection Title="MxList y MxListBox"
+                         Description="Base de listas visuales y selección ligera con foco visible, selected claro y estados disabled/invalid.">
+            <ShowcasePreviewBlock Title="MxList"
+                                  Caption="Lista visual simple con soporte de icono y texto secundario para navegación/presentación.">
+                <div class="ms-showcase-stack-sm">
+                    <MxList Items="_listItems" AriaLabel="Módulos operativos" />
+                    <MxList Items="_listItems" IsCompact="true" AriaLabel="Módulos operativos compactos" />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxListBox"
+                                  Caption="Selección simple o múltiple con teclado (Arrow/Home/End/Enter/Espacio), foco y estado selected.">
+                <div class="ms-showcase-input-grid">
+                    <MxListBox Label="Área activa"
+                               Options="_listBoxOptions"
+                               @bind-Value="_listboxSingle"
+                               HelperText="Selección simple para contexto de trabajo." />
+
+                    <MxListBox Label="Canales habilitados"
+                               Options="_listBoxOptions"
+                               Multiple="true"
+                               Values="_listboxMultiple"
+                               ValuesChanged="OnListBoxMultipleChanged"
+                               HelperText="Selección múltiple base para filtros." />
+
+                    <MxListBox Label="Deshabilitado"
+                               Options="_listBoxOptions"
+                               Disabled="true"
+                               Value="ops" />
+
+                    <MxListBox Label="Inválido"
+                               Options="_listBoxOptions"
+                               Invalid="true"
+                               ValidationText="Debes seleccionar al menos una opción válida."
+                               Required="true" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+
+        <ShowcaseSection Title="MxAvatar y MxChip"
+                         Description="Identidad compacta y etiquetado interactivo básico para filtros, tags y chips removibles.">
+            <ShowcasePreviewBlock Title="MxAvatar"
+                                  Caption="Soporta imagen, fallback por iniciales/texto y tamaños base con variantes de forma.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxAvatar Text="Ana López" />
+                    <MxAvatar Text="Marco Silva" Size="MxAvatarSize.Large" />
+                    <MxAvatar Text="QA Team" Initials="QA" Shape="MxAvatarShape.Rounded" />
+                    <MxAvatar ImageUrl="https://i.pravatar.cc/96?img=12" Text="Jorge Díaz" Size="MxAvatarSize.XLarge" />
+                    <MxAvatar ImageUrl="https://invalid.local/avatar.png" Text="Fallback remoto" />
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="MxChip"
+                                  Caption="Incluye modo estático, interactivo (selected) y removible para escenarios ligeros.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxChip Text="Tag neutral" />
+                    <MxChip Text="Brand" Variant="MxChipVariant.Brand" />
+                    <MxChip Text="Filtro activo"
+                            Variant="MxChipVariant.Success"
+                            Interactive="true"
+                            Selected="_filterChipSelected"
+                            SelectedChanged="OnFilterChipSelectedChanged" />
+                    <MxChip Text="Segmento"
+                            Variant="MxChipVariant.Warning"
+                            Interactive="true"
+                            Selected="_segmentChipSelected"
+                            SelectedChanged="OnSegmentChipSelectedChanged" />
+                    @if (!_chipRemoved)
+                    {
+                        <MxChip Text="Removible"
+                                Variant="MxChipVariant.Danger"
+                                Removable="true"
+                                OnRemove="OnRemovableChipRemoved"
+                                RemoveButtonAriaLabel="Quitar chip removible de ejemplo" />
+                    }
+                    <MxChip Text="Disabled"
+                            Interactive="true"
+                            Disabled="true"
+                            Selected="true" />
+                </div>
+            </ShowcasePreviewBlock>
+        </ShowcaseSection>
+    </text>;
+
     private RenderFragment RenderUploadFamily() => @<text>
         <ShowcaseSection Title="MxUpload"
                          Description="Carga de archivos base con selección usable, estado uploading y resumen de archivos.">
@@ -683,5 +793,29 @@ else
         _uploadedFileNames = files.Select(file => file.Name).ToArray();
         await Task.Delay(450);
         _uploading = false;
+    }
+
+    private Task OnListBoxMultipleChanged(IReadOnlyList<string> values)
+    {
+        _listboxMultiple = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnFilterChipSelectedChanged(bool selected)
+    {
+        _filterChipSelected = selected;
+        return Task.CompletedTask;
+    }
+
+    private Task OnSegmentChipSelectedChanged(bool selected)
+    {
+        _segmentChipSelected = selected;
+        return Task.CompletedTask;
+    }
+
+    private Task OnRemovableChipRemoved()
+    {
+        _chipRemoved = true;
+        return Task.CompletedTask;
     }
 }

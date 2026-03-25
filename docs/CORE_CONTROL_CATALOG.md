@@ -173,3 +173,26 @@ Validación funcional en Showcase:
 
 Limitación abierta (documentada):
 - `readonly` en inputs nativos `type="date"`/`type="time"` no es homogéneo entre navegadores. Se conserva `aria-readonly` y se bloquea propagación de cambio para consistencia, pero la UI nativa puede permitir abrir picker según engine.
+
+
+## Iteración 2026-03-25 — List / ListBox / Avatar / Chip (consolidación inicial)
+
+Cobertura implementada en `MachSoft.Template.Core.Control`:
+- `MxList`: lista visual simple con `Items` (`MxListItem`), soporte de icono/texto secundario y modo `IsCompact`.
+- `MxListBox`: lista seleccionable con selección simple (`Value`) o múltiple (`Values`), teclado base (`ArrowUp/ArrowDown/Home/End/Enter/Espacio`) y estados `disabled`/`invalid`.
+- `MxAvatar`: avatar con imagen opcional, fallback por iniciales/texto y tamaños/formas (`MxAvatarSize`, `MxAvatarShape`) usando tokens compartidos.
+- `MxChip`: chip neutral/interactivo/removible con estado `Selected`, variantes (`MxChipVariant`) y callbacks mínimos (`SelectedChanged`, `OnRemove`).
+
+Consolidación en la misma iteración:
+- Estados visuales unificados (`default`, `hover`, `focus-visible`, `disabled`, `selected`) en los cuatro controles.
+- Accesibilidad base: `role=listbox/option`, `aria-selected`, `aria-invalid`, `aria-disabled`, `aria-activedescendant`, etiquetas enlazadas y foco visible tokenizado.
+- Sin JS interop ni dependencias externas para preservar compatibilidad Server/WASM.
+
+Showcase actualizado:
+- Nueva familia `/families/listing` con ejemplos funcionales de `MxList`, `MxListBox`, `MxAvatar` y `MxChip`.
+- Se incluyen casos de `selected`, `disabled`, `invalid`, `interactive` y `removable`, verificables en light/dark.
+
+Límites abiertos (declarados):
+- `MxListBox` no incluye virtualización ni templates avanzados en esta fase.
+- `MxChip` no incorpora aún navegación de roving-tabindex para grupos complejos de filtros.
+- `MxAvatar` no implementa providers remotos avanzados (solo `ImageUrl` + fallback local robusto).

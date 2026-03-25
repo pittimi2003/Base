@@ -1,0 +1,76 @@
+@namespace MachSoft.Template.Core.Control
+@using MachSoft.Template.Core.Control.Models
+
+<span class="@RootClass" @attributes="AdditionalAttributes">
+    @if (Interactive)
+    {
+        <button type="button"
+                class="mx-chip__action"
+                disabled="@Disabled"
+                aria-pressed="@Selected"
+                aria-label="@ResolvedAriaLabel"
+                @onclick="HandleActionClickAsync">
+            @Content
+        </button>
+    }
+    else
+    {
+        <span class="mx-chip__content">@Content</span>
+    }
+
+    @if (Removable)
+    {
+        <button type="button"
+                class="mx-chip__remove"
+                disabled="@Disabled"
+                aria-label="@RemoveButtonAriaLabel"
+                @onclick="HandleRemoveAsync">
+            ×
+        </button>
+    }
+</span>
+
+@code {
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    [Parameter] public bool Interactive { get; set; }
+    [Parameter] public bool Selected { get; set; }
+    [Parameter] public EventCallback<bool> SelectedChanged { get; set; }
+    [Parameter] public EventCallback OnClick { get; set; }
+    [Parameter] public bool Removable { get; set; }
+    [Parameter] public EventCallback OnRemove { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public MxChipVariant Variant { get; set; } = MxChipVariant.Neutral;
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string RemoveButtonAriaLabel { get; set; } = "Quitar chip";
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private RenderFragment Content => ChildContent ?? (builder => builder.AddContent(0, Text));
+
+    private string RootClass =>
+        $"mx-chip mx-chip--{Variant.ToString().ToLowerInvariant()} {(Interactive ? "mx-chip--interactive" : string.Empty)} {(Selected ? "is-selected" : string.Empty)} {(Disabled ? "is-disabled" : string.Empty)} {Class}";
+
+    private string ResolvedAriaLabel => AriaLabel ?? Text ?? "Chip";
+
+    private async Task HandleActionClickAsync()
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        await SelectedChanged.InvokeAsync(!Selected);
+        await OnClick.InvokeAsync();
+    }
+
+    private async Task HandleRemoveAsync()
+    {
+        if (Disabled)
+        {
+            return;
+        }
+
+        await OnRemove.InvokeAsync();
+    }
+}

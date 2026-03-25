@@ -1,0 +1,83 @@
+@namespace MachSoft.Template.Core.Control
+@using MachSoft.Template.Core.Control.Models
+
+<span class="@RootClass"
+      role="img"
+      aria-label="@ResolvedAriaLabel"
+      title="@Title"
+      @attributes="AdditionalAttributes">
+    @if (ShowImage)
+    {
+        <img class="mx-avatar__image"
+             src="@ImageUrl"
+             alt="@ResolvedImageAlt"
+             @onerror="HandleImageError" />
+    }
+    else
+    {
+        <span class="mx-avatar__fallback" aria-hidden="true">@ResolvedFallbackText</span>
+    }
+</span>
+
+@code {
+    [Parameter] public string? ImageUrl { get; set; }
+    [Parameter] public string? ImageAlt { get; set; }
+    [Parameter] public string? Text { get; set; }
+    [Parameter] public string? Initials { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public MxAvatarSize Size { get; set; } = MxAvatarSize.Medium;
+    [Parameter] public MxAvatarShape Shape { get; set; } = MxAvatarShape.Circle;
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private bool _imageFailed;
+
+    private bool ShowImage => !_imageFailed && !string.IsNullOrWhiteSpace(ImageUrl);
+
+    private string RootClass =>
+        $"mx-avatar mx-avatar--{Size.ToString().ToLowerInvariant()} mx-avatar--{Shape.ToString().ToLowerInvariant()} {Class}";
+
+    private string ResolvedFallbackText => BuildFallbackText();
+    private string ResolvedImageAlt => string.IsNullOrWhiteSpace(ImageAlt) ? (Text ?? "Avatar") : ImageAlt;
+    private string ResolvedAriaLabel => AriaLabel ?? Text ?? "Avatar";
+
+    protected override void OnParametersSet()
+    {
+        if (string.IsNullOrWhiteSpace(ImageUrl))
+        {
+            _imageFailed = false;
+        }
+    }
+
+    private static string BuildInitials(string? value)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+        {
+            return "?";
+        }
+
+        var parts = value.Trim().Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        if (parts.Length == 1)
+        {
+            return parts[0].Length > 2 ? parts[0][..2].ToUpperInvariant() : parts[0].ToUpperInvariant();
+        }
+
+        return string.Concat(parts[0][0], parts[1][0]).ToUpperInvariant();
+    }
+
+    private string BuildFallbackText()
+    {
+        if (!string.IsNullOrWhiteSpace(Initials))
+        {
+            return Initials.Trim().Length > 2 ? Initials.Trim()[..2].ToUpperInvariant() : Initials.Trim().ToUpperInvariant();
+        }
+
+        return BuildInitials(Text);
+    }
+
+    private void HandleImageError()
+    {
+        _imageFailed = true;
+    }
+}

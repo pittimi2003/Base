@@ -46,3 +46,8 @@ The repository now includes a dedicated .NET 8 productization layout for MachSof
 ## Registro 2026-03-25 — hardening lote 1
 - Se corrigieron debilidades de accesibilidad/estado en Actions, Feedback y Overlays.
 - Se documentaron límites reales de overlays para evitar sobreventa funcional antes de avanzar a nuevas familias.
+
+## Registro 2026-03-25 — familia List / ListBox / Avatar / Chip
+- Se implementó en `MachSoft.Template.Core.Control` la familia inicial de listas e identidad compacta: `MxList`, `MxListBox`, `MxAvatar`, `MxChip`.
+- Se añadieron modelos de apoyo (`MxListItem`, `MxListBoxOption`) y variantes (`MxAvatarSize`, `MxAvatarShape`, `MxChipVariant`) manteniendo API pública mínima.
+- `MachSoft.Template.Core.Control.Showcase` incorpora la ruta `/families/listing` con ejemplos funcionales (default, selected, disabled, invalid, interactive, removable) para validación runtime/light-dark.

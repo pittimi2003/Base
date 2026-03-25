@@ -1,0 +1,56 @@
+@namespace MachSoft.Template.Core.Control
+@using MachSoft.Template.Core.Control.Models
+
+<ul class="@RootClass"
+    role="list"
+    aria-label="@AriaLabel"
+    aria-disabled="@AriaDisabled"
+    @attributes="AdditionalAttributes">
+    @foreach (var item in Items)
+    {
+        <li class="@GetItemClass(item.Disabled)"
+            aria-disabled="@(Disabled || item.Disabled)">
+            @if (ItemTemplate is not null)
+            {
+                @ItemTemplate(item)
+            }
+            else
+            {
+                <div class="mx-list__item-main">
+                    @if (!string.IsNullOrWhiteSpace(item.Icon))
+                    {
+                        <span class="mx-list__item-icon" aria-hidden="true">@item.Icon</span>
+                    }
+                    <span class="mx-list__item-copy">
+                        <span class="mx-list__item-text">@item.Text</span>
+                        @if (!string.IsNullOrWhiteSpace(item.SecondaryText))
+                        {
+                            <span class="mx-list__item-secondary">@item.SecondaryText</span>
+                        }
+                    </span>
+                </div>
+            }
+        </li>
+    }
+</ul>
+
+@code {
+    [Parameter] public IReadOnlyList<MxListItem> Items { get; set; } = Array.Empty<MxListItem>();
+    [Parameter] public RenderFragment<MxListItem>? ItemTemplate { get; set; }
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public string? Class { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
+
+    private string? AriaDisabled => Disabled ? "true" : null;
+
+    private string RootClass =>
+        $"mx-list {(IsCompact ? "mx-list--compact" : string.Empty)} {(Disabled ? "mx-list--disabled" : string.Empty)} {Class}";
+
+    private string GetItemClass(bool itemDisabled)
+    {
+        var isDisabled = Disabled || itemDisabled;
+        return $"mx-list__item {(isDisabled ? "is-disabled" : string.Empty)}";
+    }
+}

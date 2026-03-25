@@ -12,6 +12,7 @@ public static class ControlCatalogRegistry
         new("inputs", "Inputs", "Entradas base para captura de texto y estructura de formulario.", "Implemented", "TextField, TextArea, Checkbox, Radio, Switch y Select", "/families/inputs"),
         new("selection", "Selection", "Selecciones simples y múltiples con comportamiento consistente.", "Implemented", "Autocomplete, multi-select y combo box", "/families/selection"),
         new("datetime", "DateTime", "Fecha, rango y hora con foco en consistencia y accesibilidad.", "Implemented", "DatePicker, DateRange y Time", "/families/datetime"),
+        new("listing", "List / ListBox / Avatar / Chip", "Componentes de listado y representación compacta para navegación, selección ligera e identidad visual.", "Implemented", "MxList, MxListBox, MxAvatar y MxChip", "/families/listing"),
         new("display", "Display", "Representación visual de estado, métricas y contenido contextual.", "Planned", "Tag, status, stats y empty states", "/families/display"),
         new("data", "Data", "Visualización enterprise de datos tabulares, jerárquicos y gráficos.", "Planned", "Grid, tree y chart", "/families/data"),
         new("upload", "Upload", "Carga de archivos reutilizable y compatible cross-host.", "Implemented", "Flujo base de upload", "/families/upload"),

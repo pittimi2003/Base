@@ -149,3 +149,10 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 ## Actualización 2026-03-25 — hardening lote 1 Core.Control
 - Se consolidó la primera familia pública (`Actions`, `Feedback`, `Overlays`) con mejoras de accesibilidad, estados y consistencia visual.
 - Se documentaron límites reales actuales de overlays (`dialog`, `toast`, `tooltip`, `popup`) antes de avanzar a nuevas familias.
+
+
+## Actualización 2026-03-25 — familia List / ListBox / Avatar / Chip
+- `MachSoft.Template.Core.Control` incorpora `MxList`, `MxListBox`, `MxAvatar` y `MxChip` como primera familia funcional de listados/identidad compacta.
+- `Core.Control.Showcase` agrega la ruta `/families/listing` con ejemplos reales (básico, selected, disabled, invalid, interactive/removable) y validación light/dark.
+- La iteración mantiene API mínima y extensible, sin dependencias externas ni acoplamiento por host.
+

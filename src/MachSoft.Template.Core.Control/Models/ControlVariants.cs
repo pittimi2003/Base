@@ -65,3 +65,29 @@ public enum MxTooltipPlacement
     Left,
     Right
 }
+
+
+public enum MxAvatarSize
+{
+    XSmall,
+    Small,
+    Medium,
+    Large,
+    XLarge
+}
+
+public enum MxAvatarShape
+{
+    Circle,
+    Rounded,
+    Square
+}
+
+public enum MxChipVariant
+{
+    Neutral,
+    Brand,
+    Success,
+    Warning,
+    Danger
+}
