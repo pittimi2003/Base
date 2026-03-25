@@ -196,3 +196,20 @@ Límites abiertos (declarados):
 - `MxListBox` no incluye virtualización ni templates avanzados en esta fase.
 - `MxChip` no incorpora aún navegación de roving-tabindex para grupos complejos de filtros.
 - `MxAvatar` no implementa providers remotos avanzados (solo `ImageUrl` + fallback local robusto).
+
+## Iteración 2026-03-25 — Data (MxDataGrid base consolidado)
+
+Cobertura implementada en `MachSoft.Template.Core.Control`:
+- `MxDataGrid<TItem>` como control público funcional para escenarios tabulares base.
+- Columnas configurables mediante `MxDataGridColumn<TItem>` (`Header`, `ValueSelector`, `Width`, `HeaderClass`, `CellClass`).
+- Render real de filas desde `Items`, encabezados claros por `th scope="col"`, estado vacío (`EmptyText`) y estado de carga (`Loading` + `LoadingText`).
+- API preparada para crecimiento sin sobrecarga temprana: `RowIdSelector`, `RowClassSelector`, `IsCompact`, `AriaLabel` y `Class`.
+
+Consolidación aplicada en la misma iteración:
+- Estilos tokenizados y coherentes con la base MachSoft (light/dark) en el CSS del paquete distribuible.
+- Tabla con semántica accesible base (`table`, `thead`, `tbody`, `caption` oculto para SR y estados `aria-live` para empty/loading).
+- Showcase funcional en `/families/data` con casos reales: básico, empty y loading interactivo.
+
+Límites abiertos (explícitos):
+- No incluye todavía sorting, filtros enterprise, edición inline, export, grouping ni virtualización.
+- Selección de filas no se incluye en esta iteración para no comprometer la estabilidad de la base inicial.

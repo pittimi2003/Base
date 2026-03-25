@@ -1,0 +1,76 @@
+@namespace MachSoft.Template.Core.Control
+@typeparam TItem
+
+<div class="mx-data-grid-root @Class" data-loading="@Loading" aria-busy="@Loading">
+    <div class="mx-data-grid-scroll" role="region" aria-label="@AriaLabel">
+        <table class="@(IsCompact ? "mx-data-grid mx-data-grid--compact" : "mx-data-grid")">
+            <caption class="mx-visually-hidden">@AriaLabel</caption>
+            <thead>
+                <tr>
+                    @for (var index = 0; index < Columns.Count; index++)
+                    {
+                        var column = Columns[index];
+                        <th scope="col"
+                            class="@column.HeaderClass"
+                            style="@BuildColumnWidthStyle(column)">@column.Header</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @if (Loading)
+                {
+                    <tr>
+                        <td class="mx-data-grid__state" colspan="@ColumnCount">
+                            <span class="mx-data-grid__loading" role="status" aria-live="polite">
+                                <span class="mx-data-grid__loading-spinner" aria-hidden="true"></span>
+                                <span>@LoadingText</span>
+                            </span>
+                        </td>
+                    </tr>
+                }
+                else if (Items.Count == 0)
+                {
+                    <tr>
+                        <td class="mx-data-grid__state" colspan="@ColumnCount" role="status" aria-live="polite">@EmptyText</td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var item in Items)
+                    {
+                        <tr class="@BuildRowClass(item)" @key="BuildRowKey(item)">
+                            @foreach (var column in Columns)
+                            {
+                                <td class="@column.CellClass">@column.ValueSelector(item)</td>
+                            }
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@code {
+    [Parameter] public IReadOnlyList<TItem> Items { get; set; } = Array.Empty<TItem>();
+    [Parameter] public IReadOnlyList<MxDataGridColumn<TItem>> Columns { get; set; } = Array.Empty<MxDataGridColumn<TItem>>();
+    [Parameter] public bool Loading { get; set; }
+    [Parameter] public string LoadingText { get; set; } = "Cargando datos...";
+    [Parameter] public string EmptyText { get; set; } = "No hay datos para mostrar.";
+    [Parameter] public string AriaLabel { get; set; } = "Data grid";
+    [Parameter] public bool IsCompact { get; set; }
+    [Parameter] public Func<TItem, string?>? RowIdSelector { get; set; }
+    [Parameter] public Func<TItem, string?>? RowClassSelector { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    private int ColumnCount => Columns.Count > 0 ? Columns.Count : 1;
+
+    private static string? BuildColumnWidthStyle(MxDataGridColumn<TItem> column)
+        => string.IsNullOrWhiteSpace(column.Width) ? null : $"width:{column.Width}";
+
+    private string? BuildRowClass(TItem item)
+        => RowClassSelector?.Invoke(item);
+
+    private object BuildRowKey(TItem item)
+        => RowIdSelector?.Invoke(item) ?? (object?)item ?? string.Empty;
+}

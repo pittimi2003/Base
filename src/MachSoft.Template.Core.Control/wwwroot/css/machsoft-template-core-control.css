@@ -1087,3 +1087,85 @@
 .mx-chip.is-disabled {
   opacity: 0.6;
 }
+
+/* Data family */
+.mx-data-grid-root {
+  border-radius: var(--mx-radius-md, 10px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  background: var(--mx-color-bg-surface, #fff);
+}
+
+.mx-data-grid-scroll {
+  overflow: auto;
+}
+
+.mx-data-grid {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 36rem;
+}
+
+.mx-data-grid thead th {
+  text-align: left;
+  font-weight: var(--mx-font-weight-semibold, 600);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-secondary, #40556f);
+  padding: 0.75rem 0.85rem;
+  background: color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 70%, transparent);
+  border-bottom: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.mx-data-grid tbody td {
+  padding: 0.8rem 0.85rem;
+  border-bottom: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 65%, transparent);
+  color: var(--mx-color-text-primary, #132033);
+}
+
+.mx-data-grid tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.mx-data-grid tbody tr:hover td {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 7%, transparent);
+}
+
+.mx-data-grid tbody tr:focus-within td,
+.mx-data-grid tbody tr:has(button:focus-visible) td,
+.mx-data-grid tbody tr:has(a:focus-visible) td {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 10%, transparent);
+}
+
+.mx-data-grid--compact thead th,
+.mx-data-grid--compact tbody td {
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+.mx-data-grid__state {
+  text-align: center;
+  color: var(--mx-color-text-secondary, #40556f);
+  padding: 1rem 0.85rem;
+}
+
+.mx-data-grid__loading {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.mx-data-grid__loading-spinner {
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 999px;
+  border: 2px solid color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 35%, transparent);
+  border-top-color: var(--mx-color-brand-primary, #3a67bf);
+  animation: mx-spin 0.9s linear infinite;
+}
+
+.mx-data-grid-root[data-loading="True"] {
+  opacity: 0.94;
+}
