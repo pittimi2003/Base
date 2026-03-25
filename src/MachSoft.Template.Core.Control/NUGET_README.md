@@ -19,6 +19,7 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 - Feedback: `MxAlert`, `MxProgress`, `MxToast`
 - Overlays: `MxTooltip`, `MxDialog`, `MxPopup`
 - Inputs: `MxTextField`, `MxTextArea`, `MxCheckbox`, `MxRadio`, `MxSwitch`, `MxSelect`
+- Selection: `MxAutocomplete`, `MxMultiSelect`, `MxComboBox`
 
 ## Alcance y límites actuales
 - `MxDialog` incluye apertura/cierre controlado, cierre por overlay/escape y foco inicial en el shell del diálogo.
@@ -29,6 +30,7 @@ Catálogo oficial de controles `Mx*` para MachSoft sobre Blazor.
 
 - Inputs base (TextField/TextArea/Checkbox/Radio/Switch/Select) incluyen helper/validation text, estados `disabled`/`invalid` y foco visible tokenizado.
 - `MxSelect` ofrece versión simple de selección única; `ReadOnly` se representa con comportamiento equivalente a `disabled` + `aria-readonly`, porque el `<select>` nativo no soporta readonly real.
+- Selection avanzada (Autocomplete/MultiSelect/ComboBox) incluye búsqueda local básica, estado `loading`, estado `empty/no-results`, soporte de teclado base (`ArrowUp/ArrowDown`, `Enter`, `Escape`) y contratos listos para evolucionar a providers async/remotos sin romper API.
 
 Todos los controles consumen tokens del package `MachSoft.Template.Core` y son compatibles con Blazor Server/WebAssembly.
 

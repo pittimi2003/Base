@@ -96,3 +96,30 @@ Showcase actualizado (`/families/inputs`) con ejemplos base, variantes y estados
 - `Checkbox/Radio/Switch` incorporan `Description` opcional para contexto sin inflar la API.
 - `Radio` mantiene agrupación mínima por `Name`; limitación documentada para evitar pseudo-abstracciones tempranas.
 - `Select` mantiene alcance baseline y documenta explícitamente que `ReadOnly` se implementa como estado no interactivo por limitación HTML nativa.
+
+## Iteración 2026-03-25 — Selection avanzada (lote inicial usable)
+
+Cobertura implementada en `MachSoft.Template.Core.Control`:
+- `MxAutocomplete`: búsqueda local sobre `Items` (`MxInputOption`), sugerencias visibles en popup/listbox, selección simple (`Value/ValueChanged`) y texto de búsqueda (`SearchText/SearchTextChanged`), con estados `disabled`, `invalid`, `loading` y `no-results`.
+- `MxMultiSelect`: selección múltiple real sobre `Options` (`MxInputOption`), chips removibles de seleccionados, filtro local por texto y popup/listbox multiselección (`SelectedValues/SelectedValuesChanged`).
+- `MxComboBox`: control intermedio input + selector con apertura/cierre controlable (botón + teclado), búsqueda local y selección única.
+
+Decisiones de diseño de esta iteración:
+- API pública simple y homogénea entre los tres controles (label, helper/error text, estados base y binding explícito).
+- Sin dependencias externas ni wrappers vendor; implementación en Blazor + HTML/CSS tokenizado.
+- Se evita `datalist` y `select multiple` como mecanismo final de estos controles.
+- Base accesible inicial: roles `combobox`/`listbox`/`option`, `aria-expanded`, `aria-controls`, `aria-selected`, `aria-invalid` y foco visible.
+
+Límites abiertos (explícitos):
+- Sin virtualización, sin provider async remoto y sin templates avanzadas en esta iteración.
+- Navegación de teclado deliberadamente básica para sostener simplicidad inicial.
+- Cierre por foco implementado en capa Blazor sin orquestación avanzada de focus management global.
+
+Showcase actualizado:
+- Nueva validación funcional visible en `/families/selection` con ejemplos de:
+  - básico,
+  - búsqueda,
+  - estado vacío / sin resultados,
+  - disabled / invalid,
+  - loading (cuando aplica),
+  - verificación light/dark en el mismo host desacoplado.
