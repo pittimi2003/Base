@@ -98,8 +98,9 @@ Para validar catálogo público inicial, ejecutar `MachSoft.Template.Core.Contro
 - `/families/actions`
 - `/families/feedback`
 - `/families/overlays`
+- `/families/listing`
 
 Estas páginas cubren variantes y estados base de los controles del lote 1.
 
 ## Nota de consolidación (2026-03-25)
-La validación de `/families/actions`, `/families/feedback` y `/families/overlays` ahora incluye estados endurecidos (loading accesible, roles semánticos, foco inicial en dialog y límites explícitos de overlays).
+La validación de `/families/actions`, `/families/feedback`, `/families/overlays` y `/families/listing` incluye estados endurecidos y ejemplos funcionales reales por familia.

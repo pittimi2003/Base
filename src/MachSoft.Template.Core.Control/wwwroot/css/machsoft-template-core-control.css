@@ -850,3 +850,240 @@
 .mx-input-root--disabled .mx-multiselect__control {
   background: color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 84%, var(--mx-color-bg-surface, #fff));
 }
+
+/* Lists + Avatar + Chip family */
+.mx-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  border-radius: var(--mx-radius-md, 10px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
+  background: var(--mx-color-bg-surface, #fff);
+}
+
+.mx-list__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.65rem;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.75rem;
+  border-bottom: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 72%, transparent);
+}
+
+.mx-list__item:last-child {
+  border-bottom: 0;
+}
+
+.mx-list__item-main {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.mx-list__item-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 999px;
+  display: inline-grid;
+  place-items: center;
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 16%, transparent);
+}
+
+.mx-list__item-copy {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.mx-list__item-secondary {
+  color: var(--mx-color-text-secondary, #40556f);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+}
+
+.mx-list--compact .mx-list__item {
+  min-height: 2.35rem;
+  padding: 0.4rem 0.65rem;
+}
+
+.mx-list__item:not(.is-disabled):hover {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 8%, transparent);
+}
+
+.mx-list--disabled,
+.mx-list__item.is-disabled {
+  opacity: 0.65;
+}
+
+.mx-listbox {
+  margin: 0;
+  padding: 0.25rem;
+  list-style: none;
+  border-radius: var(--mx-radius-sm, 6px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-default, #bdcbdf);
+  background: var(--mx-color-bg-surface, #fff);
+  display: grid;
+  gap: 0.2rem;
+  max-height: 16rem;
+  overflow: auto;
+}
+
+.mx-listbox:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-listbox__option {
+  border-radius: var(--mx-radius-sm, 6px);
+}
+
+.mx-listbox__option-button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  width: 100%;
+  font: inherit;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.55rem;
+  border-radius: inherit;
+}
+
+.mx-listbox__option-copy {
+  display: grid;
+  gap: 0.1rem;
+  min-width: 0;
+}
+
+.mx-listbox__option-secondary {
+  color: var(--mx-color-text-secondary, #40556f);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+}
+
+.mx-listbox__option-icon {
+  width: 1.4rem;
+  text-align: center;
+}
+
+.mx-listbox__check {
+  margin-left: auto;
+  color: var(--mx-color-brand-primary, #3a67bf);
+  font-weight: 700;
+}
+
+.mx-listbox__option-button:hover,
+.mx-listbox__option.is-active .mx-listbox__option-button {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 11%, transparent);
+}
+
+.mx-listbox__option.is-selected .mx-listbox__option-button {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 20%, transparent);
+  font-weight: var(--mx-font-weight-semibold, 600);
+}
+
+.mx-listbox__option.is-disabled {
+  opacity: 0.6;
+}
+
+.mx-avatar {
+  display: inline-grid;
+  place-items: center;
+  overflow: hidden;
+  border: var(--mx-border-width-1, 1px) solid color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 92%, transparent);
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 16%, transparent);
+  color: var(--mx-color-text-primary, #132033);
+  font-weight: var(--mx-font-weight-semibold, 600);
+  user-select: none;
+}
+
+.mx-avatar--circle { border-radius: 999px; }
+.mx-avatar--rounded { border-radius: var(--mx-radius-sm, 6px); }
+.mx-avatar--square { border-radius: 0; }
+
+.mx-avatar--xsmall { width: 1.5rem; height: 1.5rem; font-size: 0.625rem; }
+.mx-avatar--small { width: 2rem; height: 2rem; font-size: 0.75rem; }
+.mx-avatar--medium { width: 2.5rem; height: 2.5rem; font-size: 0.875rem; }
+.mx-avatar--large { width: 3rem; height: 3rem; font-size: 1rem; }
+.mx-avatar--xlarge { width: 3.5rem; height: 3.5rem; font-size: 1.125rem; }
+
+.mx-avatar__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mx-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  border-radius: var(--mx-radius-pill, 999px);
+  border: var(--mx-border-width-1, 1px) solid var(--mx-color-border-default, #bdcbdf);
+  background: var(--mx-color-bg-surface, #fff);
+  color: var(--mx-color-text-primary, #132033);
+  min-height: 1.95rem;
+}
+
+.mx-chip__content,
+.mx-chip__action {
+  padding: 0.18rem 0.7rem;
+}
+
+.mx-chip__action,
+.mx-chip__remove {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.mx-chip__action {
+  border-radius: var(--mx-radius-pill, 999px);
+}
+
+.mx-chip__action:hover,
+.mx-chip__remove:hover {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
+}
+
+.mx-chip__action:focus-visible,
+.mx-chip__remove:focus-visible {
+  outline: var(--mx-focus-ring-width, 3px) solid var(--mx-color-border-focus, var(--mx-color-brand-primary, #3a67bf));
+  outline-offset: var(--mx-focus-ring-offset, 2px);
+}
+
+.mx-chip__remove {
+  width: 1.8rem;
+  height: 1.8rem;
+  border-radius: 999px;
+  padding: 0;
+}
+
+.mx-chip--interactive.is-selected,
+.mx-chip.is-selected {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 18%, transparent);
+  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 46%, transparent);
+}
+
+.mx-chip--brand {
+  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 48%, transparent);
+}
+
+.mx-chip--success {
+  border-color: color-mix(in srgb, #2f9c5e 54%, transparent);
+}
+
+.mx-chip--warning {
+  border-color: color-mix(in srgb, #d68b1a 58%, transparent);
+}
+
+.mx-chip--danger {
+  border-color: color-mix(in srgb, #c53c3c 58%, transparent);
+}
+
+.mx-chip.is-disabled {
+  opacity: 0.6;
+}

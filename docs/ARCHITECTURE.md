@@ -106,3 +106,8 @@ No credentials are stored in source control. Teams are expected to inject creden
 ## Actualización 2026-03-25 — hardening lote 1 Core.Control
 - Se consolidó la primera familia pública (`MxButton`, `MxIconButton`, `MxAlert`, `MxProgress`, `MxTooltip`, `MxDialog`, `MxToast`, `MxPopup`) corrigiendo estados, semántica ARIA y consistencia visual.
 - El hardening se mantuvo dentro de `MachSoft.Template.Core.Control` y `Core.Control.Showcase`, preservando la separación con `MachSoft.Template.Core`.
+
+## Actualización 2026-03-25 — familia List / ListBox / Avatar / Chip
+- `MachSoft.Template.Core.Control` extiende su superficie pública con `MxList`, `MxListBox`, `MxAvatar` y `MxChip` bajo una API mínima y evolutiva.
+- La familia reutiliza tokens/theming de `MachSoft.Template.Core` sin introducir dependencias externas ni acoplamiento de host.
+- `MachSoft.Template.Core.Control.Showcase` incorpora `/families/listing` para validación visual/funcional en light y dark con estados interactivos reales.

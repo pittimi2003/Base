@@ -1,0 +1,232 @@
+@namespace MachSoft.Template.Core.Control
+@using MachSoft.Template.Core.Control.Models
+
+<div class="@RootClass">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <label class="mx-input-label" id="@LabelId" for="@ResolvedId">@Label</label>
+    }
+
+    <ul id="@ResolvedId"
+        class="mx-listbox"
+        role="listbox"
+        tabindex="@(Disabled ? -1 : 0)"
+        aria-labelledby="@ResolvedLabelledBy"
+        aria-label="@ResolvedAriaLabel"
+        aria-multiselectable="@Multiple"
+        aria-required="@Required"
+        aria-invalid="@AriaInvalid"
+        aria-disabled="@AriaDisabled"
+        aria-activedescendant="@ActiveDescendantId"
+        aria-describedby="@DescribedBy"
+        @onkeydown="HandleKeyDown"
+        @onfocus="HandleFocus">
+        @for (var index = 0; index < Options.Count; index++)
+        {
+            var option = Options[index];
+            var optionId = GetOptionId(index);
+            var selected = IsSelected(option.Value);
+            var itemDisabled = Disabled || option.Disabled;
+            <li id="@optionId"
+                class="@GetOptionClass(selected, itemDisabled, ActiveIndex == index)"
+                role="option"
+                aria-selected="@selected"
+                aria-disabled="@itemDisabled">
+                <button type="button"
+                        class="mx-listbox__option-button"
+                        disabled="@itemDisabled"
+                        @onclick="() => SelectFromPointerAsync(index)">
+                    @if (!string.IsNullOrWhiteSpace(option.Icon))
+                    {
+                        <span class="mx-listbox__option-icon" aria-hidden="true">@option.Icon</span>
+                    }
+                    <span class="mx-listbox__option-copy">
+                        <span>@option.Text</span>
+                        @if (!string.IsNullOrWhiteSpace(option.SecondaryText))
+                        {
+                            <span class="mx-listbox__option-secondary">@option.SecondaryText</span>
+                        }
+                    </span>
+                    @if (selected)
+                    {
+                        <span class="mx-listbox__check" aria-hidden="true">✓</span>
+                    }
+                </button>
+            </li>
+        }
+    </ul>
+
+    @if (!string.IsNullOrWhiteSpace(ValidationText))
+    {
+        <span id="@ValidationId" class="mx-input-message mx-input-message--invalid">@ValidationText</span>
+    }
+    else if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <span id="@HelperId" class="mx-input-message">@HelperText</span>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Id { get; set; }
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public IReadOnlyList<MxListBoxOption> Options { get; set; } = Array.Empty<MxListBoxOption>();
+    [Parameter] public bool Multiple { get; set; }
+    [Parameter] public string? Value { get; set; }
+    [Parameter] public EventCallback<string?> ValueChanged { get; set; }
+    [Parameter] public IReadOnlyList<string> Values { get; set; } = Array.Empty<string>();
+    [Parameter] public EventCallback<IReadOnlyList<string>> ValuesChanged { get; set; }
+    [Parameter] public bool Disabled { get; set; }
+    [Parameter] public bool Required { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ValidationText { get; set; }
+    [Parameter] public string? Class { get; set; }
+
+    private readonly string _instanceId = $"mx-listbox-{Guid.NewGuid():N}";
+    private int ActiveIndex { get; set; } = -1;
+
+    private string ResolvedId => Id ?? _instanceId;
+    private string LabelId => $"{ResolvedId}-label";
+    private string HelperId => $"{ResolvedId}-helper";
+    private string ValidationId => $"{ResolvedId}-validation";
+    private string? AriaInvalid => Invalid ? "true" : null;
+    private string? AriaDisabled => Disabled ? "true" : null;
+    private string? ResolvedLabelledBy => !string.IsNullOrWhiteSpace(Label) ? LabelId : null;
+    private string? ResolvedAriaLabel => string.IsNullOrWhiteSpace(Label) ? AriaLabel ?? "List box" : null;
+    private string? ActiveDescendantId => ActiveIndex >= 0 ? GetOptionId(ActiveIndex) : null;
+    private string? DescribedBy => !string.IsNullOrWhiteSpace(ValidationText)
+        ? ValidationId
+        : !string.IsNullOrWhiteSpace(HelperText)
+            ? HelperId
+            : null;
+
+    private string RootClass =>
+        $"mx-input-root mx-listbox-root {(Invalid ? "mx-input-root--invalid" : string.Empty)} {(Disabled ? "mx-input-root--disabled" : string.Empty)} {(Required ? "mx-input-root--required" : string.Empty)} {Class}";
+
+    protected override void OnParametersSet()
+    {
+        EnsureActiveIndex();
+    }
+
+    private string GetOptionId(int index) => $"{ResolvedId}-option-{index}";
+
+    private bool IsSelected(string optionValue)
+        => Multiple ? Values.Contains(optionValue) : string.Equals(Value, optionValue, StringComparison.Ordinal);
+
+    private async Task SelectFromPointerAsync(int index)
+    {
+        ActiveIndex = index;
+        await ToggleSelectionAsync(index);
+    }
+
+    private async Task HandleKeyDown(KeyboardEventArgs args)
+    {
+        if (Disabled || Options.Count == 0)
+        {
+            return;
+        }
+
+        if (args.Key == "ArrowDown")
+        {
+            ActiveIndex = FindNextEnabledIndex(ActiveIndex, 1);
+        }
+        else if (args.Key == "ArrowUp")
+        {
+            ActiveIndex = FindNextEnabledIndex(ActiveIndex, -1);
+        }
+        else if (args.Key == "Home")
+        {
+            ActiveIndex = FindNextEnabledIndex(-1, 1);
+        }
+        else if (args.Key == "End")
+        {
+            ActiveIndex = FindNextEnabledIndex(0, -1);
+        }
+        else if ((args.Key == "Enter" || args.Key == " ") && ActiveIndex >= 0)
+        {
+            await ToggleSelectionAsync(ActiveIndex);
+        }
+    }
+
+    private Task HandleFocus(FocusEventArgs _)
+    {
+        EnsureActiveIndex();
+        return Task.CompletedTask;
+    }
+
+    private async Task ToggleSelectionAsync(int index)
+    {
+        if (index < 0 || index >= Options.Count)
+        {
+            return;
+        }
+
+        var option = Options[index];
+        if (Disabled || option.Disabled)
+        {
+            return;
+        }
+
+        if (!Multiple)
+        {
+            await ValueChanged.InvokeAsync(option.Value);
+            return;
+        }
+
+        var next = Values.ToList();
+        if (!next.Remove(option.Value))
+        {
+            next.Add(option.Value);
+        }
+
+        await ValuesChanged.InvokeAsync(next);
+    }
+
+    private string GetOptionClass(bool selected, bool disabled, bool active)
+        => $"mx-listbox__option {(selected ? "is-selected" : string.Empty)} {(disabled ? "is-disabled" : string.Empty)} {(active ? "is-active" : string.Empty)}";
+
+    private void EnsureActiveIndex()
+    {
+        if (Options.Count == 0)
+        {
+            ActiveIndex = -1;
+            return;
+        }
+
+        if (ActiveIndex < 0 || ActiveIndex >= Options.Count || Options[ActiveIndex].Disabled)
+        {
+            var selectedIndex = -1;
+            for (var index = 0; index < Options.Count; index++)
+            {
+                if (IsSelected(Options[index].Value) && !Options[index].Disabled)
+                {
+                    selectedIndex = index;
+                    break;
+                }
+            }
+
+            ActiveIndex = selectedIndex > -1 ? selectedIndex : FindNextEnabledIndex(-1, 1);
+        }
+    }
+
+    private int FindNextEnabledIndex(int startIndex, int direction)
+    {
+        if (Options.Count == 0)
+        {
+            return -1;
+        }
+
+        var index = startIndex;
+        for (var attempt = 0; attempt < Options.Count; attempt++)
+        {
+            index = (index + direction + Options.Count) % Options.Count;
+            if (!Options[index].Disabled)
+            {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+}
