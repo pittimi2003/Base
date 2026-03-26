@@ -1,12 +1,15 @@
-@using MachSoft.Template.Core.Themes
+@using MachSoft.Template.Core.Components
+@using MachSoft.Template.Core.Control.Components
 @using Microsoft.AspNetCore.Components.Web
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <base href="/" />
-    <link rel="stylesheet" href="@MachSoftThemeReference.BundlePath" />
+    <MachSoftCoreAssets />
+    <MxControlAssets IncludeCoreAssets="false" />
     <link rel="stylesheet" href="app.css" />
     <HeadOutlet @rendermode="new InteractiveServerRenderMode(prerender: false)" />
 </head>
