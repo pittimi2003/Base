@@ -72,3 +72,10 @@ Impacto de migración:
 - Se corrigió integración documental del theming del shell Core (`theme.js` obligatorio para interop de `AppShell`) y se agregó fallback seguro a light mode si el script no está disponible.
 - Se añadió malla E2E smoke transversal mínima por familias implementadas para detectar regresiones de render, interacción primaria, light/dark y errores runtime.
 
+
+
+## Registro 2026-03-26 — cierre arquitectónico definitivo Core/Core.Control
+- Se eliminó la superficie pública de controles `Mx*` en `MachSoft.Template.Core` (componentes y modelos de catálogo).
+- Se consolidaron modelos/variantes `Mx*` en `MachSoft.Template.Core.Control.Models` como contrato único de catálogo.
+- Se actualizaron templates oficiales para referenciar explícitamente `MachSoft.Template.Core.Control` además de `MachSoft.Template.Core`.
+- Se actualizó documentación para dejar explícita la separación: Core=baseline técnico, Core.Control=catálogo oficial de controles.

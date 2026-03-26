@@ -127,7 +127,15 @@ No credentials are stored in source control. Teams are expected to inject creden
 
 ## Actualización 2026-03-25 — saneamiento final de contratos Core/Core.Control
 - Se delimitó la gobernanza de tipos Mx* para eliminar colisiones semánticas entre paquetes.
-- Contratos compartidos pasan a consumirse directamente desde `MachSoft.Template.Core.Models` (`MxButtonSize`, `MxDialogSize`, `MxProgressVariant`, `MxToastVariant`, `MxInputOption`, `MxSelectOption`).
+- Los contratos `Mx*` de catálogo se movieron a `MachSoft.Template.Core.Control.Models` para eliminar ambigüedad pública entre paquetes.
 - `MachSoft.Template.Core.Control` conserva tipos exclusivos renombrados (`MxControlButtonVariant`, `MxControlDataGridColumn<TItem>`) para evitar ambigüedad pública con tipos homónimos de Core.
 - Se mantiene compatibilidad arquitectónica Server/WASM y separación limpia paquete/showcase.
 
+
+
+## Decisión arquitectónica definitiva (2026-03-26)
+
+- `MachSoft.Template.Core` **no expone controles públicos de catálogo (`Mx*`)**.
+- `MachSoft.Template.Core.Control` concentra el catálogo público `Mx*` y sus modelos/variantes asociados.
+- Los hosts template (Server/WASM) referencian `Core` + `Core.Control`; no deben consumir controles UI desde `Core`.
+- `Core.Control.Showcase` valida visual y funcionalmente el catálogo sin introducir payload de demo en el paquete distribuible.

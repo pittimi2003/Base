@@ -5,6 +5,7 @@
 
   <ItemGroup>
     <PackageVersion Include="MachSoft.Template.Core" Version="0.0.0-core-version" />
+    <PackageVersion Include="MachSoft.Template.Core.Control" Version="0.0.0-core-control-version" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="8.0.25" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="8.0.25" />
   </ItemGroup>

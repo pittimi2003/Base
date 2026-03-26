@@ -10,5 +10,6 @@
 
   <ItemGroup>
     <PackageReference Include="MachSoft.Template.Core" />
+    <PackageReference Include="MachSoft.Template.Core.Control" />
   </ItemGroup>
 </Project>
