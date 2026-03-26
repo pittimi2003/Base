@@ -92,7 +92,8 @@
   gap: var(--ms-space-2, 0.5rem);
 }
 
-.ms-nav__list {
+.ms-nav__list,
+.ms-nav ul {
   margin: 0;
   padding: 0;
   list-style: none;
@@ -100,8 +101,10 @@
   gap: var(--ms-space-2, 0.5rem);
 }
 
-.ms-nav__entry {
+.ms-nav__entry,
+.ms-nav li {
   margin: 0;
+  list-style: none;
 }
 
 .ms-nav__item {

@@ -1,10 +1,10 @@
 @using MachSoft.Template.Core.Models
 
 <nav class="ms-nav" aria-label="Primary">
-    <ul class="ms-nav__list">
+    <ul class="ms-nav__list" role="list">
         @foreach (var item in Items)
         {
-            <li class="ms-nav__entry">
+            <li class="ms-nav__entry" role="listitem">
                 <NavLink href="@item.Href" class="ms-nav__item" Match="NavLinkMatch.Prefix" @onclick="HandleItemSelected">
                     @if (!string.IsNullOrWhiteSpace(item.Icon))
                     {
