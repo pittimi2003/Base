@@ -2,22 +2,25 @@
 @using MachSoft.Template.Core.Models
 @inject IJSRuntime JSRuntime
 
-<AppShell BrandTitle="MachSoft"
-          Title="Core.Control Showcase"
-          Subtitle="Host oficial para validación visual y funcional del catálogo Mx*."
-          FooterText="MachSoft.Template.Core.Control.Showcase"
-          ShowThemeToggle="false"
-          NavigationItems="_navigationItems">
-    <div class="ms-showcase-toolbar">
-        <MxSwitch Id="mx-showcase-theme-switch"
-                  Label="Tema oscuro"
-                  Description="Control Mx* para validar cambio de tema en runtime."
-                  Checked="@IsDarkTheme"
-                  CheckedChanged="OnThemeChanged" />
-    </div>
+<div class="ms-control-shell mx-control-host"
+     data-mx-theme="@CurrentTheme">
+    <AppShell BrandTitle="MachSoft"
+              Title="Core.Control Showcase"
+              Subtitle="Host oficial para validación visual y funcional del catálogo Mx*."
+              FooterText="MachSoft.Template.Core.Control.Showcase"
+              ShowThemeToggle="false"
+              NavigationItems="_navigationItems">
+        <div class="ms-showcase-toolbar">
+            <MxSwitch Id="mx-showcase-theme-switch"
+                      Label="Tema oscuro"
+                      Description="Control Mx* para validar cambio de tema en runtime."
+                      Checked="@IsDarkTheme"
+                      CheckedChanged="OnThemeChanged" />
+        </div>
 
-    @Body
-</AppShell>
+        @Body
+    </AppShell>
+</div>
 
 @code {
     private static readonly IReadOnlyList<NavItem> _navigationItems =
