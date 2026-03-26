@@ -2,7 +2,6 @@
 
 ## Scope audited
 - `src/MachSoft.Template.Core/Components/Foundation`
-- `src/MachSoft.Template.Core/Components/Forms`
 - `src/MachSoft.Template.Core/Components/Navigation`
 - `src/MachSoft.Template.Core/Layout`
 - `src/MachSoft.Template.Core/Components/Common` (no files currently)
@@ -27,19 +26,11 @@
 ### PATTERN
 - `MxSearchPanel`, `MxFilterBar`, `MxDashboardSection`, `MxMasterDetail`, `MxSettingsPage`
 
-### LEGACY
-- `BaseCard` → replaced by `MxCard`
-- `PageContainer` → replaced by `MxPageHeader` + `MxPanel/MxCard` composition
-- `FormSection` → replaced by `MxFormSection`
-- `FieldGroup` → replaced by `MxFieldGroup`
-- `SectionTitle` → replaced by `MxFormSection` header semantics
-
 ### INTERNAL
 - `AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`, `MainLayout`
-- `SideNav` (legacy navigation helper)
-- `AppMenuTile` (template navigation tile for starter/sample shell)
+- `SideNav` (navigation helper used by `AppNavigation`)
 
 ## Consolidation decisions
 1. No new groups/components were introduced.
-2. Legacy components remain functional but explicitly marked as deprecated in source.
-3. Starter pages are now composed using Mx* components/patterns to accelerate team adoption.
+2. Legacy components (`BaseCard`, `PageContainer`, `FormSection`, `FieldGroup`, `SectionTitle`, `AppMenuTile`) were removed from `MachSoft.Template.Core`.
+3. Showcase/demo experiences remain isolated in dedicated hosts (`Core.Control.Showcase` and official templates), not inside `Core`.
