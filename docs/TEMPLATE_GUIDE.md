@@ -132,10 +132,3 @@ Las apps generadas deben usar:
 No se debe consumir catálogo UI público desde `MachSoft.Template.Core`.
 
 - Validar en apps generadas que `MainLayout` use `AppShell`, que la hamburguesa aparezca en mobile/tablet y que `theme.js` esté cargado para cambio real de tema.
-
-
-## Nota de adopción (2026-03-26) — AppShell final
-- Validar que `Routes/App.razor` de cada host apunte explícitamente a su `MainLayout` corporativo.
-- Validar que el shell renderice header fijo (48px), menú drawer oculto por defecto y overlay al abrir.
-- Validar elementos de header: hamburguesa, home, alertas, usuario y pantalla completa.
-- Si se requiere ocultar el pie, usar `ShowFooter="false"` en `AppShell` desde el `MainLayout` del host.

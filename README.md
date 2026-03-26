@@ -186,10 +186,3 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - `MachSoft.Template.Core.Control` incluye `MxScheduler` base funcional y su validación en `MachSoft.Template.Core.Control.Showcase` (`/families/scheduling`).
 
 - Templates oficiales Server/WASM ahora componen el shell común `AppShell` de Core (sidebar desktop + hamburguesa responsive + theming por `theme.js`) para evitar navegación cruda por host.
-
-
-## Actualización 2026-03-26 — AppShell corporativo offcanvas
-- `AppShell` adopta navegación lateral tipo drawer/offcanvas oculta por defecto en desktop/mobile/tablet, con cierre por overlay, navegación, hamburguesa y tecla Escape.
-- `AppHeader` queda fijo (48px) y estandariza composición: hamburguesa + home a la izquierda; alertas + usuario + pantalla completa a la derecha.
-- Showcase, Official.Server y Official.Wasm quedan cableados explícitamente al `MainLayout` que usa `AppShell` para evitar derivaciones a layouts legacy.
-- `AppFooter` se mantiene como parte del shell y ahora puede activarse/ocultarse por parámetro (`ShowFooter`).

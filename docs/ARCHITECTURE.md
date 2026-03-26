@@ -147,10 +147,3 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `Core` queda alineado como base técnica/visual/infrastructural; las experiencias de demostración quedan fuera del paquete.
 
 - El `template-content` de ambos templates oficiales usa `AppShell` (Core) como contrato visual único de layout/navigation, evitando duplicación de shell por host.
-
-
-## Actualización 2026-03-26 — contrato de shell corporativo
-- `MachSoft.Template.Core/Layout/AppShell.razor` es el contrato único de shell para hosts oficiales y showcase.
-- El shell ahora opera con patrón `header fijo + workspace libre + drawer offcanvas` sin sidebar persistente visible en reposo.
-- `AppHeader` conserva acciones estructurales corporativas (hamburguesa, home, alertas, usuario, pantalla completa) con accesibilidad mínima (`aria-expanded`, `aria-controls`, `aria-hidden`, Escape).
-- `AppFooter` no se elimina del contrato y se controla vía parámetro para escenarios con/sin pie.
