@@ -1,20 +1,26 @@
 @using MachSoft.Template.Core.Models
 
-<header class="ms-shell__header">
-    <div class="ms-shell__header-left">
-        <button class="ms-header-menu-btn"
+<header class="ms-app-header" role="banner">
+    <div class="ms-app-header__left">
+        <button class="ms-app-header__icon-btn ms-header-menu-btn"
                 id="@ToggleButtonId"
                 type="button"
                 @onclick="HandleToggleClick"
-                aria-label="Toggle sidebar navigation"
+                aria-label="Abrir o cerrar navegación"
                 aria-expanded="@(IsMenuOpen ? "true" : "false")"
-                aria-controls="@NavigationId"
-                aria-haspopup="true">
+                aria-controls="@NavigationId">
             <span class="ms-header-menu-btn__icon" aria-hidden="true"></span>
         </button>
+
+        <a class="ms-app-header__home"
+           href="@HomeHref"
+           aria-label="Ir al inicio">
+            <span class="ms-app-header__home-icon" aria-hidden="true">⌂</span>
+            <span class="ms-app-header__home-label">@HomeLabel</span>
+        </a>
     </div>
 
-    <div class="ms-shell__header-main">
+    <div class="ms-app-header__center">
         <h1 class="ms-title">@Title</h1>
         @if (!string.IsNullOrWhiteSpace(Subtitle))
         {
@@ -22,23 +28,39 @@
         }
     </div>
 
-    @if (ShowThemeToggle)
-    {
-        <div class="ms-shell__header-right">
+    <div class="ms-app-header__right">
+        <button type="button" class="ms-app-header__icon-btn" aria-label="Alertas">
+            <span aria-hidden="true">🔔</span>
+        </button>
+
+        <button type="button" class="ms-app-header__user" aria-label="Usuario en sistema">
+            <span class="ms-app-header__user-avatar" aria-hidden="true">👤</span>
+            <span class="ms-app-header__user-name">@UserDisplayName</span>
+        </button>
+
+        <button type="button" class="ms-app-header__icon-btn" aria-label="Pantalla completa">
+            <span aria-hidden="true">⤢</span>
+        </button>
+
+        @if (ShowThemeToggle)
+        {
             <button type="button"
-                    class="ms-theme-toggle"
+                    class="ms-app-header__icon-btn ms-theme-toggle"
                     @onclick="HandleThemeToggle"
-                    aria-label="Switch color mode"
+                    aria-label="Cambiar modo de color"
                     aria-pressed="@(CurrentTheme is ThemeMode.Dark)">
-                @(CurrentTheme is ThemeMode.Dark ? "☀️" : "🌙")
+                <span aria-hidden="true">@(CurrentTheme is ThemeMode.Dark ? "☀️" : "🌙")</span>
             </button>
-        </div>
-    }
+        }
+    </div>
 </header>
 
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
+    [Parameter] public string HomeHref { get; set; } = "/";
+    [Parameter] public string HomeLabel { get; set; } = "Home";
+    [Parameter] public string UserDisplayName { get; set; } = "Usuario en sistema";
     [Parameter] public bool IsMenuOpen { get; set; }
     [Parameter] public string ToggleButtonId { get; set; } = "ms-shell-menu-toggle";
     [Parameter] public string NavigationId { get; set; } = "ms-app-navigation";

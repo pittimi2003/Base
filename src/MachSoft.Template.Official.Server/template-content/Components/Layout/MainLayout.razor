@@ -4,12 +4,17 @@
 <AppShell BrandTitle="TemplateCompanyName"
           Title="TemplateRootNamespace"
           Subtitle="Official MachSoft server baseline for internal projects."
+          HomeLabel="Server"
+          UserDisplayName="Usuario Server"
           FooterText="TemplateCompanyName · MachSoft.Template.Official.Server"
+          ShowFooter="@ShowFooter"
           NavigationItems="_items">
     @Body
 </AppShell>
 
 @code {
+    [Parameter] public bool ShowFooter { get; set; } = true;
+
     private static readonly IReadOnlyList<NavItem> _items =
     [
         new("Home", "/", "🏠"),
