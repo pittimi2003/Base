@@ -56,17 +56,22 @@ Todos los controles consumen tokens del package `MachSoft.Template.Core` y son c
 
 Para evitar ambigüedades entre `MachSoft.Template.Core` y `MachSoft.Template.Core.Control`, se aplicó una delimitación explícita:
 
-- **Compartidos desde Core**: `MxButtonSize`, `MxDialogSize`, `MxProgressVariant`, `MxToastVariant`, `MxInputOption`, `MxSelectOption`.
-- **Exclusivos de Core.Control**: `MxControlButtonVariant`, `MxControlDataGridColumn<TItem>`, `MxAlertVariant`, `MxPopupPlacement`, `MxTooltipPlacement`, `MxAvatar*`, `MxChipVariant`.
+- **Todos los contratos `Mx*` públicos del catálogo viven en `MachSoft.Template.Core.Control.Models`.**
+- `MachSoft.Template.Core` no expone controles públicos `Mx*` ni modelos de catálogo.
 
 ### Breaking changes declarados
 
 - `MxButtonVariant` (Core.Control) fue reemplazado por `MxControlButtonVariant`.
 - `MxDataGridColumn<TItem>` (Core.Control) fue reemplazado por `MxControlDataGridColumn<TItem>`.
-- `MxSelectOption` y `MxInputOption` propios de Core.Control se retiraron para usar los contratos compartidos de Core.
+- `MxSelectOption`, `MxInputOption` y variantes Mx* se mantienen en Core.Control para evitar ambigüedad de consumo entre paquetes.
 
 ### Naming consistency
 
 - Se mantiene `MxTextArea` en Core.Control para evitar una migración disruptiva en consumidores actuales.
 - La convergencia a `MxTextarea` queda pendiente para una versión mayor con plan de deprecación explícito.
 
+
+
+## Cierre arquitectónico definitivo (2026-03-26)
+
+`MachSoft.Template.Core.Control` queda como única superficie oficial de controles UI públicos `Mx*`.

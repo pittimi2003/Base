@@ -48,6 +48,13 @@
       "defaultValue": "https://your-private-feed/v3/index.json",
       "description": "Private NuGet feed that hosts MachSoft packages.",
       "replaces": "https://your-private-feed/v3/index.json"
+    },
+    "CoreControlPackageVersion": {
+      "type": "parameter",
+      "datatype": "string",
+      "defaultValue": "1.0.0-internal",
+      "description": "MachSoft.Template.Core.Control package version to restore.",
+      "replaces": "0.0.0-core-control-version"
     }
   },
   "tags": {

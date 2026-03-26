@@ -6,7 +6,7 @@ Guía de instalación, generación y validación de los templates oficiales Mach
 
 - .NET SDK 8.0.x
 - Paquetes de template en `artifacts/packages` o feed interno
-- Acceso a feed que publique `MachSoft.Template.Core`
+- Acceso a feed que publique `MachSoft.Template.Core` y `MachSoft.Template.Core.Control`
 
 ## Install templates
 
@@ -22,13 +22,13 @@ dotnet new install ./artifacts/packages/MachSoft.Template.Official.Wasm.1.0.0-in
 Este template genera una aplicación con Razor Components + Interactive Server rendering.
 
 ```powershell
-dotnet new machsoft-server -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal
+dotnet new machsoft-server -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
 ```
 
 ### Wasm (.NET 8 Blazor WebAssembly)
 
 ```powershell
-dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal
+dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
 ```
 
 ## Restore generated app
@@ -58,6 +58,7 @@ dotnet new uninstall MachSoft.Template.Official.Wasm
 - `CompanyName`: nombre de compañía para configuración base.
 - `RootNamespace`: namespace raíz opcional.
 - `CorePackageVersion`: versión de `MachSoft.Template.Core`.
+- `CoreControlPackageVersion`: versión de `MachSoft.Template.Core.Control`.
 - `PrivateFeedUrl`: URL del feed privado para `NuGet.config`.
 
 
@@ -120,3 +121,12 @@ Para escenarios de agenda/calendario inicial en plantillas MachSoft:
 - consumir callbacks `CurrentDateChanged` y `EventSelected` para integrar navegación y acciones del host sin lógica de negocio dentro del control.
 
 La iteración actual entrega vista mensual usable y estados base, dejando explícitamente fuera capacidades enterprise avanzadas para evolución posterior.
+
+
+## Cierre arquitectónico definitivo (2026-03-26)
+
+Las apps generadas deben usar:
+- `MachSoft.Template.Core` para baseline técnico (shell/layout/theming/assets).
+- `MachSoft.Template.Core.Control` para cualquier control público `Mx*`.
+
+No se debe consumir catálogo UI público desde `MachSoft.Template.Core`.

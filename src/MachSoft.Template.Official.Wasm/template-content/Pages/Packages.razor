@@ -4,10 +4,12 @@
 
 <section class="page-panel">
     <h1>Package dependencies</h1>
-    <p>This template references <code>MachSoft.Template.Core</code> from NuGet and expects the package to be available in the configured internal feed.</p>
+    <p>This template references <code>MachSoft.Template.Core</code> for technical baseline and <code>MachSoft.Template.Core.Control</code> for official Mx* controls.</p>
     <ul>
         <li>Update <code>NuGet.config</code> with the corporate feed URL.</li>
         <li>Restore with <code>dotnet restore</code> after the feed is reachable.</li>
-        <li>Keep the core package version aligned with the approved release train.</li>
+        <li>Keep Core and Core.Control versions aligned with the approved release train.</li>
     </ul>
+
+    <MxButton Variant="MxControlButtonVariant.Filled" Size="MxButtonSize.Small">Core.Control connected</MxButton>
 </section>

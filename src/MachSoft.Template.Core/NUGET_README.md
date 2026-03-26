@@ -35,3 +35,9 @@ Add this script in the host page (`App.razor`, `_Host.cshtml`, or `index.html` d
 ```
 
 If the script is missing, `AppShell` now falls back safely to light mode (without persisted theme toggle) instead of throwing runtime exceptions.
+
+
+## Architectural boundary (2026-03-26)
+
+`MachSoft.Template.Core` no longer exposes public `Mx*` catalog controls.
+Use `MachSoft.Template.Core.Control` for all public UI controls.

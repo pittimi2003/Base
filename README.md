@@ -4,6 +4,15 @@ Repositorio de productización en .NET 8 para el ecosistema corporativo de templ
 
 ## Componentes
 
+
+## Cierre arquitectónico definitivo (2026-03-26)
+
+- `MachSoft.Template.Core` queda restringido a base técnica/visual/infrastructural (layout/shell, theming, tokens, utilidades y contratos no-catálogo).
+- `MachSoft.Template.Core.Control` queda como **única** superficie oficial de controles públicos `Mx*`.
+- Los templates oficiales Server/WASM consumen ambos paquetes, usando `Core` para baseline y `Core.Control` para UI catalogada.
+- `MachSoft.Template.Core.Control.Showcase` se mantiene como host de validación visual/funcional del catálogo.
+
+
 - `MachSoft.Template.Core`: paquete NuGet reusable (Razor Class Library).
 - `MachSoft.Template.Official.Server`: template oficial `dotnet new` para **Blazor Web App** con **Razor Components + Interactive Server rendering**.
 - `MachSoft.Template.Official.Wasm`: template oficial `dotnet new` para **Blazor WebAssembly**.
@@ -36,7 +45,7 @@ Repositorio de productización en .NET 8 para el ecosistema corporativo de templ
 
 - .NET SDK 8.0.x
 - PowerShell 7+ (para scripts en `build/scripts`)
-- Acceso a feed interno para restaurar `MachSoft.Template.Core`
+- Acceso a feed interno para restaurar `MachSoft.Template.Core` y `MachSoft.Template.Core.Control`
 
 ## Restore
 
@@ -88,13 +97,13 @@ dotnet new install ./artifacts/packages/MachSoft.Template.Official.Wasm.1.0.0-in
 ### Generate Server app
 
 ```powershell
-dotnet new machsoft-server -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal
+dotnet new machsoft-server -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
 ```
 
 ### Generate Wasm app
 
 ```powershell
-dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal
+dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
 ```
 
 ## Restore generated app
