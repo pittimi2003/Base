@@ -4,18 +4,8 @@
 
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
      data-ms-shell-interactive="@(_isInteractive ? "true" : "false")"
-     @onkeydown:window="HandleWindowKeyDown">
-    <AppHeader Title="@Title"
-               Subtitle="@Subtitle"
-               BrandTitle="@BrandTitle"
-               IsMenuOpen="@IsMenuOpen"
-               ToggleButtonId="@ToggleButtonId"
-               NavigationId="@NavigationId"
-               ShowThemeToggle="@ShowThemeToggle"
-               CurrentTheme="@CurrentTheme"
-               OnToggleMenu="ToggleMenu"
-               OnToggleTheme="ToggleThemeAsync" />
-
+     tabindex="-1"
+     @onkeydown="HandleWindowKeyDown">
     <AppNavigation BrandTitle="@BrandTitle"
                    NavigationId="@NavigationId"
                    IsOpen="@IsMenuOpen"
@@ -23,23 +13,29 @@
                    NavigationItems="NavigationItems"
                    OnNavigationItemSelected="CloseMenuFromNavigation" />
 
-    <button type="button"
-            id="@OverlayId"
-            class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
-            @onclick="CloseMenu"
-            aria-label="Close sidebar navigation"
-            aria-hidden="@(IsMenuOpen ? "false" : "true")"></button>
-
     <div class="ms-shell__content">
+        <AppHeader Title="@Title"
+                   Subtitle="@Subtitle"
+                   IsMenuOpen="@IsMenuOpen"
+                   ToggleButtonId="@ToggleButtonId"
+                   NavigationId="@NavigationId"
+                   ShowThemeToggle="@ShowThemeToggle"
+                   CurrentTheme="@CurrentTheme"
+                   OnToggleMenu="ToggleMenu"
+                   OnToggleTheme="ToggleThemeAsync" />
+
         <main class="ms-shell__main" @onclick="CloseMenuOnContentClick">
             @ChildContent
         </main>
 
-        @if (ShowFooter)
-        {
-            <AppFooter FooterText="@FooterText" />
-        }
+        <AppFooter FooterText="@FooterText" />
     </div>
+
+    <button type="button"
+            id="@OverlayId"
+            class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
+            @onclick="CloseMenu"
+            aria-label="Close sidebar navigation"></button>
 </div>
 
 @code {
@@ -47,7 +43,6 @@
     [Parameter] public string Title { get; set; } = "MachSoft Starter";
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
     [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
-    [Parameter] public bool ShowFooter { get; set; } = true;
     [Parameter] public bool ShowThemeToggle { get; set; } = true;
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
