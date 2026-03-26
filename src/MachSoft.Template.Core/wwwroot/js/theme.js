@@ -34,6 +34,11 @@ window.machsoftTheme = (() => {
     return prefersDark ? dark : light;
   };
 
+  const getActiveTheme = () => {
+    const attributeTheme = normalize(document.documentElement.getAttribute("data-mx-theme"));
+    return attributeTheme ?? getPreferredTheme();
+  };
+
   const init = () => setTheme(getPreferredTheme());
-  return { init, setTheme, getPreferredTheme };
+  return { init, setTheme, getPreferredTheme, getActiveTheme };
 })();
