@@ -12,11 +12,6 @@
                 aria-haspopup="true">
             <span class="ms-header-menu-btn__icon" aria-hidden="true"></span>
         </button>
-
-        <NavLink class="ms-shell__home-link" href="/" Match="NavLinkMatch.All" aria-label="Go to home">
-            <span class="ms-shell__home-icon" aria-hidden="true">⌂</span>
-            <span class="ms-shell__home-text">@BrandTitle</span>
-        </NavLink>
     </div>
 
     <div class="ms-shell__header-main">
@@ -27,25 +22,9 @@
         }
     </div>
 
-    <div class="ms-shell__header-right">
-        <button type="button" class="ms-shell__header-action ms-shell__header-alerts" aria-label="Alerts">
-            <span aria-hidden="true">🔔</span>
-        </button>
-
-        <button type="button" class="ms-shell__header-user" aria-label="Current user">
-            <span class="ms-shell__header-user-avatar" aria-hidden="true">👤</span>
-            <span class="ms-shell__header-user-text">
-                <strong>Usuario en sistema</strong>
-                <small>Perfil corporativo</small>
-            </span>
-        </button>
-
-        <button type="button" class="ms-shell__header-action ms-shell__header-fullscreen" aria-label="Toggle fullscreen">
-            <span aria-hidden="true">⛶</span>
-        </button>
-
-        @if (ShowThemeToggle)
-        {
+    @if (ShowThemeToggle)
+    {
+        <div class="ms-shell__header-right">
             <button type="button"
                     class="ms-theme-toggle"
                     @onclick="HandleThemeToggle"
@@ -53,13 +32,12 @@
                     aria-pressed="@(CurrentTheme is ThemeMode.Dark)">
                 @(CurrentTheme is ThemeMode.Dark ? "☀️" : "🌙")
             </button>
-        }
-    </div>
+        </div>
+    }
 </header>
 
 @code {
     [Parameter, EditorRequired] public string Title { get; set; } = string.Empty;
-    [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
     [Parameter] public bool IsMenuOpen { get; set; }
     [Parameter] public string ToggleButtonId { get; set; } = "ms-shell-menu-toggle";

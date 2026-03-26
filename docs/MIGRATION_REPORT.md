@@ -81,9 +81,3 @@ Impacto de migración:
 - Se actualizó documentación para dejar explícita la separación: Core=baseline técnico, Core.Control=catálogo oficial de controles.
 
 - Se alineó `template-content` de Server/WASM al shell común de Core (`AppShell`) para corregir navegación cruda y garantizar comportamiento responsive/theming consistente.
-
-## Registro 2026-03-26 — consolidación AppShell corporativo
-- Se refactorizó el shell compartido de Core a patrón header fijo + nav lateral offcanvas (cerrada por defecto en todos los breakpoints).
-- Se incorporaron bloques estructurales obligatorios del header (hamburguesa, home, alertas, usuario, fullscreen) con clases CSS propias para evolución posterior.
-- Se habilitó footer opcional por parámetro en `AppShell`/`MainLayout`, manteniendo `AppFooter` como contrato reusable.
-- Se preservó consumo unificado del shell en Showcase y templates oficiales Server/WASM sin duplicar layouts por host.
