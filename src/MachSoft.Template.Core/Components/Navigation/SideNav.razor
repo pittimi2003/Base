@@ -1,16 +1,20 @@
 @using MachSoft.Template.Core.Models
 
 <nav class="ms-nav" aria-label="Primary">
-    @foreach (var item in Items)
-    {
-        <NavLink href="@item.Href" class="ms-nav__item" Match="NavLinkMatch.Prefix" @onclick="HandleItemSelected">
-            @if (!string.IsNullOrWhiteSpace(item.Icon))
-            {
-                <span class="ms-nav__icon">@item.Icon</span>
-            }
-            <span>@item.Text</span>
-        </NavLink>
-    }
+    <ul class="ms-nav__list">
+        @foreach (var item in Items)
+        {
+            <li class="ms-nav__entry">
+                <NavLink href="@item.Href" class="ms-nav__item" Match="NavLinkMatch.Prefix" @onclick="HandleItemSelected">
+                    @if (!string.IsNullOrWhiteSpace(item.Icon))
+                    {
+                        <span class="ms-nav__icon">@item.Icon</span>
+                    }
+                    <span>@item.Text</span>
+                </NavLink>
+            </li>
+        }
+    </ul>
 </nav>
 
 @code {

@@ -92,6 +92,18 @@
   gap: var(--ms-space-2, 0.5rem);
 }
 
+.ms-nav__list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: var(--ms-space-2, 0.5rem);
+}
+
+.ms-nav__entry {
+  margin: 0;
+}
+
 .ms-nav__item {
   display: flex;
   align-items: center;

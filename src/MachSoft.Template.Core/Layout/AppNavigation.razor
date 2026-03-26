@@ -4,7 +4,7 @@
        class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)"
        role="navigation"
        aria-label="Main navigation"
-       aria-hidden="@(!IsOpen)"
+       aria-hidden="@(IsOpen ? "false" : "true")"
        tabindex="-1"
        @ref="NavigationElementRef">
     <div class="ms-brand">@BrandTitle</div>
