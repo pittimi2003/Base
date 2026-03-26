@@ -81,3 +81,10 @@ Impacto de migración:
 - Se actualizó documentación para dejar explícita la separación: Core=baseline técnico, Core.Control=catálogo oficial de controles.
 
 - Se alineó `template-content` de Server/WASM al shell común de Core (`AppShell`) para corregir navegación cruda y garantizar comportamiento responsive/theming consistente.
+
+
+## 2026-03-26 — Shell corporativo (AppShell)
+- Se estandarizó `AppShell.razor` con `AppHeader.razor` fijo de 48px, `AppNavigation.razor` tipo drawer/offcanvas oculta por defecto y cierre por overlay/escape/hamburguesa/navegación.
+- `@Body` se renderiza en `ms-shell__main` inmediatamente bajo el header (sin franja vacía artificial).
+- `AppFooter.razor` permanece activo y ahora puede ocultarse mediante `ShowFooter` en los `MainLayout.razor` que consumen `AppShell`.
+- Se explicitó el wiring de layout en Showcase, Official.Server y Official.Wasm para evitar resolver un layout distinto al esperado.

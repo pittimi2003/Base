@@ -6,12 +6,16 @@
                 id="@ToggleButtonId"
                 type="button"
                 @onclick="HandleToggleClick"
-                aria-label="Toggle sidebar navigation"
+                aria-label="Abrir o cerrar navegación"
                 aria-expanded="@(IsMenuOpen ? "true" : "false")"
-                aria-controls="@NavigationId"
-                aria-haspopup="true">
+                aria-controls="@NavigationId">
             <span class="ms-header-menu-btn__icon" aria-hidden="true"></span>
         </button>
+
+        <a class="ms-header-home" href="/" aria-label="Ir al inicio">
+            <span aria-hidden="true">🏠</span>
+            <span>Home</span>
+        </a>
     </div>
 
     <div class="ms-shell__header-main">
@@ -22,18 +26,23 @@
         }
     </div>
 
-    @if (ShowThemeToggle)
-    {
-        <div class="ms-shell__header-right">
-            <button type="button"
-                    class="ms-theme-toggle"
-                    @onclick="HandleThemeToggle"
-                    aria-label="Switch color mode"
-                    aria-pressed="@(CurrentTheme is ThemeMode.Dark)">
-                @(CurrentTheme is ThemeMode.Dark ? "☀️" : "🌙")
-            </button>
-        </div>
-    }
+    <div class="ms-shell__header-right">
+        <button type="button" class="ms-header-action" aria-label="Notificaciones" title="Notificaciones">
+            <span aria-hidden="true">🔔</span>
+        </button>
+
+        <button type="button" class="ms-header-action" aria-label="Usuario en sistema" title="Usuario en sistema">
+            <span aria-hidden="true">👤</span>
+        </button>
+
+        <button type="button"
+                class="ms-header-action"
+                @onclick="HandleFullscreenClick"
+                aria-label="Pantalla completa"
+                title="Pantalla completa">
+            <span aria-hidden="true">⛶</span>
+        </button>
+    </div>
 </header>
 
 @code {
@@ -42,12 +51,10 @@
     [Parameter] public bool IsMenuOpen { get; set; }
     [Parameter] public string ToggleButtonId { get; set; } = "ms-shell-menu-toggle";
     [Parameter] public string NavigationId { get; set; } = "ms-app-navigation";
-    [Parameter] public bool ShowThemeToggle { get; set; } = true;
-    [Parameter] public ThemeMode CurrentTheme { get; set; } = ThemeMode.Light;
     [Parameter] public EventCallback OnToggleMenu { get; set; }
-    [Parameter] public EventCallback OnToggleTheme { get; set; }
+    [Parameter] public EventCallback OnToggleFullscreen { get; set; }
 
     private Task HandleToggleClick() => OnToggleMenu.InvokeAsync();
 
-    private Task HandleThemeToggle() => OnToggleTheme.InvokeAsync();
+    private Task HandleFullscreenClick() => OnToggleFullscreen.InvokeAsync();
 }
