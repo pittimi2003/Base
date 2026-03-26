@@ -4,8 +4,7 @@
 
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
      data-ms-shell-interactive="@(_isInteractive ? "true" : "false")"
-     tabindex="-1"
-     @onkeydown="HandleWindowKeyDown">
+     @onkeydown:window="HandleWindowKeyDown">
     <AppNavigation BrandTitle="@BrandTitle"
                    NavigationId="@NavigationId"
                    IsOpen="@IsMenuOpen"
@@ -17,6 +16,9 @@
         <AppHeader Title="@Title"
                    Subtitle="@Subtitle"
                    IsMenuOpen="@IsMenuOpen"
+                   HomeHref="@HomeHref"
+                   HomeLabel="@HomeLabel"
+                   UserDisplayName="@UserDisplayName"
                    ToggleButtonId="@ToggleButtonId"
                    NavigationId="@NavigationId"
                    ShowThemeToggle="@ShowThemeToggle"
@@ -28,21 +30,29 @@
             @ChildContent
         </main>
 
-        <AppFooter FooterText="@FooterText" />
+        @if (ShowFooter)
+        {
+            <AppFooter FooterText="@FooterText" />
+        }
     </div>
 
     <button type="button"
             id="@OverlayId"
             class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
             @onclick="CloseMenu"
-            aria-label="Close sidebar navigation"></button>
+            aria-label="Cerrar navegación lateral"
+            aria-hidden="@(IsMenuOpen ? "false" : "true")"></button>
 </div>
 
 @code {
     [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
     [Parameter] public string Title { get; set; } = "MachSoft Starter";
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
+    [Parameter] public string HomeHref { get; set; } = "/";
+    [Parameter] public string HomeLabel { get; set; } = "Home";
+    [Parameter] public string UserDisplayName { get; set; } = "Usuario en sistema";
     [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
+    [Parameter] public bool ShowFooter { get; set; } = true;
     [Parameter] public bool ShowThemeToggle { get; set; } = true;
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;

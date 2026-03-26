@@ -4,12 +4,17 @@
 <AppShell BrandTitle="TemplateCompanyName"
           Title="TemplateRootNamespace"
           Subtitle="Official MachSoft WebAssembly baseline for internal projects."
+          HomeLabel="Wasm"
+          UserDisplayName="Usuario Wasm"
           FooterText="TemplateCompanyName · MachSoft.Template.Official.Wasm"
+          ShowFooter="@ShowFooter"
           NavigationItems="_items">
     @Body
 </AppShell>
 
 @code {
+    [Parameter] public bool ShowFooter { get; set; } = true;
+
     private static readonly IReadOnlyList<NavItem> _items =
     [
         new("Home", "/", "🏠"),
