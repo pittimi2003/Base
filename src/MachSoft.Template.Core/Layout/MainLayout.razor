@@ -1,12 +1,13 @@
 @inherits LayoutComponentBase
 @using MachSoft.Template.Core.Models
 
-<AppShell Title="@Title" NavigationItems="_items">
+<AppShell Title="@Title" ShowFooter="@ShowFooter" NavigationItems="_items">
     @Body
 </AppShell>
 
 @code {
     [Parameter] public string Title { get; set; } = "MachSoft Starter";
+    [Parameter] public bool ShowFooter { get; set; } = true;
 
     private readonly IReadOnlyList<NavItem> _items =
     [
