@@ -12,6 +12,10 @@
 </head>
 <body>
     <Routes @rendermode="new InteractiveServerRenderMode(prerender: false)" />
+    <script src="_content/MachSoft.Template.Core/js/theme.js"></script>
+    <script>
+        window.machsoftTheme?.init();
+    </script>
     <script src="_framework/blazor.web.js"></script>
 </body>
 </html>

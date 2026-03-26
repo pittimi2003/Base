@@ -145,3 +145,5 @@ No credentials are stored in source control. Teams are expected to inject creden
 
 - Se eliminaron de `MachSoft.Template.Core` las páginas legacy (`/`, `/showcase`) y componentes obsoletos (`PageContainer`, `BaseCard`, `FormSection`, `FieldGroup`, `SectionTitle`, `AppMenuTile`).
 - `Core` queda alineado como base técnica/visual/infrastructural; las experiencias de demostración quedan fuera del paquete.
+
+- El `template-content` de ambos templates oficiales usa `AppShell` (Core) como contrato visual único de layout/navigation, evitando duplicación de shell por host.

@@ -130,3 +130,5 @@ Las apps generadas deben usar:
 - `MachSoft.Template.Core.Control` para cualquier control público `Mx*`.
 
 No se debe consumir catálogo UI público desde `MachSoft.Template.Core`.
+
+- Validar en apps generadas que `MainLayout` use `AppShell`, que la hamburguesa aparezca en mobile/tablet y que `theme.js` esté cargado para cambio real de tema.

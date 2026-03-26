@@ -79,3 +79,5 @@ Impacto de migración:
 - Se consolidaron modelos/variantes `Mx*` en `MachSoft.Template.Core.Control.Models` como contrato único de catálogo.
 - Se actualizaron templates oficiales para referenciar explícitamente `MachSoft.Template.Core.Control` además de `MachSoft.Template.Core`.
 - Se actualizó documentación para dejar explícita la separación: Core=baseline técnico, Core.Control=catálogo oficial de controles.
+
+- Se alineó `template-content` de Server/WASM al shell común de Core (`AppShell`) para corregir navegación cruda y garantizar comportamiento responsive/theming consistente.

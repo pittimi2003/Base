@@ -184,3 +184,5 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 
 ### Actualización catálogo (2026-03-25)
 - `MachSoft.Template.Core.Control` incluye `MxScheduler` base funcional y su validación en `MachSoft.Template.Core.Control.Showcase` (`/families/scheduling`).
+
+- Templates oficiales Server/WASM ahora componen el shell común `AppShell` de Core (sidebar desktop + hamburguesa responsive + theming por `theme.js`) para evitar navegación cruda por host.
