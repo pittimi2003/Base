@@ -7,10 +7,7 @@
     <AppShell BrandTitle="MachSoft"
               Title="Core.Control Showcase"
               Subtitle="Host oficial para validación visual y funcional del catálogo Mx*."
-              HomeLabel="Showcase"
-              UserDisplayName="Usuario Showcase"
               FooterText="MachSoft.Template.Core.Control.Showcase"
-              ShowFooter="@ShowFooter"
               ShowThemeToggle="false"
               NavigationItems="_navigationItems">
         <div class="ms-showcase-toolbar">
@@ -33,8 +30,6 @@
         new("Families", "/families", "🧩"),
         .. ControlCatalogRegistry.Families.Select(family => new NavItem($"Family · {family.Name}", family.Route, "↳"))
     ];
-
-    [Parameter] public bool ShowFooter { get; set; } = true;
 
     private string CurrentTheme { get; set; } = "light";
 

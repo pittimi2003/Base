@@ -1,10 +1,10 @@
 <Router AppAssembly="typeof(Program).Assembly">
     <Found Context="routeData">
-        <RouteView RouteData="routeData" DefaultLayout="typeof(MachSoft.Template.Core.Control.Showcase.Components.Layout.MainLayout)" />
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
         <FocusOnNavigate RouteData="routeData" Selector="h1" />
     </Found>
     <NotFound>
-        <LayoutView Layout="typeof(MachSoft.Template.Core.Control.Showcase.Components.Layout.MainLayout)">
+        <LayoutView Layout="typeof(Layout.MainLayout)">
             <PageTitle>Ruta no encontrada</PageTitle>
             <div class="ms-showcase-empty-state">
                 <h1>Ruta no encontrada</h1>
