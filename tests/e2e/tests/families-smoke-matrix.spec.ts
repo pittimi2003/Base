@@ -110,7 +110,7 @@ test.describe('Core.Control Showcase - smoke transversal por familias', () => {
       const websocket = await websocketPromise;
       await websocket.waitForEvent('framereceived', { timeout: 45_000 });
 
-      await expect(page.getByRole('heading', { name: familyCase.heading })).toBeVisible();
+      await expect(page.locator('.ms-showcase-page__header h1')).toContainText(familyCase.heading);
       await familyCase.interact(page);
 
       const themeSwitch = page.locator('#mx-showcase-theme-switch');
