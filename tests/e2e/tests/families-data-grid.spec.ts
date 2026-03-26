@@ -37,14 +37,15 @@ test.describe('Core.Control Showcase - /families/data - MxDataGrid enterprise', 
     await expect(enterpriseBodyRows).toHaveCount(4);
     await expect(enterpriseBodyRows.nth(0).locator('td').nth(0)).toContainText('ORD-1045');
 
-    const orderSortButton = enterpriseGrid.getByRole('button', { name: 'Ordenar por Orden ascendente' });
-    const orderHeader = enterpriseGrid.locator('th').filter({ hasText: 'Orden' }).first();
+    const orderSortButton = enterpriseGrid.getByRole('button', { name: /Ordenar por Orden/i });
+    const orderHeader = enterpriseGrid.locator('th', { has: orderSortButton }).first();
 
     await orderSortButton.click({ force: true });
     await expect(orderHeader).toHaveAttribute('aria-sort', 'ascending');
+    await expect(orderSortButton).toHaveAttribute('aria-label', 'Ordenar por Orden descendente');
     await expect(enterpriseBodyRows.nth(0).locator('td').nth(0)).toContainText('ORD-1042');
 
-    await enterpriseGrid.getByRole('button', { name: 'Ordenar por Orden descendente' }).click({ force: true });
+    await orderSortButton.click({ force: true });
     await expect(orderHeader).toHaveAttribute('aria-sort', 'descending');
     await expect(enterpriseBodyRows.nth(0).locator('td').nth(0)).toContainText('ORD-1045');
 
