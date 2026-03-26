@@ -12,7 +12,7 @@
 4. Tokens y estilos `_content/MachSoft.Template.Core/css/template/*`.
 
 ## 2) Qué evitar
-- No crear UI nueva sobre componentes legacy (`BaseCard`, `PageContainer`, `FormSection`, `FieldGroup`, `SectionTitle`).
+- No reintroducir componentes legacy removidos de `Core`; toda UI nueva debe usar `Mx*` desde `MachSoft.Template.Core.Control`.
 - No mover lógica de negocio al Core.
 - No duplicar estilos entre hosts.
 - No asumir que el template trae showcase/demo/samples.
@@ -43,8 +43,8 @@ dotnet run --no-build -c Release
 ## 5) Smoke básico que debe correr cada equipo
 
 ### Sistema base (repo)
-- Server: `/showcase` light/dark y `/demo`.
-- WASM: `/showcase` light/dark y `/wasm-demo`.
+- Core.Control.Showcase: `/`, `/foundations`, `/families` (light/dark).
+- Templates oficiales (Server/WASM): rutas propias del host (`/`, `/packages`).
 
 ### App generada
 - `/`, `/operations`, `/settings`.

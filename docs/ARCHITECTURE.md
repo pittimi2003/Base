@@ -20,9 +20,10 @@ The repository is structured as a .NET 8 productization workspace for five activ
 Responsibilities:
 
 - options and service registration
-- lightweight reusable UI components
+- lightweight reusable UI infrastructure (layout shell, navigation primitives and shared assets)
 - shared corporate theme assets distributed as static web assets
 - host-agnostic baseline with no business logic
+- no embedded showcase/demo pages or legacy UI catalog surface
 
 ### 2. Official server template package
 
@@ -139,3 +140,8 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `MachSoft.Template.Core.Control` concentra el catálogo público `Mx*` y sus modelos/variantes asociados.
 - Los hosts template (Server/WASM) referencian `Core` + `Core.Control`; no deben consumir controles UI desde `Core`.
 - `Core.Control.Showcase` valida visual y funcionalmente el catálogo sin introducir payload de demo en el paquete distribuible.
+
+## Actualización 2026-03-26 — limpieza final legacy en Core
+
+- Se eliminaron de `MachSoft.Template.Core` las páginas legacy (`/`, `/showcase`) y componentes obsoletos (`PageContainer`, `BaseCard`, `FormSection`, `FieldGroup`, `SectionTitle`, `AppMenuTile`).
+- `Core` queda alineado como base técnica/visual/infrastructural; las experiencias de demostración quedan fuera del paquete.
