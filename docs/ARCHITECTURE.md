@@ -147,3 +147,10 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `Core` queda alineado como base técnica/visual/infrastructural; las experiencias de demostración quedan fuera del paquete.
 
 - El `template-content` de ambos templates oficiales usa `AppShell` (Core) como contrato visual único de layout/navigation, evitando duplicación de shell por host.
+
+## Actualización 2026-03-26 — shell corporativo unificado
+
+- `AppShell` de `MachSoft.Template.Core` pasa a patrón único cross-host: header superior fijo + drawer lateral overlay (estado inicial cerrado).
+- El workspace principal queda desacoplado del estado del menú lateral (sin sidebar persistente que empuje contenido).
+- Se mantiene `AppFooter` como componente de contrato y se habilita control de render por parámetro (`ShowFooter`).
+- Los hosts `Core.Control.Showcase`, `Official.Server` y `Official.Wasm` preservan un único comportamiento visual/estructural al consumir el shell de Core.
