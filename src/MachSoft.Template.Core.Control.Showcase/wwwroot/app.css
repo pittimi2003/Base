@@ -29,80 +29,30 @@ a {
   color: inherit;
 }
 
+
 .ms-control-shell {
   min-height: 100vh;
-  background: var(--mx-color-bg-canvas, #eef3fb);
-  color: var(--mx-color-text-primary, #132033);
 }
 
-.ms-control-shell :is(a, button, [role="button"], [tabindex]):focus-visible {
+.ms-showcase-toolbar {
+  padding: 0 var(--ms-showcase-space-sm);
+}
+
+.ms-shell__main {
+  display: grid;
+  align-content: start;
+  gap: var(--ms-showcase-space-lg);
+}
+
+.ms-shell :is(a, button, [role="button"], [tabindex]):focus-visible {
   outline: var(--ms-showcase-focus-ring);
   outline-offset: var(--ms-showcase-focus-offset);
 }
 
-.ms-showcase-layout {
-  display: grid;
-  grid-template-columns: minmax(280px, 320px) 1fr;
-  min-height: 100vh;
-}
-
-.ms-showcase-layout__nav {
-  border-right: var(--ms-showcase-border-subtle);
-  background: var(--mx-color-bg-surface, #ffffff);
-  padding: var(--ms-showcase-space-lg);
-}
-
-.ms-showcase-layout__workspace {
-  display: grid;
-  grid-template-rows: auto 1fr;
-  min-width: 0;
-}
-
-.ms-showcase-layout__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: var(--ms-showcase-space-sm);
-  padding: var(--ms-showcase-space-md) var(--ms-showcase-space-lg);
-  border-bottom: var(--ms-showcase-border-subtle);
-  background: var(--mx-color-bg-surface-raised, #fbfdff);
-}
-
-.ms-showcase-layout__kicker {
-  margin: 0;
-  font-size: var(--mx-font-size-caption, 0.8125rem);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--mx-color-text-muted, #6a7d96);
-}
-
-.ms-showcase-layout__theme-pill {
-  border-radius: var(--mx-radius-pill, 999px);
-  padding: 0.3rem 0.7rem;
-  font-size: var(--mx-font-size-caption, 0.8125rem);
-  border: var(--ms-showcase-border-default);
-  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
-  color: var(--mx-color-brand-primary, #3a67bf);
-}
-
-.ms-showcase-layout__content {
-  padding: var(--ms-showcase-space-lg);
-  display: grid;
-  gap: var(--ms-showcase-space-lg);
-  align-content: start;
-}
-
-.ms-showcase-nav {
-  display: grid;
-  gap: var(--ms-showcase-space-md);
-}
-
-.ms-showcase-nav h1,
 .ms-showcase-page h1 {
   margin: 0;
 }
 
-.ms-showcase-nav__eyebrow,
 .ms-showcase-page__eyebrow {
   margin: 0;
   letter-spacing: 0.08em;
@@ -112,56 +62,9 @@ a {
   font-size: var(--mx-font-size-caption, 0.8125rem);
 }
 
-.ms-showcase-nav__description,
 .ms-showcase-page__description {
   margin: var(--ms-showcase-space-xs) 0 0;
   color: var(--mx-color-text-secondary, #40556f);
-}
-
-.ms-showcase-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: grid;
-  gap: 0.35rem;
-}
-
-.ms-showcase-nav a {
-  display: block;
-  text-decoration: none;
-  padding: 0.5rem 0.65rem;
-  border-radius: var(--ms-showcase-radius-sm);
-  color: var(--mx-color-text-secondary, #40556f);
-  border: var(--mx-border-width-1, 1px) solid transparent;
-  transition:
-    background-color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease),
-    border-color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease),
-    color var(--mx-motion-duration-fast, 120ms) var(--mx-motion-ease-standard, ease);
-}
-
-.ms-showcase-nav a:hover {
-  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 12%, transparent);
-  color: var(--mx-color-brand-primary, #3a67bf);
-}
-
-.ms-showcase-nav a.active {
-  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 18%, transparent);
-  color: var(--mx-color-brand-primary, #3a67bf);
-  font-weight: var(--mx-font-weight-semibold, 600);
-  border-color: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 32%, transparent);
-}
-
-.ms-showcase-nav__families {
-  border-top: var(--ms-showcase-border-subtle);
-  padding-top: var(--ms-showcase-space-sm);
-}
-
-.ms-showcase-nav__families h2 {
-  margin: 0 0 var(--ms-showcase-space-xs);
-  font-size: var(--mx-font-size-caption, 0.8125rem);
-  color: var(--mx-color-text-muted, #6a7d96);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
 
 .ms-showcase-page,

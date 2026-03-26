@@ -1,35 +1,60 @@
 @inherits LayoutComponentBase
+@using MachSoft.Template.Core.Models
+@inject IJSRuntime JSRuntime
 
-<div class="ms-control-shell mx-control-host" data-mx-theme="@CurrentTheme">
-    <div class="ms-showcase-layout">
-        <aside class="ms-showcase-layout__nav" role="navigation" aria-label="Navegación de catálogo">
-            <NavMenu CurrentTheme="@CurrentTheme" OnThemeChanged="OnThemeChanged" />
-        </aside>
-
-        <div class="ms-showcase-layout__workspace">
-            <header class="ms-showcase-layout__header">
-                <div>
-                    <p class="ms-showcase-layout__kicker">MachSoft Design System</p>
-                    <strong>Core.Control Showcase</strong>
-                </div>
-                <span class="ms-showcase-layout__theme-pill">Theme: @CurrentThemeLabel</span>
-            </header>
-
-            <main class="ms-showcase-layout__content">
-                @Body
-            </main>
+<div class="ms-control-shell" data-mx-theme="@CurrentTheme">
+    <AppShell BrandTitle="MachSoft"
+              Title="Core.Control Showcase"
+              Subtitle="Host oficial para validación visual y funcional del catálogo Mx*."
+              FooterText="MachSoft.Template.Core.Control.Showcase"
+              NavigationItems="_navigationItems">
+        <div class="ms-showcase-toolbar">
+            <MxSwitch Id="mx-showcase-theme-switch"
+                      Label="Tema oscuro"
+                      Description="Control Mx* para validar cambio de tema en runtime."
+                      Checked="@IsDarkTheme"
+                      CheckedChanged="OnThemeChanged" />
         </div>
-    </div>
+
+        @Body
+    </AppShell>
 </div>
 
 @code {
+    private static readonly IReadOnlyList<NavItem> _navigationItems =
+    [
+        new("Home", "/", "🏠"),
+        new("Foundations", "/foundations", "🎨"),
+        new("Families", "/families", "🧩"),
+        .. ControlCatalogRegistry.Families.Select(family => new NavItem($"Family · {family.Name}", family.Route, "•"))
+    ];
+
     private string CurrentTheme { get; set; } = "light";
 
-    private string CurrentThemeLabel => CurrentTheme == "light" ? "Light" : "Dark";
+    private bool IsDarkTheme => string.Equals(CurrentTheme, "dark", StringComparison.OrdinalIgnoreCase);
 
-    private Task OnThemeChanged(bool isDarkTheme)
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (!firstRender)
+        {
+            return;
+        }
+
+        try
+        {
+            var preferredTheme = await JSRuntime.InvokeAsync<string>("machsoftTheme.getPreferredTheme");
+            CurrentTheme = preferredTheme == "dark" ? "dark" : "light";
+            StateHasChanged();
+        }
+        catch (JSException)
+        {
+            CurrentTheme = "light";
+        }
+    }
+
+    private async Task OnThemeChanged(bool isDarkTheme)
     {
         CurrentTheme = isDarkTheme ? "dark" : "light";
-        return Task.CompletedTask;
+        await JSRuntime.InvokeVoidAsync("machsoftTheme.setTheme", CurrentTheme);
     }
 }
