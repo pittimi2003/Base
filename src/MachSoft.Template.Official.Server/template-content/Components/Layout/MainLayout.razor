@@ -5,11 +5,14 @@
           Title="TemplateRootNamespace"
           Subtitle="Official MachSoft server baseline for internal projects."
           FooterText="TemplateCompanyName · MachSoft.Template.Official.Server"
-          NavigationItems="_items">
+          NavigationItems="_items"
+          ShowFooter="@ShowFooter">
     @Body
 </AppShell>
 
 @code {
+    [Parameter] public bool ShowFooter { get; set; } = true;
+
     private static readonly IReadOnlyList<NavItem> _items =
     [
         new("Home", "/", "🏠"),

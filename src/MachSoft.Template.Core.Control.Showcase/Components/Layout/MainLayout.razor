@@ -8,8 +8,8 @@
               Title="Core.Control Showcase"
               Subtitle="Host oficial para validación visual y funcional del catálogo Mx*."
               FooterText="MachSoft.Template.Core.Control.Showcase"
-              ShowThemeToggle="false"
-              NavigationItems="_navigationItems">
+              NavigationItems="_navigationItems"
+              ShowFooter="@ShowFooter">
         <div class="ms-showcase-toolbar">
             <MxSwitch Id="mx-showcase-theme-switch"
                       Label="Tema oscuro"
@@ -23,6 +23,8 @@
 </div>
 
 @code {
+    [Parameter] public bool ShowFooter { get; set; } = true;
+
     private static readonly IReadOnlyList<NavItem> _navigationItems =
     [
         new("Home", "/", "🏠"),

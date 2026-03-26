@@ -1,11 +1,17 @@
-@using Microsoft.JSInterop
 @using MachSoft.Template.Core.Models
-@inject IJSRuntime JSRuntime
 
 <div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
      data-ms-shell-interactive="@(_isInteractive ? "true" : "false")"
      tabindex="-1"
      @onkeydown="HandleWindowKeyDown">
+    <AppHeader Title="@Title"
+               Subtitle="@Subtitle"
+               IsMenuOpen="@IsMenuOpen"
+               ToggleButtonId="@ToggleButtonId"
+               NavigationId="@NavigationId"
+               OnToggleMenu="ToggleMenu"
+               OnToggleFullscreen="ToggleFullscreenAsync" />
+
     <AppNavigation BrandTitle="@BrandTitle"
                    NavigationId="@NavigationId"
                    IsOpen="@IsMenuOpen"
@@ -13,29 +19,24 @@
                    NavigationItems="NavigationItems"
                    OnNavigationItemSelected="CloseMenuFromNavigation" />
 
-    <div class="ms-shell__content">
-        <AppHeader Title="@Title"
-                   Subtitle="@Subtitle"
-                   IsMenuOpen="@IsMenuOpen"
-                   ToggleButtonId="@ToggleButtonId"
-                   NavigationId="@NavigationId"
-                   ShowThemeToggle="@ShowThemeToggle"
-                   CurrentTheme="@CurrentTheme"
-                   OnToggleMenu="ToggleMenu"
-                   OnToggleTheme="ToggleThemeAsync" />
-
-        <main class="ms-shell__main" @onclick="CloseMenuOnContentClick">
-            @ChildContent
-        </main>
-
-        <AppFooter FooterText="@FooterText" />
-    </div>
-
     <button type="button"
             id="@OverlayId"
             class="ms-shell__overlay @(IsMenuOpen ? "is-open" : string.Empty)"
             @onclick="CloseMenu"
-            aria-label="Close sidebar navigation"></button>
+            aria-label="Cerrar navegación lateral"
+            aria-hidden="@(IsMenuOpen ? "false" : "true")"
+            tabindex="@(IsMenuOpen ? "0" : "-1")"></button>
+
+    <div class="ms-shell__workspace" @onclick="CloseMenuOnContentClick">
+        <main class="ms-shell__main">
+            @ChildContent
+        </main>
+
+        @if (ShowFooter)
+        {
+            <AppFooter FooterText="@FooterText" />
+        }
+    </div>
 </div>
 
 @code {
@@ -43,7 +44,7 @@
     [Parameter] public string Title { get; set; } = "MachSoft Starter";
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
     [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
-    [Parameter] public bool ShowThemeToggle { get; set; } = true;
+    [Parameter] public bool ShowFooter { get; set; } = true;
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 
@@ -52,30 +53,17 @@
     private const string OverlayId = "ms-shell-overlay";
 
     private bool _isInteractive;
-    private bool _themeInteropAvailable = true;
     private bool IsMenuOpen { get; set; }
-    private ThemeMode CurrentTheme { get; set; } = ThemeMode.Light;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
+    protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender)
+        if (!firstRender)
         {
-            _isInteractive = true;
-
-            try
-            {
-                var preferredTheme = await JSRuntime.InvokeAsync<string>("machsoftTheme.getPreferredTheme");
-                CurrentTheme = preferredTheme == "dark" ? ThemeMode.Dark : ThemeMode.Light;
-                await ApplyThemeAsync();
-            }
-            catch (JSException)
-            {
-                _themeInteropAvailable = false;
-                CurrentTheme = ThemeMode.Light;
-            }
-
-            StateHasChanged();
+            return;
         }
+
+        _isInteractive = true;
+        StateHasChanged();
     }
 
     private Task ToggleMenu()
@@ -84,31 +72,7 @@
         return Task.CompletedTask;
     }
 
-    private async Task ToggleThemeAsync()
-    {
-        CurrentTheme = CurrentTheme is ThemeMode.Dark ? ThemeMode.Light : ThemeMode.Dark;
-
-        try
-        {
-            await ApplyThemeAsync();
-        }
-        catch (JSException)
-        {
-            _themeInteropAvailable = false;
-            CurrentTheme = ThemeMode.Light;
-        }
-    }
-
-    private ValueTask ApplyThemeAsync()
-    {
-        if (!_themeInteropAvailable)
-        {
-            return ValueTask.CompletedTask;
-        }
-
-        var theme = CurrentTheme is ThemeMode.Dark ? "dark" : "light";
-        return JSRuntime.InvokeVoidAsync("machsoftTheme.setTheme", theme);
-    }
+    private Task ToggleFullscreenAsync() => Task.CompletedTask;
 
     private Task CloseMenuFromNavigation()
     {

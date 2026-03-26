@@ -147,3 +147,10 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `Core` queda alineado como base técnica/visual/infrastructural; las experiencias de demostración quedan fuera del paquete.
 
 - El `template-content` de ambos templates oficiales usa `AppShell` (Core) como contrato visual único de layout/navigation, evitando duplicación de shell por host.
+
+
+## 2026-03-26 — Shell corporativo (AppShell)
+- Se estandarizó `AppShell.razor` con `AppHeader.razor` fijo de 48px, `AppNavigation.razor` tipo drawer/offcanvas oculta por defecto y cierre por overlay/escape/hamburguesa/navegación.
+- `@Body` se renderiza en `ms-shell__main` inmediatamente bajo el header (sin franja vacía artificial).
+- `AppFooter.razor` permanece activo y ahora puede ocultarse mediante `ShowFooter` en los `MainLayout.razor` que consumen `AppShell`.
+- Se explicitó el wiring de layout en Showcase, Official.Server y Official.Wasm para evitar resolver un layout distinto al esperado.
