@@ -8,3 +8,196 @@
   gap: var(--ms-space-4);
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
 }
+
+.ms-shell {
+  --ms-shell-nav-width: 17.5rem;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: var(--ms-shell-nav-width) minmax(0, 1fr);
+  background: var(--ms-color-bg, #f3f6fb);
+  color: var(--ms-color-text, #132033);
+}
+
+.ms-shell__nav {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  overflow-y: auto;
+  border-right: 1px solid var(--ms-color-border, #d6dcea);
+  background: var(--ms-color-surface, #ffffff);
+  padding: var(--ms-space-5, 1.25rem) var(--ms-space-4, 1rem);
+  display: grid;
+  gap: var(--ms-space-4, 1rem);
+  align-content: start;
+  z-index: 20;
+}
+
+.ms-shell__content {
+  min-width: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.ms-shell__header {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--ms-space-3, 0.75rem);
+  padding: var(--ms-space-4, 1rem) var(--ms-space-5, 1.25rem);
+  border-bottom: 1px solid var(--ms-color-border, #d6dcea);
+  background: color-mix(in srgb, var(--ms-color-surface, #ffffff) 92%, transparent);
+  backdrop-filter: blur(6px);
+}
+
+.ms-shell__header-main {
+  min-width: 0;
+}
+
+.ms-shell__main {
+  padding: var(--ms-space-5, 1.25rem);
+}
+
+.ms-shell__footer {
+  padding: var(--ms-space-4, 1rem) var(--ms-space-5, 1.25rem);
+  border-top: 1px solid var(--ms-color-border, #d6dcea);
+  color: var(--ms-color-text-soft, #4b5970);
+  background: var(--ms-color-surface, #ffffff);
+}
+
+.ms-title {
+  margin: 0;
+  font-size: clamp(1.1rem, 2vw, 1.35rem);
+}
+
+.ms-subtitle {
+  margin: 0.35rem 0 0;
+  color: var(--ms-color-text-soft, #4b5970);
+}
+
+.ms-brand {
+  margin: 0;
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.ms-shell__nav-divider {
+  border-top: 1px solid var(--ms-color-border, #d6dcea);
+}
+
+.ms-nav {
+  display: grid;
+  gap: var(--ms-space-2, 0.5rem);
+}
+
+.ms-nav__item {
+  display: flex;
+  align-items: center;
+  gap: var(--ms-space-2, 0.5rem);
+  border-radius: var(--ms-radius-md, 0.75rem);
+  padding: 0.6rem 0.75rem;
+  color: inherit;
+  text-decoration: none;
+}
+
+.ms-nav__item:hover {
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 10%, transparent);
+}
+
+.ms-nav__item.active {
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 18%, transparent);
+  color: var(--ms-color-brand, #204ecf);
+  font-weight: 600;
+}
+
+.ms-nav__icon {
+  inline-size: 1.25rem;
+  text-align: center;
+}
+
+.ms-header-menu-btn {
+  display: none;
+}
+
+.ms-header-menu-btn,
+.ms-theme-toggle {
+  inline-size: 2.25rem;
+  block-size: 2.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--ms-color-border, #d6dcea);
+  background: var(--ms-color-surface, #ffffff);
+  color: inherit;
+}
+
+.ms-theme-toggle {
+  cursor: pointer;
+}
+
+.ms-header-menu-btn__icon,
+.ms-header-menu-btn__icon::before,
+.ms-header-menu-btn__icon::after {
+  content: "";
+  display: block;
+  inline-size: 1rem;
+  block-size: 2px;
+  border-radius: 999px;
+  background: currentColor;
+  margin-inline: auto;
+}
+
+.ms-header-menu-btn__icon::before {
+  margin-top: -0.35rem;
+}
+
+.ms-header-menu-btn__icon::after {
+  margin-top: 0.35rem;
+}
+
+.ms-shell__overlay {
+  display: none;
+}
+
+@media (max-width: 1023.98px) {
+  .ms-shell {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .ms-shell__nav {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: min(86vw, var(--ms-shell-nav-width));
+    max-width: 22rem;
+    transform: translateX(-110%);
+    transition: transform 180ms ease-in-out;
+    box-shadow: var(--ms-shadow-lg, 0 16px 40px rgba(16, 32, 51, 0.28));
+  }
+
+  .ms-shell__nav.is-open {
+    transform: translateX(0);
+  }
+
+  .ms-header-menu-btn {
+    display: inline-grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  .ms-shell__overlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    border: 0;
+    background: color-mix(in srgb, #000 35%, transparent);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 180ms ease-in-out;
+    z-index: 18;
+  }
+
+  .ms-shell__overlay.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+}
