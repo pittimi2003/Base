@@ -1,3 +1,9 @@
+@import url("./template/design-system/tokens.primitives.css");
+@import url("./template/design-system/tokens.semantic.css");
+@import url("./template/design-system/typography.css");
+@import url("./template/design-system/motion.css");
+@import url("./template/design-system/themes/light.css");
+@import url("./template/design-system/themes/dark.css");
 @import url("./template/tokens.css");
 @import url("./template/base.css");
 @import url("./template/layout.css");

@@ -1,9 +1,9 @@
 :root {
-  --ms-color-brand: #204ecf;
-  --ms-color-surface: #ffffff;
-  --ms-color-border: #d6dcea;
-  --ms-color-text: #11233d;
-  --ms-color-text-soft: #44506a;
+  --ms-color-brand: var(--mx-color-brand-primary, #204ecf);
+  --ms-color-surface: var(--mx-color-bg-surface, #ffffff);
+  --ms-color-border: var(--mx-color-border-subtle, #d6dcea);
+  --ms-color-text: var(--mx-color-text-primary, #11233d);
+  --ms-color-text-soft: var(--mx-color-text-secondary, #44506a);
 
   --ms-space-1: 0.25rem;
   --ms-space-2: 0.5rem;
