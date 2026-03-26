@@ -1,5 +1,6 @@
 :root {
   --ms-color-brand: var(--mx-color-brand-primary, #204ecf);
+  --ms-color-bg: var(--mx-color-bg-canvas, #eef3fb);
   --ms-color-surface: var(--mx-color-bg-surface, #ffffff);
   --ms-color-border: var(--mx-color-border-subtle, #d6dcea);
   --ms-color-text: var(--mx-color-text-primary, #11233d);
