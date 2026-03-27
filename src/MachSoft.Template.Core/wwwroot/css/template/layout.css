@@ -78,22 +78,22 @@
 }
 
 .ms-shell__nav {
-  --ms-nav-panel-width: clamp(14.75rem, 30vw, 17rem);
+  --ms-nav-panel-width: clamp(14.5rem, 26vw, 16.25rem);
+  --ms-nav-base-panels: min(var(--ms-nav-open-panels, 1), 2);
+  --ms-nav-required-width: calc(
+    (var(--ms-nav-base-panels) * var(--ms-nav-panel-width)) +
+    ((var(--ms-nav-base-panels) - 1) * var(--ms-nav-panel-gap)) +
+    (2 * var(--ms-space-4, 1rem))
+  );
   --ms-nav-panel-gap: var(--ms-space-3, 0.75rem);
   position: fixed;
   top: var(--ms-shell-header-height);
   left: 0;
-  width: min(
-    94vw,
-    calc(
-      (var(--ms-nav-open-panels, 1) * var(--ms-nav-panel-width)) +
-      ((var(--ms-nav-open-panels, 1) - 1) * var(--ms-nav-panel-gap)) +
-      (2 * var(--ms-space-4, 1rem))
-    )
-  );
+  width: min(96vw, max(var(--ms-shell-nav-width), var(--ms-nav-required-width)));
   min-width: min(86vw, var(--ms-shell-nav-width));
   height: calc(100dvh - var(--ms-shell-header-height));
   overflow-y: auto;
+  overflow-x: hidden;
   border-right: 1px solid var(--ms-color-border, #d6dcea);
   background: var(--ms-color-surface, #ffffff);
   padding: var(--ms-space-5, 1.25rem) var(--ms-space-4, 1rem);
@@ -186,16 +186,18 @@
 }
 
 .ms-nav__panels {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: var(--ms-nav-panel-width);
   gap: var(--ms-nav-panel-gap);
   align-items: stretch;
-  overflow-x: visible;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
   padding-bottom: 0;
 }
 
 .ms-nav__panel-column {
-  flex: 0 0 var(--ms-nav-panel-width);
   min-inline-size: var(--ms-nav-panel-width);
   max-inline-size: var(--ms-nav-panel-width);
 }
