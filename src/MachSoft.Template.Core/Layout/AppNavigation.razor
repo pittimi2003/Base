@@ -15,56 +15,7 @@
         <div class="ms-nav__panels">
             @foreach (var panel in BuildPanels())
             {
-                <section class="ms-nav__panel" aria-label="@panel.Title">
-                    <p class="ms-nav__panel-title">@panel.Title</p>
-
-                    @foreach (var navSection in BuildSections(panel.Items))
-                    {
-                        <div class="ms-nav__section">
-                            @if (!string.IsNullOrWhiteSpace(navSection.Title))
-                            {
-                                <p class="ms-nav__section-title">@navSection.Title</p>
-                            }
-
-                            <ul class="ms-nav__list">
-                                @foreach (var item in navSection.Items)
-                                {
-                                    var hasChildren = HasChildren(item);
-                                    <li class="ms-nav__entry">
-                                        @if (hasChildren)
-                                        {
-                                            var isBranchSelected = IsBranchSelected(panel.Depth, item);
-                                            <button type="button"
-                                                    class="ms-nav__item ms-nav__item--branch @(isBranchSelected ? "is-open" : string.Empty)"
-                                                    aria-expanded="@isBranchSelected"
-                                                    @onclick="() => HandleBranchSelected(panel.Depth, item)">
-                                                @if (!string.IsNullOrWhiteSpace(item.Icon))
-                                                {
-                                                    <span class="ms-nav__icon" aria-hidden="true">@item.Icon</span>
-                                                }
-                                                <span class="ms-nav__text">@item.Text</span>
-                                                <span class="ms-nav__child-indicator" aria-hidden="true">›</span>
-                                            </button>
-                                        }
-                                        else
-                                        {
-                                            <NavLink href="@item.Href"
-                                                     class="ms-nav__item ms-nav__item--terminal"
-                                                     Match="NavLinkMatch.Prefix"
-                                                     @onclick="() => HandleTerminalSelected(panel.Depth)">
-                                                @if (!string.IsNullOrWhiteSpace(item.Icon))
-                                                {
-                                                    <span class="ms-nav__icon" aria-hidden="true">@item.Icon</span>
-                                                }
-                                                <span class="ms-nav__text">@item.Text</span>
-                                            </NavLink>
-                                        }
-                                    </li>
-                                }
-                            </ul>
-                        </div>
-                    }
-                </section>
+                @RenderNavigationPanel(panel)
             }
         </div>
     </nav>
@@ -229,4 +180,118 @@
     private sealed record NavigationPanel(int Depth, string Title, IReadOnlyList<NavItem> Items);
 
     private sealed record NavigationSection(string Title, List<NavItem> Items);
+
+    private RenderFragment RenderNavigationPanel(NavigationPanel panel) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "ms-nav__panel");
+        builder.AddAttribute(sequence++, "role", "group");
+        builder.AddAttribute(sequence++, "aria-label", panel.Title);
+
+        builder.OpenElement(sequence++, "p");
+        builder.AddAttribute(sequence++, "class", "ms-nav__panel-title");
+        builder.AddContent(sequence++, panel.Title);
+        builder.CloseElement();
+
+        foreach (var section in BuildSections(panel.Items))
+        {
+            builder.AddContent(sequence++, RenderNavigationSection(panel.Depth, section));
+        }
+
+        builder.CloseElement();
+    };
+
+    private RenderFragment RenderNavigationSection(int depth, NavigationSection section) => builder =>
+    {
+        var sequence = 0;
+        builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "ms-nav__section");
+
+        if (!string.IsNullOrWhiteSpace(section.Title))
+        {
+            builder.OpenElement(sequence++, "p");
+            builder.AddAttribute(sequence++, "class", "ms-nav__section-title");
+            builder.AddContent(sequence++, section.Title);
+            builder.CloseElement();
+        }
+
+        builder.OpenElement(sequence++, "ul");
+        builder.AddAttribute(sequence++, "class", "ms-nav__list");
+
+        foreach (var item in section.Items)
+        {
+            builder.OpenElement(sequence++, "li");
+            builder.AddAttribute(sequence++, "class", "ms-nav__entry");
+            builder.AddContent(sequence++, RenderNavigationItem(depth, item));
+            builder.CloseElement();
+        }
+
+        builder.CloseElement();
+        builder.CloseElement();
+    };
+
+    private RenderFragment RenderNavigationItem(int depth, NavItem item) => builder =>
+    {
+        var sequence = 0;
+        if (HasChildren(item))
+        {
+            var isBranchSelected = IsBranchSelected(depth, item);
+            builder.OpenElement(sequence++, "button");
+            builder.AddAttribute(sequence++, "type", "button");
+            builder.AddAttribute(
+                sequence++,
+                "class",
+                $"ms-nav__item ms-nav__item--branch {(isBranchSelected ? "is-open" : string.Empty)}");
+            builder.AddAttribute(sequence++, "aria-expanded", isBranchSelected);
+            builder.AddAttribute(sequence++, "onclick", EventCallback.Factory.Create(this, () => HandleBranchSelected(depth, item)));
+            builder.AddContent(sequence++, RenderNavigationItemLeadingIcon(item));
+
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "ms-nav__text");
+            builder.AddContent(sequence++, item.Text);
+            builder.CloseElement();
+
+            builder.OpenElement(sequence++, "span");
+            builder.AddAttribute(sequence++, "class", "ms-nav__child-indicator");
+            builder.AddAttribute(sequence++, "aria-hidden", "true");
+            builder.AddContent(sequence++, "›");
+            builder.CloseElement();
+            builder.CloseElement();
+            return;
+        }
+
+        builder.OpenComponent<NavLink>(sequence++);
+        builder.AddAttribute(sequence++, "href", item.Href);
+        builder.AddAttribute(sequence++, "class", "ms-nav__item ms-nav__item--terminal");
+        builder.AddAttribute(sequence++, "Match", NavLinkMatch.Prefix);
+        builder.AddAttribute(sequence++, "onclick", EventCallback.Factory.Create(this, () => HandleTerminalSelected(depth)));
+        builder.AddAttribute(
+            sequence++,
+            "ChildContent",
+            (RenderFragment)(contentBuilder =>
+            {
+                var contentSequence = 0;
+                contentBuilder.AddContent(contentSequence++, RenderNavigationItemLeadingIcon(item));
+                contentBuilder.OpenElement(contentSequence++, "span");
+                contentBuilder.AddAttribute(contentSequence++, "class", "ms-nav__text");
+                contentBuilder.AddContent(contentSequence++, item.Text);
+                contentBuilder.CloseElement();
+            }));
+        builder.CloseComponent();
+    };
+
+    private RenderFragment RenderNavigationItemLeadingIcon(NavItem item) => builder =>
+    {
+        if (string.IsNullOrWhiteSpace(item.Icon))
+        {
+            return;
+        }
+
+        builder.OpenElement(0, "span");
+        builder.AddAttribute(1, "class", "ms-nav__icon");
+        builder.AddAttribute(2, "aria-hidden", "true");
+        builder.AddContent(3, item.Icon);
+        builder.CloseElement();
+    };
 }
