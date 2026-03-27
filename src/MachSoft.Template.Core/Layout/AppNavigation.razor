@@ -185,6 +185,10 @@
     {
         var sequence = 0;
         builder.OpenElement(sequence++, "div");
+        builder.AddAttribute(sequence++, "class", "ms-nav__panel-column");
+        builder.AddAttribute(sequence++, "data-ms-nav-depth", panel.Depth);
+
+        builder.OpenElement(sequence++, "div");
         builder.AddAttribute(sequence++, "class", "ms-nav__panel");
         builder.AddAttribute(sequence++, "role", "group");
         builder.AddAttribute(sequence++, "aria-label", panel.Title);
@@ -199,6 +203,7 @@
             builder.AddContent(sequence++, RenderNavigationSection(panel.Depth, section));
         }
 
+        builder.CloseElement();
         builder.CloseElement();
     };
 
