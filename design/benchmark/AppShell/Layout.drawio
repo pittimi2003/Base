@@ -1,0 +1,28 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/146.0.0.0 Safari/537.36" version="29.6.6">
+  <diagram name="Página-1" id="L4zJE8Pw4R2Rr5VruniO">
+    <mxGraphModel dx="1028" dy="609" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="81vXGGlKSHDe9AIcuqTg-10" connectable="0" parent="1" style="group" value="" vertex="1">
+          <mxGeometry height="590" width="760" x="40" y="10" as="geometry" />
+        </mxCell>
+        <mxCell id="81vXGGlKSHDe9AIcuqTg-2" parent="81vXGGlKSHDe9AIcuqTg-10" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="AppShell" vertex="1">
+          <mxGeometry height="30" width="60" as="geometry" />
+        </mxCell>
+        <mxCell id="81vXGGlKSHDe9AIcuqTg-6" parent="81vXGGlKSHDe9AIcuqTg-10" style="rounded=0;whiteSpace=wrap;html=1;dashed=1;dashPattern=12 12;" value="@body" vertex="1">
+          <mxGeometry height="560" width="760" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="81vXGGlKSHDe9AIcuqTg-7" parent="81vXGGlKSHDe9AIcuqTg-10" style="rounded=0;whiteSpace=wrap;html=1;" value="AppHeader" vertex="1">
+          <mxGeometry height="40" width="720" x="20" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="81vXGGlKSHDe9AIcuqTg-8" parent="81vXGGlKSHDe9AIcuqTg-10" style="rounded=0;whiteSpace=wrap;html=1;" value="AppNavigation&lt;br&gt;&lt;br&gt;&lt;b&gt;Oculto siempre&lt;/b&gt;" vertex="1">
+          <mxGeometry height="440" width="100" x="20" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="81vXGGlKSHDe9AIcuqTg-9" parent="81vXGGlKSHDe9AIcuqTg-10" style="rounded=0;whiteSpace=wrap;html=1;" value="AppFooter" vertex="1">
+          <mxGeometry height="40" width="720" x="20" y="540" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
