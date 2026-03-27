@@ -78,19 +78,20 @@
 }
 
 .ms-shell__nav {
-  --ms-nav-panel-width: clamp(14.5rem, 26vw, 16.25rem);
-  --ms-nav-base-panels: min(var(--ms-nav-open-panels, 1), 2);
+  --ms-nav-panel-width: clamp(14rem, 24vw, 16rem);
+  --ms-nav-panel-gap: var(--ms-space-3, 0.75rem);
+  --ms-nav-visible-panels: min(var(--ms-nav-open-panels, 1), 2);
   --ms-nav-required-width: calc(
-    (var(--ms-nav-base-panels) * var(--ms-nav-panel-width)) +
-    ((var(--ms-nav-base-panels) - 1) * var(--ms-nav-panel-gap)) +
+    (var(--ms-nav-visible-panels) * var(--ms-nav-panel-width)) +
+    ((var(--ms-nav-visible-panels) - 1) * var(--ms-nav-panel-gap)) +
     (2 * var(--ms-space-4, 1rem))
   );
-  --ms-nav-panel-gap: var(--ms-space-3, 0.75rem);
   position: fixed;
   top: var(--ms-shell-header-height);
   left: 0;
-  width: min(96vw, max(var(--ms-shell-nav-width), var(--ms-nav-required-width)));
-  min-width: min(86vw, var(--ms-shell-nav-width));
+  box-sizing: border-box;
+  width: min(calc(100vw - var(--ms-space-2, 0.5rem)), max(var(--ms-shell-nav-width), var(--ms-nav-required-width)));
+  min-width: min(calc(100vw - var(--ms-space-2, 0.5rem)), var(--ms-shell-nav-width));
   height: calc(100dvh - var(--ms-shell-header-height));
   overflow-y: auto;
   overflow-x: hidden;
@@ -192,8 +193,7 @@
   gap: var(--ms-nav-panel-gap);
   align-items: stretch;
   max-width: 100%;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
+  overflow-x: hidden;
   padding-bottom: 0;
 }
 
