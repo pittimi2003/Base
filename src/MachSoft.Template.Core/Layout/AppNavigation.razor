@@ -1,4 +1,5 @@
 @using MachSoft.Template.Core.Models
+@inject NavigationManager NavigationManager
 
 <aside id="@NavigationId"
        class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)"
@@ -9,12 +10,71 @@
        @ref="NavigationElementRef">
     <div class="ms-brand">@BrandTitle</div>
     <div class="ms-shell__nav-divider"></div>
-    <SideNav Items="NavigationItems" OnItemSelected="OnNavigationItemSelected" />
+
+    <nav class="ms-nav ms-nav--panels" aria-label="Main navigation sections">
+        <div class="ms-nav__panels">
+            @foreach (var panel in BuildPanels())
+            {
+                <section class="ms-nav__panel" aria-label="@panel.Title">
+                    <p class="ms-nav__panel-title">@panel.Title</p>
+
+                    @foreach (var navSection in BuildSections(panel.Items))
+                    {
+                        <div class="ms-nav__section">
+                            @if (!string.IsNullOrWhiteSpace(navSection.Title))
+                            {
+                                <p class="ms-nav__section-title">@navSection.Title</p>
+                            }
+
+                            <ul class="ms-nav__list">
+                                @foreach (var item in navSection.Items)
+                                {
+                                    var hasChildren = HasChildren(item);
+                                    <li class="ms-nav__entry">
+                                        @if (hasChildren)
+                                        {
+                                            var isBranchSelected = IsBranchSelected(panel.Depth, item);
+                                            <button type="button"
+                                                    class="ms-nav__item ms-nav__item--branch @(isBranchSelected ? "is-open" : string.Empty)"
+                                                    aria-expanded="@isBranchSelected"
+                                                    @onclick="() => HandleBranchSelected(panel.Depth, item)">
+                                                @if (!string.IsNullOrWhiteSpace(item.Icon))
+                                                {
+                                                    <span class="ms-nav__icon" aria-hidden="true">@item.Icon</span>
+                                                }
+                                                <span class="ms-nav__text">@item.Text</span>
+                                                <span class="ms-nav__child-indicator" aria-hidden="true">›</span>
+                                            </button>
+                                        }
+                                        else
+                                        {
+                                            <NavLink href="@item.Href"
+                                                     class="ms-nav__item ms-nav__item--terminal"
+                                                     Match="NavLinkMatch.Prefix"
+                                                     @onclick="() => HandleTerminalSelected(panel.Depth)">
+                                                @if (!string.IsNullOrWhiteSpace(item.Icon))
+                                                {
+                                                    <span class="ms-nav__icon" aria-hidden="true">@item.Icon</span>
+                                                }
+                                                <span class="ms-nav__text">@item.Text</span>
+                                            </NavLink>
+                                        }
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    }
+                </section>
+            }
+        </div>
+    </nav>
 </aside>
 
 @code {
+    private const string DefaultSectionTitle = "General";
     private ElementReference NavigationElementRef;
     private bool _wasOpen;
+    private readonly List<NavItem> _openBranch = [];
 
     [Parameter] public string BrandTitle { get; set; } = "MachSoft Template";
     [Parameter] public string NavigationId { get; set; } = "ms-app-navigation";
@@ -22,6 +82,11 @@
     [Parameter] public bool FocusOnOpen { get; set; }
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter] public EventCallback OnNavigationItemSelected { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        SyncOpenBranchWithCurrentRoute();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -32,4 +97,136 @@
 
         _wasOpen = FocusOnOpen;
     }
+
+    private IReadOnlyList<NavigationPanel> BuildPanels()
+    {
+        var panels = new List<NavigationPanel>
+        {
+            new(0, "Main", NavigationItems)
+        };
+
+        for (var depth = 0; depth < _openBranch.Count; depth++)
+        {
+            var node = _openBranch[depth];
+            if (node.Children is { Count: > 0 })
+            {
+                panels.Add(new NavigationPanel(depth + 1, node.Text, node.Children));
+            }
+        }
+
+        return panels;
+    }
+
+    private static IReadOnlyList<NavigationSection> BuildSections(IReadOnlyList<NavItem> items)
+    {
+        var orderedSections = new List<NavigationSection>();
+        var sectionMap = new Dictionary<string, NavigationSection>(StringComparer.Ordinal);
+
+        foreach (var item in items)
+        {
+            var sectionTitle = string.IsNullOrWhiteSpace(item.Section)
+                ? DefaultSectionTitle
+                : item.Section!;
+
+            if (!sectionMap.TryGetValue(sectionTitle, out var section))
+            {
+                section = new NavigationSection(sectionTitle, []);
+                sectionMap[sectionTitle] = section;
+                orderedSections.Add(section);
+            }
+
+            section.Items.Add(item);
+        }
+
+        return orderedSections;
+    }
+
+    private static bool HasChildren(NavItem item) => item.Children is { Count: > 0 };
+
+    private bool IsBranchSelected(int depth, NavItem item)
+        => depth < _openBranch.Count && _openBranch[depth] == item;
+
+    private void HandleBranchSelected(int depth, NavItem item)
+    {
+        TrimBranch(depth);
+        _openBranch.Add(item);
+    }
+
+    private async Task HandleTerminalSelected(int depth)
+    {
+        TrimBranch(depth);
+        await OnNavigationItemSelected.InvokeAsync();
+    }
+
+    private void TrimBranch(int depth)
+    {
+        if (_openBranch.Count > depth)
+        {
+            _openBranch.RemoveRange(depth, _openBranch.Count - depth);
+        }
+    }
+
+    private void SyncOpenBranchWithCurrentRoute()
+    {
+        _openBranch.Clear();
+        var currentPath = ToRelativePath(NavigationManager.Uri);
+        _ = TryFindBranch(NavigationItems, currentPath, _openBranch);
+    }
+
+    private static bool TryFindBranch(IReadOnlyList<NavItem> items, string currentPath, List<NavItem> branch)
+    {
+        foreach (var item in items)
+        {
+            if (HasChildren(item) && TryFindBranch(item.Children!, currentPath, branch))
+            {
+                branch.Insert(0, item);
+                return true;
+            }
+
+            if (!HasChildren(item) && IsCurrentRoute(item.Href, currentPath))
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static bool IsCurrentRoute(string href, string currentPath)
+    {
+        var normalizedHref = ToRelativePath(href);
+        if (string.IsNullOrWhiteSpace(normalizedHref))
+        {
+            return string.IsNullOrWhiteSpace(currentPath);
+        }
+
+        return currentPath.Equals(normalizedHref, StringComparison.OrdinalIgnoreCase)
+               || currentPath.StartsWith(normalizedHref + "/", StringComparison.OrdinalIgnoreCase);
+    }
+
+    private static string ToRelativePath(string uriOrPath)
+    {
+        if (string.IsNullOrWhiteSpace(uriOrPath))
+        {
+            return string.Empty;
+        }
+
+        if (Uri.TryCreate(uriOrPath, UriKind.Absolute, out var absolute))
+        {
+            uriOrPath = absolute.PathAndQuery;
+        }
+
+        var path = uriOrPath;
+        var queryIndex = path.IndexOf('?', StringComparison.Ordinal);
+        if (queryIndex >= 0)
+        {
+            path = path[..queryIndex];
+        }
+
+        return path.Trim('/');
+    }
+
+    private sealed record NavigationPanel(int Depth, string Title, IReadOnlyList<NavItem> Items);
+
+    private sealed record NavigationSection(string Title, List<NavItem> Items);
 }
