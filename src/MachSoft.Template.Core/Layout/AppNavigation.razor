@@ -303,21 +303,23 @@
 
     private RenderFragment RenderNavigationItemLeadingIcon(int depth, NavItem item) => builder =>
     {
-        var resolvedIcon = ResolveItemIcon(item);
+        var hasExplicitIcon = !string.IsNullOrWhiteSpace(item.Icon);
         builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "class", $"ms-nav__icon {(string.IsNullOrWhiteSpace(item.Icon) ? "ms-nav__icon--fallback" : string.Empty)}");
+        builder.AddAttribute(
+            1,
+            "class",
+            $"ms-nav__icon {(hasExplicitIcon ? string.Empty : "ms-nav__icon--fallback")} ms-nav__icon--depth-{Math.Min(depth + 1, 2)}");
         builder.AddAttribute(2, "aria-hidden", "true");
-        builder.AddContent(3, resolvedIcon);
+        if (hasExplicitIcon)
+        {
+            builder.AddContent(3, item.Icon);
+        }
+        else
+        {
+            builder.OpenElement(4, "span");
+            builder.AddAttribute(5, "class", "ms-nav__icon-fallback-mark");
+            builder.CloseElement();
+        }
         builder.CloseElement();
     };
-
-    private static string ResolveItemIcon(NavItem item)
-    {
-        if (!string.IsNullOrWhiteSpace(item.Icon))
-        {
-            return item.Icon;
-        }
-
-        return "◈";
-    }
 }
