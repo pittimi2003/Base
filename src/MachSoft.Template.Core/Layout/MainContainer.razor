@@ -1,0 +1,123 @@
+<div class="@ContainerClass" style="@ContainerStyle">
+    <div class="ms-main-container__inline">
+        @if (IsLeftInline)
+        {
+            <aside class="ms-main-container__left ms-main-container__left--inline"
+                   style="@LeftInlineStyle"
+                   aria-label="Panel lateral izquierdo">
+                @LeftContent
+            </aside>
+        }
+
+        <main class="ms-main-container__middle" aria-label="Contenido principal">
+            @MiddleContent
+        </main>
+
+        @if (IsRightInline)
+        {
+            <aside class="ms-main-container__right ms-main-container__right--inline"
+                   style="@RightInlineStyle"
+                   aria-label="Panel lateral derecho">
+                @RightContent
+            </aside>
+        }
+    </div>
+
+    @if (IsLeftOverlay)
+    {
+        <div class="ms-main-container__overlay ms-main-container__overlay--left">
+            @if (ShowLeftOverlayBackdrop)
+            {
+                <button type="button"
+                        class="ms-main-container__backdrop"
+                        aria-label="Cerrar panel lateral izquierdo"
+                        @onclick="HandleLeftBackdropClick"></button>
+            }
+
+            <aside class="ms-main-container__left ms-main-container__left--overlay"
+                   style="@LeftOverlayStyle"
+                   aria-label="Panel lateral izquierdo superpuesto">
+                @LeftContent
+            </aside>
+        </div>
+    }
+
+    @if (IsRightOverlay)
+    {
+        <div class="ms-main-container__overlay ms-main-container__overlay--right">
+            @if (ShowRightOverlayBackdrop)
+            {
+                <button type="button"
+                        class="ms-main-container__backdrop"
+                        aria-label="Cerrar panel lateral derecho"
+                        @onclick="HandleRightBackdropClick"></button>
+            }
+
+            <aside class="ms-main-container__right ms-main-container__right--overlay"
+                   style="@RightOverlayStyle"
+                   aria-label="Panel lateral derecho superpuesto">
+                @RightContent
+            </aside>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public RenderFragment? LeftContent { get; set; }
+    [Parameter, EditorRequired] public RenderFragment MiddleContent { get; set; } = default!;
+    [Parameter] public RenderFragment? RightContent { get; set; }
+
+    [Parameter] public PanelDisplayMode LeftMode { get; set; } = PanelDisplayMode.Hidden;
+    [Parameter] public PanelDisplayMode RightMode { get; set; } = PanelDisplayMode.Hidden;
+
+    [Parameter] public bool ShowLeft { get; set; }
+    [Parameter] public bool ShowRight { get; set; }
+
+    [Parameter] public string LeftWidth { get; set; } = "18rem";
+    [Parameter] public string RightWidth { get; set; } = "18rem";
+    [Parameter] public string Gap { get; set; } = "var(--ms-space-4, 1rem)";
+
+    [Parameter] public bool ShowLeftOverlayBackdrop { get; set; } = true;
+    [Parameter] public bool ShowRightOverlayBackdrop { get; set; } = true;
+
+    [Parameter] public EventCallback OnLeftBackdropClick { get; set; }
+    [Parameter] public EventCallback OnRightBackdropClick { get; set; }
+
+    [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+
+    private bool IsLeftInline => ShowLeft && LeftContent is not null && LeftMode == PanelDisplayMode.Inline;
+    private bool IsRightInline => ShowRight && RightContent is not null && RightMode == PanelDisplayMode.Inline;
+    private bool IsLeftOverlay => ShowLeft && LeftContent is not null && LeftMode == PanelDisplayMode.Overlay;
+    private bool IsRightOverlay => ShowRight && RightContent is not null && RightMode == PanelDisplayMode.Overlay;
+
+    private string LeftInlineStyle => $"--ms-main-container-left-width: {LeftWidth};";
+    private string RightInlineStyle => $"--ms-main-container-right-width: {RightWidth};";
+    private string LeftOverlayStyle => $"--ms-main-container-overlay-width: {LeftWidth};";
+    private string RightOverlayStyle => $"--ms-main-container-overlay-width: {RightWidth};";
+
+    private string ContainerClass => string.IsNullOrWhiteSpace(Class)
+        ? "ms-main-container"
+        : $"ms-main-container {Class}";
+
+    private string ContainerStyle
+    {
+        get
+        {
+            var baseStyle = $"--ms-main-container-gap: {Gap};";
+            return string.IsNullOrWhiteSpace(Style) ? baseStyle : $"{baseStyle} {Style}";
+        }
+    }
+
+    protected override void OnParametersSet()
+    {
+        if (MiddleContent is null)
+        {
+            throw new InvalidOperationException($"{nameof(MainContainer)} requires {nameof(MiddleContent)}.");
+        }
+    }
+
+    private Task HandleLeftBackdropClick() => OnLeftBackdropClick.InvokeAsync();
+
+    private Task HandleRightBackdropClick() => OnRightBackdropClick.InvokeAsync();
+}
