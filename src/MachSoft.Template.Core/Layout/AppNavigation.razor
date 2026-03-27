@@ -265,7 +265,7 @@
                 $"ms-nav__item ms-nav__item--branch {(isBranchSelected ? "is-open" : string.Empty)}");
             builder.AddAttribute(sequence++, "aria-expanded", isBranchSelected);
             builder.AddAttribute(sequence++, "onclick", EventCallback.Factory.Create(this, () => HandleBranchSelected(depth, item)));
-            builder.AddContent(sequence++, RenderNavigationItemLeadingIcon(item));
+            builder.AddContent(sequence++, RenderNavigationItemLeadingIcon(depth, item));
 
             builder.OpenElement(sequence++, "span");
             builder.AddAttribute(sequence++, "class", "ms-nav__text");
@@ -292,7 +292,7 @@
             (RenderFragment)(contentBuilder =>
             {
                 var contentSequence = 0;
-                contentBuilder.AddContent(contentSequence++, RenderNavigationItemLeadingIcon(item));
+                contentBuilder.AddContent(contentSequence++, RenderNavigationItemLeadingIcon(depth, item));
                 contentBuilder.OpenElement(contentSequence++, "span");
                 contentBuilder.AddAttribute(contentSequence++, "class", "ms-nav__text");
                 contentBuilder.AddContent(contentSequence++, item.Text);
@@ -301,12 +301,23 @@
         builder.CloseComponent();
     };
 
-    private RenderFragment RenderNavigationItemLeadingIcon(NavItem item) => builder =>
+    private RenderFragment RenderNavigationItemLeadingIcon(int depth, NavItem item) => builder =>
     {
+        var resolvedIcon = ResolveItemIcon(depth, item);
         builder.OpenElement(0, "span");
         builder.AddAttribute(1, "class", $"ms-nav__icon {(string.IsNullOrWhiteSpace(item.Icon) ? "ms-nav__icon--fallback" : string.Empty)}");
         builder.AddAttribute(2, "aria-hidden", "true");
-        builder.AddContent(3, string.IsNullOrWhiteSpace(item.Icon) ? "•" : item.Icon);
+        builder.AddContent(3, resolvedIcon);
         builder.CloseElement();
     };
+
+    private static string ResolveItemIcon(int depth, NavItem item)
+    {
+        if (!string.IsNullOrWhiteSpace(item.Icon))
+        {
+            return item.Icon;
+        }
+
+        return depth >= 1 ? "↳" : "◈";
+    }
 }
