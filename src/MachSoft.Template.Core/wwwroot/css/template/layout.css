@@ -78,11 +78,12 @@
 }
 
 .ms-shell__nav {
-  --ms-nav-panel-width: clamp(14rem, 24vw, 16rem);
+  --ms-nav-panel-width: clamp(13.25rem, 22vw, 15rem);
+  --ms-nav-panel-width-level2: clamp(14.5rem, 25vw, 16.5rem);
   --ms-nav-panel-gap: var(--ms-space-3, 0.75rem);
   --ms-nav-visible-panels: min(var(--ms-nav-open-panels, 1), 2);
   --ms-nav-required-width: calc(
-    (var(--ms-nav-visible-panels) * var(--ms-nav-panel-width)) +
+    (var(--ms-nav-panel-width) + ((var(--ms-nav-visible-panels) - 1) * var(--ms-nav-panel-width-level2))) +
     ((var(--ms-nav-visible-panels) - 1) * var(--ms-nav-panel-gap)) +
     (2 * var(--ms-space-4, 1rem))
   );
@@ -202,6 +203,11 @@
   max-inline-size: var(--ms-nav-panel-width);
 }
 
+.ms-nav__panel-column[data-ms-nav-depth="1"] {
+  min-inline-size: var(--ms-nav-panel-width-level2);
+  max-inline-size: var(--ms-nav-panel-width-level2);
+}
+
 .ms-nav__panel {
   min-width: 0;
   display: grid;
@@ -296,8 +302,16 @@
 }
 
 .ms-nav__icon--fallback {
-  color: var(--ms-color-text-soft, #4b5970);
-  font-size: 0.95rem;
+  color: var(--ms-color-brand, #204ecf);
+  font-size: 0.72rem;
+  line-height: 1;
+  border: 1px solid color-mix(in srgb, var(--ms-color-brand, #204ecf) 35%, transparent);
+  border-radius: var(--ms-radius-sm, 0.5rem);
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 12%, transparent);
+  display: inline-grid;
+  place-items: center;
+  block-size: 1.15rem;
+  padding-inline: 0.15rem;
 }
 
 .ms-nav__text {
@@ -306,6 +320,14 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+
+.ms-nav__panel-column[data-ms-nav-depth="1"] .ms-nav__text {
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  line-height: 1.25;
 }
 
 .ms-nav__child-indicator {

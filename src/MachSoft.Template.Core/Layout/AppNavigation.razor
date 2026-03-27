@@ -303,7 +303,7 @@
 
     private RenderFragment RenderNavigationItemLeadingIcon(int depth, NavItem item) => builder =>
     {
-        var resolvedIcon = ResolveItemIcon(depth, item);
+        var resolvedIcon = ResolveItemIcon(item);
         builder.OpenElement(0, "span");
         builder.AddAttribute(1, "class", $"ms-nav__icon {(string.IsNullOrWhiteSpace(item.Icon) ? "ms-nav__icon--fallback" : string.Empty)}");
         builder.AddAttribute(2, "aria-hidden", "true");
@@ -311,13 +311,13 @@
         builder.CloseElement();
     };
 
-    private static string ResolveItemIcon(int depth, NavItem item)
+    private static string ResolveItemIcon(NavItem item)
     {
         if (!string.IsNullOrWhiteSpace(item.Icon))
         {
             return item.Icon;
         }
 
-        return depth >= 1 ? "↳" : "◈";
+        return "◈";
     }
 }
