@@ -1,0 +1,179 @@
+@page "/patterns/main-container"
+
+<PageTitle>MainContainer · Patrón Left / Middle / Right</PageTitle>
+
+<ShowcasePageTemplate Eyebrow="Catalog · Patterns"
+                      Title="MainContainer · Caso real Left / Middle / Right"
+                      Description="Ejemplo de consumo real donde la página controla estado de selección y acciones, mientras MainContainer solo define la distribución visual.">
+    <Metadata>
+        <span class="ms-showcase-chip">LeftMode: Inline</span>
+        <span class="ms-showcase-chip">MiddleContent: Always On</span>
+        <span class="ms-showcase-chip">RightMode: Inline</span>
+    </Metadata>
+    <ChildContent>
+        <ShowcaseSection Title="Demo funcional"
+                         Description="Panel izquierdo de acciones, listado central seleccionable y panel derecho de detalle sin modificar MainLayout ni AppShell.">
+            <MainContainer LeftMode="PanelDisplayMode.Inline"
+                           RightMode="PanelDisplayMode.Inline"
+                           ShowLeft="true"
+                           ShowRight="true"
+                           LeftWidth="13rem"
+                           RightWidth="20rem"
+                           Class="ms-showcase-main-container-demo">
+                <LeftContent>
+                    <div class="ms-showcase-main-container-actions">
+                        <h3>Acciones</h3>
+                        <MxButton Variant="MxControlButtonVariant.Outlined" @onclick="CreateRecord">
+                            Nuevo
+                        </MxButton>
+                        <MxButton Variant="MxControlButtonVariant.Outlined" Disabled="@(SelectedRecord is null)" @onclick="EditRecord">
+                            Editar
+                        </MxButton>
+                        <MxButton Variant="MxControlButtonVariant.Outlined" Disabled="@(SelectedRecord is null)" @onclick="DeleteRecord">
+                            Eliminar
+                        </MxButton>
+                        <p class="ms-showcase-inline-message">@ActionMessage</p>
+                    </div>
+                </LeftContent>
+
+                <MiddleContent>
+                    <div class="ms-showcase-main-container-list">
+                        <h3>Registros</h3>
+                        <p class="ms-showcase-inline-message">Selecciona un registro para ver el detalle en el panel derecho.</p>
+                        <table class="ms-showcase-main-container-table">
+                            <thead>
+                                <tr>
+                                    <th>Id</th>
+                                    <th>Name</th>
+                                    <th>Status</th>
+                                    <th>Type</th>
+                                    <th>UpdatedAt</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var record in Records)
+                                {
+                                    var isSelected = SelectedRecord?.Id == record.Id;
+                                    <tr class="@(isSelected ? "is-selected" : null)">
+                                        <td>
+                                            <button type="button" class="ms-showcase-main-container-row-button" @onclick="() => SelectRecord(record)">
+                                                @record.Id
+                                            </button>
+                                        </td>
+                                        <td>@record.Name</td>
+                                        <td>@record.Status</td>
+                                        <td>@record.Type</td>
+                                        <td>@record.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </MiddleContent>
+
+                <RightContent>
+                    <div class="ms-showcase-main-container-detail">
+                        <h3>Detalle</h3>
+                        @if (SelectedRecord is null)
+                        {
+                            <p class="ms-showcase-inline-message">Sin selección. Elige un registro en el panel central.</p>
+                        }
+                        else
+                        {
+                            <dl>
+                                <div>
+                                    <dt>Id</dt>
+                                    <dd>@SelectedRecord.Id</dd>
+                                </div>
+                                <div>
+                                    <dt>Name</dt>
+                                    <dd>@SelectedRecord.Name</dd>
+                                </div>
+                                <div>
+                                    <dt>Status</dt>
+                                    <dd>@SelectedRecord.Status</dd>
+                                </div>
+                                <div>
+                                    <dt>Type</dt>
+                                    <dd>@SelectedRecord.Type</dd>
+                                </div>
+                                <div>
+                                    <dt>UpdatedAt</dt>
+                                    <dd>@SelectedRecord.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+                                </div>
+                            </dl>
+                        }
+                    </div>
+                </RightContent>
+            </MainContainer>
+        </ShowcaseSection>
+    </ChildContent>
+</ShowcasePageTemplate>
+
+@code {
+    private List<MainContainerRecord> Records { get; } =
+    [
+        new(101, "Contrato Norte", "Active", "Contract", new DateTime(2026, 3, 22, 9, 15, 0)),
+        new(102, "Reporte Fiscal", "Draft", "Report", new DateTime(2026, 3, 23, 11, 45, 0)),
+        new(103, "Proveedor Delta", "Archived", "Partner", new DateTime(2026, 3, 24, 14, 10, 0)),
+        new(104, "Incidente 42", "Review", "Ticket", new DateTime(2026, 3, 25, 8, 35, 0))
+    ];
+
+    private MainContainerRecord? SelectedRecord;
+
+    private string ActionMessage { get; set; } = "Sin acciones ejecutadas.";
+
+    private void SelectRecord(MainContainerRecord record)
+    {
+        SelectedRecord = record;
+        ActionMessage = $"Registro seleccionado: {record.Name}.";
+    }
+
+    private void CreateRecord()
+    {
+        var nextId = Records.Max(item => item.Id) + 1;
+        var newRecord = new MainContainerRecord(nextId, $"Nuevo registro {nextId}", "Draft", "Task", DateTime.UtcNow);
+        Records.Insert(0, newRecord);
+        SelectedRecord = newRecord;
+        ActionMessage = $"Se creó {newRecord.Name}.";
+    }
+
+    private void EditRecord()
+    {
+        if (SelectedRecord is null)
+        {
+            return;
+        }
+
+        var index = Records.FindIndex(item => item.Id == SelectedRecord.Id);
+        if (index < 0)
+        {
+            return;
+        }
+
+        var updated = SelectedRecord with
+        {
+            Name = $"{SelectedRecord.Name} (editado)",
+            Status = "Review",
+            UpdatedAt = DateTime.UtcNow
+        };
+
+        Records[index] = updated;
+        SelectedRecord = updated;
+        ActionMessage = $"Se actualizó {updated.Name}.";
+    }
+
+    private void DeleteRecord()
+    {
+        if (SelectedRecord is null)
+        {
+            return;
+        }
+
+        Records.RemoveAll(item => item.Id == SelectedRecord.Id);
+        ActionMessage = $"Se eliminó el registro {SelectedRecord.Id}.";
+        SelectedRecord = null;
+    }
+
+    private record MainContainerRecord(int Id, string Name, string Status, string Type, DateTime UpdatedAt);
+}

@@ -295,3 +295,70 @@ a {
 .ms-showcase-row-priority-high td:first-child {
   color: var(--mx-color-brand-primary, #3a67bf);
 }
+
+.ms-showcase-main-container-demo {
+  min-height: 32rem;
+}
+
+.ms-showcase-main-container-actions,
+.ms-showcase-main-container-list,
+.ms-showcase-main-container-detail {
+  display: grid;
+  gap: var(--ms-showcase-space-sm);
+  align-content: start;
+}
+
+.ms-showcase-main-container-actions h3,
+.ms-showcase-main-container-list h3,
+.ms-showcase-main-container-detail h3 {
+  margin: 0;
+  font-size: var(--mx-font-size-body-lg, 1rem);
+}
+
+.ms-showcase-main-container-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: var(--ms-showcase-border-default);
+  border-radius: var(--ms-showcase-radius-sm);
+  overflow: hidden;
+}
+
+.ms-showcase-main-container-table th,
+.ms-showcase-main-container-table td {
+  text-align: left;
+  padding: 0.55rem 0.6rem;
+  border-bottom: var(--ms-showcase-border-subtle);
+  font-size: var(--mx-font-size-body, 0.9375rem);
+}
+
+.ms-showcase-main-container-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.ms-showcase-main-container-row-button {
+  border: 0;
+  background: transparent;
+  color: var(--mx-color-brand-primary, #3a67bf);
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
+}
+
+.ms-showcase-main-container-table tr.is-selected {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 14%, transparent);
+}
+
+.ms-showcase-main-container-detail dl {
+  margin: 0;
+  display: grid;
+  gap: var(--ms-showcase-space-sm);
+}
+
+.ms-showcase-main-container-detail dt {
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-secondary, #40556f);
+}
+
+.ms-showcase-main-container-detail dd {
+  margin: 0.2rem 0 0;
+}
