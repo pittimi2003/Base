@@ -298,20 +298,33 @@
 .ms-nav__icon {
   inline-size: 1.25rem;
   flex: 0 0 1.25rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
 }
 
 .ms-nav__icon--fallback {
-  color: var(--ms-color-brand, #204ecf);
-  font-size: 0.72rem;
-  line-height: 1;
-  border: 1px solid color-mix(in srgb, var(--ms-color-brand, #204ecf) 35%, transparent);
   border-radius: var(--ms-radius-sm, 0.5rem);
-  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 12%, transparent);
-  display: inline-grid;
-  place-items: center;
-  block-size: 1.15rem;
-  padding-inline: 0.15rem;
+  border: 1px solid color-mix(in srgb, var(--ms-color-brand, #204ecf) 22%, transparent);
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 8%, transparent);
+}
+
+.ms-nav__icon-fallback-mark {
+  inline-size: 0.34rem;
+  block-size: 0.34rem;
+  border-radius: 999px;
+  background: currentColor;
+  opacity: 0.72;
+}
+
+.ms-nav__icon--depth-2 {
+  color: color-mix(in srgb, var(--ms-color-text, #132033) 78%, var(--ms-color-brand, #204ecf) 22%);
+}
+
+.ms-nav__icon--depth-2.ms-nav__icon--fallback {
+  border-color: color-mix(in srgb, var(--ms-color-brand, #204ecf) 26%, transparent);
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 10%, transparent);
 }
 
 .ms-nav__text {
