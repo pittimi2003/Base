@@ -153,17 +153,17 @@
 .ms-nav__panels {
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--ms-space-2, 0.5rem);
+  gap: var(--ms-space-3, 0.75rem);
   align-items: stretch;
   overflow-x: auto;
-  padding-bottom: var(--ms-space-1, 0.25rem);
+  padding-bottom: var(--ms-space-2, 0.5rem);
   scrollbar-width: thin;
 }
 
 .ms-nav__panel-column {
-  flex: 0 0 clamp(13.5rem, 28vw, 15rem);
-  min-inline-size: clamp(13.5rem, 28vw, 15rem);
-  max-inline-size: clamp(13.5rem, 28vw, 15rem);
+  flex: 0 0 clamp(14.75rem, 30vw, 17rem);
+  min-inline-size: clamp(14.75rem, 30vw, 17rem);
+  max-inline-size: clamp(14.75rem, 30vw, 17rem);
 }
 
 .ms-nav__panel {
@@ -175,7 +175,7 @@
   background: var(--ms-color-surface, #ffffff);
   border: 1px solid var(--ms-color-border, #d6dcea);
   border-radius: var(--ms-radius-md, 0.75rem);
-  padding: var(--ms-space-2, 0.5rem);
+  padding: var(--ms-space-3, 0.75rem);
   box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ms-color-border, #d6dcea) 50%, transparent);
 }
 
@@ -212,7 +212,7 @@
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 0.2rem;
+  gap: 0.3rem;
 }
 
 .ms-nav__entry,
@@ -227,7 +227,7 @@
   gap: var(--ms-space-2, 0.5rem);
   width: 100%;
   border-radius: var(--ms-radius-md, 0.75rem);
-  padding: 0.42rem 0.55rem;
+  padding: 0.46rem 0.6rem;
   color: inherit;
   text-decoration: none;
   font-size: 0.86rem;

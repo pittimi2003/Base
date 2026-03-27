@@ -7,7 +7,7 @@ const repoRoot = path.resolve(__dirname, '../..');
 
 export default defineConfig({
   testDir: './tests',
-  testMatch: ['**/families-smoke-matrix.spec.ts'],
+  testMatch: ['**/families-smoke-matrix.spec.ts', '**/navigation-families-panels.spec.ts'],
   timeout: 90_000,
   expect: {
     timeout: 20_000

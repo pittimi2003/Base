@@ -29,8 +29,15 @@
     [
         new("Home", "/", "🏠"),
         new("Foundations", "/foundations", "🎨"),
-        new("Families", "/families", "🧩"),
-        .. ControlCatalogRegistry.Families.Select(family => new NavItem($"Family · {family.Name}", family.Route, "↳"))
+        new(
+            "Families",
+            "/families",
+            "🧩",
+            Children:
+            [
+                .. ControlCatalogRegistry.Families.Select(
+                    family => new NavItem($"Family - {family.Name}", family.Route, "↳"))
+            ])
     ];
 
     private string CurrentTheme { get; set; } = "light";
