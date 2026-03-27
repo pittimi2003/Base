@@ -78,10 +78,20 @@
 }
 
 .ms-shell__nav {
+  --ms-nav-panel-width: clamp(14.75rem, 30vw, 17rem);
+  --ms-nav-panel-gap: var(--ms-space-3, 0.75rem);
   position: fixed;
   top: var(--ms-shell-header-height);
   left: 0;
-  width: min(86vw, var(--ms-shell-nav-width));
+  width: min(
+    94vw,
+    calc(
+      (var(--ms-nav-open-panels, 1) * var(--ms-nav-panel-width)) +
+      ((var(--ms-nav-open-panels, 1) - 1) * var(--ms-nav-panel-gap)) +
+      (2 * var(--ms-space-4, 1rem))
+    )
+  );
+  min-width: min(86vw, var(--ms-shell-nav-width));
   height: calc(100dvh - var(--ms-shell-header-height));
   overflow-y: auto;
   border-right: 1px solid var(--ms-color-border, #d6dcea);
@@ -137,6 +147,31 @@
   font-size: 1rem;
 }
 
+.ms-shell__nav-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ms-space-2, 0.5rem);
+}
+
+.ms-shell__nav-close {
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: 999px;
+  border: 1px solid var(--ms-color-border, #d6dcea);
+  background: var(--ms-color-surface, #ffffff);
+  color: inherit;
+  display: inline-grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.ms-shell__nav-close:hover,
+.ms-shell__nav-close:focus-visible {
+  background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 10%, transparent);
+  outline: none;
+}
+
 .ms-shell__nav-divider {
   border-top: 1px solid var(--ms-color-border, #d6dcea);
 }
@@ -153,17 +188,16 @@
 .ms-nav__panels {
   display: flex;
   flex-wrap: nowrap;
-  gap: var(--ms-space-3, 0.75rem);
+  gap: var(--ms-nav-panel-gap);
   align-items: stretch;
-  overflow-x: auto;
-  padding-bottom: var(--ms-space-2, 0.5rem);
-  scrollbar-width: thin;
+  overflow-x: visible;
+  padding-bottom: 0;
 }
 
 .ms-nav__panel-column {
-  flex: 0 0 clamp(14.75rem, 30vw, 17rem);
-  min-inline-size: clamp(14.75rem, 30vw, 17rem);
-  max-inline-size: clamp(14.75rem, 30vw, 17rem);
+  flex: 0 0 var(--ms-nav-panel-width);
+  min-inline-size: var(--ms-nav-panel-width);
+  max-inline-size: var(--ms-nav-panel-width);
 }
 
 .ms-nav__panel {
@@ -257,6 +291,11 @@
   inline-size: 1.25rem;
   flex: 0 0 1.25rem;
   text-align: center;
+}
+
+.ms-nav__icon--fallback {
+  color: var(--ms-color-text-soft, #4b5970);
+  font-size: 0.95rem;
 }
 
 .ms-nav__text {

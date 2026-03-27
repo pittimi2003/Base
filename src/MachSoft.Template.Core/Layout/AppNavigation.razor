@@ -1,19 +1,32 @@
 @using MachSoft.Template.Core.Models
 @inject NavigationManager NavigationManager
 
+@{
+    var panels = BuildPanels();
+}
+
 <aside id="@NavigationId"
        class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)"
+       style="@($"--ms-nav-open-panels:{panels.Count};")"
        role="navigation"
        aria-label="Main navigation"
        aria-hidden="@(IsOpen ? "false" : "true")"
        tabindex="-1"
        @ref="NavigationElementRef">
-    <div class="ms-brand">@BrandTitle</div>
+    <div class="ms-shell__nav-header">
+        <div class="ms-brand">@BrandTitle</div>
+        <button type="button"
+                class="ms-shell__nav-close"
+                @onclick="HandleCloseNavigation"
+                aria-label="Cerrar navegación lateral">
+            <span aria-hidden="true">✕</span>
+        </button>
+    </div>
     <div class="ms-shell__nav-divider"></div>
 
     <nav class="ms-nav ms-nav--panels" aria-label="Main navigation sections">
         <div class="ms-nav__panels">
-            @foreach (var panel in BuildPanels())
+            @foreach (var panel in panels)
             {
                 @RenderNavigationPanel(panel)
             }
@@ -108,6 +121,8 @@
         TrimBranch(depth);
         await OnNavigationItemSelected.InvokeAsync();
     }
+
+    private Task HandleCloseNavigation() => OnNavigationItemSelected.InvokeAsync();
 
     private void TrimBranch(int depth)
     {
@@ -288,15 +303,10 @@
 
     private RenderFragment RenderNavigationItemLeadingIcon(NavItem item) => builder =>
     {
-        if (string.IsNullOrWhiteSpace(item.Icon))
-        {
-            return;
-        }
-
         builder.OpenElement(0, "span");
-        builder.AddAttribute(1, "class", "ms-nav__icon");
+        builder.AddAttribute(1, "class", $"ms-nav__icon {(string.IsNullOrWhiteSpace(item.Icon) ? "ms-nav__icon--fallback" : string.Empty)}");
         builder.AddAttribute(2, "aria-hidden", "true");
-        builder.AddContent(3, item.Icon);
+        builder.AddContent(3, string.IsNullOrWhiteSpace(item.Icon) ? "•" : item.Icon);
         builder.CloseElement();
     };
 }
