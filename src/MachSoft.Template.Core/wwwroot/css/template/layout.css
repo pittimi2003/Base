@@ -146,13 +146,65 @@
   gap: var(--ms-space-2, 0.5rem);
 }
 
+.ms-nav--panels {
+  min-height: 0;
+}
+
+.ms-nav__panels {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(12.5rem, 1fr);
+  gap: var(--ms-space-2, 0.5rem);
+  align-items: start;
+  overflow-x: auto;
+  padding-bottom: var(--ms-space-1, 0.25rem);
+  scrollbar-width: thin;
+}
+
+.ms-nav__panel {
+  min-width: 0;
+  display: grid;
+  gap: var(--ms-space-3, 0.75rem);
+  align-content: start;
+  padding-right: var(--ms-space-2, 0.5rem);
+  border-right: 1px solid var(--ms-color-border, #d6dcea);
+}
+
+.ms-nav__panel:last-child {
+  border-right: 0;
+  padding-right: 0;
+}
+
+.ms-nav__panel-title {
+  margin: 0;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--ms-color-text-soft, #4b5970);
+}
+
+.ms-nav__section {
+  display: grid;
+  gap: var(--ms-space-1, 0.25rem);
+}
+
+.ms-nav__section-title {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--ms-color-text-soft, #4b5970);
+}
+
 .ms-nav__list,
 .ms-nav ul {
   margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: var(--ms-space-2, 0.5rem);
+  gap: 0.2rem;
 }
 
 .ms-nav__entry,
@@ -165,17 +217,29 @@
   display: flex;
   align-items: center;
   gap: var(--ms-space-2, 0.5rem);
+  width: 100%;
   border-radius: var(--ms-radius-md, 0.75rem);
-  padding: 0.6rem 0.75rem;
+  padding: 0.42rem 0.55rem;
   color: inherit;
   text-decoration: none;
+  font-size: 0.86rem;
 }
 
-.ms-nav__item:hover {
+.ms-nav__item--branch {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+}
+
+.ms-nav__item:hover,
+.ms-nav__item:focus-visible {
   background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 10%, transparent);
+  outline: none;
 }
 
-.ms-nav__item.active {
+.ms-nav__item.active,
+.ms-nav__item--branch.is-open {
   background: color-mix(in srgb, var(--ms-color-brand, #204ecf) 18%, transparent);
   color: var(--ms-color-brand, #204ecf);
   font-weight: 600;
@@ -183,7 +247,21 @@
 
 .ms-nav__icon {
   inline-size: 1.25rem;
+  flex: 0 0 1.25rem;
   text-align: center;
+}
+
+.ms-nav__text {
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ms-nav__child-indicator {
+  color: var(--ms-color-text-soft, #4b5970);
+  font-size: 0.85rem;
 }
 
 .ms-header-menu-btn,
