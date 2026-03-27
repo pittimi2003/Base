@@ -7,7 +7,7 @@
 
 <aside id="@NavigationId"
        class="ms-shell__nav @(IsOpen ? "is-open" : string.Empty)"
-       style="@($"--ms-nav-open-panels:{panels.Count};")"
+       style="@($"--ms-nav-open-panels:{Math.Max(1, panels.Count)};")"
        role="navigation"
        aria-label="Main navigation"
        aria-hidden="@(IsOpen ? "false" : "true")"
