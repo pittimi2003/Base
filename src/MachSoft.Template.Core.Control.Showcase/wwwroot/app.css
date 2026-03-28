@@ -379,6 +379,13 @@ a {
   background: transparent;
 }
 
+.ms-showcase-main-container-grid-rows-zone {
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
 .ms-showcase-main-container-grid-viewport {
   flex: 1 1 auto;
   min-height: 0;
@@ -410,15 +417,11 @@ a {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: var(--ms-showcase-space-sm);
-  margin-top: auto;
-  position: sticky;
-  inset-block-end: 0;
-  z-index: 1;
   border-top: 1px solid var(--mx-color-border-subtle, #d6dcea);
   padding: var(--ms-showcase-space-sm) 0.85rem;
   min-height: 3.25rem;
   flex: 0 0 auto;
-  background: color-mix(in srgb, var(--mx-color-bg-surface, #ffffff) 90%, transparent);
+  background: var(--mx-color-bg-surface, #ffffff);
 }
 
 .ms-showcase-main-container-actions .mx-icon-btn {
