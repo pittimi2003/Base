@@ -300,6 +300,7 @@ a {
   padding: 0;
   gap: 0;
   align-content: stretch;
+  overflow: hidden;
 }
 
 .ms-showcase-main-container-page {
@@ -310,6 +311,7 @@ a {
   block-size: 100%;
   min-block-size: calc(100dvh - var(--ms-shell-header-height, 48px));
   min-height: 0;
+  overflow: hidden;
 }
 
 .ms-showcase-main-container-demo {
@@ -380,6 +382,7 @@ a {
 }
 
 .ms-showcase-main-container-grid-rows-zone {
+  flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
   display: flex;
