@@ -309,10 +309,8 @@ a {
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  border: var(--ms-showcase-border-subtle);
-  border-radius: var(--ms-showcase-radius-md);
   overflow: hidden;
-  background: var(--mx-color-bg-surface, #ffffff);
+  background: transparent;
 }
 
 .ms-showcase-main-container-demo .ms-main-container__inline,
@@ -321,9 +319,17 @@ a {
   min-height: 0;
 }
 
+.ms-showcase-main-container-demo .ms-main-container__inline {
+  height: 100%;
+}
+
 .ms-showcase-main-container-demo .ms-main-container__middle {
   display: flex;
   flex-direction: column;
+}
+
+.ms-showcase-main-container-demo .ms-main-container__left {
+  display: flex;
 }
 
 .ms-showcase-main-container-actions,
@@ -333,13 +339,16 @@ a {
 }
 
 .ms-showcase-main-container-actions {
-  display: grid;
-  justify-items: center;
-  align-content: start;
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   gap: var(--ms-showcase-space-md);
   padding: var(--ms-showcase-space-md) 0;
-  border-right: var(--ms-showcase-border-subtle);
-  background: var(--mx-color-bg-surface-muted, #f6f8fc);
+  height: 100%;
+  border-right: 1px solid var(--mx-color-border-subtle, #d6dcea);
+  background: transparent;
 }
 
 .ms-showcase-main-container-actions .mx-tooltip__target {
@@ -351,7 +360,7 @@ a {
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  background: var(--mx-color-bg-surface, #ffffff);
+  background: transparent;
 }
 
 .ms-showcase-main-container-grid-viewport {
@@ -380,11 +389,12 @@ a {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: var(--ms-showcase-space-sm);
-  border-top: var(--ms-showcase-border-subtle);
+  margin-top: auto;
+  border-top: 1px solid var(--mx-color-border-subtle, #d6dcea);
   padding: var(--ms-showcase-space-sm) var(--ms-showcase-space-md);
   min-height: 3.25rem;
   flex: 0 0 auto;
-  background: var(--mx-color-bg-surface-muted, #f6f8fc);
+  background: transparent;
 }
 
 .ms-showcase-main-container-selection-count {
@@ -402,8 +412,8 @@ a {
   display: grid;
   align-content: start;
   min-height: 0;
-  border-left: var(--ms-showcase-border-subtle);
-  background: var(--mx-color-bg-surface-muted, #f6f8fc);
+  border-left: 1px solid var(--mx-color-border-subtle, #d6dcea);
+  background: transparent;
 }
 
 .ms-showcase-main-container-empty-detail {
