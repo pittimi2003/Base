@@ -6,7 +6,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MachSoft.Template.Core\MachSoft.Template.Core.csproj" />
     <ProjectReference Include="..\MachSoft.Template.Core.Control\MachSoft.Template.Core.Control.csproj" />
   </ItemGroup>
 </Project>
