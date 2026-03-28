@@ -297,16 +297,31 @@ a {
 }
 
 .ms-showcase-main-container-page {
-  display: grid;
-  min-height: calc(100vh - 11rem);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
 }
 
 .ms-showcase-main-container-demo {
-  min-height: calc(100vh - 12rem);
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+  min-height: 0;
   border: var(--ms-showcase-border-subtle);
   border-radius: var(--ms-showcase-radius-md);
   overflow: hidden;
   background: var(--mx-color-bg-surface, #ffffff);
+}
+
+.ms-showcase-main-container-demo .ms-main-container__inline,
+.ms-showcase-main-container-demo .ms-main-container__middle {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.ms-showcase-main-container-demo .ms-main-container__middle {
+  display: flex;
 }
 
 .ms-showcase-main-container-actions,
@@ -332,12 +347,13 @@ a {
 .ms-showcase-main-container-grid-workspace {
   display: flex;
   flex-direction: column;
+  flex: 1 1 auto;
   min-height: 0;
   background: var(--mx-color-bg-surface, #ffffff);
 }
 
 .ms-showcase-main-container-grid-area {
-  flex: 1;
+  flex: 1 1 auto;
   min-height: 0;
   padding: var(--ms-showcase-space-sm) var(--ms-showcase-space-sm) 0;
 }

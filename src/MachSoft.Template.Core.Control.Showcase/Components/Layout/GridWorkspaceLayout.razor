@@ -1,0 +1,28 @@
+@inherits LayoutComponentBase
+@using MachSoft.Template.Core.Models
+
+<AppShell BrandTitle="MachSoft"
+          Title="Core.Control Showcase"
+          Subtitle="Host oficial para validación visual y funcional del catálogo Mx*."
+          FooterText="MachSoft.Template.Core.Control.Showcase"
+          NavigationItems="_navigationItems"
+          ShowFooter="false">
+    @Body
+</AppShell>
+
+@code {
+    private static readonly IReadOnlyList<NavItem> _navigationItems =
+    [
+        new("Home", "/", "🏠"),
+        new("Foundations", "/foundations", "🎨"),
+        new(
+            "Families",
+            "/families",
+            "🧩",
+            Children:
+            [
+                .. ControlCatalogRegistry.Families.Select(
+                    family => new NavItem($"Family - {family.Name}", family.Route, "🗂️"))
+            ])
+    ];
+}
