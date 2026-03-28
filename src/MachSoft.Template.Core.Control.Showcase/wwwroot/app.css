@@ -417,10 +417,33 @@ a {
   overflow: auto;
 }
 
+.ms-showcase-main-container-grid-viewport .ms-showcase-main-container-grid-table {
+  table-layout: fixed;
+}
+
+.ms-showcase-main-container-grid-viewport .ms-showcase-main-container-grid-table thead th {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  background: var(--mx-color-bg-surface-muted, #edf2fa);
+}
+
+.ms-showcase-main-container-grid-viewport .ms-showcase-main-container-grid-table tbody td {
+  background: var(--mx-color-bg-surface, #ffffff);
+}
+
+.ms-showcase-main-container-grid-viewport .ms-showcase-main-container-grid-table tbody tr:hover td {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 7%, var(--mx-color-bg-surface, #ffffff));
+}
+
+.ms-showcase-main-container-grid-viewport .ms-showcase-main-container-grid-table tbody tr.is-selected td {
+  background: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 14%, var(--mx-color-bg-surface, #ffffff));
+}
+
 .ms-showcase-main-container-grid-footer {
   position: sticky;
   inset-block-end: 0;
-  z-index: 1;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: flex-start;
