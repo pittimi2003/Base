@@ -1,7 +1,7 @@
 @page "/patterns/main-container"
 @layout MachSoft.Template.Core.Control.Showcase.Components.Layout.GridWorkspaceLayout
 
-<PageTitle>Core.Control Showcase</PageTitle>
+<PageTitle>Project Designer Workspace</PageTitle>
 
 <div class="ms-showcase-main-container-page">
     <MainContainer LeftMode="PanelDisplayMode.Inline"
@@ -151,15 +151,15 @@
 
     private List<MainContainerRecord> Records { get; } =
     [
-        new(101, "Contrato Norte", "Active", "Contract", new DateTime(2026, 3, 22, 8, 15, 0)),
+        new(101, "Contrato Norte", "Active", "Contract", new DateTime(2026, 3, 22, 9, 15, 0)),
         new(102, "Reporte Fiscal", "Draft", "Report", new DateTime(2026, 3, 23, 11, 45, 0)),
         new(103, "Proveedor Delta", "Archived", "Partner", new DateTime(2026, 3, 24, 14, 10, 0)),
-        new(104, "Incidente #2", "Review", "Ticket", new DateTime(2026, 3, 25, 8, 35, 0))
+        new(104, "Incidente 42", "Review", "Ticket", new DateTime(2026, 3, 25, 8, 35, 0))
     ];
 
     private IReadOnlyList<string> SelectedRowIds { get; set; } = Array.Empty<string>();
 
-    private string ActionMessage { get; set; } = "sin acción activa.";
+    private string ActionMessage { get; set; } = "Workspace listo.";
 
     private int SelectedCount => SelectedRowIds.Count;
     private PanelDisplayMode RightMode => SelectedCount == 0 ? PanelDisplayMode.Hidden : PanelDisplayMode.Inline;
@@ -179,8 +179,8 @@
 
     private IReadOnlyList<MxControlDataGridColumn<MainContainerRecord>> Columns { get; } =
     [
-        new("#", record => record.Id.ToString(), Width: "5rem", Sortable: true, SortValueSelector: record => record.Id, Key: "id"),
-        new("Name", record => record.Name, Width: "minmax(14rem, 1.8fr)", Sortable: true, SortValueSelector: record => record.Name, Key: "name"),
+        new("Id", record => record.Id.ToString(), Width: "5rem", Sortable: true, SortValueSelector: record => record.Id, Key: "id"),
+        new("Name", record => record.Name, Width: "minmax(12rem, 1.6fr)", Sortable: true, SortValueSelector: record => record.Name, Key: "name"),
         new("Status", record => record.Status, Width: "8rem", Sortable: true, SortValueSelector: record => record.Status, Key: "status"),
         new("Type", record => record.Type, Width: "8rem", Sortable: true, SortValueSelector: record => record.Type, Key: "type"),
         new("UpdatedAt", record => record.UpdatedAt.ToString("yyyy-MM-dd HH:mm"), Width: "11rem", Sortable: true, SortValueSelector: record => record.UpdatedAt, Key: "updated-at")
@@ -195,7 +195,7 @@
 
         ActionMessage = selectedRowIds.Count switch
         {
-            0 => "sin acción activa.",
+            0 => "Sin selección activa.",
             1 => $"Registro seleccionado: {SelectedRecords[0].Name}.",
             _ => $"Selección múltiple activa ({selectedRowIds.Count} registros)."
         };
