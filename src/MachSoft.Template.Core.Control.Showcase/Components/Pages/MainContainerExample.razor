@@ -4,7 +4,7 @@
 
 <div class="ms-showcase-main-container-page">
     <MainContainer LeftMode="PanelDisplayMode.Inline"
-                   RightMode="PanelDisplayMode.Inline"
+                   RightMode="@RightMode"
                    ShowLeft="true"
                    ShowRight="true"
                    LeftWidth="4.5rem"
@@ -51,7 +51,7 @@
 
         <MiddleContent>
             <section class="ms-showcase-main-container-grid-workspace" aria-label="Workspace de grid">
-                <div class="ms-showcase-main-container-list" aria-label="Grid zone">
+                <div class="ms-showcase-main-container-grid-area" aria-label="Grid zone">
                     <MxDataGrid TItem="MainContainerRecord"
                                 Columns="Columns"
                                 Items="Records"
@@ -78,16 +78,9 @@
         </MiddleContent>
 
         <RightContent>
-            <section class="ms-showcase-main-container-detail" aria-label="Inspector de registro">
-                @if (SelectedCount == 0)
-                {
-                    <div class="ms-showcase-main-container-empty-detail" role="status" aria-live="polite">
-                        <h2>Inspector</h2>
-                        <p>Selecciona un registro para abrir el panel de detalle.</p>
-                    </div>
-                }
-                else
-                {
+            @if (SelectedCount > 0)
+            {
+                <section class="ms-showcase-main-container-detail" aria-label="Inspector de registro">
                     <div class="ms-showcase-main-container-inspector">
                         <header class="ms-showcase-main-container-inspector-header">
                             <h2>Inspector</h2>
@@ -146,8 +139,8 @@
                             </dl>
                         }
                     </div>
-                }
-            </section>
+                </section>
+            }
         </RightContent>
     </MainContainer>
 </div>
@@ -168,6 +161,7 @@
     private string ActionMessage { get; set; } = "Workspace listo.";
 
     private int SelectedCount => SelectedRowIds.Count;
+    private PanelDisplayMode RightMode => SelectedCount == 0 ? PanelDisplayMode.Hidden : PanelDisplayMode.Inline;
 
     private string SelectionSummaryText => SelectedCount switch
     {
