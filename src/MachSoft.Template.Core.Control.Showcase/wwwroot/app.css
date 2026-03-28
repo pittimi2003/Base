@@ -375,6 +375,7 @@ a {
   flex: 1 1 auto;
   min-height: 0;
   height: 100%;
+  overflow: hidden;
   background: transparent;
 }
 
@@ -398,7 +399,9 @@ a {
 
 .ms-showcase-main-container-grid-viewport .mx-data-grid-scroll {
   flex: 1 1 auto;
+  block-size: 100%;
   min-height: 0;
+  overflow: auto;
 }
 
 .ms-showcase-main-container-grid-footer {
@@ -408,11 +411,32 @@ a {
   flex-wrap: wrap;
   gap: var(--ms-showcase-space-sm);
   margin-top: auto;
+  position: sticky;
+  inset-block-end: 0;
+  z-index: 1;
   border-top: 1px solid var(--mx-color-border-subtle, #d6dcea);
   padding: var(--ms-showcase-space-sm) 0.85rem;
   min-height: 3.25rem;
   flex: 0 0 auto;
-  background: transparent;
+  background: color-mix(in srgb, var(--mx-color-bg-surface, #ffffff) 90%, transparent);
+}
+
+.ms-showcase-main-container-actions .mx-icon-btn {
+  --mx-btn-border: color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 88%, transparent);
+  --mx-btn-fg: color-mix(in srgb, var(--mx-color-text-secondary, #40556f) 92%, var(--mx-color-text-primary, #132033));
+  --mx-btn-hover-bg: color-mix(in srgb, var(--mx-color-bg-surface, #ffffff) 72%, var(--mx-color-brand-primary, #3a67bf) 8%);
+
+  border-radius: var(--mx-radius-md, 10px);
+  background: color-mix(in srgb, var(--mx-color-bg-surface, #ffffff) 92%, transparent);
+  box-shadow: none;
+}
+
+.ms-showcase-main-container-actions .mx-icon-btn:hover {
+  --mx-btn-border: color-mix(in srgb, var(--mx-color-border-subtle, #d6dcea) 72%, var(--mx-color-brand-primary, #3a67bf) 24%);
+}
+
+.ms-showcase-main-container-actions .mx-icon-btn:focus-visible {
+  --mx-btn-border: color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 38%, transparent);
 }
 
 .ms-showcase-main-container-selection-count {
