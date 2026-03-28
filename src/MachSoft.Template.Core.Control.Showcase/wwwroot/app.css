@@ -300,6 +300,8 @@ a {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  height: 100%;
+  block-size: min(100%, calc(100dvh - var(--ms-shell-header-height, 48px) - (2 * var(--ms-space-5, 1.25rem))));
   min-block-size: 100%;
   min-height: 0;
 }
@@ -308,6 +310,7 @@ a {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
+  height: 100%;
   min-height: 0;
   overflow: hidden;
   background: transparent;
@@ -350,8 +353,12 @@ a {
   gap: var(--ms-showcase-space-md);
   padding: var(--ms-showcase-space-md) 0;
   height: 100%;
-  border-right: 1px solid var(--mx-color-border-subtle, #d6dcea);
-  background: transparent;
+  border-right: 1px solid color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 40%, #0e1a2b);
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 36%, #1a2a3f),
+    color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 48%, #1a2a3f)
+  );
 }
 
 .ms-showcase-main-container-actions .mx-tooltip__target {
