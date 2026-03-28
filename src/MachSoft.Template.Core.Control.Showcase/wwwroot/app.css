@@ -302,10 +302,24 @@ a {
 
 .ms-showcase-main-container-actions,
 .ms-showcase-main-container-list,
-.ms-showcase-main-container-detail {
+.ms-showcase-main-container-detail,
+.ms-showcase-main-container-grid-workspace {
   display: grid;
   gap: var(--ms-showcase-space-sm);
   align-content: start;
+}
+
+.ms-showcase-main-container-actions {
+  justify-items: start;
+  grid-auto-rows: min-content;
+}
+
+.ms-showcase-main-container-actions .mx-tooltip {
+  width: 100%;
+}
+
+.ms-showcase-main-container-actions .mx-tooltip__target {
+  display: inline-flex;
 }
 
 .ms-showcase-main-container-actions h3,
@@ -315,18 +329,25 @@ a {
   font-size: var(--mx-font-size-body-lg, 1rem);
 }
 
-.ms-showcase-main-container-action-row {
-  display: flex;
-  align-items: center;
-  gap: var(--ms-showcase-space-xs);
-}
-
-.ms-showcase-main-container-action-row span {
-  font-size: var(--mx-font-size-body, 0.9375rem);
-}
-
 .ms-showcase-main-container-list .mx-data-grid-root {
   border-radius: var(--ms-showcase-radius-sm);
+}
+
+.ms-showcase-main-container-selection-state {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ms-showcase-space-sm);
+  border: var(--ms-showcase-border-subtle);
+  border-radius: var(--ms-showcase-radius-sm);
+  padding: var(--ms-showcase-space-sm) var(--ms-showcase-space-md);
+  background: var(--mx-color-surface-muted, #f6f8fc);
+}
+
+.ms-showcase-main-container-selection-state h4 {
+  margin: 0;
+  font-size: var(--mx-font-size-caption, 0.8125rem);
+  color: var(--mx-color-text-secondary, #40556f);
 }
 
 .ms-showcase-main-container-detail dl {
