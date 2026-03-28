@@ -303,6 +303,10 @@ a {
 
 .ms-showcase-main-container-demo {
   min-height: calc(100vh - 12rem);
+  border: var(--ms-showcase-border-subtle);
+  border-radius: var(--ms-showcase-radius-md);
+  overflow: hidden;
+  background: var(--mx-color-bg-surface, #ffffff);
 }
 
 .ms-showcase-main-container-actions,
@@ -315,8 +319,10 @@ a {
   display: grid;
   justify-items: center;
   align-content: start;
-  gap: var(--ms-showcase-space-sm);
-  padding-top: var(--ms-showcase-space-sm);
+  gap: var(--ms-showcase-space-md);
+  padding: var(--ms-showcase-space-md) 0;
+  border-right: var(--ms-showcase-border-subtle);
+  background: var(--mx-color-bg-surface-muted, #f6f8fc);
 }
 
 .ms-showcase-main-container-actions .mx-tooltip__target {
@@ -326,8 +332,8 @@ a {
 .ms-showcase-main-container-grid-workspace {
   display: grid;
   grid-template-rows: minmax(0, 1fr) auto;
-  gap: var(--ms-showcase-space-sm);
   min-height: 0;
+  background: var(--mx-color-bg-surface, #ffffff);
 }
 
 .ms-showcase-main-container-list,
@@ -336,55 +342,108 @@ a {
   height: 100%;
 }
 
+.ms-showcase-main-container-list {
+  padding: var(--ms-showcase-space-sm) var(--ms-showcase-space-sm) 0;
+}
+
 .ms-showcase-main-container-selection-state {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  flex-wrap: wrap;
   gap: var(--ms-showcase-space-sm);
   border-top: var(--ms-showcase-border-subtle);
   padding: var(--ms-showcase-space-sm) var(--ms-showcase-space-md);
-  background: var(--mx-color-surface-muted, #f6f8fc);
-}
-
-.ms-showcase-main-container-selection-meta {
-  display: grid;
-  gap: 0.15rem;
+  min-height: 3rem;
+  background: var(--mx-color-bg-surface-muted, #f6f8fc);
 }
 
 .ms-showcase-main-container-selection-count {
-  font-size: var(--mx-font-size-caption, 0.8125rem);
+  font-size: var(--mx-font-size-body, 0.9375rem);
+  font-weight: var(--mx-font-weight-semibold, 600);
+  color: var(--mx-color-text-primary, #132033);
+}
+
+.ms-showcase-main-container-selection-action {
   color: var(--mx-color-text-secondary, #40556f);
+  font-size: var(--mx-font-size-caption, 0.8125rem);
 }
 
 .ms-showcase-main-container-detail {
   display: grid;
   align-content: start;
   min-height: 0;
+  border-left: var(--ms-showcase-border-subtle);
+  background: var(--mx-color-bg-surface-muted, #f6f8fc);
 }
 
 .ms-showcase-main-container-empty-detail {
-  min-height: 12rem;
+  min-height: 100%;
   display: grid;
-  place-items: center;
-  text-align: center;
+  align-content: center;
+  gap: var(--ms-showcase-space-xs);
+  padding: var(--ms-showcase-space-lg);
+  text-align: left;
   color: var(--mx-color-text-secondary, #40556f);
+}
+
+.ms-showcase-main-container-empty-detail h2 {
+  margin: 0;
+  color: var(--mx-color-text-primary, #132033);
+  font-size: var(--mx-font-size-h3, 1.125rem);
 }
 
 .ms-showcase-main-container-empty-detail p {
   margin: 0;
 }
 
-.ms-showcase-main-container-detail dl {
-  margin: 0;
+.ms-showcase-main-container-inspector {
   display: grid;
-  gap: var(--ms-showcase-space-sm);
+  gap: var(--ms-showcase-space-md);
+  padding: var(--ms-showcase-space-md);
 }
 
-.ms-showcase-main-container-detail dt {
+.ms-showcase-main-container-inspector-header {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.ms-showcase-main-container-inspector-header h2,
+.ms-showcase-main-container-inspector-header p {
+  margin: 0;
+}
+
+.ms-showcase-main-container-inspector-header h2 {
+  font-size: var(--mx-font-size-h3, 1.125rem);
+}
+
+.ms-showcase-main-container-inspector-header p {
+  color: var(--mx-color-text-secondary, #40556f);
   font-size: var(--mx-font-size-caption, 0.8125rem);
+}
+
+.ms-showcase-main-container-inspector-list {
+  margin: 0;
+  display: grid;
+  gap: 0;
+  border-top: var(--ms-showcase-border-subtle);
+}
+
+.ms-showcase-main-container-inspector-list > div {
+  display: grid;
+  gap: 0.2rem;
+  padding: var(--ms-showcase-space-sm) 0;
+  border-bottom: var(--ms-showcase-border-subtle);
+}
+
+.ms-showcase-main-container-inspector-list dt {
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--mx-color-text-secondary, #40556f);
 }
 
-.ms-showcase-main-container-detail dd {
-  margin: 0.2rem 0 0;
+.ms-showcase-main-container-inspector-list dd {
+  margin: 0;
+  color: var(--mx-color-text-primary, #132033);
 }
