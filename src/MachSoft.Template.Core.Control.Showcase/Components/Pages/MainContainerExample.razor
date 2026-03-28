@@ -52,7 +52,7 @@
 
         <MiddleContent>
             <section class="ms-showcase-main-container-grid-workspace" aria-label="Workspace de grid">
-                <div class="ms-showcase-main-container-grid-area" aria-label="Grid zone">
+                <div class="ms-showcase-main-container-grid-area ms-showcase-main-container-grid-viewport" aria-label="Grid zone">
                     <MxDataGrid TItem="MainContainerRecord"
                                 Columns="Columns"
                                 Items="Records"
@@ -65,7 +65,7 @@
                                 EnableSorting="true" />
                 </div>
 
-                <footer class="ms-showcase-main-container-selection-state" aria-live="polite" aria-label="Selection bar">
+                <footer class="ms-showcase-main-container-selection-state ms-showcase-main-container-grid-footer" aria-live="polite" aria-label="Selection bar">
                     <span class="ms-showcase-main-container-selection-count">@SelectionSummaryText</span>
                     <span class="ms-showcase-main-container-selection-action">@ActionMessage</span>
                     @if (SelectedCount > 0)
