@@ -296,17 +296,25 @@ a {
   color: var(--mx-color-brand-primary, #3a67bf);
 }
 
+.ms-shell__main:has(.ms-showcase-main-container-page--grid-workspace) {
+  padding: 0;
+  gap: 0;
+  align-content: stretch;
+}
+
 .ms-showcase-main-container-page {
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
   height: 100%;
-  block-size: min(100%, calc(100dvh - var(--ms-shell-header-height, 48px) - (2 * var(--ms-space-5, 1.25rem))));
-  min-block-size: 100%;
+  block-size: 100%;
+  min-block-size: calc(100dvh - var(--ms-shell-header-height, 48px));
   min-height: 0;
 }
 
 .ms-showcase-main-container-demo {
+  --ms-main-container-left-width: clamp(3.5rem, 5.5vw, 4.5rem);
+  --ms-main-container-right-width: clamp(18rem, 24vw, 21.25rem);
   display: flex;
   flex-direction: column;
   flex: 1 1 auto;
@@ -353,12 +361,8 @@ a {
   gap: var(--ms-showcase-space-md);
   padding: var(--ms-showcase-space-md) 0;
   height: 100%;
-  border-right: 1px solid color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 40%, #0e1a2b);
-  background: linear-gradient(
-    180deg,
-    color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 36%, #1a2a3f),
-    color-mix(in srgb, var(--mx-color-brand-primary, #3a67bf) 48%, #1a2a3f)
-  );
+  border-right: 1px solid var(--mx-color-border-subtle, #d6dcea);
+  background: var(--mx-color-bg-surface-muted, #edf2fa);
 }
 
 .ms-showcase-main-container-actions .mx-tooltip__target {
@@ -366,10 +370,11 @@ a {
 }
 
 .ms-showcase-main-container-grid-workspace {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
   flex: 1 1 auto;
   min-height: 0;
+  height: 100%;
   background: transparent;
 }
 
@@ -498,4 +503,26 @@ a {
 .ms-showcase-main-container-inspector-list dd {
   margin: 0;
   color: var(--mx-color-text-primary, #132033);
+}
+
+@media (max-width: 1100px) {
+  .ms-showcase-main-container-demo {
+    --ms-main-container-right-width: clamp(15rem, 36vw, 18rem);
+  }
+}
+
+@media (max-width: 820px) {
+  .ms-showcase-main-container-demo {
+    --ms-main-container-left-width: 3.25rem;
+    --ms-main-container-right-width: clamp(13.5rem, 44vw, 16rem);
+  }
+
+  .ms-showcase-main-container-actions {
+    gap: var(--ms-showcase-space-sm);
+    padding: var(--ms-showcase-space-sm) 0;
+  }
+
+  .ms-showcase-main-container-grid-footer {
+    padding-inline: var(--ms-showcase-space-sm);
+  }
 }
