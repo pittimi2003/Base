@@ -12,7 +12,7 @@
     </Metadata>
     <ChildContent>
         <ShowcaseSection Title="Demo funcional"
-                         Description="Panel izquierdo de acciones, listado central seleccionable y panel derecho de detalle sin modificar MainLayout ni AppShell.">
+                         Description="Panel izquierdo con MxIconButton, grid central con MxDataGrid y panel derecho de detalle según selección.">
             <MainContainer LeftMode="PanelDisplayMode.Inline"
                            RightMode="PanelDisplayMode.Inline"
                            ShowLeft="true"
@@ -23,15 +23,28 @@
                 <LeftContent>
                     <div class="ms-showcase-main-container-actions">
                         <h3>Acciones</h3>
-                        <MxButton Variant="MxControlButtonVariant.Outlined" @onclick="CreateRecord">
-                            Nuevo
-                        </MxButton>
-                        <MxButton Variant="MxControlButtonVariant.Outlined" Disabled="@(SelectedRecord is null)" @onclick="EditRecord">
-                            Editar
-                        </MxButton>
-                        <MxButton Variant="MxControlButtonVariant.Outlined" Disabled="@(SelectedRecord is null)" @onclick="DeleteRecord">
-                            Eliminar
-                        </MxButton>
+                        <div class="ms-showcase-main-container-action-row">
+                            <MxIconButton Icon="＋"
+                                          AriaLabel="Nuevo"
+                                          OnClick="CreateRecord" />
+                            <span>Nuevo</span>
+                        </div>
+                        <div class="ms-showcase-main-container-action-row">
+                            <MxIconButton Icon="✎"
+                                          AriaLabel="Editar"
+                                          Variant="MxControlButtonVariant.Outlined"
+                                          Disabled="@(SelectedRecords.Count != 1)"
+                                          OnClick="EditRecord" />
+                            <span>Editar</span>
+                        </div>
+                        <div class="ms-showcase-main-container-action-row">
+                            <MxIconButton Icon="🗑"
+                                          AriaLabel="Eliminar"
+                                          Variant="MxControlButtonVariant.Outlined"
+                                          Disabled="@(SelectedRecords.Count == 0)"
+                                          OnClick="DeleteRecords" />
+                            <span>Eliminar</span>
+                        </div>
                         <p class="ms-showcase-inline-message">@ActionMessage</p>
                     </div>
                 </LeftContent>
@@ -39,67 +52,80 @@
                 <MiddleContent>
                     <div class="ms-showcase-main-container-list">
                         <h3>Registros</h3>
-                        <p class="ms-showcase-inline-message">Selecciona un registro para ver el detalle en el panel derecho.</p>
-                        <table class="ms-showcase-main-container-table">
-                            <thead>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Name</th>
-                                    <th>Status</th>
-                                    <th>Type</th>
-                                    <th>UpdatedAt</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var record in Records)
-                                {
-                                    var isSelected = SelectedRecord?.Id == record.Id;
-                                    <tr class="@(isSelected ? "is-selected" : null)">
-                                        <td>
-                                            <button type="button" class="ms-showcase-main-container-row-button" @onclick="() => SelectRecord(record)">
-                                                @record.Id
-                                            </button>
-                                        </td>
-                                        <td>@record.Name</td>
-                                        <td>@record.Status</td>
-                                        <td>@record.Type</td>
-                                        <td>@record.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</td>
-                                    </tr>
-                                }
-                            </tbody>
-                        </table>
+                        <p class="ms-showcase-inline-message">Selecciona uno o varios registros para validar integración con detalle.</p>
+                        <MxDataGrid TItem="MainContainerRecord"
+                                    Columns="Columns"
+                                    Items="Records"
+                                    RowIdSelector="record => record.Id.ToString()"
+                                    SelectionMode="MxDataGridSelectionMode.Multiple"
+                                    SelectedRowIds="SelectedRowIds"
+                                    SelectedRowIdsChanged="OnSelectedRowIdsChanged"
+                                    AriaLabel="Registros de ejemplo del patrón MainContainer"
+                                    Caption="Listado central de registros para selección simple o múltiple"
+                                    EmptyText="No hay registros disponibles para esta demo."
+                                    EnableSorting="true" />
                     </div>
                 </MiddleContent>
 
                 <RightContent>
                     <div class="ms-showcase-main-container-detail">
                         <h3>Detalle</h3>
-                        @if (SelectedRecord is null)
+                        @if (SelectedRecords.Count == 0)
                         {
-                            <p class="ms-showcase-inline-message">Sin selección. Elige un registro en el panel central.</p>
+                            <p class="ms-showcase-inline-message">Sin selección. Elige uno o más registros en el grid central.</p>
+                        }
+                        else if (SelectedRecords.Count == 1)
+                        {
+                            var selected = SelectedRecords[0];
+                            <dl>
+                                <div>
+                                    <dt>Id</dt>
+                                    <dd>@selected.Id</dd>
+                                </div>
+                                <div>
+                                    <dt>Name</dt>
+                                    <dd>@selected.Name</dd>
+                                </div>
+                                <div>
+                                    <dt>Status</dt>
+                                    <dd>@selected.Status</dd>
+                                </div>
+                                <div>
+                                    <dt>Type</dt>
+                                    <dd>@selected.Type</dd>
+                                </div>
+                                <div>
+                                    <dt>UpdatedAt</dt>
+                                    <dd>@selected.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+                                </div>
+                            </dl>
                         }
                         else
                         {
                             <dl>
                                 <div>
+                                    <dt>Registros seleccionados</dt>
+                                    <dd>@SelectedRecords.Count</dd>
+                                </div>
+                                <div>
                                     <dt>Id</dt>
-                                    <dd>@SelectedRecord.Id</dd>
+                                    <dd>@MultipleValuesText</dd>
                                 </div>
                                 <div>
                                     <dt>Name</dt>
-                                    <dd>@SelectedRecord.Name</dd>
+                                    <dd>@MultipleValuesText</dd>
                                 </div>
                                 <div>
                                     <dt>Status</dt>
-                                    <dd>@SelectedRecord.Status</dd>
+                                    <dd>@MultipleValuesText</dd>
                                 </div>
                                 <div>
                                     <dt>Type</dt>
-                                    <dd>@SelectedRecord.Type</dd>
+                                    <dd>@MultipleValuesText</dd>
                                 </div>
                                 <div>
                                     <dt>UpdatedAt</dt>
-                                    <dd>@SelectedRecord.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</dd>
+                                    <dd>@MultipleValuesText</dd>
                                 </div>
                             </dl>
                         }
@@ -111,6 +137,8 @@
 </ShowcasePageTemplate>
 
 @code {
+    private const string MultipleValuesText = "<Multiple values>";
+
     private List<MainContainerRecord> Records { get; } =
     [
         new(101, "Contrato Norte", "Active", "Contract", new DateTime(2026, 3, 22, 9, 15, 0)),
@@ -119,60 +147,86 @@
         new(104, "Incidente 42", "Review", "Ticket", new DateTime(2026, 3, 25, 8, 35, 0))
     ];
 
-    private MainContainerRecord? SelectedRecord;
+    private IReadOnlyList<string> SelectedRowIds { get; set; } = Array.Empty<string>();
 
     private string ActionMessage { get; set; } = "Sin acciones ejecutadas.";
 
-    private void SelectRecord(MainContainerRecord record)
+    private IReadOnlyList<MxControlDataGridColumn<MainContainerRecord>> Columns { get; } =
+    [
+        new("Id", record => record.Id.ToString(), Width: "5rem", Sortable: true, SortValueSelector: record => record.Id, Key: "id"),
+        new("Name", record => record.Name, Width: "minmax(12rem, 1.6fr)", Sortable: true, SortValueSelector: record => record.Name, Key: "name"),
+        new("Status", record => record.Status, Width: "8rem", Sortable: true, SortValueSelector: record => record.Status, Key: "status"),
+        new("Type", record => record.Type, Width: "8rem", Sortable: true, SortValueSelector: record => record.Type, Key: "type"),
+        new("UpdatedAt", record => record.UpdatedAt.ToString("yyyy-MM-dd HH:mm"), Width: "11rem", Sortable: true, SortValueSelector: record => record.UpdatedAt, Key: "updated-at")
+    ];
+
+    private List<MainContainerRecord> SelectedRecords =>
+        Records.Where(record => SelectedRowIds.Contains(record.Id.ToString(), StringComparer.Ordinal)).ToList();
+
+    private Task OnSelectedRowIdsChanged(IReadOnlyList<string> selectedRowIds)
     {
-        SelectedRecord = record;
-        ActionMessage = $"Registro seleccionado: {record.Name}.";
+        SelectedRowIds = selectedRowIds;
+
+        ActionMessage = selectedRowIds.Count switch
+        {
+            0 => "Sin selección activa.",
+            1 => $"Registro seleccionado: {SelectedRecords[0].Name}.",
+            _ => $"Selección múltiple activa ({selectedRowIds.Count} registros)."
+        };
+
+        return Task.CompletedTask;
     }
 
-    private void CreateRecord()
+    private Task CreateRecord(MouseEventArgs _)
     {
         var nextId = Records.Max(item => item.Id) + 1;
         var newRecord = new MainContainerRecord(nextId, $"Nuevo registro {nextId}", "Draft", "Task", DateTime.UtcNow);
         Records.Insert(0, newRecord);
-        SelectedRecord = newRecord;
+        SelectedRowIds = [newRecord.Id.ToString()];
         ActionMessage = $"Se creó {newRecord.Name}.";
+        return Task.CompletedTask;
     }
 
-    private void EditRecord()
+    private Task EditRecord(MouseEventArgs _)
     {
-        if (SelectedRecord is null)
+        if (SelectedRecords.Count != 1)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        var index = Records.FindIndex(item => item.Id == SelectedRecord.Id);
+        var selected = SelectedRecords[0];
+        var index = Records.FindIndex(item => item.Id == selected.Id);
+
         if (index < 0)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        var updated = SelectedRecord with
+        var updated = selected with
         {
-            Name = $"{SelectedRecord.Name} (editado)",
+            Name = $"{selected.Name} (editado)",
             Status = "Review",
             UpdatedAt = DateTime.UtcNow
         };
 
         Records[index] = updated;
-        SelectedRecord = updated;
         ActionMessage = $"Se actualizó {updated.Name}.";
+        return Task.CompletedTask;
     }
 
-    private void DeleteRecord()
+    private Task DeleteRecords(MouseEventArgs _)
     {
-        if (SelectedRecord is null)
+        if (SelectedRowIds.Count == 0)
         {
-            return;
+            return Task.CompletedTask;
         }
 
-        Records.RemoveAll(item => item.Id == SelectedRecord.Id);
-        ActionMessage = $"Se eliminó el registro {SelectedRecord.Id}.";
-        SelectedRecord = null;
+        var selectedIds = SelectedRowIds.ToHashSet(StringComparer.Ordinal);
+        var removedCount = Records.RemoveAll(item => selectedIds.Contains(item.Id.ToString()));
+
+        SelectedRowIds = Array.Empty<string>();
+        ActionMessage = $"Se eliminaron {removedCount} registro(s).";
+        return Task.CompletedTask;
     }
 
     private record MainContainerRecord(int Id, string Name, string Status, string Type, DateTime UpdatedAt);
