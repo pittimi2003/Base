@@ -296,41 +296,44 @@ a {
   color: var(--mx-color-brand-primary, #3a67bf);
 }
 
+.ms-showcase-main-container-page {
+  display: grid;
+  min-height: calc(100vh - 11rem);
+}
+
 .ms-showcase-main-container-demo {
-  min-height: 32rem;
+  min-height: calc(100vh - 12rem);
 }
 
 .ms-showcase-main-container-actions,
-.ms-showcase-main-container-list,
 .ms-showcase-main-container-detail,
 .ms-showcase-main-container-grid-workspace {
-  display: grid;
-  gap: var(--ms-showcase-space-sm);
-  align-content: start;
+  height: 100%;
 }
 
 .ms-showcase-main-container-actions {
-  justify-items: start;
-  grid-auto-rows: min-content;
-}
-
-.ms-showcase-main-container-actions .mx-tooltip {
-  width: 100%;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: var(--ms-showcase-space-sm);
+  padding-top: var(--ms-showcase-space-sm);
 }
 
 .ms-showcase-main-container-actions .mx-tooltip__target {
   display: inline-flex;
 }
 
-.ms-showcase-main-container-actions h3,
-.ms-showcase-main-container-list h3,
-.ms-showcase-main-container-detail h3 {
-  margin: 0;
-  font-size: var(--mx-font-size-body-lg, 1rem);
+.ms-showcase-main-container-grid-workspace {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--ms-showcase-space-sm);
+  min-height: 0;
 }
 
+.ms-showcase-main-container-list,
 .ms-showcase-main-container-list .mx-data-grid-root {
-  border-radius: var(--ms-showcase-radius-sm);
+  min-height: 0;
+  height: 100%;
 }
 
 .ms-showcase-main-container-selection-state {
@@ -338,16 +341,37 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: var(--ms-showcase-space-sm);
-  border: var(--ms-showcase-border-subtle);
-  border-radius: var(--ms-showcase-radius-sm);
+  border-top: var(--ms-showcase-border-subtle);
   padding: var(--ms-showcase-space-sm) var(--ms-showcase-space-md);
   background: var(--mx-color-surface-muted, #f6f8fc);
 }
 
-.ms-showcase-main-container-selection-state h4 {
-  margin: 0;
+.ms-showcase-main-container-selection-meta {
+  display: grid;
+  gap: 0.15rem;
+}
+
+.ms-showcase-main-container-selection-count {
   font-size: var(--mx-font-size-caption, 0.8125rem);
   color: var(--mx-color-text-secondary, #40556f);
+}
+
+.ms-showcase-main-container-detail {
+  display: grid;
+  align-content: start;
+  min-height: 0;
+}
+
+.ms-showcase-main-container-empty-detail {
+  min-height: 12rem;
+  display: grid;
+  place-items: center;
+  text-align: center;
+  color: var(--mx-color-text-secondary, #40556f);
+}
+
+.ms-showcase-main-container-empty-detail p {
+  margin: 0;
 }
 
 .ms-showcase-main-container-detail dl {
