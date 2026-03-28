@@ -48,22 +48,6 @@
   min-height: 0;
 }
 
-.ms-main-container__left {
-  background: var(--ms-main-container-left-bg, var(--ms-color-surface-muted, #e6edf8));
-  border: 1px solid var(--ms-main-container-left-border, var(--ms-color-border, #d6dcea));
-  border-radius: var(--ms-radius-md, 0.85rem);
-}
-
-[data-mx-theme="light"] .ms-main-container__left {
-  --ms-main-container-left-bg: color-mix(in srgb, var(--ms-color-text, #132033) 7%, var(--ms-color-surface, #ffffff));
-  --ms-main-container-left-border: color-mix(in srgb, var(--ms-color-text, #132033) 14%, var(--ms-color-border, #d6dcea));
-}
-
-[data-mx-theme="dark"] .ms-main-container__left {
-  --ms-main-container-left-bg: color-mix(in srgb, #ffffff 9%, var(--ms-color-surface, #172131));
-  --ms-main-container-left-border: color-mix(in srgb, #ffffff 18%, var(--ms-color-border, #23344d));
-}
-
 .ms-main-container__left--inline {
   flex: 0 0 var(--ms-main-container-left-width);
   width: var(--ms-main-container-left-width);
@@ -167,12 +151,6 @@
   flex: 1 1 auto;
   min-height: 0;
   padding: var(--ms-space-5, 1.25rem);
-}
-
-.ms-shell__main:has(> .ms-layout-grid),
-.ms-shell__main:has(> .ms-main-container .ms-layout-grid),
-.ms-shell__main.ms-shell__main--grid {
-  padding: 0;
 }
 
 .ms-shell__footer {
