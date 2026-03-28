@@ -1,80 +1,103 @@
 @page "/patterns/main-container"
 
-<PageTitle>MainContainer · Patrón Left / Middle / Right</PageTitle>
+<PageTitle>MainContainer · Patrón Tipo Grid</PageTitle>
 
 <ShowcasePageTemplate Eyebrow="Catalog · Patterns"
-                      Title="MainContainer · Caso real Left / Middle / Right"
-                      Description="Ejemplo de consumo real donde la página controla estado de selección y acciones, mientras MainContainer solo define la distribución visual.">
+                      Title="MainContainer · Vista Tipo Grid (Left / Middle / Right)"
+                      Description="Patrón funcional explícito: herramientas compactas a la izquierda, MxDataGrid dominante al centro, estado de selección debajo del grid y detalle contextual a la derecha.">
     <Metadata>
-        <span class="ms-showcase-chip">LeftMode: Inline</span>
-        <span class="ms-showcase-chip">MiddleContent: Always On</span>
-        <span class="ms-showcase-chip">RightMode: Inline</span>
+        <span class="ms-showcase-chip">Pattern: Grid Workspace</span>
+        <span class="ms-showcase-chip">Selection-driven detail</span>
+        <span class="ms-showcase-chip">State owned by page</span>
     </Metadata>
     <ChildContent>
-        <ShowcaseSection Title="Demo funcional"
-                         Description="Panel izquierdo con MxIconButton, grid central con MxDataGrid y panel derecho de detalle según selección.">
+        <ShowcaseSection Title="Demo funcional Tipo Grid"
+                         Description="La página controla selección y detalle. MainContainer solo compone Left / Middle / Right.">
             <MainContainer LeftMode="PanelDisplayMode.Inline"
                            RightMode="PanelDisplayMode.Inline"
                            ShowLeft="true"
                            ShowRight="true"
-                           LeftWidth="13rem"
-                           RightWidth="20rem"
+                           LeftWidth="9.5rem"
+                           RightWidth="22rem"
                            Class="ms-showcase-main-container-demo">
                 <LeftContent>
-                    <div class="ms-showcase-main-container-actions">
-                        <h3>Acciones</h3>
-                        <div class="ms-showcase-main-container-action-row">
+                    <div class="ms-showcase-main-container-actions" aria-label="Panel de herramientas compactas">
+                        <h3>Herramientas</h3>
+
+                        <MxTooltip Text="Crear registro" Placement="MxTooltipPlacement.Right">
                             <MxIconButton Icon="＋"
-                                          AriaLabel="Nuevo"
+                                          AriaLabel="Crear registro"
+                                          Variant="MxControlButtonVariant.Outlined"
+                                          Size="MxButtonSize.Small"
                                           OnClick="CreateRecord" />
-                            <span>Nuevo</span>
-                        </div>
-                        <div class="ms-showcase-main-container-action-row">
+                        </MxTooltip>
+
+                        <MxTooltip Text="Editar registro seleccionado" Placement="MxTooltipPlacement.Right">
                             <MxIconButton Icon="✎"
-                                          AriaLabel="Editar"
+                                          AriaLabel="Editar registro seleccionado"
                                           Variant="MxControlButtonVariant.Outlined"
-                                          Disabled="@(SelectedRecords.Count != 1)"
+                                          Size="MxButtonSize.Small"
+                                          Disabled="@(SelectedCount != 1)"
                                           OnClick="EditRecord" />
-                            <span>Editar</span>
-                        </div>
-                        <div class="ms-showcase-main-container-action-row">
+                        </MxTooltip>
+
+                        <MxTooltip Text="Eliminar registros seleccionados" Placement="MxTooltipPlacement.Right">
                             <MxIconButton Icon="🗑"
-                                          AriaLabel="Eliminar"
+                                          AriaLabel="Eliminar registros seleccionados"
                                           Variant="MxControlButtonVariant.Outlined"
-                                          Disabled="@(SelectedRecords.Count == 0)"
+                                          Size="MxButtonSize.Small"
+                                          Disabled="@(SelectedCount == 0)"
                                           OnClick="DeleteRecords" />
-                            <span>Eliminar</span>
-                        </div>
+                        </MxTooltip>
+
                         <p class="ms-showcase-inline-message">@ActionMessage</p>
                     </div>
                 </LeftContent>
 
                 <MiddleContent>
-                    <div class="ms-showcase-main-container-list">
-                        <h3>Registros</h3>
-                        <p class="ms-showcase-inline-message">Selecciona uno o varios registros para validar integración con detalle.</p>
-                        <MxDataGrid TItem="MainContainerRecord"
-                                    Columns="Columns"
-                                    Items="Records"
-                                    RowIdSelector="record => record.Id.ToString()"
-                                    SelectionMode="MxDataGridSelectionMode.Multiple"
-                                    SelectedRowIds="SelectedRowIds"
-                                    SelectedRowIdsChanged="OnSelectedRowIdsChanged"
-                                    AriaLabel="Registros de ejemplo del patrón MainContainer"
-                                    Caption="Listado central de registros para selección simple o múltiple"
-                                    EmptyText="No hay registros disponibles para esta demo."
-                                    EnableSorting="true" />
+                    <div class="ms-showcase-main-container-grid-workspace">
+                        <div class="ms-showcase-main-container-list">
+                            <h3>Grid principal</h3>
+                            <p class="ms-showcase-inline-message">Superficie principal de trabajo para selección simple o múltiple.</p>
+                            <MxDataGrid TItem="MainContainerRecord"
+                                        Columns="Columns"
+                                        Items="Records"
+                                        RowIdSelector="record => record.Id.ToString()"
+                                        SelectionMode="MxDataGridSelectionMode.Multiple"
+                                        SelectedRowIds="SelectedRowIds"
+                                        SelectedRowIdsChanged="OnSelectedRowIdsChanged"
+                                        AriaLabel="Registros de ejemplo del patrón Tipo Grid"
+                                        Caption="Grid central dominante para operaciones del workspace"
+                                        EmptyText="No hay registros disponibles para esta demo."
+                                        EnableSorting="true" />
+                        </div>
+
+                        <section class="ms-showcase-main-container-selection-state" aria-live="polite" aria-label="Resumen de selección">
+                            <div>
+                                <h4>Selection status</h4>
+                                <p class="ms-showcase-inline-message">@SelectionSummaryText</p>
+                            </div>
+                            @if (SelectedCount > 0)
+                            {
+                                <MxButton Variant="MxControlButtonVariant.Text" Size="MxButtonSize.Small" OnClick="ClearSelection">
+                                    Limpiar selección
+                                </MxButton>
+                            }
+                        </section>
                     </div>
                 </MiddleContent>
 
                 <RightContent>
                     <div class="ms-showcase-main-container-detail">
-                        <h3>Detalle</h3>
-                        @if (SelectedRecords.Count == 0)
+                        <h3>Detalle contextual</h3>
+
+                        @if (SelectedCount == 0)
                         {
-                            <p class="ms-showcase-inline-message">Sin selección. Elige uno o más registros en el grid central.</p>
+                            <div class="ms-showcase-main-container-empty-detail" role="status" aria-live="polite">
+                                <p class="ms-showcase-inline-message">Sin selección activa. El detalle se habilita cuando eliges registros en el grid.</p>
+                            </div>
                         }
-                        else if (SelectedRecords.Count == 1)
+                        else if (SelectedCount == 1)
                         {
                             var selected = SelectedRecords[0];
                             <dl>
@@ -105,27 +128,27 @@
                             <dl>
                                 <div>
                                     <dt>Registros seleccionados</dt>
-                                    <dd>@SelectedRecords.Count</dd>
+                                    <dd>@SelectedCount</dd>
                                 </div>
                                 <div>
                                     <dt>Id</dt>
-                                    <dd>@MultipleValuesText</dd>
+                                    <dd>@MultiValueText</dd>
                                 </div>
                                 <div>
                                     <dt>Name</dt>
-                                    <dd>@MultipleValuesText</dd>
+                                    <dd>@MultiValueText</dd>
                                 </div>
                                 <div>
                                     <dt>Status</dt>
-                                    <dd>@MultipleValuesText</dd>
+                                    <dd>@MultiValueText</dd>
                                 </div>
                                 <div>
                                     <dt>Type</dt>
-                                    <dd>@MultipleValuesText</dd>
+                                    <dd>@MultiValueText</dd>
                                 </div>
                                 <div>
                                     <dt>UpdatedAt</dt>
-                                    <dd>@MultipleValuesText</dd>
+                                    <dd>@MultiValueText</dd>
                                 </div>
                             </dl>
                         }
@@ -138,6 +161,7 @@
 
 @code {
     private const string MultipleValuesText = "<Multiple values>";
+    private const string MultiValueText = $"MultiValue ({MultipleValuesText})";
 
     private List<MainContainerRecord> Records { get; } =
     [
@@ -150,6 +174,15 @@
     private IReadOnlyList<string> SelectedRowIds { get; set; } = Array.Empty<string>();
 
     private string ActionMessage { get; set; } = "Sin acciones ejecutadas.";
+
+    private int SelectedCount => SelectedRowIds.Count;
+
+    private string SelectionSummaryText => SelectedCount switch
+    {
+        0 => "Sin selección",
+        1 => "Selected: 1",
+        _ => $"Selected: {SelectedCount}"
+    };
 
     private IReadOnlyList<MxControlDataGridColumn<MainContainerRecord>> Columns { get; } =
     [
@@ -174,6 +207,13 @@
             _ => $"Selección múltiple activa ({selectedRowIds.Count} registros)."
         };
 
+        return Task.CompletedTask;
+    }
+
+    private Task ClearSelection(MouseEventArgs _)
+    {
+        SelectedRowIds = Array.Empty<string>();
+        ActionMessage = "Selección limpiada.";
         return Task.CompletedTask;
     }
 
