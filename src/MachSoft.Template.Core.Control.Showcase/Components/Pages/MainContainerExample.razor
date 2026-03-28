@@ -52,7 +52,8 @@
 
         <MiddleContent>
             <section class="ms-showcase-main-container-grid-workspace" aria-label="Workspace de grid">
-                <div class="ms-showcase-main-container-grid-area ms-showcase-main-container-grid-viewport" aria-label="Grid zone">
+                <div class="ms-showcase-main-container-grid-rows-zone" aria-label="Grid rows zone">
+                    <div class="ms-showcase-main-container-grid-area ms-showcase-main-container-grid-viewport" aria-label="Grid zone">
                     <MxDataGrid TItem="MainContainerRecord"
                                 Columns="Columns"
                                 Items="Records"
@@ -63,6 +64,7 @@
                                 AriaLabel="Registros del workspace"
                                 EmptyText="No hay registros disponibles."
                                 EnableSorting="true" />
+                    </div>
                 </div>
 
                 <footer class="ms-showcase-main-container-selection-state ms-showcase-main-container-grid-footer" aria-live="polite" aria-label="Selection bar">
