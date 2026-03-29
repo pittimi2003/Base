@@ -3,24 +3,48 @@
 
 <PageTitle>Home</PageTitle>
 
-<BrandHero Eyebrow="MachSoft official WebAssembly template"
-           Heading="Start from a browser-first corporate baseline"
-           Description="This template gives teams a clean .NET 8 Blazor WebAssembly host that restores MachSoft.Template.Core from an internal package source.">
-    <Actions>
-        <a class="page-action-link" href="packages">Review dependencies</a>
-    </Actions>
-</BrandHero>
+<section class="ms-brand-hero">
+    <p class="ms-brand-hero__eyebrow">MachSoft official WebAssembly template</p>
+
+    <div class="ms-brand-hero__content">
+        <div>
+            <h1 class="ms-brand-hero__title">Start from a browser-first corporate baseline</h1>
+            <p class="ms-brand-hero__description">This template gives teams a clean .NET 8 Blazor WebAssembly host that restores MachSoft.Template.Core from an internal package source.</p>
+        </div>
+
+        <div class="ms-brand-hero__actions">
+            <a class="page-action-link" href="packages">Review dependencies</a>
+        </div>
+    </div>
+</section>
 
 <div class="page-grid">
-    <TemplateFeatureCard Title="NuGet baseline"
-                         BadgeText="Reusable"
-                         Description="The shared corporate design baseline stays in MachSoft.Template.Core so browser apps stay lightweight and consistent." />
-    <TemplateFeatureCard Title="Internal distribution"
-                         BadgeText="Feed"
-                         Description="The generated app includes a placeholder NuGet.config to connect safely to the approved internal package source." />
-    <TemplateFeatureCard Title="WebAssembly host"
-                         BadgeText="Browser"
-                         Description="The template is optimized for isolated client-side execution without hybrid host-specific conditionals." />
+    <article class="ms-feature-card">
+        <div class="ms-feature-card__header">
+            <h2>NuGet baseline</h2>
+            <span class="ms-feature-card__badge">Reusable</span>
+        </div>
+
+        <p class="ms-feature-card__description">The shared corporate design baseline stays in MachSoft.Template.Core so browser apps stay lightweight and consistent.</p>
+    </article>
+
+    <article class="ms-feature-card">
+        <div class="ms-feature-card__header">
+            <h2>Internal distribution</h2>
+            <span class="ms-feature-card__badge">Feed</span>
+        </div>
+
+        <p class="ms-feature-card__description">The generated app includes a placeholder NuGet.config to connect safely to the approved internal package source.</p>
+    </article>
+
+    <article class="ms-feature-card">
+        <div class="ms-feature-card__header">
+            <h2>WebAssembly host</h2>
+            <span class="ms-feature-card__badge">Browser</span>
+        </div>
+
+        <p class="ms-feature-card__description">The template is optimized for isolated client-side execution without hybrid host-specific conditionals.</p>
+    </article>
 </div>
 
 <section class="page-panel">
