@@ -3,24 +3,48 @@
 
 <PageTitle>Home</PageTitle>
 
-<BrandHero Eyebrow="MachSoft official server template"
-           Heading="Start from a server-ready corporate baseline"
-           Description="This template gives teams a clean .NET 8 Blazor server host that already consumes MachSoft.Template.Core from NuGet.">
-    <Actions>
-        <a class="page-action-link" href="packages">Review dependencies</a>
-    </Actions>
-</BrandHero>
+<section class="ms-brand-hero">
+    <p class="ms-brand-hero__eyebrow">MachSoft official server template</p>
+
+    <div class="ms-brand-hero__content">
+        <div>
+            <h1 class="ms-brand-hero__title">Start from a server-ready corporate baseline</h1>
+            <p class="ms-brand-hero__description">This template gives teams a clean .NET 8 Blazor server host that already consumes MachSoft.Template.Core from NuGet.</p>
+        </div>
+
+        <div class="ms-brand-hero__actions">
+            <a class="page-action-link" href="packages">Review dependencies</a>
+        </div>
+    </div>
+</section>
 
 <div class="page-grid">
-    <TemplateFeatureCard Title="Reusable package"
-                         BadgeText="NuGet"
-                         Description="The application consumes MachSoft.Template.Core as a package, keeping shared UX assets outside the app repository." />
-    <TemplateFeatureCard Title="Private feed ready"
-                         BadgeText="Internal"
-                         Description="A placeholder NuGet.config is generated so teams can point the app to the approved internal feed without embedded secrets." />
-    <TemplateFeatureCard Title="Server hosting"
-                         BadgeText=".NET 8"
-                         Description="The host uses interactive server rendering for conservative, infrastructure-friendly enterprise rollout." />
+    <article class="ms-feature-card">
+        <div class="ms-feature-card__header">
+            <h2>Reusable package</h2>
+            <span class="ms-feature-card__badge">NuGet</span>
+        </div>
+
+        <p class="ms-feature-card__description">The application consumes MachSoft.Template.Core as a package, keeping shared UX assets outside the app repository.</p>
+    </article>
+
+    <article class="ms-feature-card">
+        <div class="ms-feature-card__header">
+            <h2>Private feed ready</h2>
+            <span class="ms-feature-card__badge">Internal</span>
+        </div>
+
+        <p class="ms-feature-card__description">A placeholder NuGet.config is generated so teams can point the app to the approved internal feed without embedded secrets.</p>
+    </article>
+
+    <article class="ms-feature-card">
+        <div class="ms-feature-card__header">
+            <h2>Server hosting</h2>
+            <span class="ms-feature-card__badge">.NET 8</span>
+        </div>
+
+        <p class="ms-feature-card__description">The host uses interactive server rendering for conservative, infrastructure-friendly enterprise rollout.</p>
+    </article>
 </div>
 
 <section class="page-panel">
