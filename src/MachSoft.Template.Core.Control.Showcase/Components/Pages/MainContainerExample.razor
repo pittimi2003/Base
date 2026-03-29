@@ -1,7 +1,7 @@
-@page "/patterns/main-container"
+@page "/patterns/vista-tipo-grid"
 @layout MachSoft.Template.Core.Control.Showcase.Components.Layout.GridWorkspaceLayout
 
-<PageTitle>Project Designer Workspace</PageTitle>
+<PageTitle>Vista Tipo Grid</PageTitle>
 
 <div class="ms-showcase-main-container-page ms-showcase-main-container-page--grid-workspace">
     <MainContainer LeftMode="PanelDisplayMode.Inline"
@@ -82,9 +82,16 @@
         </MiddleContent>
 
         <RightContent>
-            @if (SelectedCount > 0)
-            {
-                <section class="ms-showcase-main-container-detail" aria-label="Inspector de registro">
+            <section class="ms-showcase-main-container-detail" aria-label="Inspector de registro">
+                @if (SelectedCount == 0)
+                {
+                    <div class="ms-showcase-main-container-empty-detail">
+                        <h2>Sin selección</h2>
+                        <p>Selecciona una o más filas para ver el detalle contextual en esta columna.</p>
+                    </div>
+                }
+                else
+                {
                     <div class="ms-showcase-main-container-inspector">
                         <header class="ms-showcase-main-container-inspector-header">
                             <h2>Inspector</h2>
@@ -143,14 +150,14 @@
                             </dl>
                         }
                     </div>
-                </section>
-            }
+                }
+            </section>
         </RightContent>
     </MainContainer>
 </div>
 
 @code {
-    private const string MultipleValuesText = "<Multiple values>";
+    private const string MultipleValuesText = "MultiValue";
 
     private List<MainContainerRecord> Records { get; } = BuildMockRecords();
 
@@ -181,19 +188,20 @@
     private string ActionMessage { get; set; } = "Workspace listo.";
 
     private int SelectedCount => SelectedRowIds.Count;
-    private PanelDisplayMode RightMode => SelectedCount == 0 ? PanelDisplayMode.Hidden : PanelDisplayMode.Inline;
+    private PanelDisplayMode RightMode => PanelDisplayMode.Inline;
 
     private string SelectionSummaryText => SelectedCount switch
     {
-        0 => "Sin selección",
+            0 => "Sin selección",
         1 => "Selected: 1",
         _ => $"Selected: {SelectedCount}"
     };
 
     private string InspectorSubtitle => SelectedCount switch
     {
-        1 => "Detalle del registro seleccionado",
-        _ => $"Edición masiva sobre {SelectedCount} registros"
+            0 => "Sin selección activa",
+            1 => "Detalle del registro seleccionado",
+            _ => $"Edición masiva sobre {SelectedCount} registros"
     };
 
     private IReadOnlyList<MxControlDataGridColumn<MainContainerRecord>> Columns { get; } =
