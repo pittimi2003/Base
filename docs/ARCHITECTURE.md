@@ -159,3 +159,10 @@ No credentials are stored in source control. Teams are expected to inject creden
 - Se formaliza un layout específico de workspace (`GridWorkspaceLayout`) en templates Server/WASM para rutas que requieren altura completa útil del shell.
 - En ese contrato el `AppShell` mantiene header/navegación y desactiva únicamente el footer global (`ShowFooter=false`) para no duplicar cierre inferior con la barra de estado propia del grid.
 - El scroll vertical del patrón grid queda encapsulado en el viewport del datagrid, no en el `main` del shell, alineando el comportamiento con Showcase.
+
+## 2026-03-30 — Estandarización normativa de Grid Workspace (cross-host)
+- Se formalizó `AppShellWorkspaceMode` en `MachSoft.Template.Core` para evitar heurísticas host-locales y habilitar contrato estructural explícito de workspace grid.
+- `AppShell` ahora soporta `WorkspaceMode=Grid`, aplicando clases estructurales compartidas (`ms-shell--grid-workspace`, `ms-shell__workspace--grid-workspace`, `ms-shell__main--grid-workspace`).
+- El patrón Grid Workspace se centraliza en `src/MachSoft.Template.Core/wwwroot/css/template/layout.css` con clases compartidas (`ms-grid-workspace-*`) consumidas por Showcase, Template Server y Template Wasm.
+- Se eliminó la dependencia de selectores `:has(...)` y ajustes CSS host-locales para altura/scroll/footer del grid.
+- El contrato de scroll queda explícito en `.ms-grid-workspace-viewport .mx-data-grid-scroll` y el footer visual del patrón queda en `.ms-grid-workspace-footer` (sin participación del footer global del AppShell).

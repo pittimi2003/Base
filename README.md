@@ -198,3 +198,11 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - Se unificó el comportamiento vertical de `/workspace/grid` entre Showcase y templates oficiales eliminando el cálculo rígido de altura de viewport en templates.
 - Las vistas tipo grid de templates oficiales usan layout dedicado (`GridWorkspaceLayout`) con `ShowFooter=false` para que la barra inferior del workspace sea el único cierre visual de la pantalla.
 - `ms-shell__main` en la vista grid pasa a modo full-height (`padding: 0`, `overflow: hidden`) y delega el scroll al contenedor del grid (`.mx-data-grid-scroll`) para evitar contenido “cortado” al final.
+
+## 2026-03-30 — Contrato normativo Grid Workspace (Showcase + Server + Wasm)
+- El patrón Grid Workspace queda estandarizado en capa compartida (`MachSoft.Template.Core`) mediante `AppShellWorkspaceMode.Grid` + clases `ms-grid-workspace-*`.
+- Se elimina dependencia de ajustes CSS por host para altura útil, scroll y footer en vistas grid.
+- El scroll operativo obligatorio ocurre en `.mx-data-grid-scroll` dentro de `.ms-grid-workspace-viewport`.
+- El footer visual de cierre en vistas grid es `.ms-grid-workspace-footer`; el footer global de `AppShell` no participa (`ShowFooter=false` en `GridWorkspaceLayout`).
+- El panel derecho se renderiza únicamente con selección activa.
+- Norma completa: `docs/GRID_VIEW_PATTERN.md`.

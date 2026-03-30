@@ -483,3 +483,214 @@
     padding: var(--ms-space-4, 1rem);
   }
 }
+
+/* Grid Workspace pattern (cross-host contract) */
+.ms-shell--grid-workspace {
+  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-shell__workspace--grid-workspace {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.ms-shell__main--grid-workspace {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+  align-content: stretch;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ms-grid-workspace-page {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ms-grid-workspace-layout {
+  --ms-main-container-left-width: clamp(3.5rem, 5.5vw, 4.5rem);
+  --ms-main-container-right-width: clamp(18rem, 24vw, 21.25rem);
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  background: transparent;
+}
+
+.ms-grid-workspace-layout .ms-main-container__inline,
+.ms-grid-workspace-layout .ms-main-container__middle {
+  flex: 1 1 auto;
+  min-height: 0;
+}
+
+.ms-grid-workspace-layout .ms-main-container__middle {
+  display: flex;
+  flex-direction: column;
+}
+
+.ms-grid-workspace-layout .ms-main-container__left {
+  display: flex;
+  justify-content: center;
+}
+
+.ms-grid-workspace-actions,
+.ms-grid-workspace-detail,
+.ms-grid-workspace {
+  min-height: 0;
+  height: 100%;
+}
+
+.ms-grid-workspace-actions {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--ms-space-4, 1rem);
+  padding: var(--ms-space-4, 1rem) 0;
+  border-inline-end: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  background: var(--mx-color-bg-surface-muted, var(--ms-color-bg, #edf2fa));
+}
+
+.ms-grid-workspace-actions .mx-tooltip__target {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.ms-grid-workspace {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ms-grid-workspace-rows-zone {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+}
+
+.ms-grid-workspace-viewport {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: hidden;
+  --mx-data-grid-header-bg: var(--mx-color-bg-surface-muted, #edf2fa);
+}
+
+.ms-grid-workspace-viewport .mx-data-grid-root {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 0;
+  border-radius: 0;
+  background: var(--mx-color-bg-surface, #ffffff);
+}
+
+.ms-grid-workspace-viewport .mx-data-grid-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: auto;
+}
+
+.ms-grid-workspace-viewport .mx-data-grid thead th {
+  background: var(--mx-data-grid-header-bg, var(--mx-color-bg-surface-muted, #edf2fa));
+}
+
+.ms-grid-workspace-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: var(--ms-space-3, 0.75rem);
+  border-top: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  padding: var(--ms-space-3, 0.75rem) var(--ms-space-4, 1rem);
+  min-height: 3.25rem;
+  flex: 0 0 auto;
+  background: var(--mx-color-bg-surface-muted, #f5f8ff);
+}
+
+.ms-grid-workspace-selection-count {
+  font-weight: 600;
+}
+
+.ms-grid-workspace-selection-action {
+  color: var(--mx-color-text-secondary, var(--ms-color-text-soft, #576985));
+}
+
+.ms-grid-workspace-detail {
+  border-inline-start: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d6dcea));
+  background: var(--mx-color-bg-surface, #fff);
+}
+
+.ms-grid-workspace-inspector {
+  padding: var(--ms-space-4, 1rem);
+}
+
+.ms-grid-workspace-inspector-header h2,
+.ms-grid-workspace-inspector-header p {
+  margin: 0;
+}
+
+.ms-grid-workspace-inspector-header p {
+  margin-top: var(--ms-space-2, 0.5rem);
+  color: var(--mx-color-text-secondary, var(--ms-color-text-soft, #576985));
+}
+
+.ms-grid-workspace-inspector-list {
+  margin: var(--ms-space-4, 1rem) 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.ms-grid-workspace-inspector-list > div {
+  display: grid;
+  grid-template-columns: minmax(6rem, 8rem) 1fr;
+  gap: var(--ms-space-2, 0.5rem);
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--mx-color-border-subtle, var(--ms-color-border, #d3daea));
+}
+
+.ms-grid-workspace-inspector-list dt,
+.ms-grid-workspace-inspector-list dd {
+  margin: 0;
+}
+
+.ms-grid-workspace-inspector-list dt {
+  font-weight: 600;
+}
+
+@media (max-width: 992px) {
+  .ms-grid-workspace-page {
+    display: block;
+    overflow: visible;
+  }
+
+  .ms-grid-workspace-layout {
+    display: block;
+    min-height: auto;
+    overflow: visible;
+  }
+
+  .ms-grid-workspace-layout .ms-main-container__inline,
+  .ms-grid-workspace-layout .ms-main-container__middle {
+    flex: initial;
+    min-height: auto;
+  }
+}

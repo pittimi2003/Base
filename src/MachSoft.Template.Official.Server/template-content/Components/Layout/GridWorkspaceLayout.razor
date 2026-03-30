@@ -1,12 +1,14 @@
 @inherits LayoutComponentBase
 @using MachSoft.Template.Core.Models
+@using MachSoft.Template.Core.Layout
 
 <AppShell BrandTitle="TemplateCompanyName"
           Title="TemplateRootNamespace"
           Subtitle="Official MachSoft server baseline for internal projects."
           FooterText="TemplateCompanyName · MachSoft.Template.Official.Server"
           NavigationItems="_items"
-          ShowFooter="false">
+          ShowFooter="false"
+          WorkspaceMode="AppShellWorkspaceMode.Grid">
     @Body
 </AppShell>
 

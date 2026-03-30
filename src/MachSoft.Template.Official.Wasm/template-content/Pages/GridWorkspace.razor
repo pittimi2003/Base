@@ -3,7 +3,7 @@
 
 <PageTitle>Vista Tipo Grid</PageTitle>
 
-<div class="ms-template-grid-page ms-template-grid-page--workspace">
+<div class="ms-grid-workspace-page">
     <MainContainer LeftMode="PanelDisplayMode.Inline"
                    RightMode="PanelDisplayMode.Inline"
                    ShowLeft="true"
@@ -11,9 +11,9 @@
                    LeftWidth="4.5rem"
                    RightWidth="21.25rem"
                    Gap="0"
-                   Class="ms-template-grid-layout">
+                   Class="ms-grid-workspace-layout">
         <LeftContent>
-            <aside class="ms-template-grid-actions" aria-label="Action Pane">
+            <aside class="ms-grid-workspace-actions" aria-label="Action Pane">
                 <MxTooltip Text="Crear registro" Placement="MxTooltipPlacement.Right">
                     <MxIconButton Icon="＋" AriaLabel="Crear registro" Variant="MxControlButtonVariant.Outlined" Size="MxButtonSize.Small" OnClick="CreateRecord" />
                 </MxTooltip>
@@ -33,13 +33,12 @@
         </LeftContent>
 
         <MiddleContent>
-            <section class="ms-template-grid-workspace" aria-label="Workspace de grid">
-                <div class="ms-template-grid-rows-zone" aria-label="Grid rows zone">
-                    <div class="ms-template-grid-viewport" aria-label="Grid zone">
+            <section class="ms-grid-workspace" aria-label="Workspace de grid">
+                <div class="ms-grid-workspace-rows-zone" aria-label="Grid rows zone">
+                    <div class="ms-grid-workspace-viewport" aria-label="Grid zone">
                         <MxDataGrid TItem="GridRecord"
                                     Columns="Columns"
                                     Items="Records"
-                                    Class="ms-template-grid-table"
                                     RowIdSelector="record => record.Id.ToString()"
                                     SelectionMode="MxDataGridSelectionMode.Multiple"
                                     SelectedRowIds="SelectedRowIds"
@@ -50,9 +49,9 @@
                     </div>
                 </div>
 
-                <footer class="ms-template-grid-footer" aria-live="polite" aria-label="Selection bar">
-                    <span class="ms-template-grid-selection-count">@SelectionSummaryText</span>
-                    <span class="ms-template-grid-selection-action">@ActionMessage</span>
+                <footer class="ms-grid-workspace-footer" aria-live="polite" aria-label="Selection bar">
+                    <span class="ms-grid-workspace-selection-count">@SelectionSummaryText</span>
+                    <span class="ms-grid-workspace-selection-action">@ActionMessage</span>
                     @if (SelectedCount > 0)
                     {
                         <MxButton Variant="MxControlButtonVariant.Text" Size="MxButtonSize.Small" OnClick="ClearSelection">
@@ -66,9 +65,9 @@
         <RightContent>
             @if (HasSelection)
             {
-                <section class="ms-template-grid-detail" aria-label="Inspector de registro">
-                    <div class="ms-template-grid-inspector">
-                        <header class="ms-template-grid-inspector-header">
+                <section class="ms-grid-workspace-detail" aria-label="Inspector de registro">
+                    <div class="ms-grid-workspace-inspector">
+                        <header class="ms-grid-workspace-inspector-header">
                             <h2>Inspector</h2>
                             <p>@InspectorSubtitle</p>
                         </header>
@@ -76,7 +75,7 @@
                         @if (SelectedCount == 1)
                         {
                             var selected = SelectedRecords[0];
-                            <dl class="ms-template-grid-inspector-list">
+                            <dl class="ms-grid-workspace-inspector-list">
                                 <div><dt>Id</dt><dd>@selected.Id</dd></div>
                                 <div><dt>Name</dt><dd>@selected.Name</dd></div>
                                 <div><dt>Status</dt><dd>@selected.Status</dd></div>
@@ -86,7 +85,7 @@
                         }
                         else
                         {
-                            <dl class="ms-template-grid-inspector-list">
+                            <dl class="ms-grid-workspace-inspector-list">
                                 <div><dt>Id</dt><dd>MultiValue</dd></div>
                                 <div><dt>Name</dt><dd>MultiValue</dd></div>
                                 <div><dt>Status</dt><dd>MultiValue</dd></div>

@@ -94,3 +94,10 @@ Impacto de migración:
 - Se introdujeron layouts dedicados `GridWorkspaceLayout` (Server/Wasm) con `ShowFooter=false` para evitar conflicto visual entre footer global y barra inferior del workspace.
 - Se ajustó el patrón CSS de la vista grid para usar altura útil completa del `main` y delegar el scroll al contenedor del datagrid.
 - Showcase y templates quedaron alineados en estructura vertical: header shell + workspace full-height + barra inferior integrada en la propia vista.
+
+## Registro 2026-03-30 — Estandarización obligatoria del patrón Grid Workspace
+- Se reemplazó la activación implícita por CSS host-local (`:has`) con un contrato explícito en `AppShell` mediante `AppShellWorkspaceMode.Grid`.
+- Se centralizó en Core (`layout.css`) la composición de alto útil, viewport scrollable, footer de workspace y panel derecho para vistas grid.
+- Showcase, Template Server y Template Wasm consumen la misma estructura de clases (`ms-grid-workspace-*`) y el mismo comportamiento de layout/scroll/footer/header.
+- Se retiraron reglas CSS de grid específicas por host de `app.css` en Showcase y templates oficiales.
+- Se dejó documentación normativa en `docs/GRID_VIEW_PATTERN.md` para impedir divergencias futuras.
