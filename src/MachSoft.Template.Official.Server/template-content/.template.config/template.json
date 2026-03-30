@@ -39,7 +39,7 @@
     "CorePackageVersion": {
       "type": "parameter",
       "datatype": "string",
-      "defaultValue": "1.0.0-internal",
+      "defaultValue": "1.0.1-internal",
       "description": "MachSoft.Template.Core package version to restore.",
       "replaces": "0.0.0-core-version"
     },
@@ -53,7 +53,7 @@
     "CoreControlPackageVersion": {
       "type": "parameter",
       "datatype": "string",
-      "defaultValue": "1.0.0-internal",
+      "defaultValue": "1.0.1-internal",
       "description": "MachSoft.Template.Core.Control package version to restore.",
       "replaces": "0.0.0-core-control-version"
     }

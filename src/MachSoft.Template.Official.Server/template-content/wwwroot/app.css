@@ -1,5 +1,12 @@
+html,
 body {
   margin: 0;
+}
+
+body {
+  background: var(--mx-color-bg-canvas, #f5f7fb);
+  color: var(--mx-color-text-primary, #11233d);
+  font-family: var(--mx-font-family-sans, Inter, system-ui, sans-serif);
 }
 
 .page-content {
@@ -11,12 +18,6 @@ body {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 1rem;
-}
-
-.page-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
 }
 
 .page-action-link {
@@ -32,6 +33,10 @@ body {
   font-weight: 600;
 }
 
+.page-action-link--secondary {
+  background: #0f2b6e;
+}
+
 .page-panel {
   padding: 1.25rem;
   border-radius: 1rem;
@@ -39,6 +44,159 @@ body {
   border: 1px solid #d6dcea;
 }
 
-.page-panel h2 {
-  margin-top: 0;
+.page-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.ms-template-grid-page {
+  block-size: calc(100vh - 12rem);
+  min-block-size: 32rem;
+}
+
+.ms-template-grid-layout {
+  block-size: 100%;
+}
+
+.ms-template-grid-layout .ms-main-container__inline,
+.ms-template-grid-layout .ms-main-container__middle {
+  block-size: 100%;
+  min-block-size: 0;
+}
+
+.ms-template-grid-layout .ms-main-container__left {
+  justify-content: center;
+}
+
+.ms-template-grid-actions,
+.ms-template-grid-detail,
+.ms-template-grid-workspace {
+  block-size: 100%;
+  min-block-size: 0;
+}
+
+.ms-template-grid-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 1rem 0;
+  border-inline-end: 1px solid var(--mx-color-border-subtle, #d3daea);
+}
+
+.ms-template-grid-actions .mx-tooltip__target {
+  inline-size: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.ms-template-grid-workspace {
+  display: flex;
+  flex-direction: column;
+  min-block-size: 0;
+}
+
+.ms-template-grid-rows-zone {
+  flex: 1;
+  min-block-size: 0;
+  display: flex;
+}
+
+.ms-template-grid-viewport {
+  flex: 1;
+  min-block-size: 0;
+  display: flex;
+  padding: 0.75rem;
+}
+
+.ms-template-grid-viewport .mx-data-grid-root {
+  flex: 1;
+  min-block-size: 0;
+}
+
+.ms-template-grid-viewport .mx-data-grid-scroll {
+  max-block-size: none;
+  block-size: 100%;
+}
+
+.ms-template-grid-footer {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  padding: 0.7rem 0.85rem;
+  border-top: 1px solid var(--mx-color-border-subtle, #d3daea);
+  background: var(--mx-color-bg-surface-muted, #f5f8ff);
+}
+
+.ms-template-grid-selection-count {
+  font-weight: 600;
+}
+
+.ms-template-grid-selection-action {
+  color: var(--mx-color-text-secondary, #576985);
+}
+
+.ms-template-grid-detail {
+  border-inline-start: 1px solid var(--mx-color-border-subtle, #d3daea);
+  background: var(--mx-color-bg-surface, #fff);
+}
+
+.ms-template-grid-empty-detail {
+  padding: 1.25rem;
+}
+
+.ms-template-grid-inspector {
+  padding: 1rem;
+}
+
+.ms-template-grid-inspector-header h2,
+.ms-template-grid-inspector-header p {
+  margin: 0;
+}
+
+.ms-template-grid-inspector-header p {
+  margin-top: 0.4rem;
+  color: var(--mx-color-text-secondary, #576985);
+}
+
+.ms-template-grid-inspector-list {
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+}
+
+.ms-template-grid-inspector-list > div {
+  display: grid;
+  grid-template-columns: minmax(6rem, 8rem) 1fr;
+  gap: 0.5rem;
+  padding: 0.65rem 0;
+  border-bottom: 1px solid var(--mx-color-border-subtle, #d3daea);
+}
+
+.ms-template-grid-inspector-list dt,
+.ms-template-grid-inspector-list dd {
+  margin: 0;
+}
+
+.ms-template-grid-inspector-list dt {
+  font-weight: 600;
+}
+
+@media (max-width: 992px) {
+  .ms-template-grid-page {
+    block-size: auto;
+    min-block-size: 0;
+  }
+
+  .ms-template-grid-layout {
+    block-size: auto;
+  }
+
+  .ms-template-grid-layout .ms-main-container__inline,
+  .ms-template-grid-layout .ms-main-container__middle {
+    block-size: auto;
+  }
 }

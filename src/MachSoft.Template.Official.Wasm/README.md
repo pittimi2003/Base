@@ -16,7 +16,7 @@ dotnet new install MachSoft.Template.Official.Wasm
 ## Generate
 
 ```powershell
-dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
+dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.1-internal --CoreControlPackageVersion 1.0.1-internal
 ```
 
 ## Restore generated app

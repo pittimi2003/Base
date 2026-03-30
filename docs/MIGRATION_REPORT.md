@@ -16,7 +16,7 @@ The repository now includes a dedicated .NET 8 productization layout for MachSof
 
 ## Conservative assumptions made
 
-1. The shared package version starts at `1.0.0-internal`.
+1. The shared package version starts at `1.0.1-internal`.
 2. Generated applications restore `MachSoft.Template.Core` from a NuGet feed rather than a project reference.
 3. Root namespace override is treated as an optional template parameter, while project name remains the primary generated identifier.
 4. Template content is intentionally minimal, production-oriented, and free of business logic.
