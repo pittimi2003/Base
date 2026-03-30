@@ -65,7 +65,7 @@ Rol esperado:
 Rol esperado:
 
 - panel de detalle contextual,
-- sin selección: estado vacío o neutro,
+- sin selección: no renderiza panel derecho,
 - selección única: detalle real del registro,
 - multiselección: representación agregada con `MultiValue` / `<Multiple values>`.
 
@@ -123,7 +123,8 @@ Reglas de control:
 
 - La selección se controla en la página consumidora, no en `MainContainer`.
 - La franja inferior puede exponer estado operativo (ejemplo: `Selected: N`).
-- `RightContent` cambia su contenido según la cantidad de seleccionados.
+- `RightContent` solo se renderiza cuando existe al menos un registro seleccionado.
+- Sin selección, no debe existir `empty state` ocupando la columna derecha y el área central debe usar el espacio disponible.
 
 ---
 

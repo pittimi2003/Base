@@ -1143,7 +1143,7 @@
   font-size: var(--mx-font-size-caption, 0.8125rem);
   color: var(--mx-color-text-secondary, #40556f);
   padding: 0.75rem 0.85rem;
-  background: color-mix(in srgb, var(--mx-color-bg-surface-muted, #eef3fb) 70%, transparent);
+  background: var(--mx-data-grid-header-bg, var(--mx-color-bg-surface-muted, #eef3fb));
   border-bottom: var(--mx-border-width-1, 1px) solid var(--mx-color-border-subtle, #d6dcea);
   position: sticky;
   top: 0;

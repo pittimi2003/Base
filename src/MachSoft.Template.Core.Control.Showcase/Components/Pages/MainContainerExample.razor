@@ -7,7 +7,7 @@
     <MainContainer LeftMode="PanelDisplayMode.Inline"
                    RightMode="@RightMode"
                    ShowLeft="true"
-                   ShowRight="true"
+                   ShowRight="@(HasSelection)"
                    LeftWidth="4.5rem"
                    RightWidth="21.25rem"
                    Gap="0"
@@ -82,16 +82,9 @@
         </MiddleContent>
 
         <RightContent>
-            <section class="ms-showcase-main-container-detail" aria-label="Inspector de registro">
-                @if (SelectedCount == 0)
-                {
-                    <div class="ms-showcase-main-container-empty-detail">
-                        <h2>Sin selección</h2>
-                        <p>Selecciona una o más filas para ver el detalle contextual en esta columna.</p>
-                    </div>
-                }
-                else
-                {
+            @if (HasSelection)
+            {
+                <section class="ms-showcase-main-container-detail" aria-label="Inspector de registro">
                     <div class="ms-showcase-main-container-inspector">
                         <header class="ms-showcase-main-container-inspector-header">
                             <h2>Inspector</h2>
@@ -150,8 +143,8 @@
                             </dl>
                         }
                     </div>
-                }
-            </section>
+                </section>
+            }
         </RightContent>
     </MainContainer>
 </div>
@@ -188,6 +181,7 @@
     private string ActionMessage { get; set; } = "Workspace listo.";
 
     private int SelectedCount => SelectedRowIds.Count;
+    private bool HasSelection => SelectedCount > 0;
     private PanelDisplayMode RightMode => PanelDisplayMode.Inline;
 
     private string SelectionSummaryText => SelectedCount switch
