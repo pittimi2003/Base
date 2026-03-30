@@ -1,0 +1,20 @@
+@inherits LayoutComponentBase
+@using MachSoft.Template.Core.Models
+
+<AppShell BrandTitle="TemplateCompanyName"
+          Title="TemplateRootNamespace"
+          Subtitle="Official MachSoft server baseline for internal projects."
+          FooterText="TemplateCompanyName · MachSoft.Template.Official.Server"
+          NavigationItems="_items"
+          ShowFooter="false">
+    @Body
+</AppShell>
+
+@code {
+    private static readonly IReadOnlyList<NavItem> _items =
+    [
+        new("Home", "/", "🏠"),
+        new("Packages", "/packages", "📦"),
+        new("Vista Tipo Grid", "/workspace/grid", "📊")
+    ];
+}
