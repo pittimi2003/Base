@@ -154,3 +154,8 @@ No credentials are stored in source control. Teams are expected to inject creden
 - `@Body` se renderiza en `ms-shell__main` inmediatamente bajo el header (sin franja vacía artificial).
 - `AppFooter.razor` permanece activo y ahora puede ocultarse mediante `ShowFooter` en los `MainLayout.razor` que consumen `AppShell`.
 - Se explicitó el wiring de layout en Showcase, Official.Server y Official.Wasm para evitar resolver un layout distinto al esperado.
+
+## 2026-03-30 — Contrato de layout para workspace tipo grid
+- Se formaliza un layout específico de workspace (`GridWorkspaceLayout`) en templates Server/WASM para rutas que requieren altura completa útil del shell.
+- En ese contrato el `AppShell` mantiene header/navegación y desactiva únicamente el footer global (`ShowFooter=false`) para no duplicar cierre inferior con la barra de estado propia del grid.
+- El scroll vertical del patrón grid queda encapsulado en el viewport del datagrid, no en el `main` del shell, alineando el comportamiento con Showcase.

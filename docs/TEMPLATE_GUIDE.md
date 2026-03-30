@@ -149,3 +149,10 @@ Los templates `machsoft-server` y `machsoft-wasm` ahora incluyen una pantalla de
 - panel derecho con estado vacío, detalle de selección única y estado `MultiValue` para selección múltiple.
 
 Además, se retiró cualquier referencia legacy a `MachSoftCoreAssets`; las apps generadas consumen assets vía `MxControlAssets`.
+
+## 2026-03-30 — Validación vertical de `/workspace/grid`
+
+La ruta `/workspace/grid` en Server y Wasm usa layout dedicado de workspace (`GridWorkspaceLayout`) para asegurar composición vertical consistente con Showcase:
+- `AppShell` mantiene header + navegación y desactiva footer global en esta ruta.
+- `ms-shell__main` entra en modo full-height (`padding: 0`, sin scroll global para este patrón).
+- El scroll operativo se concentra en `.mx-data-grid-scroll`, manteniendo visible y estable la barra inferior del workspace.

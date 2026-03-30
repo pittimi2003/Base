@@ -193,3 +193,8 @@ dotnet pack ./src/MachSoft.Template.Core.Control/MachSoft.Template.Core.Control.
 - `@Body` se renderiza en `ms-shell__main` inmediatamente bajo el header (sin franja vacía artificial).
 - `AppFooter.razor` permanece activo y ahora puede ocultarse mediante `ShowFooter` en los `MainLayout.razor` que consumen `AppShell`.
 - Se explicitó el wiring de layout en Showcase, Official.Server y Official.Wasm para evitar resolver un layout distinto al esperado.
+
+## 2026-03-30 — Corrección vertical de vistas tipo grid
+- Se unificó el comportamiento vertical de `/workspace/grid` entre Showcase y templates oficiales eliminando el cálculo rígido de altura de viewport en templates.
+- Las vistas tipo grid de templates oficiales usan layout dedicado (`GridWorkspaceLayout`) con `ShowFooter=false` para que la barra inferior del workspace sea el único cierre visual de la pantalla.
+- `ms-shell__main` en la vista grid pasa a modo full-height (`padding: 0`, `overflow: hidden`) y delega el scroll al contenedor del grid (`.mx-data-grid-scroll`) para evitar contenido “cortado” al final.

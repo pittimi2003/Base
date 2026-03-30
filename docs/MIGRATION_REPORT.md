@@ -88,3 +88,9 @@ Impacto de migración:
 - `@Body` se renderiza en `ms-shell__main` inmediatamente bajo el header (sin franja vacía artificial).
 - `AppFooter.razor` permanece activo y ahora puede ocultarse mediante `ShowFooter` en los `MainLayout.razor` que consumen `AppShell`.
 - Se explicitó el wiring de layout en Showcase, Official.Server y Official.Wasm para evitar resolver un layout distinto al esperado.
+
+## Registro 2026-03-30 — Corrección de composición vertical en patrón grid
+- Se eliminó la dependencia de `block-size: calc(100vh - 12rem)` en templates oficiales para la vista `/workspace/grid`.
+- Se introdujeron layouts dedicados `GridWorkspaceLayout` (Server/Wasm) con `ShowFooter=false` para evitar conflicto visual entre footer global y barra inferior del workspace.
+- Se ajustó el patrón CSS de la vista grid para usar altura útil completa del `main` y delegar el scroll al contenedor del datagrid.
+- Showcase y templates quedaron alineados en estructura vertical: header shell + workspace full-height + barra inferior integrada en la propia vista.
