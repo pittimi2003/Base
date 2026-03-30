@@ -11,8 +11,8 @@ Guía de instalación, generación y validación de los templates oficiales Mach
 ## Install templates
 
 ```powershell
-dotnet new install ./artifacts/packages/MachSoft.Template.Official.Server.1.0.0-internal.nupkg
-dotnet new install ./artifacts/packages/MachSoft.Template.Official.Wasm.1.0.0-internal.nupkg
+dotnet new install ./artifacts/packages/MachSoft.Template.Official.Server.1.0.1-internal.nupkg
+dotnet new install ./artifacts/packages/MachSoft.Template.Official.Wasm.1.0.1-internal.nupkg
 ```
 
 ## Generate
@@ -22,13 +22,13 @@ dotnet new install ./artifacts/packages/MachSoft.Template.Official.Wasm.1.0.0-in
 Este template genera una aplicación con Razor Components + Interactive Server rendering.
 
 ```powershell
-dotnet new machsoft-server -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
+dotnet new machsoft-server -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.1-internal --CoreControlPackageVersion 1.0.1-internal
 ```
 
 ### Wasm (.NET 8 Blazor WebAssembly)
 
 ```powershell
-dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.0-internal --CoreControlPackageVersion 1.0.0-internal
+dotnet new machsoft-wasm -n MyCompany.MyApp --CompanyName MyCompany --RootNamespace MyCompany.MyApp --CorePackageVersion 1.0.1-internal --CoreControlPackageVersion 1.0.1-internal
 ```
 
 ## Restore generated app
@@ -139,3 +139,13 @@ No se debe consumir catálogo UI público desde `MachSoft.Template.Core`.
 - `@Body` se renderiza en `ms-shell__main` inmediatamente bajo el header (sin franja vacía artificial).
 - `AppFooter.razor` permanece activo y ahora puede ocultarse mediante `ShowFooter` en los `MainLayout.razor` que consumen `AppShell`.
 - Se explicitó el wiring de layout en Showcase, Official.Server y Official.Wasm para evitar resolver un layout distinto al esperado.
+
+## 2026-03-29 — Vista Tipo Grid en templates oficiales
+
+Los templates `machsoft-server` y `machsoft-wasm` ahora incluyen una pantalla de trabajo real en la ruta `/workspace/grid`:
+- entrada visible en menú lateral (`Vista Tipo Grid`),
+- barra de acciones izquierda con `MxIconButton` + `MxTooltip`,
+- `MxDataGrid` central dominante con zona de filas scrollable y footer fijo,
+- panel derecho con estado vacío, detalle de selección única y estado `MultiValue` para selección múltiple.
+
+Además, se retiró cualquier referencia legacy a `MachSoftCoreAssets`; las apps generadas consumen assets vía `MxControlAssets`.

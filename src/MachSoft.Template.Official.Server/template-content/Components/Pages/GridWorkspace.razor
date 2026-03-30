@@ -1,0 +1,232 @@
+@page "/workspace/grid"
+
+<PageTitle>Vista Tipo Grid</PageTitle>
+
+<div class="ms-template-grid-page">
+    <MainContainer LeftMode="PanelDisplayMode.Inline"
+                   RightMode="PanelDisplayMode.Inline"
+                   ShowLeft="true"
+                   ShowRight="true"
+                   LeftWidth="4.5rem"
+                   RightWidth="21.25rem"
+                   Gap="0"
+                   Class="ms-template-grid-layout">
+        <LeftContent>
+            <aside class="ms-template-grid-actions" aria-label="Action Pane">
+                <MxTooltip Text="Crear registro" Placement="MxTooltipPlacement.Right">
+                    <MxIconButton Icon="＋" AriaLabel="Crear registro" Variant="MxControlButtonVariant.Outlined" Size="MxButtonSize.Small" OnClick="CreateRecord" />
+                </MxTooltip>
+
+                <MxTooltip Text="Editar registro seleccionado" Placement="MxTooltipPlacement.Right">
+                    <MxIconButton Icon="✎" AriaLabel="Editar registro seleccionado" Variant="MxControlButtonVariant.Outlined" Size="MxButtonSize.Small" Disabled="@(SelectedCount != 1)" OnClick="EditRecord" />
+                </MxTooltip>
+
+                <MxTooltip Text="Eliminar registros seleccionados" Placement="MxTooltipPlacement.Right">
+                    <MxIconButton Icon="🗑" AriaLabel="Eliminar registros seleccionados" Variant="MxControlButtonVariant.Outlined" Size="MxButtonSize.Small" Disabled="@(SelectedCount == 0)" OnClick="DeleteRecords" />
+                </MxTooltip>
+
+                <MxTooltip Text="Actualizar workspace" Placement="MxTooltipPlacement.Right">
+                    <MxIconButton Icon="↻" AriaLabel="Actualizar workspace" Variant="MxControlButtonVariant.Outlined" Size="MxButtonSize.Small" OnClick="RefreshWorkspace" />
+                </MxTooltip>
+            </aside>
+        </LeftContent>
+
+        <MiddleContent>
+            <section class="ms-template-grid-workspace" aria-label="Workspace de grid">
+                <div class="ms-template-grid-rows-zone" aria-label="Grid rows zone">
+                    <div class="ms-template-grid-viewport" aria-label="Grid zone">
+                        <MxDataGrid TItem="GridRecord"
+                                    Columns="Columns"
+                                    Items="Records"
+                                    Class="ms-template-grid-table"
+                                    RowIdSelector="record => record.Id.ToString()"
+                                    SelectionMode="MxDataGridSelectionMode.Multiple"
+                                    SelectedRowIds="SelectedRowIds"
+                                    SelectedRowIdsChanged="OnSelectedRowIdsChanged"
+                                    AriaLabel="Registros del workspace"
+                                    EmptyText="No hay registros disponibles."
+                                    EnableSorting="true" />
+                    </div>
+                </div>
+
+                <footer class="ms-template-grid-footer" aria-live="polite" aria-label="Selection bar">
+                    <span class="ms-template-grid-selection-count">@SelectionSummaryText</span>
+                    <span class="ms-template-grid-selection-action">@ActionMessage</span>
+                    @if (SelectedCount > 0)
+                    {
+                        <MxButton Variant="MxControlButtonVariant.Text" Size="MxButtonSize.Small" OnClick="ClearSelection">
+                            Limpiar
+                        </MxButton>
+                    }
+                </footer>
+            </section>
+        </MiddleContent>
+
+        <RightContent>
+            <section class="ms-template-grid-detail" aria-label="Inspector de registro">
+                @if (SelectedCount == 0)
+                {
+                    <div class="ms-template-grid-empty-detail">
+                        <h2>Sin selección</h2>
+                        <p>Selecciona una o más filas para ver el detalle contextual en esta columna.</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="ms-template-grid-inspector">
+                        <header class="ms-template-grid-inspector-header">
+                            <h2>Inspector</h2>
+                            <p>@InspectorSubtitle</p>
+                        </header>
+
+                        @if (SelectedCount == 1)
+                        {
+                            var selected = SelectedRecords[0];
+                            <dl class="ms-template-grid-inspector-list">
+                                <div><dt>Id</dt><dd>@selected.Id</dd></div>
+                                <div><dt>Name</dt><dd>@selected.Name</dd></div>
+                                <div><dt>Status</dt><dd>@selected.Status</dd></div>
+                                <div><dt>Type</dt><dd>@selected.Type</dd></div>
+                                <div><dt>UpdatedAt</dt><dd>@selected.UpdatedAt.ToString("yyyy-MM-dd HH:mm")</dd></div>
+                            </dl>
+                        }
+                        else
+                        {
+                            <dl class="ms-template-grid-inspector-list">
+                                <div><dt>Id</dt><dd>MultiValue</dd></div>
+                                <div><dt>Name</dt><dd>MultiValue</dd></div>
+                                <div><dt>Status</dt><dd>MultiValue</dd></div>
+                                <div><dt>Type</dt><dd>MultiValue</dd></div>
+                                <div><dt>UpdatedAt</dt><dd>MultiValue</dd></div>
+                            </dl>
+                        }
+                    </div>
+                }
+            </section>
+        </RightContent>
+    </MainContainer>
+</div>
+
+@code {
+    private List<GridRecord> Records { get; } = BuildMockRecords();
+    private IReadOnlyList<string> SelectedRowIds { get; set; } = Array.Empty<string>();
+    private string ActionMessage { get; set; } = "Workspace listo.";
+
+    private int SelectedCount => SelectedRowIds.Count;
+
+    private string SelectionSummaryText => SelectedCount switch
+    {
+        0 => "Sin selección",
+        1 => "Selected: 1",
+        _ => $"Selected: {SelectedCount}"
+    };
+
+    private string InspectorSubtitle => SelectedCount switch
+    {
+        0 => "Sin selección activa",
+        1 => "Detalle del registro seleccionado",
+        _ => $"Edición masiva sobre {SelectedCount} registros"
+    };
+
+    private IReadOnlyList<MxControlDataGridColumn<GridRecord>> Columns { get; } =
+    [
+        new("Id", record => record.Id.ToString(), Width: "5rem", Sortable: true, SortValueSelector: record => record.Id, Key: "id"),
+        new("Name", record => record.Name, Width: "minmax(12rem, 1.6fr)", Sortable: true, SortValueSelector: record => record.Name, Key: "name"),
+        new("Status", record => record.Status, Width: "8rem", Sortable: true, SortValueSelector: record => record.Status, Key: "status"),
+        new("Type", record => record.Type, Width: "8rem", Sortable: true, SortValueSelector: record => record.Type, Key: "type"),
+        new("UpdatedAt", record => record.UpdatedAt.ToString("yyyy-MM-dd HH:mm"), Width: "11rem", Sortable: true, SortValueSelector: record => record.UpdatedAt, Key: "updated-at")
+    ];
+
+    private List<GridRecord> SelectedRecords =>
+        Records.Where(record => SelectedRowIds.Contains(record.Id.ToString(), StringComparer.Ordinal)).ToList();
+
+    private static List<GridRecord> BuildMockRecords()
+    {
+        var statuses = new[] { "Active", "Draft", "Archived", "Review" };
+        var types = new[] { "Contract", "Report", "Partner", "Ticket" };
+        var baseDate = new DateTime(2026, 3, 1, 8, 0, 0, DateTimeKind.Utc);
+        var records = new List<GridRecord>(capacity: 240);
+
+        for (var index = 0; index < 240; index++)
+        {
+            var id = 1001 + index;
+            records.Add(new GridRecord(id, $"Registro {id}", statuses[index % statuses.Length], types[index % types.Length], baseDate.AddMinutes(index * 11)));
+        }
+
+        return records;
+    }
+
+    private Task OnSelectedRowIdsChanged(IReadOnlyList<string> selectedRowIds)
+    {
+        SelectedRowIds = selectedRowIds;
+
+        ActionMessage = selectedRowIds.Count switch
+        {
+            0 => "Sin selección activa.",
+            1 => $"Registro seleccionado: {SelectedRecords[0].Name}.",
+            _ => $"Selección múltiple activa ({selectedRowIds.Count} registros)."
+        };
+
+        return Task.CompletedTask;
+    }
+
+    private Task ClearSelection(MouseEventArgs _)
+    {
+        SelectedRowIds = Array.Empty<string>();
+        ActionMessage = "Selección limpiada.";
+        return Task.CompletedTask;
+    }
+
+    private Task RefreshWorkspace(MouseEventArgs _)
+    {
+        ActionMessage = "Workspace actualizado.";
+        return Task.CompletedTask;
+    }
+
+    private Task CreateRecord(MouseEventArgs _)
+    {
+        var nextId = Records.Max(item => item.Id) + 1;
+        var newRecord = new GridRecord(nextId, $"Nuevo registro {nextId}", "Draft", "Task", DateTime.UtcNow);
+        Records.Insert(0, newRecord);
+        SelectedRowIds = [newRecord.Id.ToString()];
+        ActionMessage = $"Se creó {newRecord.Name}.";
+        return Task.CompletedTask;
+    }
+
+    private Task EditRecord(MouseEventArgs _)
+    {
+        if (SelectedRecords.Count != 1)
+        {
+            return Task.CompletedTask;
+        }
+
+        var selected = SelectedRecords[0];
+        var index = Records.FindIndex(item => item.Id == selected.Id);
+        if (index < 0)
+        {
+            return Task.CompletedTask;
+        }
+
+        var updated = selected with { Name = $"{selected.Name} (editado)", Status = "Review", UpdatedAt = DateTime.UtcNow };
+        Records[index] = updated;
+        ActionMessage = $"Se actualizó {updated.Name}.";
+        return Task.CompletedTask;
+    }
+
+    private Task DeleteRecords(MouseEventArgs _)
+    {
+        if (SelectedRowIds.Count == 0)
+        {
+            return Task.CompletedTask;
+        }
+
+        var selectedIds = SelectedRowIds.ToHashSet(StringComparer.Ordinal);
+        var removedCount = Records.RemoveAll(item => selectedIds.Contains(item.Id.ToString()));
+
+        SelectedRowIds = Array.Empty<string>();
+        ActionMessage = $"Se eliminaron {removedCount} registro(s).";
+        return Task.CompletedTask;
+    }
+
+    private sealed record GridRecord(int Id, string Name, string Status, string Type, DateTime UpdatedAt);
+}
