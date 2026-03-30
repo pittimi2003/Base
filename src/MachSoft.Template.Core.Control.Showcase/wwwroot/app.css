@@ -296,10 +296,25 @@ a {
   color: var(--mx-color-brand-primary, #3a67bf);
 }
 
+.ms-shell:has(.ms-showcase-main-container-page--grid-workspace) {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.ms-shell:has(.ms-showcase-main-container-page--grid-workspace) .ms-shell__workspace {
+  min-height: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 .ms-shell__main:has(.ms-showcase-main-container-page--grid-workspace) {
+  display: flex;
+  flex-direction: column;
   padding: 0;
   gap: 0;
   align-content: stretch;
+  block-size: 100%;
+  min-block-size: 0;
   overflow: hidden;
 }
 

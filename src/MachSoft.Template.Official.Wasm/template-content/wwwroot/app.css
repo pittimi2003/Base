@@ -50,10 +50,25 @@ body {
   gap: 0.75rem;
 }
 
+.ms-shell:has(.ms-template-grid-page--workspace) {
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.ms-shell:has(.ms-template-grid-page--workspace) .ms-shell__workspace {
+  min-height: 0;
+  height: 100dvh;
+  overflow: hidden;
+}
+
 .ms-shell__main:has(.ms-template-grid-page--workspace) {
+  display: flex;
+  flex-direction: column;
   padding: 0;
   gap: 0;
   align-content: stretch;
+  block-size: 100%;
+  min-block-size: 0;
   overflow: hidden;
 }
 
@@ -65,6 +80,8 @@ body {
 
 .ms-template-grid-page--workspace {
   block-size: 100%;
+  min-block-size: 0;
+  overflow: hidden;
 }
 
 .ms-template-grid-layout {
@@ -80,6 +97,11 @@ body {
   flex: 1 1 auto;
   block-size: 100%;
   min-block-size: 0;
+}
+
+.ms-template-grid-layout .ms-main-container__middle {
+  display: flex;
+  flex-direction: column;
 }
 
 .ms-template-grid-layout .ms-main-container__left {
