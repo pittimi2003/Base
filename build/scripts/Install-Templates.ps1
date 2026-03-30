@@ -4,25 +4,27 @@ param()
 . (Join-Path $PSScriptRoot 'Common.ps1')
 
 $packagesPath = Get-ArtifactsPackagesPath
-$serverPattern = "$(Get-TemplateServerPackageId).*nupkg"
-$wasmPattern = "$(Get-TemplateWasmPackageId).*nupkg"
+$serverPattern = "$(Get-TemplateServerPackageId)*.nupkg"
+$wasmPattern = "$(Get-TemplateWasmPackageId)*.nupkg"
 
 Invoke-Step -StepName 'Instalación manual de templates desde artifacts/packages' -Command "dotnet new install <ServerPackage.nupkg> && dotnet new install <WasmPackage.nupkg>" -Action {
     if (-not (Test-Path $packagesPath)) {
         throw "No existe la ruta de paquetes: $packagesPath"
     }
 
-    $serverPackage = Get-ChildItem -Path $packagesPath -Filter $serverPattern | Sort-Object Name -Descending | Select-Object -First 1
-    $wasmPackage = Get-ChildItem -Path $packagesPath -Filter $wasmPattern | Sort-Object Name -Descending | Select-Object -First 1
+    $serverPackages = @(Get-ChildItem -Path $packagesPath -Filter $serverPattern -File)
+    $wasmPackages = @(Get-ChildItem -Path $packagesPath -Filter $wasmPattern -File)
 
-    if (-not $serverPackage) {
-        throw "No se encontró paquete para template Server con patrón: $serverPattern"
+    if ($serverPackages.Count -ne 1) {
+        $found = if ($serverPackages.Count -eq 0) { 'ninguno' } else { ($serverPackages.Name -join ', ') }
+        throw "Se esperaba exactamente 1 paquete Server con patrón '$serverPattern' en '$packagesPath', pero se encontraron $($serverPackages.Count): $found"
     }
 
-    if (-not $wasmPackage) {
-        throw "No se encontró paquete para template Wasm con patrón: $wasmPattern"
+    if ($wasmPackages.Count -ne 1) {
+        $found = if ($wasmPackages.Count -eq 0) { 'ninguno' } else { ($wasmPackages.Name -join ', ') }
+        throw "Se esperaba exactamente 1 paquete Wasm con patrón '$wasmPattern' en '$packagesPath', pero se encontraron $($wasmPackages.Count): $found"
     }
 
-    Invoke-DotNet @('new', 'install', $serverPackage.FullName)
-    Invoke-DotNet @('new', 'install', $wasmPackage.FullName)
+    Invoke-DotNet @('new', 'install', $serverPackages[0].FullName)
+    Invoke-DotNet @('new', 'install', $wasmPackages[0].FullName)
 }
