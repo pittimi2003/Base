@@ -45,7 +45,7 @@
     "PrivateFeedUrl": {
       "type": "parameter",
       "datatype": "string",
-      "defaultValue": "https://your-private-feed/v3/index.json",
+      "defaultValue": "https://machsoftprivatenuget-adfkctf7h5bddhaa.mexicocentral-01.azurewebsites.net/v3/index.json",
       "description": "Private NuGet feed that hosts MachSoft packages.",
       "replaces": "https://machsoftprivatenuget-adfkctf7h5bddhaa.mexicocentral-01.azurewebsites.net/v3/index.json"
     },
