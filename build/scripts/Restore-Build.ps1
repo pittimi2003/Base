@@ -4,11 +4,9 @@ param(
 )
 
 $ErrorActionPreference = 'Stop'
-$repoRoot = Resolve-Path (Join-Path $PSScriptRoot '..' '..')
-$solutionPath = Join-Path $repoRoot 'MachSoft.Templates.sln'
 
-Write-Host "Restoring $solutionPath" -ForegroundColor Cyan
-dotnet restore $solutionPath
-
-Write-Host "Building $solutionPath ($Configuration)" -ForegroundColor Cyan
-dotnet build $solutionPath -c $Configuration --no-restore
+& (Join-Path $PSScriptRoot 'Restore.ps1')
+& (Join-Path $PSScriptRoot 'Build-Core.ps1') -Configuration $Configuration
+& (Join-Path $PSScriptRoot 'Build-Control.ps1') -Configuration $Configuration
+& (Join-Path $PSScriptRoot 'Build-TemplateServer.ps1') -Configuration $Configuration
+& (Join-Path $PSScriptRoot 'Build-TemplateWasm.ps1') -Configuration $Configuration
