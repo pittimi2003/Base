@@ -156,3 +156,23 @@ La ruta `/workspace/grid` en Server y Wasm usa layout dedicado de workspace (`Gr
 - `AppShell` mantiene header + navegación y desactiva footer global en esta ruta.
 - `ms-shell__main` entra en modo full-height (`padding: 0`, sin scroll global para este patrón).
 - El scroll operativo se concentra en `.mx-data-grid-scroll`, manteniendo visible y estable la barra inferior del workspace.
+
+## 2026-03-30 — Contrato obligatorio para nuevas vistas Grid Workspace
+
+Para cualquier nueva vista tipo grid en templates Server/Wasm y Showcase:
+
+1. Usar layout dedicado `GridWorkspaceLayout` (no `MainLayout`).
+2. Configurar `AppShell` con:
+   - `ShowFooter=false`
+   - `WorkspaceMode="AppShellWorkspaceMode.Grid"`
+3. Componer la vista con clases compartidas `ms-grid-workspace-*`.
+4. Mantener scroll en `.ms-grid-workspace-viewport .mx-data-grid-scroll`.
+5. Renderizar panel derecho únicamente con selección activa (`ShowRight` + `RightContent`).
+6. No introducir estilos host-locales para resolver altura útil, footer o header del grid.
+
+Validación mínima obligatoria por host:
+- abrir `/workspace/grid` (o ruta equivalente en Showcase),
+- verificar footer anclado del workspace,
+- verificar scroll solo en viewport del grid,
+- verificar ausencia de panel derecho sin selección,
+- verificar header del grid sólido y sticky.

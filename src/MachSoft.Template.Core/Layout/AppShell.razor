@@ -1,6 +1,6 @@
 @using MachSoft.Template.Core.Models
 
-<div class="ms-shell @(IsMenuOpen ? "ms-shell--menu-open" : string.Empty)"
+<div class="@ShellClass"
      data-ms-shell-interactive="@(_isInteractive ? "true" : "false")"
      tabindex="-1"
      @onkeydown="HandleWindowKeyDown">
@@ -27,8 +27,8 @@
             aria-hidden="@(IsMenuOpen ? "false" : "true")"
             tabindex="@(IsMenuOpen ? "0" : "-1")"></button>
 
-    <div class="ms-shell__workspace" @onclick="CloseMenuOnContentClick">
-        <main class="ms-shell__main">
+    <div class="@WorkspaceClass" @onclick="CloseMenuOnContentClick">
+        <main class="@MainClass">
             @ChildContent
         </main>
 
@@ -45,6 +45,8 @@
     [Parameter] public string? Subtitle { get; set; } = "Base corporativa reusable para soluciones Blazor.";
     [Parameter] public string FooterText { get; set; } = "MachSoft Template • Foundation UI for Server/WASM";
     [Parameter] public bool ShowFooter { get; set; } = true;
+
+    [Parameter] public AppShellWorkspaceMode WorkspaceMode { get; set; } = AppShellWorkspaceMode.Default;
     [Parameter, EditorRequired] public IReadOnlyList<NavItem> NavigationItems { get; set; } = [];
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 
@@ -54,6 +56,36 @@
 
     private bool _isInteractive;
     private bool IsMenuOpen { get; set; }
+    private bool IsGridWorkspace => WorkspaceMode == AppShellWorkspaceMode.Grid;
+
+    private string ShellClass
+    {
+        get
+        {
+            var classes = new List<string> { "ms-shell" };
+
+            if (IsMenuOpen)
+            {
+                classes.Add("ms-shell--menu-open");
+            }
+
+            if (IsGridWorkspace)
+            {
+                classes.Add("ms-shell--grid-workspace");
+            }
+
+            return string.Join(' ', classes);
+        }
+    }
+
+    private string WorkspaceClass => IsGridWorkspace
+        ? "ms-shell__workspace ms-shell__workspace--grid-workspace"
+        : "ms-shell__workspace";
+
+    private string MainClass => IsGridWorkspace
+        ? "ms-shell__main ms-shell__main--grid-workspace"
+        : "ms-shell__main";
+
 
     protected override void OnAfterRender(bool firstRender)
     {

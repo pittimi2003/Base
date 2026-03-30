@@ -1,180 +1,145 @@
-# Vista Tipo Grid — Patrón de Pantalla (v1)
+# Grid Workspace — Patrón Normativo Cross-Host (v2)
 
-## 1. Qué es una Vista Tipo Grid
+## 1) Definición del patrón Grid Workspace
 
-La **Vista Tipo Grid** es una pantalla enterprise de trabajo orientada a operar datos en contexto. Su propósito es:
+El **Grid Workspace** es el patrón oficial para pantallas operativas de datos basadas en grid (listado + selección + acciones + detalle contextual) dentro del shell corporativo MachSoft.
 
-- listar registros,
-- seleccionar uno o varios,
-- ejecutar acciones laterales,
-- mostrar detalle contextual,
-- mantener una composición estable y predecible durante la operación.
+Se usa cuando una vista requiere:
+- operar registros en volumen,
+- mantener acciones laterales,
+- sostener un footer operativo fijo del workspace,
+- mostrar detalle en panel derecho solo con selección activa.
 
-Esta vista **no** es:
+### Hosts obligados a respetar este patrón
 
-- una página de documentación,
-- una demo de componentes,
-- una página de cards.
+Este contrato es **obligatorio** y **sin excepciones** para:
+- `MachSoft.Template.Core.Control.Showcase`,
+- `MachSoft.Template.Official.Server` (template-content),
+- `MachSoft.Template.Official.Wasm` (template-content).
 
-Esta vista **sí** es una pantalla real de trabajo para flujos operativos.
-
----
-
-## 2. Estructura general
-
-La composición base de la vista se organiza en tres regiones:
-
-- `LeftContent`
-- `MiddleContent`
-- `RightContent`
-
-Lectura funcional de la pantalla:
-
-- **Izquierda**: herramientas / acciones.
-- **Centro**: grid principal.
-- **Derecha**: detalle contextual.
-- **Parte inferior del centro**: footer de estado (paginación/selección/status).
+No se permite comportamiento divergente entre hosts.
 
 ---
 
-## 3. Rol de cada región
+## 2) Contrato estructural obligatorio
 
-### 3.1 `LeftContent`
+### 2.1 Shell
 
-Rol esperado:
+- El shell se renderiza con `AppShell`.
+- La vista grid debe usar `AppShellWorkspaceMode.Grid`.
+- En modo grid, el shell aplica clases estructurales explícitas:
+  - `.ms-shell--grid-workspace`
+  - `.ms-shell__workspace--grid-workspace`
+  - `.ms-shell__main--grid-workspace`
 
-- barra lateral de acciones,
-- ocupa todo el alto útil,
-- utiliza `MxIconButton`,
-- cada acción expone tooltip,
-- se percibe como herramienta lateral (no como caja flotante),
-- no domina visualmente sobre el grid.
+Estas clases son la base normativa para resolver altura útil y composición vertical sin heurísticas por host.
 
-### 3.2 `MiddleContent`
+### 2.2 Workspace
 
-Rol esperado:
+La página grid debe usar:
+- contenedor raíz: `.ms-grid-workspace-page`
+- contenedor `MainContainer`: `.ms-grid-workspace-layout`
+- área central: `.ms-grid-workspace`
 
-- región principal de trabajo,
-- el grid es la pieza visual y funcional dominante,
-- se divide en dos zonas:
-  - área de grid,
-  - footer del grid anclado al fondo.
+### 2.3 Layout interno (middle)
 
-### 3.3 `RightContent`
+`MiddleContent` se divide en dos zonas **obligatorias**:
+1. zona de filas: `.ms-grid-workspace-rows-zone`
+2. barra inferior del workspace: `.ms-grid-workspace-footer`
 
-Rol esperado:
+La composición es por `grid-template-rows: minmax(0, 1fr) auto`, por lo que el footer queda anclado al final del área útil visible del workspace.
 
-- panel de detalle contextual,
-- sin selección: no renderiza panel derecho,
-- selección única: detalle real del registro,
-- multiselección: representación agregada con `MultiValue` / `<Multiple values>`.
+### 2.4 Viewport scrollable
 
----
+El viewport scrollable del grid debe ser explícito:
+- `.ms-grid-workspace-viewport .mx-data-grid-scroll`
 
-## 4. Comportamiento del grid
+Ese es el único contenedor de scroll vertical del patrón grid.
 
-El grid se compone de tres zonas:
+### 2.5 Barra inferior del workspace
 
-- **Header**
-- **Filas**
-- **Footer**
+- El cierre visual de la pantalla grid es `.ms-grid-workspace-footer`.
+- El footer global del `AppShell` no participa en esta composición (`ShowFooter=false` en layout grid).
 
-### 4.1 Header
+### 2.6 Panel derecho (`RightContent`)
 
-- Fijo.
-- Fondo sólido.
-- No transparente.
+- `RightContent` solo se renderiza con selección activa.
+- Sin selección activa:
+  - `ShowRight=false`,
+  - no se renderiza panel derecho,
+  - no se usa empty-state para “simular” panel.
 
-### 4.2 Filas
+### 2.7 Header del grid
 
-- Área desplazable.
-- Hacen scroll vertical.
-- Ocupan el espacio central disponible entre header y footer.
-
-### 4.3 Footer
-
-- Fijo al fondo de `MiddleContent`.
-- Siempre visible.
-- No se desplaza con las filas.
-- No forma parte del contenido scrollable.
+- El header del grid es sólido.
+- Se resuelve desde base compartida (`layout.css` + `MxDataGrid`) con `--mx-data-grid-header-bg`.
+- No se permite depender de parche CSS local por host.
 
 ---
 
-## 5. Comportamiento con muchas filas
+## 3) Reglas obligatorias
 
-Con alto volumen de datos (por ejemplo, 500 filas), el comportamiento esperado se mantiene:
-
-- el footer continúa fijo en la parte inferior,
-- las filas hacen scroll,
-- el header permanece fijo,
-- el workspace no colapsa ni pierde estructura.
-
----
-
-## 6. Estado de selección
-
-Estados contemplados:
-
-- **Sin selección**.
-- **Selección única**.
-- **Multiselección**.
-
-Reglas de control:
-
-- La selección se controla en la página consumidora, no en `MainContainer`.
-- La franja inferior puede exponer estado operativo (ejemplo: `Selected: N`).
-- `RightContent` solo se renderiza cuando existe al menos un registro seleccionado.
-- Sin selección, no debe existir `empty state` ocupando la columna derecha y el área central debe usar el espacio disponible.
+1. **Mismo comportamiento en los 3 hosts** para layout, scroll, footer, panel derecho y header.
+2. La vista tipo grid debe ocupar el alto útil del workspace.
+3. **Prohibido** usar `calc(100vh - X)` para resolver altura útil del grid.
+4. El scroll vertical debe ocurrir en `.mx-data-grid-scroll` dentro de `.ms-grid-workspace-viewport`.
+5. **No** debe hacer scroll la página completa/documento en este patrón.
+6. **No** usar footer global del `AppShell` como cierre visual de una vista grid.
+7. `RightContent` no se renderiza sin selección.
+8. Header del grid sólido desde base compartida.
 
 ---
 
-## 7. Reglas visuales
+## 4) Guía obligatoria para nuevas vistas tipo grid
 
-La Vista Tipo Grid:
+### Paso a paso
 
-- no debe parecer una demo técnica,
-- no debe parecer una página de documentación,
-- no debe parecer una página de tarjetas,
-- debe percibirse como una herramienta real de trabajo,
-- debe respetar el design system MachSoft.
+1. Declarar la página con layout de grid:
+   - Showcase: `Components/Layout/GridWorkspaceLayout.razor`
+   - Server template: `Components/Layout/GridWorkspaceLayout.razor`
+   - Wasm template: `Layout/GridWorkspaceLayout.razor`
+2. Componer estructura con `MainContainer` y clases oficiales:
+   - raíz `.ms-grid-workspace-page`
+   - contenedor `.ms-grid-workspace-layout`
+   - acciones `.ms-grid-workspace-actions`
+   - workspace `.ms-grid-workspace`
+   - rows `.ms-grid-workspace-rows-zone`
+   - viewport `.ms-grid-workspace-viewport`
+   - footer `.ms-grid-workspace-footer`
+   - detalle `.ms-grid-workspace-detail`
+3. Renderizar `RightContent` únicamente cuando `HasSelection == true` y `ShowRight == true`.
+4. Mantener `MxDataGrid` dentro de `.ms-grid-workspace-viewport`.
+5. No agregar estilos host-locales para resolver alto/scroll/footer del patrón.
 
----
+### Qué no hacer
 
-## 8. Integración con el shell
+- No usar `:has(...)` para activar comportamiento de shell grid.
+- No usar cálculos tipo `calc(100vh - X)` para altura crítica del workspace.
+- No delegar el scroll al `body`, al documento o a contenedores ambiguos superiores.
+- No renderizar panel derecho vacío sin selección.
 
-Integración esperada:
+### Checklist mínima de validación
 
-- vive dentro del shell de aplicación,
-- utiliza el workspace existente,
-- puede requerir ajuste específico de padding en `.ms-shell__main`,
-- cualquier ajuste debe ser específico de la vista y considerar responsive,
-- no debe romper comportamiento ni layout de otras páginas.
-
----
-
-## 9. Estado actual de la primera versión
-
-### 9.1 Ya definido
-
-- composición `LeftContent` / `MiddleContent` / `RightContent`,
-- uso de `MainContainer`,
-- uso de `MxDataGrid`,
-- uso de `MxIconButton`,
-- footer fijo,
-- scroll en filas,
-- detalle contextual,
-- multiselección,
-- soporte de `MultiValue`.
-
-### 9.2 Pendiente de evolución
-
-- variantes futuras del patrón,
-- refinamientos visuales,
-- paginación real,
-- otros tipos de vista relacionados.
+- [ ] `GridWorkspaceLayout` usa `ShowFooter=false`.
+- [ ] `GridWorkspaceLayout` usa `WorkspaceMode="AppShellWorkspaceMode.Grid"`.
+- [ ] `.ms-grid-workspace-footer` queda visible al fondo del workspace.
+- [ ] Scroll vertical ocurre en `.mx-data-grid-scroll`.
+- [ ] `RightContent` no se renderiza cuando no hay selección.
+- [ ] Header de `MxDataGrid` sólido y sticky.
+- [ ] Mismo comportamiento en Showcase, Server y Wasm.
 
 ---
 
-## 10. Alcance de esta documentación
+## 5) Diferencias prohibidas entre hosts
 
-Este documento fija la **v1** del patrón de pantalla Vista Tipo Grid tal como está definido actualmente en el proyecto. Cualquier cambio de comportamiento o contrato visual debe actualizar este archivo para mantener alineación entre diseño, desarrollo y adopción.
+Queda explícitamente prohibido que una vista Grid Workspace se comporte de forma distinta entre:
+- Showcase,
+- Template Server,
+- Template Wasm.
+
+No se aceptan divergencias en:
+- distribución vertical,
+- contenedor scrollable,
+- visibilidad/anclaje del footer de workspace,
+- renderizado del panel derecho,
+- fondo del header del grid.
