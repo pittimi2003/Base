@@ -2,7 +2,7 @@ Set-StrictMode -Version Latest
 $ErrorActionPreference = 'Stop'
 
 function Get-RepoRoot {
-    return Resolve-Path (Join-Path $PSScriptRoot '..' '..')
+    return (Resolve-Path (Join-Path $PSScriptRoot '..\..')).Path
 }
 
 function Get-SolutionPath {
