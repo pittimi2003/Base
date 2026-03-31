@@ -11,7 +11,7 @@
 - Familia oficial (ver taxonomía transversal):
 - Ubicación en Core.Control:
 - Estado en catálogo (`Usable pero no gobernado | Incompleto | Inconsistente | Con deuda contractual | Pendiente de revisión`):
-- Nivel de madurez actual (`Nivel 0..5`, entero; `Nivel 0.5` es inválido):
+- Nivel de madurez actual (`Nivel 0..5`, entero sin decimales):
 
 ## 2) Propósito exacto
 - Propósito contractual:
