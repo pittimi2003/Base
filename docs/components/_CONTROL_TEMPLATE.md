@@ -8,10 +8,10 @@
 
 ## 1) Identificación del control
 - Nombre: `Mx...`
-- Familia tentativa:
+- Familia oficial (ver taxonomía transversal):
 - Ubicación en Core.Control:
 - Estado en catálogo (`Usable pero no gobernado | Incompleto | Inconsistente | Con deuda contractual | Pendiente de revisión`):
-- Nivel de madurez actual (`Nivel 0..5`):
+- Nivel de madurez actual (`Nivel 0..5`, entero; `Nivel 0.5` es inválido):
 
 ## 2) Propósito exacto
 - Propósito contractual:
@@ -53,6 +53,20 @@
   - Cuándo dispara:
   - Contrato:
   - Evidencia:
+
+### 7.1) Convenciones obligatorias de API (naming/binding)
+- Valor principal: `Value`.
+- Evento asociado: `ValueChanged`.
+- Binding bidireccional: `@bind-Value`.
+- Estado de bloqueo: `Disabled`.
+- Estado solo lectura: `ReadOnly`.
+- Estilo externo: `Class`, `Style`.
+- Atributos adicionales: `AdditionalAttributes`.
+- Slot principal: `ChildContent`.
+- Colección de datos/opciones (cuando aplique): `Items`.
+- Variante visual: `Variant`.
+- Escala/tamaño: `Size`.
+- Si un campo no aplica al control, declarar explícitamente `No aplica` y justificar.
 
 ## 8) Contrato de binding y eventos
 - Soporte `@bind-*`:
@@ -146,16 +160,24 @@ Estados sugeridos (aplicar según control): default, hover, focus-visible, activ
 - [ ] Evidencia en Template Server
 - [ ] Evidencia en Template Wasm
 - [ ] Riesgos/deuda documentados
-- [ ] Clasificación de madurez actualizada (`Nivel 0..5`)
+- [ ] Clasificación de madurez actualizada (`Nivel 0..5`, entero sin decimales)
 
-## 21) Historial de decisiones
+## 21) Umbral para pasar desde `CONTROL_CATALOG_STATUS.md`
+Un control solo debe tener contrato individual si cumple:
+1. Madurez mínima `Nivel 3`.
+2. Evidencia vigente en Showcase (base + excepcional + interacción/evento).
+3. Evidencia bilateral en Template Server y Template Wasm, o excepción documentada `No verificado`.
+4. API alineada con convenciones obligatorias de la sección 7.1.
+5. Sin `Divergencia detectada` crítica abierta.
+
+## 22) Historial de decisiones
 - Fecha:
 - Decisión:
 - Justificación:
 - Impacto:
 - Evidencia:
 
-## 22) Backlog comparativo con MudBlazor (futuro)
+## 23) Backlog comparativo con MudBlazor (futuro)
 > Solo referencia comparativa. No implica copia visual ni adopción automática.
 
 - Referencia analizada:
@@ -164,7 +186,7 @@ Estados sugeridos (aplicar según control): default, hover, focus-visible, activ
 - Decisión (`Adoptar | Adaptar | Descartar | Pendiente`):
 - Motivo:
 
-## 23) Criterio de aceptación para modificar el control
+## 24) Criterio de aceptación para modificar el control
 Un cambio se acepta solo si:
 1. respeta precedencia contractual,
 2. clasifica el tipo de cambio (`Compatible | Sensible | Breaking`),

@@ -43,6 +43,26 @@ Arquitectura normativa mínima:
 - **Estado operativo del catálogo**: `docs/CONTROL_CATALOG_STATUS.md`.
 - **Plantilla oficial de control**: `docs/components/_CONTROL_TEMPLATE.md`.
 
+## 5.1) Taxonomía oficial de families del catálogo `Mx*`
+Las families oficiales permitidas para clasificación del inventario son:
+- `Infrastructure`
+- `Actions`
+- `Inputs`
+- `Collections`
+- `Data`
+- `Overlays`
+- `Feedback`
+- `Display`
+- `Scheduling`
+
+No usar etiquetas alternativas en el inventario sin actualizar previamente este contrato transversal.
+
+## 5.2) Semántica formal de decisión (`Keep`, `Refactor`, `Redesign`, `Rebuild`)
+- **Keep**: mantener arquitectura y API principal; solo correcciones menores o deuda acotada.
+- **Refactor**: reestructurar implementación interna sin romper contrato público declarado.
+- **Redesign**: rediseñar comportamiento/UX y reglas del control manteniendo, cuando sea viable, compatibilidad progresiva.
+- **Rebuild**: reemplazo estructural mayor (potencialmente breaking) por inviabilidad técnica/contractual del diseño actual.
+
 ## 6) Regla de autoridad y precedencia
 Orden de autoridad obligatorio:
 1. `docs/CONTROL_SYSTEM_CONTRACT.md`
@@ -58,6 +78,24 @@ Regla de resolución: si el código contradice la norma documental, no se asume 
 3. Cambios en parámetros/eventos se clasifican como `Compatible`, `Sensible` o `Breaking`.
 4. No exponer APIs vendor como contrato público principal.
 5. Sin evidencia de estabilidad, marcar `Pendiente de confirmar`.
+
+### 7.1) Convenciones obligatorias de naming y binding
+Las siguientes convenciones son **obligatorias** para controles que apliquen:
+1. Parámetro de valor principal: `Value`.
+2. Evento de cambio asociado: `ValueChanged` (`EventCallback<TValue>`), con `TValue` consistente con `Value`.
+3. Soporte de binding bidireccional mediante `@bind-Value`.
+4. Estados de interacción: `Disabled` y `ReadOnly` (sin abreviaciones ni nombres alternos públicos).
+5. Extensión de estilo: `Class` y `Style`.
+6. Atributos HTML adicionales: `AdditionalAttributes` con `[Parameter(CaptureUnmatchedValues = true)]`.
+7. Contenido proyectado principal: `ChildContent`.
+8. Colección de opciones/datos (cuando aplique): `Items`.
+9. Variantes visuales: `Variant`.
+10. Escala/tamaño visual: `Size`.
+
+Reglas adicionales obligatorias:
+- No mezclar convenciones paralelas para el mismo concepto (`IsDisabled`, `CssClass`, etc.) en API pública nueva.
+- Si un control no usa alguno de estos parámetros por su naturaleza, documentar el motivo en catálogo como `No documentado todavía` o `No aplica`.
+- Introducir alias por compatibilidad solo de forma temporal y con plan explícito de retirada.
 
 ## 8) Contrato transversal de comportamiento
 1. Cada control debe declarar comportamiento base y comportamiento en estados excepcionales.
@@ -124,15 +162,29 @@ Compatibilidad cross-host solo se declara con evidencia en ambos templates o val
 3. Si no hay adopción, registrar `No verificado` para ese host.
 4. No declarar paridad sin evidencia bilateral.
 
-## 17) Matriz de madurez del control
-- **Nivel 0**: existe en código pero sin evidencia mínima de uso.
-- **Nivel 1**: usable localmente, sin contrato ni validación suficiente.
-- **Nivel 2**: evidencia parcial (ej. Showcase) con deuda contractual abierta.
-- **Nivel 3**: contrato parcial + evidencia en Showcase + validación técnica básica.
-- **Nivel 4**: evidencia cross-host + validación accesible y de regresión definida.
-- **Nivel 5**: contrato completo, validación sostenida y gobernanza estable.
+## 17) Matriz de madurez del control (unificada)
+Niveles enteros válidos: `Nivel 0`, `Nivel 1`, `Nivel 2`, `Nivel 3`, `Nivel 4`, `Nivel 5`.
+**No existe `Nivel 0.5`.**
 
-Regla actual de base: sin evidencia fuerte, clasificar conservadoramente en Nivel 0-2.
+- **Nivel 0**: existe en código, sin evidencia mínima ejecutable en Showcase.
+- **Nivel 1**: usable con evidencia mínima en Showcase, sin evidencia bilateral en templates y con deuda contractual.
+- **Nivel 2**: evidencia en Showcase + evidencia en Template Server y Template Wasm, aún con deuda contractual abierta.
+- **Nivel 3**: contrato transversal aplicado + checklist contractual parcial evidenciado + validación técnica básica.
+- **Nivel 4**: validación cross-host sostenida + accesibilidad y regresión con evidencia recurrente.
+- **Nivel 5**: contrato completo por control, validación sostenida y gobernanza estable sin divergencias abiertas críticas.
+
+Regla actual de base: sin evidencia fuerte, clasificar conservadoramente en `Nivel 0-2`.
+
+## 17.1) Umbral normativo para pasar de `CONTROL_CATALOG_STATUS.md` a `docs/components/Mx*.md`
+Un control **solo puede** pasar a contrato individual cuando cumple simultáneamente:
+1. Madurez mínima `Nivel 3`.
+2. Evidencia vigente en Showcase (estado base + estado excepcional + interacción/evento).
+3. Evidencia bilateral en Template Server y Template Wasm, o justificación explícita `No verificado` aprobada como excepción temporal.
+4. API pública alineada con sección 7.1 (naming/binding).
+5. Sin `Divergencia detectada` crítica abierta entre contrato transversal, inventario y código.
+6. Registro explícito de riesgos/deuda y condición de salida.
+
+Si no se cumplen todos los puntos, el control permanece en `CONTROL_CATALOG_STATUS.md`.
 
 ## 18) Clasificación de cambios
 - **Compatible**: mantiene API y comportamiento contractual declarado.
