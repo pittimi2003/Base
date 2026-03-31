@@ -1,335 +1,162 @@
-# AGENTS.md — Guía operativa para agentes en MachSoft.Template
+# AGENTS.md — Norma operativa obligatoria para el catálogo Mx*
 
-## 1) Propósito del repositorio
-Este repositorio contiene una plantilla corporativa Blazor bajo convención **MachSoft.Template.*** para acelerar nuevos proyectos con una base visual y estructural reutilizable.
+## 1) Propósito normativo
+Este archivo define reglas de ejecución obligatorias para cualquier agente que modifique el repositorio.
+No es guía opcional ni texto descriptivo: es una norma de trabajo.
+Su objetivo es evitar:
+- evolución improvisada del catálogo `Mx*`,
+- regresiones funcionales o visuales,
+- divergencias entre Core, Showcase y templates,
+- documentación falsa o no verificable.
 
-Objetivo principal:
-- versión base interna vigente: `v1.0.0-internal`,
-- centralizar UI foundation y estilos en una capa común,
-- ofrecer hosts listos para **Server** y **WebAssembly**,
-- mantener un **sample** para validación funcional y visual.
+## 2) Alcance
+Aplica a todo el repositorio y a cualquier cambio en:
+- `src/MachSoft.Template.Core.Control`
+- `src/MachSoft.Template.Core.Control.Showcase`
+- `src/MachSoft.Template.Official.Server/template-content`
+- `src/MachSoft.Template.Official.Wasm/template-content`
+- `docs/`
 
----
+## 3) Topología real gobernada
+Superficies mínimas que se deben considerar en cada cambio del catálogo:
+- `src/MachSoft.Template.Core.Control`: implementación del catálogo `Mx*`.
+- `src/MachSoft.Template.Core.Control.Showcase`: evidencia funcional/visual de referencia.
+- `src/MachSoft.Template.Official.Server/template-content`: adopción en host Server.
+- `src/MachSoft.Template.Official.Wasm/template-content`: adopción en host Wasm.
+- `docs/`: contrato transversal, estado del catálogo y plantillas de documentación.
 
-## 2) Arquitectura general de la solución
-Estructura esperada:
-- `src/MachSoft.Template.Core` → capa reusable común (RCL).
-- `template/MachSoft.Template.Starter` → starter Blazor Server.
-- `template/MachSoft.Template.Starter.Wasm` → starter Blazor WebAssembly.
-- `samples/MachSoft.Template.SampleApp` → aplicación demo de referencia.
-- `docs/` → arquitectura, guía de uso y migración.
+## 4) Regla de autoridad documental (precedencia)
+Orden de autoridad obligatorio:
+1. `docs/CONTROL_SYSTEM_CONTRACT.md`
+2. `docs/components/Mx*.md` (cuando existan)
+3. `AGENTS.md`
+4. código existente
 
-### Responsabilidades por capa
-- **Core (común)**: layout base desacoplado (MainLayout + AppShell/AppHeader/AppNavigation/AppFooter), foundation components, base mínima de formularios, páginas base, CSS y tokens.
-- **Starter Server**: bootstrap server y páginas específicas de host server.
-- **Starter WASM**: bootstrap cliente WASM y páginas específicas de host WASM.
-- **Sample**: validar patrones de uso reales sin lógica de negocio legacy.
+Regla explícita: si el código actual contradice la norma documental, **no** se asume que el código tiene razón. La contradicción se registra como `Divergencia detectada` y requiere resolución explícita.
 
----
+## 5) Estado base asumido del catálogo
+Estado oficial por defecto del catálogo actual: **usable pero no suficientemente gobernado**.
+Prohibido declarar madurez alta sin evidencia verificable.
 
-## 3) Reglas para Foundation Components
-Ubicación: `src/MachSoft.Template.Core/Components/Foundation`.
+Etiquetas obligatorias cuando falte evidencia:
+- `Pendiente de confirmar`
+- `No verificado`
+- `No documentado todavía`
+- `Divergencia detectada`
+- `Requiere revisión arquitectónica`
 
-Reglas:
-1. Deben ser **genéricos** y sin dependencias de negocio.
-2. API de parámetros simple y explícita.
-3. Evitar side effects, acceso directo a servicios de dominio o persistencia.
-4. Priorizar composición (ChildContent) sobre especialización rígida.
-5. Si un componente deja de ser reusable, moverlo a host específico.
+## 6) Principios operativos obligatorios
+1. No convertir implementación accidental en contrato.
+2. No afirmar capacidades no observables en código o evidencia de ejecución.
+3. No cerrar cambios de `Mx*` sin revisar impacto en las 4 superficies (Core/Showcase/Server/Wasm).
+4. No separar evolución visual de accesibilidad y comportamiento.
+5. No aceptar cambios sin actualización documental mínima exigida.
 
-Contratos de referencia:
-- `PageContainer` (`Title`, `Description`, `IsCompact`)
-- `BaseCard` (`Title`, `BadgeText`, `Variant: SurfaceVariant`, `IsCompact`)
-- `AppMenuTile` (`Title`, `Description`, `Href`, `Icon`, `Variant: TileVariant`)
+## 7) Regla de no divergencia
+Ningún cambio en un control `Mx*` se considera completo si no revisa impacto en:
+- `Core.Control`
+- `Showcase`
+- `Template Server`
+- `Template Wasm`
 
----
+Si no hay adopción en templates, debe quedar explícito como `No verificado` o `Pendiente de adopción`, nunca como compatible implícito.
 
-## 4) Base mínima de formularios
-Ubicación: `src/MachSoft.Template.Core/Components/Forms`.
+## 8) Protocolo obligatorio al modificar un control `Mx*`
+1. Identificar contrato objetivo y alcance del cambio.
+2. Clasificar cambio: `Compatible`, `Sensible` o `Breaking`.
+3. Actualizar implementación en Core.Control.
+4. Actualizar o crear evidencia en Showcase.
+5. Verificar impacto en Template Server y Template Wasm.
+6. Actualizar documentación requerida.
+7. Ejecutar validación mínima.
+8. Reportar resultado con evidencias y riesgos abiertos.
 
-Componentes:
-- `FormSection`
-- `SectionTitle`
-- `FieldGroup`
+## 9) Protocolo obligatorio al crear un control `Mx*`
+1. Justificar problema real que resuelve (no duplicar control existente).
+2. Definir contrato mínimo transversal en `docs/CONTROL_SYSTEM_CONTRACT.md` (si aplica).
+3. Implementar versión mínima usable en Core.Control.
+4. Incluir escenario de Showcase que pruebe estados y eventos base.
+5. Registrar estado inicial en `docs/CONTROL_CATALOG_STATUS.md` con madurez conservadora.
+6. Integrar evidencia mínima en templates o marcar explícitamente `No verificado`.
+7. No publicar contrato individual completo (`docs/components/Mx*.md`) sin solicitud explícita.
 
-Regla: mantenerlos como **patrones visuales ligeros**. No convertir esta capa en framework de formularios.
+## 10) Reglas de API pública
+1. Superficie pública con prefijo `Mx*`.
+2. Parámetros explícitos, semántica estable y nombres consistentes.
+3. No exponer contratos internos/vendor como API pública directa.
+4. No eliminar/renombrar parámetros públicos sin clasificar el cambio como breaking.
+5. Defaults deben documentarse o marcarse `No documentado todavía`.
 
----
+## 11) Reglas de accesibilidad
+1. Todo control interactivo debe tener nombre accesible verificable.
+2. Estados `disabled`, `invalid`, `readonly` deben reflejar semántica real en markup.
+3. `focus-visible` no se elimina sin alternativa equivalente.
+4. Relación label/control y mensajes (`aria-describedby`) cuando aplique.
+5. Si no está validado por prueba o evidencia, marcar `No verificado`.
 
-## 5) Reglas de Layout y navegación
-Ubicación: `src/MachSoft.Template.Core/Layout`.
+## 12) Reglas de layout, sizing, scroll y estabilidad visual
+1. Evitar cambios de tamaño inesperados entre estados (`default/hover/focus/invalid/loading`).
+2. Definir comportamiento de overflow y scroll en contenedores de datos/overlay.
+3. Evitar layout shift por loaders, iconos o mensajes de validación.
+4. Cambios en spacing/dimensión deben pasar por tokens.
+5. Si no hay evidencia de estabilidad cross-host, marcar `No verificado`.
 
-- `MainLayout` es el contrato visual común y debe permanecer liviano.
-- Delegar estructura visual en subcomponentes (`AppShell`, `AppHeader`, `AppNavigation`, `AppFooter`).
-- `AppShell` gestiona estado de sidebar colapsable (`IsMenuOpen`) y overlay.
-- Patrón oficial de shell: **desktop con sidebar fijo y sin overlay**; **mobile/tablet con sidebar flotante + overlay**.
-- Botón hamburguesa visible solo en mobile/tablet.
-- Mantener accesibilidad mínima del shell:
-  - hamburguesa con `aria-label`, `aria-expanded`, `aria-controls`,
-  - sidebar con `role="navigation"`, `aria-label`, `aria-hidden` sincronizado,
-  - foco visible en controles interactivos (`:focus-visible`).
-- Cierre automático del menú cuando:
-  1. clic en overlay,
-  2. clic en contenido fuera del sidebar,
-  3. clic en opción de navegación,
-  4. clic nuevamente en hamburguesa,
-  5. tecla Escape.
-- No inyectar servicios de negocio en layout común.
+## 13) Reglas de theming y tokens
+1. No hardcodear colores/z-index/espaciados críticos si existe capa de tokens.
+2. Cambios de tema deben mantener contraste operativo mínimo.
+3. No copiar identidad visual de librerías externas.
+4. Cualquier desviación temporal se registra como deuda explícita.
 
----
+## 14) Reglas del Showcase
+1. Showcase es evidencia ejecutable, no marketing.
+2. Cada control modificado debe tener escenario de evidencia actualizado.
+3. Escenarios deben cubrir al menos estado base + un estado excepcional.
+4. No ocultar limitaciones; declararlas en texto técnico breve.
 
-## 6) Sistema de estilos y design tokens
-Ubicación: `src/MachSoft.Template.Core/wwwroot/css/template/`
+## 15) Reglas de Templates (Server/Wasm)
+1. Templates validan adopción real del catálogo en hosts.
+2. Si un control cambia y es usado en templates, ambos hosts deben revisarse.
+3. Si no se adopta en templates, documentar explícitamente el motivo.
+4. Prohibido afirmar paridad Server/Wasm sin evidencia verificable en ambos.
 
-Archivos y propósito:
-- `tokens.css` → variables y design tokens.
-- `base.css` → tipografía, resets mínimos y defaults.
-- `layout.css` → shell/layout principal + sidebar responsive + overlay.
-- `components.css` → estilos de componentes.
-- `utilities.css` → utilidades de spacing/grid/helpers.
+## 16) Regla para comparación futura con MudBlazor
+1. MudBlazor es referencia comparativa futura, no autoridad automática.
+2. No copiar identidad visual ni API por inercia.
+3. Toda comparación debe registrar trade-offs y contexto de uso.
+4. En esta fase, no ejecutar migraciones por “paridad visual”.
 
-Reglas CSS:
-1. Usar prefijo `ms-` en clases corporativas.
-2. Evitar estilos inline salvo casos justificados.
-3. Nuevos colores/espaciados/z-index primero como token.
-4. No duplicar estilos entre Server y WASM.
+## 17) Clasificación de cambios
+- **Compatible**: no rompe API pública ni comportamiento contractual declarado.
+- **Sensible**: mantiene API pero cambia comportamiento, accesibilidad, estados o layout percibido.
+- **Breaking**: rompe API pública, contratos documentados o comportamiento esperado por consumidores.
 
----
+## 18) Entregables mínimos por cambio
+1. Código actualizado en superficies impactadas.
+2. Evidencia en Showcase.
+3. Estado actualizado en documentación (al menos catálogo/contrato).
+4. Registro de riesgos, deuda y aspectos `No verificado`.
 
-## 7) Reglas de composición
-- Combinación base por pantalla: `PageContainer` + `BaseCard`.
-- `IsCompact=true` solo para secciones densas o anidadas.
-- `SurfaceVariant.Outlined`: estructura neutral.
-- `SurfaceVariant.Elevated`: bloque prioritario.
-- `SurfaceVariant.Muted`: contenido secundario/contextual.
-- Promover a Foundation solo si el patrón se repite cross-host y no contiene dominio.
+## 19) Validación mínima obligatoria
+Como mínimo en cada ejecución con cambios:
+- restauración/compilación de solución o proyectos impactados,
+- verificación de arranque del Showcase si hubo cambio visual/UX,
+- comprobación de templates impactados.
 
----
+Si alguna validación no corre por entorno, reportar como `No verificado` con causa concreta.
 
-## 8) Reglas de reutilización Server/WASM
-- Toda UI compartida debe vivir en `MachSoft.Template.Core`.
-- Server/WASM solo contienen bootstrap, runtime y necesidades específicas de host.
-- Si algo se repite en ambos hosts, mover al Core.
-- No copiar componentes/estilos entre hosts.
+## 20) Prohibiciones explícitas
+Prohibido:
+1. Inventar semántica contractual no verificable.
+2. Declarar compatibilidad cross-host sin evidencia.
+3. Declarar accesibilidad garantizada sin comprobación.
+4. Elevar madurez sin soporte técnico observable.
+5. Cerrar tareas con divergencias no declaradas.
+6. Crear contratos individuales `docs/components/Mx*.md` sin solicitud explícita.
 
----
-
-## 9) Convenciones de nombres
-- Prefijo obligatorio: `MachSoft.Template.*`.
-- Nombres claros por responsabilidad (`Core`, `Starter`, `Starter.Wasm`, `SampleApp`).
-- Evitar nombres legacy o ambiguos.
-
----
-
-## 10) Governance Rules
-- **Qué entra en Core**:
-  - layout, estilos y componentes reutilizables por Server y WASM,
-  - contratos UI estables y agnósticos de dominio.
-- **Qué no entra en Core**:
-  - lógica de negocio,
-  - integraciones de infraestructura,
-  - componentes de un único flujo local.
-- Todo cambio reusable debe pasar por `/showcase` antes de adoptarse.
-- No incorporar nuevos components en Core sin:
-  1. uso repetido,
-  2. contrato claro,
-  3. ejemplo en showcase,
-  4. docs actualizadas.
-- Exigir actualización de E2E cuando cambie comportamiento/accesibilidad del shell responsive.
-- Exigir actualización de docs cuando cambien arquitectura, contratos o flujo de adopción.
-- Evitar duplicación: preferir extender Foundation antes que crear variantes locales paralelas.
-
----
-
-## 11) Reglas de documentación
-Actualizar siempre cuando cambie arquitectura o flujo de uso:
-- `README.md`
-- `docs/ARCHITECTURE.md`
-- `docs/TEMPLATE_GUIDE.md`
-- `docs/MIGRATION_REPORT.md`
-
-La documentación debe reflejar estado real del código (no intenciones futuras).
-
----
-
-## 12) Flujo de trabajo esperado para agentes
-1. Validar entorno (`dotnet --info`).
-2. Restaurar y compilar (`dotnet restore`, `dotnet build`).
-3. Hacer cambios mínimos y coherentes con la arquitectura.
-4. Verificar que Server y WASM sigan reutilizando Core.
-5. Ejecutar validaciones de arranque básicas cuando sea posible.
-6. Validar visualmente `/showcase` y navegación lateral al cambiar layout/styles.
-7. Ejecutar cobertura E2E mínima del shell (`tests/e2e`) cuando haya cambios en layout/navigation.
-   - Revisar/actualizar `tests/e2e/README.md` si cambian scripts o prerrequisitos.
-   - Mantener separación por comportamiento (`shell-mobile-tablet.spec.ts` y `shell-desktop.spec.ts`).
-   - Para runner/contenedor, mantener flags de Chromium `--no-sandbox` y `--disable-dev-shm-usage` en Playwright.
-   - Mantener `reuseExistingServer: false` en E2E para evitar interferencia de procesos previos en CI compartido.
-   - Mantener arranque de host E2E con `dotnet build` + `dotnet run --no-build` cuando se ajuste `webServer.command`.
-   - Si falla por binarios ausentes, ejecutar `npm run install:browsers` antes de diagnosticar el shell.
-   - En mobile/tablet, sincronizar acciones con readiness real del shell (`data-ms-shell-interactive="true"` + hamburguesa operativa).
-8. Actualizar docs.
-9. Commit atómico con mensaje claro y PR con resumen técnico.
-
-Comandos base sugeridos:
-- `dotnet restore MachSoft.Template.sln`
-- `dotnet build MachSoft.Template.sln`
-- `dotnet run --project template/MachSoft.Template.Starter`
-- `dotnet run --project template/MachSoft.Template.Starter.Wasm`
-
----
-
-## 13) Catálogo MachSoft Components — Grupo 1
-Ubicación recomendada en Core:
-- `Components/Foundation/Actions`: `MxButton`, `MxIconButton`
-- `Components/Foundation/Feedback`: `MxBadge`
-- `Components/Foundation/Surfaces`: `MxCard`, `MxPanel`
-- `Components/Foundation/Layout`: `MxPageHeader`
-
-Contratos públicos mínimos del Grupo 1:
-- `MxButton`: `Variant`, `Size`, `Disabled`, `LeadingIcon`, `TrailingIcon`, `ChildContent`.
-- `MxIconButton`: `Icon`, `AriaLabel`, `Variant`, `Size`, `Disabled`.
-- `MxCard`: `Variant`, `IsCompact`, `HeaderContent`, `ChildContent`, `FooterContent`, `Metadata`.
-- `MxBadge`: `Variant`, `Size`, `Text|ChildContent`.
-- `MxPageHeader`: `Title`, `Description`, `Actions`, `Metadata`.
-- `MxPanel`: `Title`, `HeaderActions`, `Variant`, `IsCompact`, `ChildContent`.
-
-Reglas adicionales:
-1. API pública siempre `Mx*`, sin exponer contratos vendor en parámetros.
-2. Limitar variantes a las mínimas útiles; evitar explosión combinatoria.
-3. Cubrir `hover`, `focus-visible`, `disabled` y contraste razonable en light/dark.
-4. Todo componente nuevo del catálogo debe tener ejemplo en `/showcase` + docs actualizadas.
-
----
-
-## 14) Catálogo MachSoft Components — Grupo 2 (Forms)
-Ubicación recomendada en Core:
-- `Components/Foundation/Forms`:
-  - `MxTextField`
-  - `MxTextarea`
-  - `MxSelect`
-  - `MxCheckbox`
-  - `MxSwitch`
-  - `MxFieldGroup`
-  - `MxFormSection`
-- `Models/MxSelectOption` para opciones tipadas de select.
-
-Contratos públicos mínimos del Grupo 2:
-- `MxTextField`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `HelperText`, `ErrorText`, `IsCompact`.
-- `MxTextarea`: `Label`, `Placeholder`, `Value`, `ValueChanged`, `Disabled`, `ReadOnly`, `Required`, `Rows`, `HelperText`, `ErrorText`.
-- `MxSelect`: `Label`, `Value`, `ValueChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
-- `MxCheckbox`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `Description`.
-- `MxSwitch`: `Label`, `Checked`, `CheckedChanged`, `Disabled`, `HelperText`.
-- `MxFieldGroup`: `Label`, `FieldId`, `HelperText`, `ErrorText`, `ChildContent`.
-- `MxFormSection`: `Title`, `Description`, `Actions`, `ChildContent`.
-
-Reglas adicionales:
-1. Implementación preferente en Blazor/HTML puro y tokenizado; wrappers vendor solo si hay necesidad técnica clara.
-2. Mantener estados base: default, hover, focus-visible, disabled, invalid/error.
-3. Asegurar asociación label/control (`for` + `id`) y mensajes enlazados (`aria-describedby`) cuando aplique.
-4. Todo cambio en Grupo 2 debe reflejarse en `/showcase` y en docs de arquitectura/guía/foundation.
-
----
-
-## 15) Catálogo MachSoft Components — Grupo 3 (Navigation + Overlays)
-Ubicación recomendada en Core:
-- `Components/Foundation/Navigation`:
-  - `MxTabs`
-  - `MxBreadcrumb`
-- `Components/Foundation/Overlays`:
-  - `MxDialog`
-  - `MxDrawer`
-- `Components/Foundation/Feedback`:
-  - `MxToast`
-- `Models`: `MxTabItem`, `MxBreadcrumbItem`.
-
-Contratos públicos mínimos del Grupo 3:
-- `MxTabs`: `Items`, `ActiveValue`, `ActiveValueChanged`, `Variant`, `AriaLabel`, `ActiveContent`.
-- `MxDialog`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Actions`, `Size`, `CloseOnOverlayClick`, `CloseOnEscape`.
-- `MxDrawer`: `Open`, `OpenChanged`, `Title`, `ChildContent`, `Side`, `Width`, `CloseOnOverlayClick`, `CloseOnEscape`.
-- `MxToast`: `Visible`, `VisibleChanged`, `Variant`, `Title`, `Message`, `Dismissible`, `DurationMs`.
-- `MxBreadcrumb`: `Items`.
-
-Reglas adicionales:
-1. Mantener API pública `Mx*` y contratos de interacción simples.
-2. Asegurar base accesible: tabs con roles y teclado; dialog/drawer con `role="dialog"` + `aria-modal`; breadcrumb con `aria-current`.
-3. Usar tokens semánticos para overlays, foco y estados visuales en light/dark.
-4. Toda evolución del Grupo 3 debe reflejarse en `/showcase` y documentación técnica.
-
----
-
-## 16) Catálogo MachSoft Components — Grupo 4 (Data display + feedback)
-Ubicación recomendada en Core:
-- `Components/Foundation/DataDisplay`:
-  - `MxTag`
-  - `MxStatusIndicator`
-  - `MxEmptyState`
-  - `MxStatCard`
-  - `MxProgress`
-
-Contratos públicos mínimos del Grupo 4:
-- `MxTag`: `Text|ChildContent`, `Variant`, `Dismissible`, `OnDismiss`.
-- `MxStatusIndicator`: `Status`, `Label`.
-- `MxEmptyState`: `Title`, `Description`, `Icon`, `Actions`.
-- `MxStatCard`: `Title`, `Value`, `SupportingText`, `TrendText`, `TrendStatus`, `Status`.
-- `MxProgress`: `Value`, `Max`, `Variant`, `ShowLabel`, `IsInline`, `AriaLabel`.
-
-Reglas adicionales:
-1. Grupo 4 debe priorizar utilidad operativa real (KPIs, estados de proceso, vacíos de datos, progreso).
-2. Mantener diferencias semánticas claras entre `MxBadge` (metadata), `MxTag` (etiqueta de entidad) y `MxStatusIndicator` (estado operativo).
-3. `MxProgress` debe mantener atributos accesibles (`role="progressbar"` + `aria-valuenow/max`).
-4. Todo cambio del Grupo 4 debe verse en `/showcase` y documentación técnica.
-
----
-
-## 17) Catálogo MachSoft Components — Grupo 5 (Enterprise inputs)
-Ubicación recomendada en Core:
-- `Components/Foundation/Inputs`:
-  - `MxDatePicker`
-  - `MxDateRangePicker`
-  - `MxAutocomplete`
-  - `MxMultiSelect`
-  - `MxFileUpload`
-- `Models/MxInputOption` para opciones de autocomplete/multiselect.
-
-Contratos públicos mínimos del Grupo 5:
-- `MxDatePicker`: `Label`, `Value`, `ValueChanged`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`, `Id`.
-- `MxDateRangePicker`: `Label`, `StartValue`, `EndValue`, `StartValueChanged`, `EndValueChanged`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
-- `MxAutocomplete`: `Label`, `Value`, `ValueChanged`, `SearchText`, `SearchTextChanged`, `Items`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
-- `MxMultiSelect`: `Label`, `SelectedValues`, `SelectedValuesChanged`, `Options`, `Placeholder`, `Disabled`, `Required`, `HelperText`, `ErrorText`.
-- `MxFileUpload`: `Label`, `FilesChanged`, `Disabled`, `Accept`, `Multiple`, `HelperText`, `ErrorText`.
-
-Reglas adicionales:
-1. Mantener alcance base y evitar APIs infladas.
-2. Reusar `MxFieldGroup` para consistencia de accesibilidad y mensajes.
-3. Evitar exponer API vendor; si se encapsula framework-level, mantener contrato Mx estable.
-4. Reflejar siempre cambios del Grupo 5 en `/showcase` y documentación técnica.
-
----
-
-## 18) Catálogo MachSoft Components — Grupo 6 (Enterprise data)
-Ubicación recomendada en Core:
-- `Components/Foundation/Data`:
-  - `MxDataGrid`
-  - `MxTreeGrid`
-  - `MxChart`
-- `Models`: `MxDataGridColumn<TItem>`, `MxTreeGridItem`, `MxChartSeries`.
-
-Contratos públicos mínimos del Grupo 6:
-- `MxDataGrid`: `Items`, `Columns`, `EmptyText`, `IsCompact`, `AriaLabel`.
-- `MxTreeGrid`: `Items`, `EmptyText`, `AriaLabel`.
-- `MxChart`: `Type`, `Title`, `Categories`, `Series`, `EmptyText`, `AriaLabel`.
-
-Reglas adicionales:
-1. Mantener alcance inicial honesto y controlado (sin feature creep).
-2. Priorizar legibilidad enterprise y estados no-data.
-3. Asegurar comportamiento base real (rows renderizables, tree expand/collapse, chart visible).
-4. Documentar limitaciones actuales y roadmap de evolución antes de ampliar APIs.
-
----
-
-## 19) Iteración de consolidación y adopción (regla activa)
-- No crear nuevos grupos de componentes en esta fase.
-- Priorizar adopción de lenguaje oficial `Mx*` en Starter y ejemplos.
-- Mantener componentes legacy funcionales pero marcados explícitamente como deprecated/legacy.
-- Showcase debe organizarse por capas: Foundations, Components, Enterprise Data, Patterns.
-- Cada cambio de consolidación debe mantener compatibilidad Server/WASM y actualizar documentación de adopción.
+## 21) Formato de salida obligatorio al cerrar tarea
+La salida final del agente debe incluir:
+1. Resumen técnico de cambios por archivo.
+2. Validaciones ejecutadas con resultado.
+3. Riesgos/deuda abierta.
+4. Lista de puntos `No verificado`.
+5. Clasificación de cambio (`Compatible`, `Sensible`, `Breaking`).
