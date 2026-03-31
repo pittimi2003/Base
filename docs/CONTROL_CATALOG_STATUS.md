@@ -100,34 +100,39 @@ Families oficiales vigentes en el inventario:
 ## 5.1) Etapa 1 — Evaluación estructurada del lote de alta rentabilidad (`MxButton`, `MxIconButton`, `MxTooltip`)
 
 ### MxButton (Actions)
-- **Evidencia real encontrada (Etapa 2A)**
-  - Core: `MxButton` mantiene render condicional `button`/`a` y ahora expone `Style`, `AdditionalAttributes` y `Pressed` (nullable) para cerrar extensibilidad y estado toggle sin romper API existente.
-  - Showcase: escenarios actualizados para estados (`disabled`, `loading`, `pressed`), modo link (`Href`) y link deshabilitado (`aria-disabled` + `tabindex=-1` + `preventDefault`).
-  - Templates: Server/Wasm incorporan uso explícito de `Style`, `AdditionalAttributes`, link habilitado y link deshabilitado en `Packages`.
+- **Evidencia real encontrada (Etapa 2A + Etapa 2B)**
+  - Core: `MxButton` mantiene render condicional `button`/`a`, `Pressed` nullable y semántica de bloqueo en ambos modos (`disabled` nativo para botón, `aria-disabled` + `tabindex=-1` + `preventDefault` para link deshabilitado).
+  - Showcase: escenario explícito de `MxButton` con `disabled`, `loading`, `pressed` y modo link (habilitado/deshabilitado).
+  - Templates: Server/Wasm (`Packages`) mantienen adopción equivalente de botón base, link habilitado y link deshabilitado.
 - **API pública observable**
   - Parámetros observables: `Variant`, `Size`, `Disabled`, `Loading`, `Pressed`, `Type`, `Href`, `Target`, `Rel`, `LeadingIcon`, `TrailingIcon`, `AriaLabel`, `LoadingText`, `Class`, `Style`, `AdditionalAttributes`, `OnClick`, `ChildContent`.
   - `Value`/`ValueChanged` no aplica por naturaleza de control de acción sin dato editable.
-  - Se cierra divergencia previa de convención 7.1 para `Style` y `AdditionalAttributes`.
-- **Estados observables**
-  - Implementados y evidenciables: `default`, `hover`, `focus-visible`, `disabled`, `loading`, variantes visuales, tamaños (`small/medium/large`) y `pressed` (mediante `aria-pressed` cuando `Pressed` tiene valor).
-  - `active` transitorio (pointer down) no se declara como contrato estable en esta etapa; contrato explícito de toggle se centra en `pressed`.
-- **Accesibilidad mínima (evidencia trazable)**
-  - Nombre accesible: se mantiene por texto visible (`ChildContent`) y puede reforzarse por `AriaLabel` en escenarios de link de templates.
-  - Foco visible: `:focus-visible` sigue presente en `.mx-btn` del stylesheet común.
-  - `Disabled` en botón nativo: se refleja con atributo `disabled` y bloqueo de `OnClick` por guard clause interna.
-  - `Disabled` en modo link: se refleja con `aria-disabled="true"`, `tabindex=-1` y `@onclick:preventDefault`.
+  - Sin cambios de API en Etapa 2B.
+- **Matriz de validación manual mínima (Etapa 2B)**
+
+| Caso mínimo | Showcase | Template Server | Template Wasm | Trazabilidad técnica |
+|---|---|---|---|---|
+| Tab llega al botón | No verificado | No verificado | No verificado | El control renderiza `<button>` o `<a>` focusable según modo; falta ejecución manual registrada por host. |
+| foco visible presente | No verificado | No verificado | No verificado | CSS conserva `:focus-visible` para `.mx-btn`; falta validación manual runtime en los tres hosts. |
+| Enter/Space activan botón nativo cuando corresponde | No verificado | No verificado | No verificado | Se usa elemento `<button>` nativo; falta registro de ejecución manual en los 3 hosts. |
+| `disabled` impide activación (botón nativo) | No verificado | No verificado | No verificado | `<button disabled>` + guard clause en `HandleClickAsync`; falta ejecución manual host bilateral. |
+| modo link habilitado se comporta como enlace | No verificado | No verificado | No verificado | Uso explícito de `Href` en escenarios activos de Showcase/Packages; falta validación manual de navegación real por host. |
+| modo link deshabilitado no navega, tiene `aria-disabled` y queda fuera de tabulación | No verificado | No verificado | No verificado | `aria-disabled`, `tabindex=-1` y `@onclick:preventDefault` presentes; falta ejecución manual registrada en los tres hosts. |
+| `aria-pressed` aparece solo cuando `Pressed` tiene valor y semántica coherente | No verificado | No verificado | No verificado | `AriaPressedValue` sólo emite valor cuando `Pressed != null` y no es link; falta validación runtime en Showcase/Server/Wasm. |
+
 - **Divergencias entre hosts**
-  - Server/Wasm muestran adopción equivalente en templates para API extendida y modo link.
-  - No hay prueba automatizada de lector de pantalla ni registro instrumental de teclado end-to-end; se mantiene `No verificado` para esa capa.
+  - No se detecta divergencia de implementación entre Server y Wasm para los escenarios documentados de `MxButton`.
+  - La evidencia runtime de teclado/foco/AT en templates sigue **No verificado** por ausencia de ejecución manual instrumentada en ambos hosts.
 - **Nivel de madurez actual justificado**
-  - Se mantiene **Nivel 2** en esta ejecución: se cerró brecha contractual principal (`Style`/`AdditionalAttributes`) y se amplió evidencia funcional, pero persiste deuda de validación accesible runtime cross-host (teclado/AT) para umbral de `Nivel 3`.
+  - Se mantiene **Nivel 2** en esta ejecución: hay trazabilidad técnica y matriz mínima, pero no hay evidencia runtime bilateral suficiente de accesibilidad (teclado/foco/disabled/pressed) para umbral de `Nivel 3`.
 - **¿Puede pasar a Nivel 3 ahora?**
-  - **No todavía**. Queda pendiente evidencia runtime verificable de accesibilidad en ambos hosts (interacción teclado + lectura asistiva).
+  - **No**. Persisten brechas críticas `No verificado` en validación manual cross-host (Server + Wasm) para teclado/foco y semántica accesible en runtime.
 - **¿Listo para `docs/components/MxButton.md`?**
-  - **No**. Aún no se cumple el umbral normativo completo de salida.
+  - **No**. No cumple todavía el umbral normativo de salida a contrato individual.
 - **Qué falta exactamente para habilitar contrato individual**
-  1. Evidencia de ejecución cross-host (Server/Wasm) para navegación por teclado y anuncio de estado pressed/disabled en tecnologías asistivas.
-  2. Registro de validación manual o automatizada que convierta los puntos de accesibilidad hoy `No verificado` en evidencia trazable.
+  1. Ejecutar y registrar validación manual bilateral (Server/Wasm) de navegación por teclado (`Tab`, `Enter`, `Space`) sobre botón nativo y modo link.
+  2. Ejecutar y registrar validación bilateral de foco visible en runtime real (no sólo inspección de CSS/markup).
+  3. Ejecutar y registrar evidencia bilateral de `disabled`/`pressed` en runtime, incluyendo no navegación en link deshabilitado y anuncio semántico asistivo (`aria-disabled`, `aria-pressed`).
 
 ### MxIconButton (Actions)
 - **Evidencia real encontrada**
