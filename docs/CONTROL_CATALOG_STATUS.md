@@ -97,6 +97,106 @@ Families oficiales vigentes en el inventario:
 3. Solo un subconjunto presenta evidencia en ambos templates (`MxButton`, `MxIconButton`, `MxTooltip`, `MxDataGrid`, `MxControlAssets`).
 4. No hay base objetiva para asignar Nivel 3 o superior en esta ejecución.
 
+## 5.1) Etapa 1 — Evaluación estructurada del lote de alta rentabilidad (`MxButton`, `MxIconButton`, `MxTooltip`)
+
+### MxButton (Actions)
+- **Evidencia real encontrada**
+  - Core: componente con render condicional `button`/`a`, eventos `OnClick`, estados `Disabled` y `Loading`.  
+  - Showcase: escenarios de variantes (`Filled`, `Outlined`, `Text`, `Fab`) y estados (`Disabled`, `Loading`, iconos).  
+  - Templates: uso real en Server y Wasm en `GridWorkspace` (acción `Limpiar`) y en `Packages` (`Core.Control connected`).
+- **API pública observable**
+  - Parámetros observables: `Variant`, `Size`, `Disabled`, `Loading`, `Type`, `Href`, `Target`, `Rel`, `LeadingIcon`, `TrailingIcon`, `AriaLabel`, `LoadingText`, `Class`, `OnClick`, `ChildContent`.
+  - **Divergencia detectada** frente a convención 7.1: no existe `Style`, no existe `AdditionalAttributes`; no aplica `Value`/`ValueChanged` por tipo de control.
+- **Estados observables**
+  - Implementados y evidenciables: `default`, `hover`, `focus-visible`, `disabled`, `loading`, variantes visuales y tamaño (`small/medium/large`).
+  - `active/pressed`: no documentado todavía para `MxButton`.
+- **Riesgos de accesibilidad**
+  - `AriaLabel` es opcional; un botón solo icon-only sin texto visible podría quedar sin nombre accesible (**No verificado** por prueba automatizada).
+  - En modo link deshabilitado, se usa `aria-disabled` + `tabindex=-1` + `preventDefault`; falta evidencia de navegación por teclado/lector en ambos hosts (**Pendiente de confirmar**).
+- **Riesgos de layout/scroll**
+  - En estado `loading` se mantiene estructura (loader + label), reduciendo riesgo de shift; aún así no hay evidencia de regresión visual formal cross-host (**No verificado**).
+  - `Fab` comparte base sin reglas adicionales de contenedor; posibles diferencias de alineación según layout padre (**Pendiente de confirmar**).
+- **Divergencias entre hosts**
+  - No se observaron diferencias de uso entre Server/Wasm en templates inspeccionados (mismo markup funcional).
+  - Persiste **No verificado** en comportamiento runtime (SSR/CSR, foco, interacción asistiva) por falta de evidencia ejecutada en esta etapa.
+- **Nivel de madurez actual justificado**
+  - Se mantiene **Nivel 2**: hay evidencia Showcase + Server + Wasm, con deuda contractual y validación de accesibilidad incompleta.
+- **¿Puede pasar a Nivel 3 ahora?**
+  - **No**. Falta checklist contractual parcial evidenciado y validación técnica básica trazable para accesibilidad/comportamiento.
+- **¿Listo para `docs/components/MxButton.md`?**
+  - **No**. No cumple umbral normativo de salida (Nivel 3 mínimo y ausencia de divergencia crítica).
+- **Qué falta exactamente para habilitar contrato individual**
+  1. Definir y cerrar decisión contractual sobre `Style`/`AdditionalAttributes` (agregar o justificar `No aplica`).
+  2. Evidencia verificable de accesibilidad (nombre accesible, foco, disabled como link) en Server y Wasm.
+  3. Checklist mínimo de estados contractual (incluyendo `active/pressed` o declaración explícita de no aplicación).
+  4. Validación técnica básica trazable (build + evidencia de interacción) para promover a Nivel 3.
+
+### MxIconButton (Actions)
+- **Evidencia real encontrada**
+  - Core: botón icon-only con `AriaLabel` requerido, `Pressed` opcional, `Disabled`/`Loading`, variantes y tamaños.
+  - Showcase: ejemplos base, outlined, disabled, pressed y loading.
+  - Templates: adopción real en panel de acciones de `GridWorkspace` (Server/Wasm) encapsulado con `MxTooltip`.
+- **API pública observable**
+  - Parámetros observables: `Icon`, `AriaLabel`, `Variant`, `Size`, `Type`, `Pressed`, `Disabled`, `Loading`, `LoadingText`, `Class`, `OnClick`.
+  - **Divergencia detectada** frente a convención 7.1: faltan `Style` y `AdditionalAttributes`.
+- **Estados observables**
+  - Implementados: `default`, `hover`, `focus-visible`, `disabled`, `loading`, `pressed` (via `aria-pressed`), tamaños y variantes.
+  - Estado `invalid`/`readonly`: no aplica por naturaleza del control.
+- **Riesgos de accesibilidad**
+  - `aria-pressed` se renderiza siempre (puede quedar vacío/null), requiere validación semántica en tecnologías asistivas (**Pendiente de confirmar**).
+  - No hay evidencia automatizada/manual registrada de navegación por teclado y anuncio de estado pressed en hosts (**No verificado**).
+- **Riesgos de layout/scroll**
+  - Tamaños fijos (`width/height`) estabilizan layout; riesgo bajo de shift en icon-only.
+  - Sin evidencia de comportamiento en contenedores con overflow/zoom alto en templates (**No verificado**).
+- **Divergencias entre hosts**
+  - Uso equivalente entre Server y Wasm en templates revisados.
+  - Sin evidencia de divergencia visual declarable; paridad runtime de a11y sigue **No verificado**.
+- **Nivel de madurez actual justificado**
+  - Se mantiene **Nivel 2** por evidencia bilateral pero con deuda contractual y de validación a11y.
+- **¿Puede pasar a Nivel 3 ahora?**
+  - **No**. Falta validación contractual/a11y trazable y cierre de brechas de API transversal.
+- **¿Listo para `docs/components/MxIconButton.md`?**
+  - **No**.
+- **Qué falta exactamente para habilitar contrato individual**
+  1. Resolver contrato de extensibilidad (`Style`/`AdditionalAttributes` o excepción formal explícita).
+  2. Evidencia accesible de `aria-pressed` (toggle) y foco por teclado en ambos hosts.
+  3. Verificación funcional documentada de estados `disabled/loading/pressed` en templates, no solo presencia de markup.
+  4. Validación técnica mínima trazable para promoción a Nivel 3.
+
+### MxTooltip (Overlays)
+- **Evidencia real encontrada**
+  - Core: wrapper con `Text`, `Placement`, `Open`, `Focusable`, `Class`, `ChildContent`, `role="tooltip"` y `aria-describedby`.
+  - Showcase: evidencia en `top/right/bottom`, hover/foco y modo forzado con `Open` para QA.
+  - Templates: uso real alrededor de `MxIconButton` en action pane de `GridWorkspace` (Server/Wasm, placement `Right`).
+- **API pública observable**
+  - Parámetros observables: `Text`, `Placement`, `Open`, `Focusable`, `Class`, `ChildContent`.
+  - **Divergencia detectada** frente a convención 7.1: sin `Style` ni `AdditionalAttributes`.
+- **Estados observables**
+  - Implementados: oculto por defecto; visible por `:hover`, `:focus-within` o `Open=true`.
+  - Placements observables: `Top`, `Bottom`, `Left`, `Right`.
+  - No hay motor de colisión/reposicionamiento dinámico.
+- **Riesgos de accesibilidad**
+  - `aria-describedby` se fija siempre; falta evidencia de que el contenido sea anunciado consistentemente en lectores en ambos hosts (**No verificado**).
+  - `Focusable=false` deja el wrapper sin `tabindex`; la accesibilidad depende totalmente del hijo. Si el hijo no es focusable, tooltip por teclado puede no activarse (**Pendiente de confirmar**).
+- **Riesgos de layout/scroll**
+  - Burbuja `position:absolute`, `max-width:220px`, `z-index:1300`, sin estrategia de collision/viewport clipping; riesgo real en bordes, contenedores con overflow y scroll.
+  - Sin evidencia de estabilidad visual cross-host en contenedores complejos (**No verificado**).
+- **Divergencias entre hosts**
+  - No se observan diferencias de adopción entre Server/Wasm en templates.
+  - Diferencias de render mode/hidratación no validadas para timings de hover/focus/open (**No verificado**).
+- **Nivel de madurez actual justificado**
+  - Se mantiene **Nivel 2**: evidencia bilateral existe, pero deuda de overlay/a11y/validación impide Nivel 3.
+- **¿Puede pasar a Nivel 3 ahora?**
+  - **No**.
+- **¿Listo para `docs/components/MxTooltip.md`?**
+  - **No**.
+- **Qué falta exactamente para habilitar contrato individual**
+  1. Definir alcance contractual explícito de overlay (sin collision engine vs roadmap) y límites operativos.
+  2. Evidencia de accesibilidad real (`aria-describedby`, foco teclado) en ambos hosts.
+  3. Evidencia de estabilidad en escenarios con scroll/overflow y bordes de viewport.
+  4. Cierre de brecha API transversal (`Style`/`AdditionalAttributes` o excepción formal).
+  5. Validación técnica básica documentada para habilitar Nivel 3.
+
 ## 6) Reglas de uso de este inventario
 1. Este archivo no autoriza cambios implícitos de contrato.
 2. Si aparece nueva evidencia, actualizar fila correspondiente con trazabilidad.
