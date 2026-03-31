@@ -11,5 +11,33 @@
         <li>Keep Core and Core.Control versions aligned with the approved release train.</li>
     </ul>
 
-    <MxButton Variant="MxControlButtonVariant.Filled" Size="MxButtonSize.Small">Core.Control connected</MxButton>
+    <div class="ms-inline-wrap">
+        <MxButton Variant="MxControlButtonVariant.Filled"
+                  Size="MxButtonSize.Small"
+                  Style="min-width:12rem"
+                  AdditionalAttributes="@_coreControlAttributes">
+            Core.Control connected
+        </MxButton>
+        <MxButton Variant="MxControlButtonVariant.Outlined"
+                  Size="MxButtonSize.Small"
+                  Href="/"
+                  AriaLabel="Volver a inicio desde Packages">
+            Volver a inicio
+        </MxButton>
+        <MxButton Variant="MxControlButtonVariant.Text"
+                  Size="MxButtonSize.Small"
+                  Href="/"
+                  Disabled="true"
+                  AriaLabel="Inicio no disponible en estado bloqueado">
+            Inicio bloqueado
+        </MxButton>
+    </div>
 </section>
+
+@code {
+    private readonly IReadOnlyDictionary<string, object> _coreControlAttributes =
+        new Dictionary<string, object>
+        {
+            ["data-host-check"] = "mxbutton"
+        };
+}

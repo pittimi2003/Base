@@ -89,6 +89,7 @@ else
     private bool _toastVisibleSecondary;
     private bool _alertVisible = true;
     private bool _tooltipForcedOpen;
+    private bool _buttonPressed;
 
     private string? _textFieldValue = "Valor inicial";
     private string? _textAreaValue = "Notas iniciales del operador";
@@ -121,6 +122,12 @@ else
     private bool _schedulerLoading;
     private string? _selectedSchedulerEventId;
     private string _schedulerSelectionMessage = "Sin evento seleccionado.";
+
+    private readonly IReadOnlyDictionary<string, object> _mxButtonPressedAttributes =
+        new Dictionary<string, object>
+        {
+            ["data-qa"] = "mxbutton-pressed-toggle"
+        };
 
     private readonly IReadOnlyList<MxSelectOption> _selectOptions =
     [
@@ -207,6 +214,20 @@ else
                     <MxButton Disabled="true">Disabled</MxButton>
                     <MxButton Loading="true" LoadingText="Guardando cambios">Guardando</MxButton>
                     <MxButton LeadingIcon="🛈" TrailingIcon="→">Con iconos</MxButton>
+                    <MxButton Pressed="_buttonPressed"
+                              OnClick="ToggleButtonPressed"
+                              AriaLabel="Activar o desactivar modo compacto"
+                              AdditionalAttributes="@_mxButtonPressedAttributes">
+                        Modo compacto
+                    </MxButton>
+                </div>
+            </ShowcasePreviewBlock>
+
+            <ShowcasePreviewBlock Title="Modo link y disabled"
+                                  Caption="Enlace activo y enlace deshabilitado con aria-disabled + tabindex=-1 + preventDefault.">
+                <div class="ms-showcase-inline-wrap">
+                    <MxButton Href="/packages" Variant="MxControlButtonVariant.Outlined">Ir a Packages</MxButton>
+                    <MxButton Href="/packages" Disabled="true" Variant="MxControlButtonVariant.Text">Link deshabilitado</MxButton>
                 </div>
             </ShowcasePreviewBlock>
         </ShowcaseSection>
@@ -979,6 +1000,12 @@ else
     private Task ToggleTooltipOpen(MouseEventArgs _)
     {
         _tooltipForcedOpen = !_tooltipForcedOpen;
+        return Task.CompletedTask;
+    }
+
+    private Task ToggleButtonPressed(MouseEventArgs _)
+    {
+        _buttonPressed = !_buttonPressed;
         return Task.CompletedTask;
     }
 

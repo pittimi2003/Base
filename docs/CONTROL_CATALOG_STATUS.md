@@ -100,36 +100,34 @@ Families oficiales vigentes en el inventario:
 ## 5.1) Etapa 1 — Evaluación estructurada del lote de alta rentabilidad (`MxButton`, `MxIconButton`, `MxTooltip`)
 
 ### MxButton (Actions)
-- **Evidencia real encontrada**
-  - Core: componente con render condicional `button`/`a`, eventos `OnClick`, estados `Disabled` y `Loading`.  
-  - Showcase: escenarios de variantes (`Filled`, `Outlined`, `Text`, `Fab`) y estados (`Disabled`, `Loading`, iconos).  
-  - Templates: uso real en Server y Wasm en `GridWorkspace` (acción `Limpiar`) y en `Packages` (`Core.Control connected`).
+- **Evidencia real encontrada (Etapa 2A)**
+  - Core: `MxButton` mantiene render condicional `button`/`a` y ahora expone `Style`, `AdditionalAttributes` y `Pressed` (nullable) para cerrar extensibilidad y estado toggle sin romper API existente.
+  - Showcase: escenarios actualizados para estados (`disabled`, `loading`, `pressed`), modo link (`Href`) y link deshabilitado (`aria-disabled` + `tabindex=-1` + `preventDefault`).
+  - Templates: Server/Wasm incorporan uso explícito de `Style`, `AdditionalAttributes`, link habilitado y link deshabilitado en `Packages`.
 - **API pública observable**
-  - Parámetros observables: `Variant`, `Size`, `Disabled`, `Loading`, `Type`, `Href`, `Target`, `Rel`, `LeadingIcon`, `TrailingIcon`, `AriaLabel`, `LoadingText`, `Class`, `OnClick`, `ChildContent`.
-  - **Divergencia detectada** frente a convención 7.1: no existe `Style`, no existe `AdditionalAttributes`; no aplica `Value`/`ValueChanged` por tipo de control.
+  - Parámetros observables: `Variant`, `Size`, `Disabled`, `Loading`, `Pressed`, `Type`, `Href`, `Target`, `Rel`, `LeadingIcon`, `TrailingIcon`, `AriaLabel`, `LoadingText`, `Class`, `Style`, `AdditionalAttributes`, `OnClick`, `ChildContent`.
+  - `Value`/`ValueChanged` no aplica por naturaleza de control de acción sin dato editable.
+  - Se cierra divergencia previa de convención 7.1 para `Style` y `AdditionalAttributes`.
 - **Estados observables**
-  - Implementados y evidenciables: `default`, `hover`, `focus-visible`, `disabled`, `loading`, variantes visuales y tamaño (`small/medium/large`).
-  - `active/pressed`: no documentado todavía para `MxButton`.
-- **Riesgos de accesibilidad**
-  - `AriaLabel` es opcional; un botón solo icon-only sin texto visible podría quedar sin nombre accesible (**No verificado** por prueba automatizada).
-  - En modo link deshabilitado, se usa `aria-disabled` + `tabindex=-1` + `preventDefault`; falta evidencia de navegación por teclado/lector en ambos hosts (**Pendiente de confirmar**).
-- **Riesgos de layout/scroll**
-  - En estado `loading` se mantiene estructura (loader + label), reduciendo riesgo de shift; aún así no hay evidencia de regresión visual formal cross-host (**No verificado**).
-  - `Fab` comparte base sin reglas adicionales de contenedor; posibles diferencias de alineación según layout padre (**Pendiente de confirmar**).
+  - Implementados y evidenciables: `default`, `hover`, `focus-visible`, `disabled`, `loading`, variantes visuales, tamaños (`small/medium/large`) y `pressed` (mediante `aria-pressed` cuando `Pressed` tiene valor).
+  - `active` transitorio (pointer down) no se declara como contrato estable en esta etapa; contrato explícito de toggle se centra en `pressed`.
+- **Accesibilidad mínima (evidencia trazable)**
+  - Nombre accesible: se mantiene por texto visible (`ChildContent`) y puede reforzarse por `AriaLabel` en escenarios de link de templates.
+  - Foco visible: `:focus-visible` sigue presente en `.mx-btn` del stylesheet común.
+  - `Disabled` en botón nativo: se refleja con atributo `disabled` y bloqueo de `OnClick` por guard clause interna.
+  - `Disabled` en modo link: se refleja con `aria-disabled="true"`, `tabindex=-1` y `@onclick:preventDefault`.
 - **Divergencias entre hosts**
-  - No se observaron diferencias de uso entre Server/Wasm en templates inspeccionados (mismo markup funcional).
-  - Persiste **No verificado** en comportamiento runtime (SSR/CSR, foco, interacción asistiva) por falta de evidencia ejecutada en esta etapa.
+  - Server/Wasm muestran adopción equivalente en templates para API extendida y modo link.
+  - No hay prueba automatizada de lector de pantalla ni registro instrumental de teclado end-to-end; se mantiene `No verificado` para esa capa.
 - **Nivel de madurez actual justificado**
-  - Se mantiene **Nivel 2**: hay evidencia Showcase + Server + Wasm, con deuda contractual y validación de accesibilidad incompleta.
+  - Se mantiene **Nivel 2** en esta ejecución: se cerró brecha contractual principal (`Style`/`AdditionalAttributes`) y se amplió evidencia funcional, pero persiste deuda de validación accesible runtime cross-host (teclado/AT) para umbral de `Nivel 3`.
 - **¿Puede pasar a Nivel 3 ahora?**
-  - **No**. Falta checklist contractual parcial evidenciado y validación técnica básica trazable para accesibilidad/comportamiento.
+  - **No todavía**. Queda pendiente evidencia runtime verificable de accesibilidad en ambos hosts (interacción teclado + lectura asistiva).
 - **¿Listo para `docs/components/MxButton.md`?**
-  - **No**. No cumple umbral normativo de salida (Nivel 3 mínimo y ausencia de divergencia crítica).
+  - **No**. Aún no se cumple el umbral normativo completo de salida.
 - **Qué falta exactamente para habilitar contrato individual**
-  1. Definir y cerrar decisión contractual sobre `Style`/`AdditionalAttributes` (agregar o justificar `No aplica`).
-  2. Evidencia verificable de accesibilidad (nombre accesible, foco, disabled como link) en Server y Wasm.
-  3. Checklist mínimo de estados contractual (incluyendo `active/pressed` o declaración explícita de no aplicación).
-  4. Validación técnica básica trazable (build + evidencia de interacción) para promover a Nivel 3.
+  1. Evidencia de ejecución cross-host (Server/Wasm) para navegación por teclado y anuncio de estado pressed/disabled en tecnologías asistivas.
+  2. Registro de validación manual o automatizada que convierta los puntos de accesibilidad hoy `No verificado` en evidencia trazable.
 
 ### MxIconButton (Actions)
 - **Evidencia real encontrada**

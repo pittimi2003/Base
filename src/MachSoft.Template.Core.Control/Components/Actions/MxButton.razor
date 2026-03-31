@@ -6,10 +6,12 @@
        target="@Target"
        rel="@Rel"
        class="@CssClassValue"
+       style="@Style"
        aria-label="@AriaLabel"
        aria-disabled="@IsDisabledOrLoading"
        aria-busy="@Loading"
        tabindex="@(IsDisabledOrLoading ? -1 : 0)"
+       @attributes="AdditionalAttributes"
        @onclick="HandleClickAsync"
        @onclick:preventDefault="@IsDisabledOrLoading">
         @if (Loading)
@@ -32,9 +34,12 @@ else
 {
     <button type="@Type"
             class="@CssClassValue"
+            style="@Style"
             aria-label="@AriaLabel"
             aria-busy="@Loading"
+            aria-pressed="@AriaPressedValue"
             disabled="@IsDisabledOrLoading"
+            @attributes="AdditionalAttributes"
             @onclick="HandleClickAsync">
         @if (Loading)
         {
@@ -58,6 +63,7 @@ else
     [Parameter] public MxButtonSize Size { get; set; } = MxButtonSize.Medium;
     [Parameter] public bool Disabled { get; set; }
     [Parameter] public bool Loading { get; set; }
+    [Parameter] public bool? Pressed { get; set; }
     [Parameter] public string Type { get; set; } = "button";
     [Parameter] public string? Href { get; set; }
     [Parameter] public string? Target { get; set; }
@@ -67,14 +73,20 @@ else
     [Parameter] public string? AriaLabel { get; set; }
     [Parameter] public string LoadingText { get; set; } = "Cargando";
     [Parameter] public string? Class { get; set; }
+    [Parameter] public string? Style { get; set; }
+    [Parameter(CaptureUnmatchedValues = true)] public IReadOnlyDictionary<string, object>? AdditionalAttributes { get; set; }
     [Parameter] public EventCallback<MouseEventArgs> OnClick { get; set; }
     [Parameter, EditorRequired] public RenderFragment ChildContent { get; set; } = default!;
 
     private bool IsLink => !string.IsNullOrWhiteSpace(Href);
     private bool IsDisabledOrLoading => Disabled || Loading;
 
+    private string? AriaPressedValue => IsLink || Pressed is null
+        ? null
+        : Pressed.Value.ToString().ToLowerInvariant();
+
     private string CssClassValue =>
-        $"mx-btn mx-btn--{Variant.ToString().ToLowerInvariant()} mx-btn--{Size.ToString().ToLowerInvariant()} {(Loading ? "mx-btn--loading" : string.Empty)} {Class}";
+        $"mx-btn mx-btn--{Variant.ToString().ToLowerInvariant()} mx-btn--{Size.ToString().ToLowerInvariant()} {(Loading ? "mx-btn--loading" : string.Empty)} {(Pressed == true ? "is-pressed" : string.Empty)} {Class}";
 
     private async Task HandleClickAsync(MouseEventArgs args)
     {
