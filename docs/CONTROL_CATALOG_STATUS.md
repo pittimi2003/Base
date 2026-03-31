@@ -17,15 +17,50 @@ Regla de lectura aplicada:
 - presencia en Showcase ≠ validación cross-host,
 - ausencia de evidencia explícita en hosts => `No verificado` o `No`.
 
-## 3) Criterio de madurez usado (conservador)
-- **Nivel 0**: existe en código sin evidencia mínima de uso.
-- **Nivel 1**: usable con evidencia parcial (normalmente Showcase), sin contrato estable.
-- **Nivel 2**: evidencia en Showcase y adopción en Server+Wasm observada, con deuda contractual.
-- **Nivel 3-5**: no asignados en esta ejecución por falta de evidencia contractual/validación suficiente.
+## 3) Criterio de madurez usado (conservador y unificado)
+Niveles enteros válidos: `Nivel 0`, `Nivel 1`, `Nivel 2`, `Nivel 3`, `Nivel 4`, `Nivel 5`.
+**No existe `Nivel 0.5`.**
+
+- **Nivel 0**: existe en código, sin evidencia mínima ejecutable en Showcase.
+- **Nivel 1**: usable con evidencia mínima en Showcase, sin evidencia bilateral en templates y con deuda contractual.
+- **Nivel 2**: evidencia en Showcase + evidencia en Template Server y Template Wasm, aún con deuda contractual abierta.
+- **Nivel 3**: contrato transversal aplicado + checklist contractual parcial evidenciado + validación técnica básica.
+- **Nivel 4**: validación cross-host sostenida + accesibilidad y regresión con evidencia recurrente.
+- **Nivel 5**: contrato completo por control, validación sostenida y gobernanza estable sin divergencias abiertas críticas.
+
+Regla de ejecución en esta etapa: mantener clasificación conservadora y no promover niveles sin evidencia verificable.
+
+## 3.1) Umbral normativo para habilitar contrato individual (`docs/components/Mx*.md`)
+Un control puede salir de este inventario y pasar a contrato individual solo si cumple simultáneamente:
+1. Madurez mínima `Nivel 3`.
+2. Evidencia en Showcase (estado base + estado excepcional + interacción/evento).
+3. Evidencia bilateral en Template Server y Template Wasm o excepción explícita `No verificado` con causa.
+4. API pública alineada con convenciones obligatorias (`Value`, `ValueChanged`, `@bind-Value`, `Disabled`, `ReadOnly`, `Class`, `Style`, `AdditionalAttributes`, `ChildContent`, `Items`, `Variant`, `Size`) cuando aplique.
+5. Sin `Divergencia detectada` crítica abierta.
+
+Si no cumple el umbral, permanece en este inventario.
+
+## 3.2) Taxonomía oficial de families
+Families oficiales vigentes en el inventario:
+- `Infrastructure`
+- `Actions`
+- `Inputs`
+- `Collections`
+- `Data`
+- `Overlays`
+- `Feedback`
+- `Display`
+- `Scheduling`
+
+## 3.3) Semántica formal de decisión
+- **Keep**: mantener arquitectura y API principal; solo correcciones menores o deuda acotada.
+- **Refactor**: reestructurar implementación interna sin romper contrato público declarado.
+- **Redesign**: rediseñar comportamiento/UX y reglas del control manteniendo, cuando sea viable, compatibilidad progresiva.
+- **Rebuild**: reemplazo estructural mayor (potencialmente breaking) por inviabilidad técnica/contractual del diseño actual.
 
 ## 4) Inventario inicial por control
 
-| Control | Family tentativa | Ubicación | Showcase | Template Server | Template Wasm | Estado actual | Madurez | ¿Documentable ahora? | Decisión inicial | Riesgo / bloqueo |
+| Control | Family oficial | Ubicación | Showcase | Template Server | Template Wasm | Estado actual | Madurez | ¿Documentable ahora? | Decisión inicial | Riesgo / bloqueo |
 |---|---|---|---|---|---|---|---|---|---|---|
 | MxControlAssets | Infrastructure | `Components/MxControlAssets.razor` | Parcial | Sí | Sí | Con deuda contractual | Nivel 2 | Requiere revisión | Keep | Activo de infraestructura; propósito contractual exacto pendiente de formalizar. |
 | MxButton | Actions | `Components/Actions/MxButton.razor` | Sí | Sí | Sí | Usable pero no gobernado | Nivel 2 | Requiere revisión | Keep | API visible en hosts, pero sin contrato individual formal. |
