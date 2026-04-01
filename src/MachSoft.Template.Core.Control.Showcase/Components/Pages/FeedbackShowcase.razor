@@ -1,0 +1,49 @@
+@page "/showcase/feedback"
+@page "/families/feedback"
+
+<div class="ms-page-container">
+    <MxPageHeader Title="Feedback — Bloque 1"
+                  Description="Cobertura de MxAlert, MxProgress (lineal/circular) y MxSkeleton con casos reales de carga y estado." />
+
+    <h2>Alertas</h2>
+    <div class="showcase-grid">
+        <MxAlert Variant="info" Title="Info" Message="La sincronización se ejecutará en el siguiente ciclo." />
+        <MxAlert Variant="success" Title="Success" Message="El despliegue finalizó correctamente." />
+        <MxAlert Variant="warning" Title="Warning" Message="Se detectó degradación en el servicio secundario." />
+        <MxAlert Variant="error" Title="Error" Message="No fue posible completar la operación." />
+    </div>
+
+    <h2>Progreso</h2>
+    <div class="showcase-grid">
+        <MachSoft.Template.Core.Control.Components.Feedback.MxProgress Label="Importación" Value="68" Max="100" ShowLabel="true" AriaLabel="Progreso de importación" />
+        <MachSoft.Template.Core.Control.Components.Feedback.MxProgress Label="Procesamiento" Value="35" Max="100" ShowLabel="true" AriaLabel="Progreso de procesamiento" />
+        <MachSoft.Template.Core.Control.Components.Feedback.MxProgress Value="82" Max="100" IsCircular="true" ShowLabel="true" AriaLabel="Progreso circular" />
+    </div>
+
+    <h2>Skeleton</h2>
+    <div class="showcase-grid">
+        <div class="showcase-theme-surface">
+            <MxSkeleton Width="45%" Height="1rem" />
+            <MxSkeleton Width="100%" Height=".9rem" />
+            <MxSkeleton Width="75%" Height=".9rem" />
+        </div>
+        <div class="showcase-theme-surface">
+            <MxSkeleton Variant="circle" Width="3rem" Height="3rem" />
+            <MxSkeleton Variant="card" Width="100%" Height="7rem" />
+        </div>
+    </div>
+
+    <h2>Comparativa light/dark</h2>
+    <div class="showcase-grid showcase-grid--themes">
+        <section class="showcase-theme-surface" data-mx-theme="light">
+            <h3>Light</h3>
+            <MxAlert Variant="info" Title="Estado" Message="Todo operativo." />
+            <MachSoft.Template.Core.Control.Components.Feedback.MxProgress Value="42" ShowLabel="true" />
+        </section>
+        <section class="showcase-theme-surface" data-mx-theme="dark">
+            <h3>Dark</h3>
+            <MxAlert Variant="warning" Title="Estado" Message="Revisión requerida." />
+            <MachSoft.Template.Core.Control.Components.Feedback.MxProgress Value="42" ShowLabel="true" />
+        </section>
+    </div>
+</div>

@@ -8,8 +8,30 @@
 - `MxTextArea`
 - `MxCheckbox`
 - `MxRadio`
+- `MxRadioGroup`
 - `MxSwitch`
 - `MxSelect`
+
+## Feedback and loading
+
+- `MxAlert`
+  - Variants: `info`, `success`, `warning`, `error`.
+  - Supports `Title`, `Message` or `ChildContent` for contextual messaging.
+- `MxProgress`
+  - Linear and circular rendering via `IsCircular`.
+  - Accessible progress semantics (`role="progressbar"`, `aria-valuenow`, `aria-valuemax`).
+- `MxSkeleton`
+  - Variants: `line`, `circle`, `card`.
+  - Supports configurable sizing and optional shimmer animation.
+
+## Navigation and organization
+
+- `MxMenu`
+  - Trigger + popup menu with `MxMenuItem` contracts.
+  - Keyboard close with `Escape` and disabled-item support.
+- `MxTabs`
+  - Tablist with active state, arrow-key navigation and optional active content projection.
+  - Uses `MxTabItem` contracts for stable API surface.
 
 ## Advanced selection family (iteration 1)
 
@@ -30,5 +52,4 @@
 
 - The package is host-agnostic and supports Blazor Server and WebAssembly.
 - `MxSelect.ReadOnly` is intentionally implemented as a non-interactive mode to keep cross-browser behavior consistent.
-- `MxRadio` currently uses native `name` grouping; an advanced group abstraction is intentionally out of scope for this baseline.
 - Iteration 1 intentionally does not include remote providers, virtualization, advanced templating, or enterprise-grade ranking.

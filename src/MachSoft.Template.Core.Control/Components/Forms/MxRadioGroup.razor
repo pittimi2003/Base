@@ -1,0 +1,49 @@
+@namespace MachSoft.Template.Core.Control.Components.Forms
+
+<fieldset class="@ContainerClass" role="radiogroup" aria-label="@AriaLabel" aria-invalid="@AriaInvalid" aria-describedby="@DescribedBy">
+    @if (!string.IsNullOrWhiteSpace(Label))
+    {
+        <legend class="ms-mx-radio-group__legend">@Label</legend>
+    }
+
+    <div class="ms-mx-radio-group__items">
+        @ChildContent
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(HelperText))
+    {
+        <p id="@HelperId" class="ms-mx-radio__message">@HelperText</p>
+    }
+
+    @if (HasError)
+    {
+        <p id="@ErrorId" class="ms-mx-radio__message ms-mx-radio__message--error">@ErrorText</p>
+    }
+</fieldset>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public string? HelperText { get; set; }
+    [Parameter] public string? ErrorText { get; set; }
+    [Parameter] public bool Invalid { get; set; }
+    [Parameter] public string? AriaLabel { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private readonly string _fallbackId = $"mx-radio-group-{Guid.NewGuid():N}";
+    private string HelperId => $"{_fallbackId}-helper";
+    private string ErrorId => $"{_fallbackId}-error";
+    private bool HasError => Invalid || !string.IsNullOrWhiteSpace(ErrorText);
+    private string? AriaInvalid => HasError ? "true" : null;
+    private string? DescribedBy
+    {
+        get
+        {
+            var ids = new List<string>(2);
+            if (!string.IsNullOrWhiteSpace(HelperText)) ids.Add(HelperId);
+            if (HasError) ids.Add(ErrorId);
+            return ids.Count > 0 ? string.Join(' ', ids) : null;
+        }
+    }
+
+    private string ContainerClass => $"ms-mx-radio-group-fieldset{(HasError ? " ms-mx-radio-group-fieldset--invalid" : string.Empty)}";
+}
