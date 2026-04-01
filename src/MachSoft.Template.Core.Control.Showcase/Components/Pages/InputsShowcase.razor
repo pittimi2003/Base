@@ -3,86 +3,298 @@
 @page "/families/selection"
 
 <div class="ms-page-container">
-    <MxPageHeader Title="Inputs avanzados — Bloque 1"
-                  Description="Validación visual/funcional de MxTextArea, MxRadioGroup/MxRadio y MxSwitch sobre el Design System MachSoft." />
+    <MxPageHeader Title="Core.Control Inputs Showcase"
+                  Description="Validación visual y funcional de inputs baseline y familia Selection avanzada (iteración 1)." />
 
+    <MxCard Title="Guía rápida de validación" IsCompact="true">
+        <ChildContent>
+            <p class="ms-text-sm">Valida default, hover, focus-visible, disabled, invalid, loading y empty/no-results en light/dark. Esta iteración introduce selección avanzada local sin provider remoto.</p>
+        </ChildContent>
+    </MxCard>
+
+    <h2>Familia base</h2>
     <div class="showcase-grid">
-        <MxTextArea Label="Descripción operativa"
-                    Placeholder="Describe la incidencia"
-                    Value="@Notes"
-                    ValueChanged="@(v => Notes = v)"
-                    HelperText="Incluye contexto funcional para el equipo de soporte." />
+        <MxTextField Label="MxTextField / Básico" Placeholder="North Hub" Value="@TextValue" ValueChanged="@(v => TextValue = v)" HelperText="Default + helper text." />
+        <MxTextField Label="MxTextField / ReadOnly" Value="Read only value" ReadOnly="true" HelperText="No editable, pero legible." />
+        <MxTextField Label="MxTextField / Disabled" Value="Disabled value" Disabled="true" />
+        <MxTextField Label="MxTextField / Invalid" Value="@InvalidText" ValueChanged="@(v => InvalidText = v)" ErrorText="Campo inválido" Required="true" />
 
-        <MxTextArea Label="Estado inválido"
-                    Value="@InvalidNotes"
-                    ValueChanged="@(v => InvalidNotes = v)"
-                    Required="true"
-                    ErrorText="Debes ingresar al menos 10 caracteres."
-                    HelperText="Se muestra helper + error de forma consistente." />
+        <MxTextArea Label="MxTextArea / Básico" Value="@AreaValue" ValueChanged="@(v => AreaValue = v)" Placeholder="Describe el proceso" HelperText="Multilínea alineada con TextField." />
+        <MxTextArea Label="MxTextArea / ReadOnly" Value="Sin edición" ReadOnly="true" HelperText="No editable." />
+        <MxTextArea Label="MxTextArea / Disabled" Value="No editable" Disabled="true" />
+        <MxTextArea Label="MxTextArea / Invalid" Value="@InvalidArea" ValueChanged="@(v => InvalidArea = v)" ErrorText="Mínimo 10 caracteres" Required="true" />
 
-        <MxTextArea Label="Deshabilitado"
-                    Value="En revisión"
+        <MxSelect Label="MxSelect / Básico" Value="@Region" ValueChanged="@(v => Region = v)" Options="@Regions" Placeholder="Selecciona región" HelperText="Selección simple baseline." />
+        <MxSelect Label="MxSelect / ReadOnly" Value="na" Options="@Regions" ReadOnly="true" HelperText="Readonly = no interactivo por diseño." />
+        <MxSelect Label="MxSelect / Disabled" Value="latam" Options="@Regions" Disabled="true" />
+        <MxSelect Label="MxSelect / Invalid" Value="@RegionInvalid" ValueChanged="@(v => RegionInvalid = v)" Options="@Regions" ErrorText="Campo obligatorio" Required="true" />
+
+        <MxCheckbox Label="MxCheckbox / Básico" Description="Acepta condiciones" Checked="@Accepted" CheckedChanged="@(v => Accepted = v)" />
+        <MxCheckbox Label="MxCheckbox / Disabled" Description="No disponible" Checked="true" Disabled="true" />
+        <MxCheckbox Label="MxCheckbox / Invalid" Description="Requerido para continuar" Checked="@InvalidCheck" CheckedChanged="@(v => InvalidCheck = v)" Invalid="true" ErrorText="Debes confirmar" Required="true" />
+
+        <fieldset class="showcase-radio-set">
+            <legend>MxRadio / Grupo mínimo por Name</legend>
+            <div class="ms-stack-sm">
+                <MxRadio Name="priority" Label="Alta" Value="high" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Description="Prioridad alta" />
+                <MxRadio Name="priority" Label="Normal" Value="normal" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Description="Prioridad estándar" />
+                <MxRadio Name="priority" Label="Disabled" Value="disabled" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Disabled="true" />
+                <MxRadio Name="priority" Label="Inválido" Value="invalid" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Invalid="true" ErrorText="Selecciona una prioridad válida" />
+            </div>
+            <p class="ms-text-sm">Límite actual: no existe aún componente `MxRadioGroup`; la agrupación se resuelve con `Name`.</p>
+        </fieldset>
+
+        <MxSwitch Label="MxSwitch / Básico" Checked="@Enabled" CheckedChanged="@(v => Enabled = v)" HelperText="Toggle operacional" />
+        <MxSwitch Label="MxSwitch / Disabled" Checked="true" Disabled="true" />
+        <MxSwitch Label="MxSwitch / Invalid" Checked="@InvalidSwitch" CheckedChanged="@(v => InvalidSwitch = v)" Invalid="true" ErrorText="Debes confirmar" HelperText="Requiere confirmación explícita" />
+    </div>
+
+    <h2>Selection avanzada — Iteración 1</h2>
+    <div class="showcase-grid">
+        <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="MxAutocomplete / Básico"
+                        Value="@AutocompleteValue"
+                        ValueChanged="@(v => AutocompleteValue = v)"
+                        SearchText="@AutocompleteSearch"
+                        SearchTextChanged="@(v => AutocompleteSearch = v)"
+                        Options="@PeopleOptions"
+                        Placeholder="Busca por nombre"
+                        HelperText="Dataset local + sugerencias visibles." />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="MxAutocomplete / Sin resultados"
+                        Value="@AutoNoResultsValue"
+                        ValueChanged="@(v => AutoNoResultsValue = v)"
+                        SearchText="@AutoNoResultsSearch"
+                        SearchTextChanged="@(v => AutoNoResultsSearch = v)"
+                        Options="@PeopleOptions"
+                        NoResultsText="No se encontraron coincidencias" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="MxAutocomplete / Disabled"
+                        Value="a02"
+                        SearchText="Bob Stone"
+                        Disabled="true"
+                        Options="@PeopleOptions" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="MxAutocomplete / Invalid"
+                        Value="@AutoInvalidValue"
+                        ValueChanged="@(v => AutoInvalidValue = v)"
+                        SearchText="@AutoInvalidSearch"
+                        SearchTextChanged="@(v => AutoInvalidSearch = v)"
+                        Options="@PeopleOptions"
+                        ErrorText="Selecciona un usuario válido" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="MxAutocomplete / Loading"
+                        Value="@AutoLoadingValue"
+                        ValueChanged="@(v => AutoLoadingValue = v)"
+                        SearchText="@AutoLoadingSearch"
+                        SearchTextChanged="@(v => AutoLoadingSearch = v)"
+                        Loading="true"
+                        Options="@PeopleOptions"
+                        LoadingText="Buscando usuarios..." />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxComboBox Label="MxComboBox / Básico"
+                    Value="@ComboValue"
+                    ValueChanged="@(v => ComboValue = v)"
+                    SearchText="@ComboSearch"
+                    SearchTextChanged="@(v => ComboSearch = v)"
+                    Options="@RegionOptions"
+                    Placeholder="Selecciona región" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxComboBox Label="MxComboBox / Búsqueda"
+                    Value="@ComboSearchValue"
+                    ValueChanged="@(v => ComboSearchValue = v)"
+                    SearchText="@ComboSearchText"
+                    SearchTextChanged="@(v => ComboSearchText = v)"
+                    Options="@RegionOptions"
+                    HelperText="Input + lista desplegable controlable." />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxComboBox Label="MxComboBox / Disabled"
+                    Value="emea"
+                    SearchText="EMEA"
                     Disabled="true"
-                    HelperText="Control bloqueado por permisos." />
+                    Options="@RegionOptions" />
 
-        <MxTextArea Label="Solo lectura"
-                    Value="Texto de auditoría"
-                    ReadOnly="true"
-                    HelperText="Visible y no editable." />
+        <MachSoft.Template.Core.Control.Components.Forms.MxComboBox Label="MxComboBox / Invalid"
+                    Value="@ComboInvalidValue"
+                    ValueChanged="@(v => ComboInvalidValue = v)"
+                    SearchText="@ComboInvalidSearch"
+                    SearchTextChanged="@(v => ComboInvalidSearch = v)"
+                    Options="@RegionOptions"
+                    ErrorText="Debes seleccionar una región" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MxMultiSelect / Básico"
+                       SelectedValues="@MultiValues"
+                       SelectedValuesChanged="OnMultiValuesChanged"
+                       Options="@TagOptions"
+                       HelperText="Selección múltiple con chips." />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MxMultiSelect / Sin resultados"
+                       SelectedValues="@MultiNoResultsValues"
+                       SelectedValuesChanged="OnMultiNoResultsChanged"
+                       SearchText="@MultiNoResultsSearch"
+                       SearchTextChanged="@(v => MultiNoResultsSearch = v)"
+                       Options="@TagOptions"
+                       NoResultsText="No hay etiquetas para este filtro" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MxMultiSelect / Loading"
+                       SelectedValues="@MultiLoadingValues"
+                       SelectedValuesChanged="OnMultiLoadingChanged"
+                       Loading="true"
+                       Options="@TagOptions"
+                       LoadingText="Cargando etiquetas..." />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MxMultiSelect / Disabled"
+                       SelectedValues="@MultiDisabledValues"
+                       SelectedValuesChanged="OnMultiDisabledChanged"
+                       Disabled="true"
+                       Options="@TagOptions" />
+
+        <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MxMultiSelect / Invalid"
+                       SelectedValues="@MultiInvalidValues"
+                       SelectedValuesChanged="OnMultiInvalidChanged"
+                       Options="@TagOptions"
+                       ErrorText="Debes seleccionar al menos un tag" />
     </div>
 
-    <div class="showcase-grid">
-        <MxRadioGroup Label="Prioridad del ticket" HelperText="Selecciona una prioridad activa.">
-            <MxRadio Name="priority" Label="Alta" Value="high" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Description="Escalamiento inmediato" />
-            <MxRadio Name="priority" Label="Media" Value="medium" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" Description="Gestión estándar" />
-            <MxRadio Name="priority" Label="Baja" Value="low" SelectedValue="@Priority" SelectedValueChanged="OnPriorityChanged" />
-        </MxRadioGroup>
-
-        <MxRadioGroup Label="Estado inválido" Invalid="true" ErrorText="Selecciona una opción válida.">
-            <MxRadio Name="invalid-priority" Label="Opción A" Value="a" SelectedValue="@InvalidPriority" SelectedValueChanged="OnInvalidPriorityChanged" />
-            <MxRadio Name="invalid-priority" Label="Opción B" Value="b" SelectedValue="@InvalidPriority" SelectedValueChanged="OnInvalidPriorityChanged" Disabled="true" />
-        </MxRadioGroup>
-
-        <MxSwitch Label="Activar notificaciones" Checked="@NotificationsEnabled" CheckedChanged="@(v => NotificationsEnabled = v)" HelperText="Permite avisos en tiempo real." />
-        <MxSwitch Label="Switch deshabilitado" Checked="true" Disabled="true" HelperText="Bloqueado por política." />
-    </div>
-
-    <h2>Comparativa light/dark</h2>
+    <h2>Vista rápida Light/Dark</h2>
     <div class="showcase-grid showcase-grid--themes">
         <section class="showcase-theme-surface" data-mx-theme="light">
             <h3>Light</h3>
-            <MxTextArea Label="Notas" Placeholder="Escribe aquí" HelperText="Tema light" Value="@LightNotes" ValueChanged="@(v => LightNotes = v)" />
-            <MxSwitch Label="Modo automático" Checked="@LightSwitch" CheckedChanged="@(v => LightSwitch = v)" />
+            <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="Autocomplete (light)" SearchText="@ThemeAutoLight" SearchTextChanged="@(v => ThemeAutoLight = v)" Options="@PeopleOptions" />
+            <MachSoft.Template.Core.Control.Components.Forms.MxComboBox Label="ComboBox (light)" Value="@ThemeComboLight" ValueChanged="@(v => ThemeComboLight = v)" SearchText="@ThemeComboLightText" SearchTextChanged="@(v => ThemeComboLightText = v)" Options="@RegionOptions" />
+            <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MultiSelect (light)" SelectedValues="@ThemeMultiLight" SelectedValuesChanged="OnThemeMultiLightChanged" Options="@TagOptions" />
         </section>
 
         <section class="showcase-theme-surface" data-mx-theme="dark">
             <h3>Dark</h3>
-            <MxTextArea Label="Notas" Placeholder="Escribe aquí" HelperText="Tema dark" Value="@DarkNotes" ValueChanged="@(v => DarkNotes = v)" />
-            <MxSwitch Label="Modo automático" Checked="@DarkSwitch" CheckedChanged="@(v => DarkSwitch = v)" />
+            <MachSoft.Template.Core.Control.Components.Forms.MxAutocomplete Label="Autocomplete (dark)" SearchText="@ThemeAutoDark" SearchTextChanged="@(v => ThemeAutoDark = v)" Options="@PeopleOptions" />
+            <MachSoft.Template.Core.Control.Components.Forms.MxComboBox Label="ComboBox (dark)" Value="@ThemeComboDark" ValueChanged="@(v => ThemeComboDark = v)" SearchText="@ThemeComboDarkText" SearchTextChanged="@(v => ThemeComboDarkText = v)" Options="@RegionOptions" />
+            <MachSoft.Template.Core.Control.Components.Forms.MxMultiSelect Label="MultiSelect (dark)" SelectedValues="@ThemeMultiDark" SelectedValuesChanged="OnThemeMultiDarkChanged" Options="@TagOptions" />
         </section>
     </div>
 </div>
 
 @code {
-    private string? Notes { get; set; }
-    private string? InvalidNotes { get; set; } = "corto";
-    private string Priority { get; set; } = "medium";
-    private string? InvalidPriority { get; set; }
-    private bool NotificationsEnabled { get; set; } = true;
-    private string? LightNotes { get; set; }
-    private bool LightSwitch { get; set; }
-    private string? DarkNotes { get; set; }
-    private bool DarkSwitch { get; set; } = true;
+    private string? TextValue { get; set; }
+    private string? InvalidText { get; set; } = "xx";
+    private string? AreaValue { get; set; }
+    private string? InvalidArea { get; set; } = "corto";
+    private string? Region { get; set; }
+    private string? RegionInvalid { get; set; }
+    private bool Accepted { get; set; }
+    private bool InvalidCheck { get; set; }
+    private string Priority { get; set; } = "normal";
+    private bool Enabled { get; set; }
+    private bool InvalidSwitch { get; set; }
+
+    private string? AutocompleteValue { get; set; }
+    private string? AutocompleteSearch { get; set; }
+    private string? AutoNoResultsValue { get; set; }
+    private string? AutoNoResultsSearch { get; set; } = "zzz";
+    private string? AutoInvalidValue { get; set; }
+    private string? AutoInvalidSearch { get; set; } = "Inexistente";
+    private string? AutoLoadingValue { get; set; }
+    private string? AutoLoadingSearch { get; set; } = "Ali";
+
+    private string? ComboValue { get; set; }
+    private string? ComboSearch { get; set; }
+    private string? ComboSearchValue { get; set; }
+    private string? ComboSearchText { get; set; } = "North";
+    private string? ComboInvalidValue { get; set; }
+    private string? ComboInvalidSearch { get; set; } = "Selecciona...";
+
+    private IReadOnlyList<string> MultiValues { get; set; } = ["ops"];
+    private IReadOnlyList<string> MultiNoResultsValues { get; set; } = [];
+    private IReadOnlyList<string> MultiLoadingValues { get; set; } = ["urgent", "automation"];
+    private IReadOnlyList<string> MultiDisabledValues { get; set; } = ["backlog"];
+    private IReadOnlyList<string> MultiInvalidValues { get; set; } = [];
+    private string? MultiNoResultsSearch { get; set; } = "zz";
+
+    private string? ThemeAutoLight { get; set; }
+    private string? ThemeAutoDark { get; set; }
+    private string? ThemeComboLight { get; set; }
+    private string? ThemeComboLightText { get; set; }
+    private string? ThemeComboDark { get; set; }
+    private string? ThemeComboDarkText { get; set; }
+    private IReadOnlyList<string> ThemeMultiLight { get; set; } = ["ops"];
+    private IReadOnlyList<string> ThemeMultiDark { get; set; } = ["automation"];
+
+    private IEnumerable<MxSelectOption> Regions { get; } =
+    [
+        new("emea", "EMEA"),
+        new("latam", "LATAM"),
+        new("na", "North America")
+    ];
+
+    private IEnumerable<MxSelectOption> PeopleOptions { get; } =
+    [
+        new("a01", "Alice Morgan"),
+        new("a02", "Bob Stone"),
+        new("a03", "Camila Reyes"),
+        new("a04", "Diego Lopes"),
+        new("a05", "Elena Soto")
+    ];
+
+    private IEnumerable<MxSelectOption> RegionOptions { get; } =
+    [
+        new("emea", "EMEA"),
+        new("latam", "LATAM"),
+        new("na", "North America"),
+        new("apac", "APAC")
+    ];
+
+    private IEnumerable<MxSelectOption> TagOptions { get; } =
+    [
+        new("ops", "Operations"),
+        new("urgent", "Urgent"),
+        new("automation", "Automation"),
+        new("backlog", "Backlog")
+    ];
 
     private Task OnPriorityChanged(string? value)
     {
-        Priority = value ?? Priority;
+        Priority = value ?? "normal";
         return Task.CompletedTask;
     }
 
-    private Task OnInvalidPriorityChanged(string? value)
+    private Task OnMultiValuesChanged(IReadOnlyList<string> values)
     {
-        InvalidPriority = value;
+        MultiValues = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnMultiNoResultsChanged(IReadOnlyList<string> values)
+    {
+        MultiNoResultsValues = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnMultiLoadingChanged(IReadOnlyList<string> values)
+    {
+        MultiLoadingValues = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnMultiDisabledChanged(IReadOnlyList<string> values)
+    {
+        MultiDisabledValues = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnMultiInvalidChanged(IReadOnlyList<string> values)
+    {
+        MultiInvalidValues = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnThemeMultiLightChanged(IReadOnlyList<string> values)
+    {
+        ThemeMultiLight = values;
+        return Task.CompletedTask;
+    }
+
+    private Task OnThemeMultiDarkChanged(IReadOnlyList<string> values)
+    {
+        ThemeMultiDark = values;
         return Task.CompletedTask;
     }
 }
