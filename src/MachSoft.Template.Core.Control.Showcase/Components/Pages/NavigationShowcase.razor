@@ -1,0 +1,75 @@
+@page "/showcase/navigation"
+@page "/families/navigation"
+
+<div class="ms-page-container">
+    <MxPageHeader Title="Navegación/organización — Bloque 1"
+                  Description="Validación de MxMenu y MxTabs con interacción de teclado y estados activos." />
+
+    <div class="showcase-grid">
+        <MxCard Title="MxMenu" Variant="SurfaceVariant.Outlined">
+            <ChildContent>
+                <MxMenu TriggerText="Acciones rápidas" Items="@MenuItems" ItemSelected="OnMenuItemSelected" />
+                <p class="ms-text-sm">Última acción: <strong>@LastMenuAction</strong></p>
+            </ChildContent>
+        </MxCard>
+
+        <MxCard Title="MxTabs" Variant="SurfaceVariant.Outlined">
+            <ChildContent>
+                <MachSoft.Template.Core.Control.Components.Navigation.MxTabs Items="@TabItems" ActiveValue="@ActiveTab" ActiveValueChanged="OnTabChanged" AriaLabel="Pestañas de ejemplo" />
+                <p class="ms-text-sm">@GetTabContent(ActiveTab)</p>
+            </ChildContent>
+        </MxCard>
+    </div>
+
+    <h2>Comparativa light/dark</h2>
+    <div class="showcase-grid showcase-grid--themes">
+        <section class="showcase-theme-surface" data-mx-theme="light">
+            <h3>Light</h3>
+            <MachSoft.Template.Core.Control.Components.Navigation.MxTabs Items="@TabItems" ActiveValue="@LightTab" ActiveValueChanged="(v => LightTab = v)" AriaLabel="Tabs light" />
+        </section>
+        <section class="showcase-theme-surface" data-mx-theme="dark">
+            <h3>Dark</h3>
+            <MachSoft.Template.Core.Control.Components.Navigation.MxTabs Items="@TabItems" ActiveValue="@DarkTab" ActiveValueChanged="(v => DarkTab = v)" AriaLabel="Tabs dark" />
+        </section>
+    </div>
+</div>
+
+@code {
+    private string LastMenuAction { get; set; } = "Ninguna";
+    private string ActiveTab { get; set; } = "overview";
+    private string LightTab { get; set; } = "overview";
+    private string DarkTab { get; set; } = "details";
+
+    private IReadOnlyList<MxMenuItem> MenuItems { get; } =
+    [
+        new("refresh", "Refrescar", "Sincroniza los datos del panel"),
+        new("export", "Exportar", "Descarga resumen en CSV"),
+        new("archive", "Archivar", "No disponible en este entorno", true)
+    ];
+
+    private IReadOnlyList<MachSoft.Template.Core.Control.Models.MxTabItem> TabItems { get; } =
+    [
+        new("overview", "Resumen"),
+        new("details", "Detalle"),
+        new("history", "Histórico")
+    ];
+
+    private Task OnMenuItemSelected(MxMenuItem item)
+    {
+        LastMenuAction = item.Text;
+        return Task.CompletedTask;
+    }
+
+    private Task OnTabChanged(string value)
+    {
+        ActiveTab = value;
+        return Task.CompletedTask;
+    }
+
+    private static string GetTabContent(string active) => active switch
+    {
+        "details" => "Detalle operativo con foco en incidencias activas.",
+        "history" => "Histórico de cambios y auditoría.",
+        _ => "Resumen ejecutivo con métricas principales."
+    };
+}

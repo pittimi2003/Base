@@ -1,0 +1,35 @@
+@namespace MachSoft.Template.Core.Control.Components.Feedback
+
+<div class="@AlertClass" role="alert" aria-live="@AriaLive">
+    @if (!string.IsNullOrWhiteSpace(Title))
+    {
+        <p class="ms-mx-alert__title">@Title</p>
+    }
+
+    @if (ChildContent is not null)
+    {
+        <div class="ms-mx-alert__content">@ChildContent</div>
+    }
+    else if (!string.IsNullOrWhiteSpace(Message))
+    {
+        <p class="ms-mx-alert__content">@Message</p>
+    }
+</div>
+
+@code {
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Message { get; set; }
+    [Parameter] public string Variant { get; set; } = "info";
+    [Parameter] public string AriaLive { get; set; } = "polite";
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+
+    private string AlertClass => $"ms-mx-alert ms-mx-alert--{NormalizedVariant}";
+
+    private string NormalizedVariant => Variant.ToLowerInvariant() switch
+    {
+        "success" => "success",
+        "warning" => "warning",
+        "error" => "error",
+        _ => "info"
+    };
+}
